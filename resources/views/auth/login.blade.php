@@ -11,7 +11,7 @@
                 {{ session('status') }}
             </div>
         @endif
-        <h1 class="text-center text-white text-3xl my-5 px-4 font-serif">Acceso Productores</h1>
+        <h1 class="text-center text-white text-3xl my-5 px-4 font-serif">Acceso Sistema Liquidaciones</h1>
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
