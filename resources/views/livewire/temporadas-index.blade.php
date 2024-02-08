@@ -36,7 +36,7 @@
               clip-rule="evenodd" />
           </svg>
          
-          <input wire:model="search" class="bg-gray-50 outline-none ml-1"placeholder="search...">
+          <input wire:model="search" class="bg-gray-50 outline-none ml-1" placeholder="search...">
 
             </div>
           <div class="lg:ml-40 ml-10 space-x-8">
@@ -47,6 +47,7 @@
           </div>
         </div>
       </div>
+      {{$search}}
       <div>
         <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @foreach ($temporadas as $temporada)
