@@ -7,7 +7,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 
 class TemporadasIndex extends Component
-{   public $search="Hola mundo";
+{   public $search;
 
     public function render()
     {   $temporadas = Temporada::orderBy('name', 'desc')->get();
