@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TemporadaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+Route::resource('temporada', TemporadaController::class)->middleware('auth')->names('temporadas');
+
+Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
