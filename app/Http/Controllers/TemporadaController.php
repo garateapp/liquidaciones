@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ResumenImport;
+use App\Models\Resumen;
 use App\Models\Temporada;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
@@ -46,6 +47,11 @@ class TemporadaController extends Controller
     public function show(Temporada $temporada)
     {
         return view('temporadas.show',compact('temporada'));
+    }
+
+    public function resume(Temporada $temporada)
+    {   $resumes=Resumen::all();
+        return view('temporadas.resume',compact('temporada','resumes'));
     }
 
     /**

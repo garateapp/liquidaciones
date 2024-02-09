@@ -10,54 +10,47 @@
                 <div class="flex w-full bg-gray-800" x-data="{openMenu:1}">
                     <!--Start SideBar-->
                    
-                    <!-- Start Open Menu -->
+                    <!-- Start Open Menu 
                     <aside class="animate__animated animate__fadeInLeft w-52 relative z-0 flex-shrink-0 hidden px-4 overflow-y-auto bg-gray-100 sm:block " 
                            x-show="openMenu ==  1" 
                            style="display: none;">
                         <div class="mb-6">
-                          <!--Start Sidebar for open menu -->
                           <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-6">
-                            <!-- Start Navitem -->
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-chart-pie fa-sm text-indigo-600"></i>
                               </div>
                               <p class="text-xs mt-1 text-center font-semibold">Costos Packing</p>
                             </div>
-                            <!-- End Navitem -->
-                            <!-- Start Navitem -->
+                     
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-calculator fa-sm text-indigo-600"></i>
                               </div>
                               <p class="text-xs mt-1 text-center font-semibold">Materiales</p>
                             </div>
-                            <!-- End Navitem -->
-                            <!-- Start Navitem -->
+                           
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-wallet fa-sm text-indigo-600"></i>
                               </div>
                               <p class="text-xs mt-1 text-center font-semibold">Gastos de exportación</p>
                             </div>
-                            <!-- End Navitem -->
-                            <!-- Start Navitem -->
+                          
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-archive fa-sm text-indigo-600"></i>
                               </div>
                               <p class="text-xs mt-1 text-center font-semibold">Fletes</p>
                             </div>
-                            <!-- End Navitem -->
-                            <!-- Start Navitem -->
+                          
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-money-bill-wave-alt fa-sm text-indigo-600"></i>
                               </div>
                               <p class="text-xs mt-1 text-center font-semibold">Comisión</p>
                             </div>
-                            <!-- End Navitem -->
-                             <!-- Start Navitem -->
+                        
                             <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                               <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                                 <i class="fas fa-shopping-basket fa-sm text-indigo-600"></i>
@@ -70,11 +63,11 @@
                                 </div>
                                 <p class="text-xs mt-1 text-center font-semibold">Finanzas</p>
                               </div>
-                            <!-- End Navitem -->
-                          </div>
-                          <!--End Sidebar for open menu -->
+                                                   </div>
+                       
                         </div>
                     </aside>
+                  -->
                     <!-- End Open Menu -->
                     
                     <!-- End Sidebar -->
@@ -209,160 +202,147 @@
                         </div>
                     </div>
 
-                          <div class="grid pb-10  mt-4 ">
-                              <!-- Start Content-->
-                                <div class="mb-2 grid grid-cols-12 items-center">
-                                    <div class="col-span-12 sm:col-span-5 md:col-span-5 lg:col-span-5 xxl:col-span-5">
-                                        <p class="text-lg font-semibold text-gray-400">Información pendiente de subir</p>
-                                    </div>
-                                    <div>
-
-                                    </div>
-                                  <div class="col-span-12 sm:col-span-12 md:col-span-6 lg:col-span-6 xxl:col-span-6">
-                                        <div class="p-4">
-                                            <p class="text-sm text-gray-400">Información base de datos</p>
-                                            <div class="shadow w-full bg-gray-100 mt-2">
-                                                <div class="bg-indigo-600 text-xs leading-none py-1 text-center text-white" style="width: 55%"></div>
-                                            </div>
-                                            <p class="text-xs font-semibold text-gray-400 mt-2">45,941 Registros</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-12 gap-6 border-b-2 mb-5">
-                                  <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
-                                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3">
-                                       <div class="p-4">
-                                          <p class="text-xl font-bold">45,941</p>
-                                          <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
-                                       </div>
-                                       <div class="p-4">
-                                          <p class="text-xl font-bold">37,500</p>
-                                          <p class="text-xs font-semibold text-gray-400">Materiales</p>
-                                       </div>
-                                       <div class="p-4">
-                                          <p class="text-xl font-bold">9,200</p>
-                                          <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
-                                       </div>
-                                       <div class=" p-4">
-                                          <p class="text-xl font-bold">5,700</p>
-                                          <p class="text-xs font-semibold text-gray-400">Fletes</p>
-                                       </div>
-                                       <div class=" p-4">
-                                            <p class="text-xl font-bold">5,700</p>
-                                            <p class="text-xs font-semibold text-gray-400">Comisión</p>
-                                        </div>
-                                        <div class=" p-4">
-                                            <p class="text-xl font-bold">5,700</p>
-                                            <p class="text-xs font-semibold text-gray-400">Balance de masas</p>
-                                        </div>
-                                    </div>
-                                  </div>
-                                 
-                                </div>
-
-                                <div class="flex justify-center">
-                                  <div>
-                                    <h1 class="text-xl font-semibold mb-4">
-                                        Por favor selecione el archivo que desea importar
-                                    </h1>
-                                    <div class="flex">
-                                        
-                                        <form action="{{route('temporada.importData')}}"
-                                            method="POST"
-                                            class="bg-white rounded p-8 shadow"
-                                            enctype="multipart/form-data">
-                                            
-                                            @csrf
-
-                                            <x-validation-errors class="errors">
-
-                                            </x-validation-errors>
-
-                                            <input type="file" name="file" accept=".csv,.xlsx">
-                                            <x-button class="ml-4">
-                                                Importar
-                                            </x-button>
-                                        </form>
-                                    </div>
-                                  </div>
-                                </div>
-                               
-
-                                <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-3 hidden">
-                                  <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                                    style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                                      <div class="absolute inset-0 bg-pink-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                                      <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center justify-center">
-                                        <div>
-                                          <h3 class="text-center text-white text-lg">
-                                               Total Balance
-                                          </h3>
-                                          <h3 class="text-center text-white text-3xl mt-2 font-bold">
-                                               RM 27,580
-                                          </h3>
-                                          <div class="flex space-x-4 mt-4">
-                                             <button class="block uppercase mx-auto shadow bg-white text-indigo-600 focus:shadow-outline 
-                                              focus:outline-none text-xs py-3 px-4 rounded font-bold">
-                                              Transfer
-                                            </button>
-                                            <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline 
-                                               focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
-                                              Request
-                                            </button>
-                                          </div>
-                                        </div>
+                    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                      <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                        <table class="min-w-full leading-normal">
+                          <thead>
+                            <tr>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Especie
+                              </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Variedad
+                              </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Serie
+                              </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Color
+                              </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Categoría
+                              </th>
+                              <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Cajas
+                            </th>
+                            <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Cajas Procesos
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Kg Salida
+                        </th>
+                        <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Total Kg
+                      </th>
+                              <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Estado
+                            </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach ($resumes as $resume)
+                              <tr>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <div class="flex items-center">
+                                    <div class="flex-shrink-0 w-10 h-10 hidden">
+                                      <img class="w-full h-full rounded-full"
+                                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                alt="" />
+                                                        </div>
+                                      <div class="ml-3">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                          {{$resume->especie}}
+                                        </p>
                                       </div>
-                                  </div>
-                                   <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                                    style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                                      <div class="absolute inset-0 bg-yellow-600 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                                        <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                                        <div>
-                                          <div class="text-white text-lg flex space-x-2 items-center">
-                                            <div class="bg-white rounded-md p-2 flex items-center">
-                                              <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
-                                            </div>
-                                            <p>Finished Appt</p>
-                                          </div>
-                                          <h3 class="text-white text-3xl mt-2 font-bold">
-                                              120
-                                          </h3>
-                                           <h3 class="text-white text-lg mt-2 text-yellow-100 ">
-                                              4 not confirmed
-                                          </h3>
-                                        </div>
-                                      </div>
-                                  </div>
-                                   <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                                    style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                                      <div class="absolute inset-0 bg-blue-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                                      <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                                        <div>
-                                          <div class="text-white text-lg flex space-x-2 items-center">
-                                            <div class="bg-white rounded-md p-2 flex items-center">
-                                              <i class="fas fa-clipboard-check fa-sm text-blue-800"></i>
-                                            </div>
-                                            <p>Finished Appt</p>
-                                          </div>
-                                          <h3 class="text-white text-3xl mt-2 font-bold">
-                                              72
-                                          </h3>
-                                           <h3 class="text-white text-lg mt-2 ">
-                                             3.4% <span class='font-semibold text-blue-200'>vs last month</span>
-                                          </h3>
-                                        </div>
-                                      </div>
-                                  </div>        
-                                </div>
-                                
-                              <!-- End Content-->
+                                    </div>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$resume->variedad}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->serie}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->color}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->cat}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->cajas}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->cajas_proceso}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->kg_salida}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$resume->total_kg}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <span
+                                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                        <span aria-hidden
+                                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Activo</span>
+                                  </span>
+                                </td>
+                              </tr>
+                            @endforeach
+                          
+                          </tbody>
+                        </table>
+                        <div
+                          class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                          <span class="text-xs xs:text-sm text-gray-900">
+                                          Showing 1 to 4 of 50 Entries
+                                      </span>
+                          <div class="inline-flex mt-2 xs:mt-0">
+                            <button
+                                              class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-l">
+                                              Prev
+                                          </button>
+                            &nbsp; &nbsp;
+                            <button
+                                              class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-r">
+                                              Next
+                                          </button>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                       </main>
                     </div>
                 </div>
                 <div class="flex justify-center">
                     <div class="inline-flex items-center rounded-md shadow-sm gap-x-2">
-                      <a href="{{route('temporada.resume',$temporada)}}">
                         <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border-y border-slate-200 font-medium px-4 py-2 inline-flex space-x-1 items-center">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -372,50 +352,61 @@
                             </span>
                             <span>RESUMEN</span>
                         </button>
-                      </a>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            </span>
-                            <span>DETALLE</span>
-                        </button>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            </span>
-                            <span>MI</span>
-                        </button>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            </span>
-                            <span>COSTOS</span>
-                        </button>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            </span>
-                            <span>TARIFAS</span>
-                        </button>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            </span>
-                            <span>INGRESOS</span>
-                        </button>
-                        <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            </span>
-                            <span>FINANZAS</span>
-                        </button>
+                        <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                              </svg>
+                              </span>
+                              <span>DETALLE</span>
+                          </button>
+                        </a>
+                          <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                              </svg>
+                              </span>
+                              <span>MI</span>
+                          </button>
+                          </a>
+                          <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                              </svg>
+                              </span>
+                              <span>COSTOS</span>
+                          </button>
+                          </a>
+                          <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                              </svg>
+                              </span>
+                              <span>TARIFAS</span>
+                          </button>
+                          </a>
+                          <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                              </svg>
+                              </span>
+                              <span>INGRESOS</span>
+                          </button>
+                          </a>
+                          <a href="{{route('temporadas.show',$temporada)}}">
+                          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+                              <span>
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                              </svg>
+                              </span>
+                              <span>FINANZAS</span>
+                          </button>
+                          </a>
                     </div>
                 </div>
             </div>

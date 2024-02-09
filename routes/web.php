@@ -31,4 +31,6 @@ Route::middleware([
 
 Route::resource('temporada', TemporadaController::class)->middleware('auth')->names('temporadas');
 
+Route::get('temporada/{temporada}/resume',[TemporadaController::class,'resume'])->name('temporada.resume');
+
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
