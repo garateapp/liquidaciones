@@ -19,6 +19,8 @@ return new class extends Migration
             ->constrained()
             ->onDelete('set null');
 
+            $table->integer('status')->default(1);
+
             $table->string('name');
             $table->string('costos_packing')->nullable();
             $table->string('materiales')->nullable();

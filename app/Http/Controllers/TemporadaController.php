@@ -45,13 +45,12 @@ class TemporadaController extends Controller
      * Display the specified resource.
      */
     public function show(Temporada $temporada)
-    {
-        return view('temporadas.show',compact('temporada'));
+    {    $resumes=Resumen::where('temporada_id',$temporada->id)->get();
+        return view('temporadas.show',compact('temporada','resumes'));
     }
 
     public function resume(Temporada $temporada)
-    {   $resumes=Resumen::all();
-        return view('temporadas.resume',compact('temporada','resumes'));
+    {   return view('temporadas.resume',compact('temporada'));
     }
 
     /**
@@ -73,10 +72,12 @@ class TemporadaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Temporada $temporada)
     {
-        //
+        $temporada->delete();
+        return redirect()->back();
     }
+    
 
     public function importdata(Request $request)
     {    $request->validate([
@@ -85,9 +86,10 @@ class TemporadaController extends Controller
 
         $file = $request->file('file');
 
-        FacadesExcel::import(new ResumenImport,$file);
+        FacadesExcel::import(new ResumenImport($request->temporada),$file);
 
-        return "Importacion Realizada con Exito";
+        $temporada=Temporada::find($request->temporada);
+        return redirect()->route('temporada.resume',$temporada)->with('info','Importación realizada con exito');
     }
 
 }

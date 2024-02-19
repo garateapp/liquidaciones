@@ -15,6 +15,7 @@
          <!-- Animacion -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+        
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -46,5 +47,7 @@
         @stack('modals')
 
         @livewireScripts
+        
+        @stack('js')
     </body>
 </html>

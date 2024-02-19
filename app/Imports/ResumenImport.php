@@ -8,7 +8,12 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use PhpParser\Node\Stmt\TryCatch;
 
 class ResumenImport implements ToCollection, WithStartRow
-    {
+    {   protected $temporada;
+
+        public function __construct($temporada)
+        {
+            $this->temporada = $temporada;
+        }
         /**
          * @return int
          */
@@ -21,6 +26,7 @@ class ResumenImport implements ToCollection, WithStartRow
     {  
         foreach($rows as $row){
                  Resumen::create([ 
+                    'temporada_id'=>$this->temporada,
                     'especie'=> $row[0],
                     'variedad'=> $row[1],
                     'serie'=> $row[2],
