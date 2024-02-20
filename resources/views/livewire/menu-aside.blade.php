@@ -16,7 +16,7 @@
           <p class="text-xs mt-1 text-center font-semibold">Resumen</p>
         </div>
       </a>
-      <a href="{{route('temporada.costos',$temporada)}}"
+      <a href="{{route('temporada.packing',$temporada)}}"
       wire:navigate>
         <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
           <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
@@ -27,36 +27,48 @@
       </a>
       <!-- End Navitem -->
       <!-- Start Navitem -->
+      <a href="{{route('temporada.materiales',$temporada)}}"
+      wire:navigate>
       <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
         <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
           <i class="fas fa-calculator fa-sm text-indigo-600"></i>
         </div>
         <p class="text-xs mt-1 text-center font-semibold">Materiales</p>
       </div>
+      </a>
       <!-- End Navitem -->
       <!-- Start Navitem -->
+      <a href="{{route('temporada.exportacion',$temporada)}}"
+      wire:navigate>
       <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
         <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
           <i class="fas fa-wallet fa-sm text-indigo-600"></i>
         </div>
         <p class="text-xs mt-1 text-center font-semibold">Gastos de exportación</p>
       </div>
+      </a>
       <!-- End Navitem -->
       <!-- Start Navitem -->
+      <a href="{{route('temporada.flete',$temporada)}}"
+      wire:navigate>
       <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
         <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
           <i class="fas fa-archive fa-sm text-indigo-600"></i>
         </div>
         <p class="text-xs mt-1 text-center font-semibold">Fletes</p>
       </div>
+      </a>
       <!-- End Navitem -->
       <!-- Start Navitem -->
+      <a href="{{route('temporada.comision',$temporada)}}"
+      wire:navigate>
       <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
         <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
           <i class="fas fa-money-bill-wave-alt fa-sm text-indigo-600"></i>
         </div>
         <p class="text-xs mt-1 text-center font-semibold">Comisión</p>
       </div>
+      </a>
       <!-- End Navitem -->
        <!-- Start Navitem -->
       <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">

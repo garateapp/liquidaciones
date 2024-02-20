@@ -53,9 +53,26 @@ class TemporadaController extends Controller
     {   return view('temporadas.resume',compact('temporada'));
     }
 
-    public function costos(Temporada $temporada)
-    {   return view('temporadas.costos',compact('temporada'));
+    public function comision(Temporada $temporada)
+    {   return view('temporadas.comision',compact('temporada'));
     }
+
+    public function materiales(Temporada $temporada)
+    {   return view('temporadas.materiales',compact('temporada'));
+    }
+
+    public function packing(Temporada $temporada)
+    {   return view('temporadas.packing',compact('temporada'));
+    }
+
+    public function exportacion(Temporada $temporada)
+    {   return view('temporadas.exportacion',compact('temporada'));
+    }
+    public function flete(Temporada $temporada)
+    {   return view('temporadas.flete',compact('temporada'));
+    }
+
+  
 
     /**
      * Show the form for editing the specified resource.
