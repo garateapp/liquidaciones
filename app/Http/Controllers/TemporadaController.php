@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PackingImport;
 use App\Imports\ResumenImport;
+use App\Models\CostoPacking;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use Illuminate\Http\Request;
@@ -46,7 +48,8 @@ class TemporadaController extends Controller
      */
     public function show(Temporada $temporada)
     {    $resumes=Resumen::where('temporada_id',$temporada->id)->get();
-        return view('temporadas.show',compact('temporada','resumes'));
+        $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
+        return view('temporadas.show',compact('temporada','resumes','CostosPackings'));
     }
 
     public function resume(Temporada $temporada)
@@ -62,7 +65,9 @@ class TemporadaController extends Controller
     }
 
     public function packing(Temporada $temporada)
-    {   return view('temporadas.packing',compact('temporada'));
+    {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
+        $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
+        return view('temporadas.packing',compact('temporada','CostosPackings','resumes'));
     }
 
     public function exportacion(Temporada $temporada)
@@ -111,6 +116,20 @@ class TemporadaController extends Controller
 
         $temporada=Temporada::find($request->temporada);
         return redirect()->route('temporada.resume',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importCostosPacking(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new PackingImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.packing',$temporada)->with('info','Importación realizada con exito');
     }
 
 }

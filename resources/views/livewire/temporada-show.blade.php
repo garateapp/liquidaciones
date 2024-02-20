@@ -1,5 +1,5 @@
 <div class="card-body">
-    <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
+    <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1> {{$vista}}
     <hr class="mt-2 mb-6">
     <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
         
@@ -177,120 +177,214 @@
 
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-            <table class="min-w-full leading-normal">
-              <thead>
-                <tr>
-                  <th
+
+            @if ($vista=='resumes')
+              <table class="min-w-full leading-normal">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Especie
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Variedad
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Serie
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Color
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Categoría
+                    </th>
+                    <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Especie
-                  </th>
-                  <th
-                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Variedad
-                  </th>
-                  <th
-                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Serie
-                  </th>
-                  <th
-                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Color
-                  </th>
-                  <th
-                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Categoría
+                    Cajas
                   </th>
                   <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Cajas
-                </th>
-                <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Cajas Procesos
-              </th>
-              <th
-              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Kg Salida
-            </th>
-            <th
-            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Total Kg
-          </th>
+                  Cajas Procesos
+                  </th>
                   <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Estado
-                </th>
-                </tr>
-              </thead>
-              <tbody>
-                
-                  @foreach ($resumes as $resume)
-                    <tr>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10 hidden">
-                            <img class="w-full h-full rounded-full"
-                                                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                      alt="" />
-                                              </div>
-                            <div class="ml-3">
-                              <p class="text-gray-900 whitespace-no-wrap">
-                                {{$resume->especie}}
-                              </p>
+                  Kg Salida
+                  </th>
+                      <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Total Kg
+                    </th>
+                            <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Estado
+                          </th>
+                          </tr>
+                </thead>
+                <tbody>
+                  
+                    @foreach ($resumes as $resume)
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 w-10 h-10 hidden">
+                              <img class="w-full h-full rounded-full"
+                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                        alt="" />
+                                                </div>
+                              <div class="ml-3">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                  {{$resume->especie}}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap"> {{$resume->variedad}}</p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->serie}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->color}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->cat}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->cajas}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->cajas_proceso}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->kg_salida}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          {{$resume->total_kg}}
-                        </p>
-                      </td>
-                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        <span
-                                              class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                              <span aria-hidden
-                                                  class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                        <span class="relative">Activo</span>
-                        </span>
-                      </td>
-                    </tr>
-                  @endforeach
-              
-              </tbody>
-            </table>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap"> {{$resume->variedad}}</p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->serie}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->color}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->cat}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->cajas}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->cajas_proceso}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->kg_salida}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$resume->total_kg}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <span
+                                                class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                <span aria-hidden
+                                                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                          <span class="relative">Activo</span>
+                          </span>
+                        </td>
+                      </tr>
+                    @endforeach
+                
+                </tbody>
+              </table>
+            @endif
+            @if ($vista=='PACKING')
+              <table class="min-w-full leading-normal">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Nombre Productor
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Valores Máx. de tarifa
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Volumen
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      KG
+                    </th>
+                    <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      TotalUSD
+                    </th>
+                    <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    NETO
+                  </th>
+                
+                </tr>
+                </thead>
+                <tbody>
+                  
+                    @foreach ($CostosPackings as $packing)
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 w-10 h-10 hidden">
+                              <img class="w-full h-full rounded-full"
+                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                        alt="" />
+                                                </div>
+                              <div class="ml-3">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                  {{$packing->n_productor}}
+                                </p>
+                              </div>
+                            </div>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap"> {{$packing->val_max_tarifa}}</p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$packing->volumen}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            {{$packing->kg}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                          
+                            {{number_format($packing->total_usd,2)}}
+                          </p>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                            ${{number_format($packing->neto)}}
+                          </p>
+                        </td>
+                    
+
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          <span
+                                                class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                <span aria-hidden
+                                                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                          <span class="relative">Activo</span>
+                          </span>
+                        </td>
+                      </tr>
+                    @endforeach
+                
+                </tbody>
+              </table>
+            @endif
+
+
             <div
               class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
               <span class="text-xs xs:text-sm text-gray-900">
@@ -317,7 +411,7 @@
     </div>
     <div class="flex justify-center">
         <div class="inline-flex items-center rounded-md shadow-sm gap-x-2">
-            <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border-y border-slate-200 font-medium px-4 py-2 inline-flex space-x-1 items-center">
+            <button wire:click="set_view('resumes')" class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border-y border-slate-200 font-medium px-4 py-2 inline-flex space-x-1 items-center">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -326,15 +420,15 @@
                 </span>
                 <span>RESUMEN</span>
             </button>
-            <a href="{{route('temporadas.show',$temporada)}}" wire:navigate>
-              <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+
+              <button wire:click="set_view('PACKING')" class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
                   <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
                   </span>
-                  <span>DETALLE</span>
+                  <span>COSTOS <br>PACKING</span>
               </button>
-            </a>
+          
               <a href="{{route('temporadas.show',$temporada)}}" wire:navigate>
               <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
                   <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -350,7 +444,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
                   </span>
-                  <span>COSTOS</span>
+                  <span>DETALLE</span>
               </button>
               </a>
               <a href="{{route('temporadas.show',$temporada)}}" wire:navigate>

@@ -170,8 +170,8 @@
                                        
                                       <div class="p-4 hover:bg-gray-100 hover:rounded-2xl">
                                         
-                                            @if ($resumes->count()>0)
-                                            <p class="text-xl font-bold"> {{$resumes->count()}} </p>
+                                            @if ($CostosPackings->count()>0)
+                                            <p class="text-xl font-bold"> {{$CostosPackings->count()}} </p>
                                             @else 
                                             <p class="text-lg font-bold">  PENDIENTE  </p>
                                             @endif
