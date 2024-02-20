@@ -33,4 +33,6 @@ Route::resource('temporada', TemporadaController::class)->names('temporadas');
 
 Route::get('temporada/{temporada}/resumen',[TemporadaController::class,'resume'])->name('temporada.resume');
 
+Route::get('temporada/{temporada}/costos',[TemporadaController::class,'costos'])->name('temporada.costos');
+
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');

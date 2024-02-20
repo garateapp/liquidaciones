@@ -53,6 +53,10 @@ class TemporadaController extends Controller
     {   return view('temporadas.resume',compact('temporada'));
     }
 
+    public function costos(Temporada $temporada)
+    {   return view('temporadas.costos',compact('temporada'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

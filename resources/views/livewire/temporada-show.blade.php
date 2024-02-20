@@ -1,8 +1,9 @@
 <div class="card-body">
     <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
     <hr class="mt-2 mb-6">
-    <div class="flex w-full bg-gray-800" x-data="{openMenu:1}">
+    <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
         
+        @livewire('menu-aside',['temporada'=>$temporada->id])
         <!-- End Sidebar -->
         <div class="flex flex-col flex-1 w-full overflow-y-auto">
             <!--Start Topbar -->
