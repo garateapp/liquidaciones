@@ -22,9 +22,9 @@ class ResumenImport implements ToCollection, WithStartRow
             return 2;
         }
 
-    public function collection($rows)
-    {  
-        foreach($rows as $row){
+        public function collection($rows)
+        {  
+            foreach($rows as $row){
                  Resumen::create([ 
                     'temporada_id'=>$this->temporada,
                     'especie'=> $row[0],
@@ -51,6 +51,6 @@ class ResumenImport implements ToCollection, WithStartRow
                     'suma_rpn4'=> $row[20]
                 ]);
           
+            }
         }
-    }
 }

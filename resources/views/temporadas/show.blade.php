@@ -167,18 +167,28 @@
                                 <div class="grid grid-cols-12 gap-6 border-b-2 pb-2 mb-3">
                                   <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
                                     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3 gap-x-2">
-                                       <div class="p-4 hover:bg-gray-100 hover:rounded-2xl">
-                                          <p class="text-xl font-bold">{{$resumes->count()}}</p>
+                                       
+                                      <div class="p-4 hover:bg-gray-100 hover:rounded-2xl">
+                                        
+                                            @if ($resumes->count()>0)
+                                            <p class="text-xl font-bold"> {{$resumes->count()}} </p>
+                                            @else 
+                                            <p class="text-lg font-bold">  PENDIENTE  </p>
+                                            @endif
+                                            
+                                         
                                           <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
                                        </div>
-                                       <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl">
-                                          <p class="text-xl font-bold">5,700</p>
-                                          <p class="text-xs font-semibold text-gray-400">Comisión</p>
-                                      </div>
+                                       
                                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl">
                                           <p class="text-xl font-bold">37,500</p>
                                           <p class="text-xs font-semibold text-gray-400">Materiales</p>
-                                       </div>
+                                        </div>
+                                       <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl">
+                                          <p class="text-xl font-bold">5,700</p>
+                                          <p class="text-xs font-semibold text-gray-400">Comisión</p>
+                                        </div>
+                                    
                                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl">
                                           <p class="text-xl font-bold">9,200</p>
                                           <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
