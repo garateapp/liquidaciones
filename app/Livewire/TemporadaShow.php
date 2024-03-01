@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\CostoPacking;
+use App\Models\Exportacion;
+use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use Livewire\Attributes\Url;
@@ -35,7 +37,10 @@ class TemporadaShow extends Component
     public function render()
     {   $resumes=Resumen::where('temporada_id',$this->temporada->id)->paginate(5);
         $CostosPackings=CostoPacking::where('temporada_id',$this->temporada->id)->paginate(5);
-        return view('livewire.temporada-show',compact('resumes','CostosPackings'));
+        $materiales=Material::where('temporada_id',$this->temporada->id)->paginate(5);
+        $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate(5);
+
+        return view('livewire.temporada-show',compact('resumes','CostosPackings','materiales','exportacions'));
     }
 
     public function set_view($vista){

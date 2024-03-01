@@ -15,4 +15,25 @@ class Temporada extends Model
     public function user(){
         return $this->BelongsTo('App\Models\User');
     }
+
+    // relacion uno a muchos inversa
+    public function packings(){
+        return $this->hasmany('App\Models\CostoPacking');
+    }
+
+    public function materials(){
+        return $this->hasmany('App\Models\Material');
+    }
+
+    public function flets(){
+        return $this->hasmany('App\Models\Flete');
+    }
+
+    public function exportacions(){
+        return $this->hasmany('App\Models\Exportacion');
+    }
+
+    public function comisions(){
+        return $this->hasmany('App\Models\Comision');
+    }
 }

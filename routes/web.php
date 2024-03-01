@@ -46,3 +46,9 @@ Route::get('temporada/{temporada}/flete',[TemporadaController::class,'flete'])->
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
 
 Route::post('costos/packing/import',[TemporadaController::class,'importCostosPacking'])->name('temporada.importCostosPacking');
+
+Route::post('costos/materiales/import',[TemporadaController::class,'importMateriales'])->name('temporada.importMateriales');
+
+Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
+
+Route::post('costos/comision/import',[TemporadaController::class,'importComision'])->name('temporada.importComision');
