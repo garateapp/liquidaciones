@@ -12,12 +12,25 @@
             @dump($filters)
             <div class="bg-gray-100 rounded p-8 shadow mb-6">
               <h2 class="text-2xl font-semibold mb-4">Filtros</h2>
-              <div class="mb-4">
-                Exportadora:
-                <select wire:model.live="filters.exportadora" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
-                  <option value="">Todos</option>
-                  <option value="greenex">Greenex</option>
-                </select>
+              <div class="mb-4 flex">
+                <div>
+                  Exportadora:
+                  <select wire:model.live="filters.exportadora" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
+                    <option value="">Todos</option>
+                    <option value="greenex">Greenex</option>
+                  </select>
+                </div>
+                <div class="ml-4">
+                  Productor:
+                  <select wire:model.live="filters.razonsocial" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
+                    <option value="">Todos</option>
+                    @foreach ($razons as $razon)
+                      <option value="{{$razon->name}}" >{{$razon->name}}</option>
+                    @endforeach
+                    
+
+                  </select>
+                </div>
               </div>
               <div class="flex mb-4">
                 <div class="mr-4">
@@ -40,10 +53,15 @@
                 </div>
               </div>
 
-              <x-button>
-                Generar
-              </x-button>
+             
+
               
+              <a href="{{route('exportpdff')}}">
+                <x-button>
+                  Generar
+                </x-button>
+            </a>
+      
             </div>
 
           <div class="hidden">

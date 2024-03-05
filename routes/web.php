@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\RazonController;
 use App\Http\Controllers\TemporadaController;
+use App\Http\Controllers\UserController;
+use App\Livewire\TemporadaShow;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +31,14 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
+Route::get('lista/filtros',[RazonController::class,'index'])->name('razonsocial.index');
+
+Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync');
+
+Route::get('pdf/export',[RazonController::class,'exportpdf'])->name('exportpdf');
+
+Route::get('pdf/export',[TemporadaShow::class,'exportpdf'])->name('exportpdff');
 
 Route::resource('temporada', TemporadaController::class)->names('temporadas');
 
