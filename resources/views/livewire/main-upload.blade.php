@@ -1,10 +1,4 @@
 <div>
-    <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
-    <hr class="mt-2 mb-6">
-    <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
-        
-        @livewire('menu-aside',['temporada'=>$temporada->id])
-
         <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
             <div class="grid pb-10  mt-4 " x-data="{packing: true, materiales:false, comision:false, exportacion:false, fletes:false , masas:false}">
                 <!-- Start Content-->
@@ -63,7 +57,7 @@
                             @else 
                                 <p class="text-lg font-bold">  PENDIENTE  </p>
                             @endif
-                            <p class="text-xs font-semibold text-gray-400">Fletes</p>
+                            <p class="text-xs font-semibold text-gray-400">Flete a Huerto</p>
                         </div>
 
                         <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false">
@@ -238,109 +232,118 @@
                 </div>
 
                 <div class="flex justify-center" x-show="fletes">
-                    <div>
-                        <h1 class="text-xl font-semibold mb-4">
-                            Por favor selecione el archivo de "Fletes" que desea importar
-                        </h1>
-                        <div class="flex">
+
+
+                    <div class="grid grid-cols-4 gap-x-4 items-center mb-6">
+
+                        <select wire:model="etiqueta" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="" class="text-center">Selecciona una etiqueta</option>
+                            <option value="Agrofruta" class="text-center">Agrofruta</option>
+                            <option value="Diamond Cherries" class="text-center">Diamond Cherries</option>
+                            <option value="Golden Koi" class="text-center">Golden Koi</option>
+                            <option value="Loica" class="text-center">Loica</option>
+                            <option value="Weber" class="text-center">Weber</option>
+    
                             
-                            <form action="{{route('temporada.importData')}}"
-                                method="POST"
-                                class="bg-white rounded p-8 shadow"
-                                enctype="multipart/form-data">
+    
+                        </select>
+                        <select wire:model="empresa" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="" class="text-center">Selecciona una empresa</option>
+                            <option value="GARATE" class="text-center">GARATE</option>
+                            <option value="AGROVIC" class="text-center">AGROVIC</option>
+                            <option value="AGROFRUTA" class="text-center">AGROFRUTA</option>
+    
+                            
+    
+                        </select>
+    
+                        <input wire:model="valor" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
+                        
+                        <button wire:click="flete_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+    
+                            <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                            Agregar
                                 
-                                @csrf
-
-                                <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                                <x-validation-errors class="errors">
-
-                                </x-validation-errors>
-
-                                <input type="file" name="file" accept=".csv,.xlsx">
-
-                                <x-button class="ml-4">
-                                    Importar
-                                </x-button>
-                            </form>
-                        </div>
+                            </h1>
+                        </button>
                     </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-3 hidden">
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-pink-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                        <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center justify-center">
-                            <div>
-                            <h3 class="text-center text-white text-lg">
-                                Total Balance
-                            </h3>
-                            <h3 class="text-center text-white text-3xl mt-2 font-bold">
-                                RM 27,580
-                            </h3>
-                            <div class="flex space-x-4 mt-4">
-                                <button class="block uppercase mx-auto shadow bg-white text-indigo-600 focus:shadow-outline 
-                                focus:outline-none text-xs py-3 px-4 rounded font-bold">
-                                Transfer
-                                </button>
-                                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline 
-                                focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
-                                Request
-                                </button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-yellow-600 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                            <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                            <div>
-                            <div class="text-white text-lg flex space-x-2 items-center">
-                                <div class="bg-white rounded-md p-2 flex items-center">
-                                <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
-                                </div>
-                                <p>Finished Appt</p>
-                            </div>
-                            <h3 class="text-white text-3xl mt-2 font-bold">
-                                120
-                            </h3>
-                            <h3 class="text-white text-lg mt-2 text-yellow-100 ">
-                                4 not confirmed
-                            </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-blue-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                        <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                            <div>
-                            <div class="text-white text-lg flex space-x-2 items-center">
-                                <div class="bg-white rounded-md p-2 flex items-center">
-                                <i class="fas fa-clipboard-check fa-sm text-blue-800"></i>
-                                </div>
-                                <p>Finished Appt</p>
-                            </div>
-                            <h3 class="text-white text-3xl mt-2 font-bold">
-                                72
-                            </h3>
-                            <h3 class="text-white text-lg mt-2 ">
-                                3.4% <span class='font-semibold text-blue-200'>vs last month</span>
-                            </h3>
-                            </div>
-                        </div>
-                    </div>        
+                    
                 </div>
+                
+                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-3 hidden">
+                        <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+                            style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
+                            <div class="absolute inset-0 bg-pink-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
+                            <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center justify-center">
+                                <div>
+                                <h3 class="text-center text-white text-lg">
+                                    Total Balance
+                                </h3>
+                                <h3 class="text-center text-white text-3xl mt-2 font-bold">
+                                    RM 27,580
+                                </h3>
+                                <div class="flex space-x-4 mt-4">
+                                    <button class="block uppercase mx-auto shadow bg-white text-indigo-600 focus:shadow-outline 
+                                    focus:outline-none text-xs py-3 px-4 rounded font-bold">
+                                    Transfer
+                                    </button>
+                                    <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline 
+                                    focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
+                                    Request
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+                            style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
+                            <div class="absolute inset-0 bg-yellow-600 bg-opacity-75 transition duration-300 ease-in-out"></div>
+                                <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
+                                <div>
+                                <div class="text-white text-lg flex space-x-2 items-center">
+                                    <div class="bg-white rounded-md p-2 flex items-center">
+                                    <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
+                                    </div>
+                                    <p>Finished Appt</p>
+                                </div>
+                                <h3 class="text-white text-3xl mt-2 font-bold">
+                                    120
+                                </h3>
+                                <h3 class="text-white text-lg mt-2 text-yellow-100 ">
+                                    4 not confirmed
+                                </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+                            style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
+                            <div class="absolute inset-0 bg-blue-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
+                            <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
+                                <div>
+                                <div class="text-white text-lg flex space-x-2 items-center">
+                                    <div class="bg-white rounded-md p-2 flex items-center">
+                                    <i class="fas fa-clipboard-check fa-sm text-blue-800"></i>
+                                    </div>
+                                    <p>Finished Appt</p>
+                                </div>
+                                <h3 class="text-white text-3xl mt-2 font-bold">
+                                    72
+                                </h3>
+                                <h3 class="text-white text-lg mt-2 ">
+                                    3.4% <span class='font-semibold text-blue-200'>vs last month</span>
+                                </h3>
+                                </div>
+                            </div>
+                        </div>        
+                    </div>
 
                 <div class="flex justify-center" x-show="masas">
                     <div>
                         <h1 class="text-xl font-semibold mb-4">
                             Por favor selecione el archivo de "Balance de masas" que desea importar
                         </h1>
-                        <div class="flex">
-                            
-                            <form action="{{route('temporada.importData')}}"
+                        <div class="">
+                            <form action="{{route('temporada.importBalance')}}"
                                 method="POST"
                                 class="bg-white rounded p-8 shadow"
                                 enctype="multipart/form-data">
@@ -359,79 +362,13 @@
                                     Importar
                                 </x-button>
                             </form>
+
                         </div>
                     </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-3 hidden">
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-pink-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                        <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center justify-center">
-                            <div>
-                            <h3 class="text-center text-white text-lg">
-                                Total Balance
-                            </h3>
-                            <h3 class="text-center text-white text-3xl mt-2 font-bold">
-                                RM 27,580
-                            </h3>
-                            <div class="flex space-x-4 mt-4">
-                                <button class="block uppercase mx-auto shadow bg-white text-indigo-600 focus:shadow-outline 
-                                focus:outline-none text-xs py-3 px-4 rounded font-bold">
-                                Transfer
-                                </button>
-                                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline 
-                                focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
-                                Request
-                                </button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-yellow-600 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                            <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                            <div>
-                            <div class="text-white text-lg flex space-x-2 items-center">
-                                <div class="bg-white rounded-md p-2 flex items-center">
-                                <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
-                                </div>
-                                <p>Finished Appt</p>
-                            </div>
-                            <h3 class="text-white text-3xl mt-2 font-bold">
-                                120
-                            </h3>
-                            <h3 class="text-white text-lg mt-2 text-yellow-100 ">
-                                4 not confirmed
-                            </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
-                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
-                        <div class="absolute inset-0 bg-blue-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
-                        <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
-                            <div>
-                            <div class="text-white text-lg flex space-x-2 items-center">
-                                <div class="bg-white rounded-md p-2 flex items-center">
-                                <i class="fas fa-clipboard-check fa-sm text-blue-800"></i>
-                                </div>
-                                <p>Finished Appt</p>
-                            </div>
-                            <h3 class="text-white text-3xl mt-2 font-bold">
-                                72
-                            </h3>
-                            <h3 class="text-white text-lg mt-2 ">
-                                3.4% <span class='font-semibold text-blue-200'>vs last month</span>
-                            </h3>
-                            </div>
-                        </div>
-                    </div>        
                 </div>
+                
                 
                 <!-- End Content-->
             </div>
         </main>
-
-    </div>
 </div>

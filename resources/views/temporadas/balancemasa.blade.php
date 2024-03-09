@@ -14,19 +14,23 @@
         </div>
     @endif
 
-    <div class=" pb-8 pt-2">
+    <div class="pb-8 pt-2">
         
         <div class="card">
-            @if ($materiales->count()==0)
+            @if ($masitas->count()==0)
                 
                 <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
                 <hr class="mt-2 mb-6">
                 <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
+
                     @livewire('menu-aside',['temporada'=>$temporada->id])
+
                     @livewire('main-upload', ['temporada' => $temporada], key($temporada->id))
-                </div>    
+                        
+                </div>
+                    
             @else
-                @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'MATERIALES'], key($temporada->id))
+                @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'MASAS'], key($temporada->id))
             @endif
         </div>
 

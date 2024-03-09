@@ -34,11 +34,13 @@ Route::middleware([
 
 Route::get('lista/filtros',[RazonController::class,'index'])->name('razonsocial.index');
 
+Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show'])->name('razonsocial.show');
+
 Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync');
 
-Route::get('pdf/export',[RazonController::class,'exportpdf'])->name('exportpdf');
+Route::get('pdf/exporting',[RazonController::class,'exportpdf'])->name('exportpdf');
 
-Route::get('pdf/export',[TemporadaShow::class,'exportpdf'])->name('exportpdff');
+Route::get('pdf/export/{razonsocial}/{temporada}',[TemporadaShow::class,'exportpdf'])->name('exportpdff');
 
 Route::resource('temporada', TemporadaController::class)->names('temporadas');
 
@@ -54,6 +56,8 @@ Route::get('temporada/{temporada}/exportacion',[TemporadaController::class,'expo
 
 Route::get('temporada/{temporada}/flete',[TemporadaController::class,'flete'])->name('temporada.flete');
 
+Route::get('balance/{temporada}/masa',[TemporadaController::class,'balancemasa'])->name('temporada.balancemasa');
+
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
 
 Route::post('costos/packing/import',[TemporadaController::class,'importCostosPacking'])->name('temporada.importCostosPacking');
@@ -63,3 +67,11 @@ Route::post('costos/materiales/import',[TemporadaController::class,'importMateri
 Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
 
 Route::post('costos/comision/import',[TemporadaController::class,'importComision'])->name('temporada.importComision');
+
+Route::post('costos/balance/import',[TemporadaController::class,'importBalance'])->name('temporada.importBalance');
+
+Route::post('costos/balancedos/import',[TemporadaController::class,'importBalance2'])->name('temporada.importBalance2');
+
+Route::post('costos/balancetres/import',[TemporadaController::class,'importBalance3'])->name('temporada.importBalance3');
+
+Route::post('costos/balancecuatro/import',[TemporadaController::class,'importBalance4'])->name('temporada.importBalance4');

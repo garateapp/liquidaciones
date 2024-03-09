@@ -1,10 +1,10 @@
 <x-app-layout>
   
 
-    <div class="container pb-8 pt-2">
+    <div class=" pb-8 pt-2">
         
         <div class="card">
-            <div class="card-body">
+            <div class="px-0 md:px-6 py-4">
                    
                     
                     <!-- End Sidebar -->
@@ -16,7 +16,7 @@
 
                     </div>
                
-                <div class="flex justify-center">
+                <div class="flex justify-center hidden">
                     <div class="inline-flex items-center rounded-md shadow-sm gap-x-2">
                       <a href="{{route('temporada.resume',$temporada)}}"
                       wire:navigate >

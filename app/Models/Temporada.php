@@ -10,6 +10,7 @@ class Temporada extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    
 
     // relacion uno a muchos inversa
     public function user(){
@@ -24,9 +25,28 @@ class Temporada extends Model
     public function materials(){
         return $this->hasmany('App\Models\Material');
     }
+    
+   
 
     public function flets(){
         return $this->hasmany('App\Models\Flete');
+    }
+
+    public function masas(){
+        return $this->hasmany('App\Models\Balancemasa');
+    }
+
+    public function masasdos(){
+        return $this->hasmany('App\Models\Balancemasados');
+    }
+
+    public function masatres(){
+        return $this->hasmany('App\Models\Balancemasatres');
+    }
+   
+
+    public function masascuatros(){
+        return $this->hasmany('App\Models\Balancemasacuatro');
     }
 
     public function exportacions(){

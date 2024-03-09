@@ -29,14 +29,15 @@ class ComisionImport implements ToCollection, WithStartRow
                     'temporada_id'=>$this->temporada,
 
                     'productor'=> $row[1],
-                    'comision'=> $row[2],
-                    'flete_huerto'=> $row[3],
+                    'comision'=> $row[2]
+                    
+                    /*'flete_huerto'=> $row[3],
                     'minimo_garantizado'=> $row[4],
                     'rebate'=> $row[5],
                     'tarifa_premium'=> $row[6],
                     'comparativa'=> $row[7],
                     'descuento_fruta_comercial'=> $row[8],
-                    'cumplimiento'=> $row[9]
+                    'cumplimiento'=> $row[9]*/
                 ]);
             }
         }

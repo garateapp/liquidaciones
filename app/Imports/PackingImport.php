@@ -19,7 +19,7 @@ class PackingImport implements ToCollection, WithStartRow
          */
         public function startRow(): int
         {
-            return 12;
+            return 2;
         }
 
         public function collection($rows)
@@ -27,12 +27,12 @@ class PackingImport implements ToCollection, WithStartRow
             foreach($rows as $row){
                  CostoPacking::create([ 
                     'temporada_id'=>$this->temporada,
-                    'n_productor'=> $row[1],
-                    'val_max_tarifa'=> $row[2],
-                    'volumen'=> $row[3],
+                    'especie'=> $row[1],
+                    'n_productor'=> $row[2],
+                    'csg'=> $row[3],
                     'kg'=> $row[4],
                     'total_usd'=> $row[5],
-                    'neto'=> $row[6]
+                    
                 ]);
           
             }

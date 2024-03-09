@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\Balance2Import;
+use App\Imports\Balance3Import;
+use App\Imports\Balance4Import;
+use App\Imports\BalanceImport;
 use App\Imports\ComisionImport;
 use App\Imports\ExportacionImport;
 use App\Imports\MaterialImport;
 use App\Imports\PackingImport;
 use App\Imports\ResumenImport;
+use App\Models\Balancemasa;
 use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Exportacion;
@@ -15,6 +20,7 @@ use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
@@ -87,6 +93,16 @@ class TemporadaController extends Controller
     public function flete(Temporada $temporada)
     {   $fletes=Flete::where('temporada_id',$temporada->id)->get();
         return view('temporadas.flete',compact('temporada','fletes'));
+    }
+
+    public function balancemasa(Temporada $temporada)
+    {   if (Cache::has('masitas')){
+            $masitas= Cache::get('masitas');
+        }else{
+            $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(5);
+            Cache::put('masitas',$masitas);
+        }
+        return view('temporadas.balancemasa',compact('temporada','masitas'));
     }
 
   
@@ -184,6 +200,62 @@ class TemporadaController extends Controller
         $temporada=Temporada::find($request->temporada);
 
         return redirect()->route('temporada.comision',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importBalance(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new BalanceImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importBalance2(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new Balance2Import($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importBalance3(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new Balance3Import($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importBalance4(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new Balance4Import($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
     }
 
 }

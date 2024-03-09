@@ -14,12 +14,19 @@
         </div>
     @endif
 
-    <div class="container pb-8 pt-2">
+    <div class="pb-8 pt-2">
         
         <div class="card">
             @if ($comisions->count()==0)
-                
-                @livewire('main-upload', ['temporada' => $temporada], key($temporada->id))
+                <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
+                <hr class="mt-2 mb-6">
+                <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
+                    
+                    @livewire('menu-aside',['temporada'=>$temporada->id])
+
+                    @livewire('main-upload', ['temporada' => $temporada], key($temporada->id))
+                        
+                </div>
                     
             @else
                 @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'COMISION'], key($temporada->id))

@@ -12,7 +12,7 @@ use App\Models\Temporada;
 use Livewire\Component;
 
 class MainUpload extends Component
-{   public $temporada,$type,$precio_usd;
+{   public $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor;
 
     public function mount(Temporada $temporada){
         $this->temporada=$temporada;
@@ -44,6 +44,27 @@ class MainUpload extends Component
         ]);
         
         $this->reset(['type','precio_usd']);
+        $this->temporada = Temporada::find($this->temporada->id);
+    }
+
+    public function flete_store(){
+        $rules = [
+            'etiqueta'=>'required',
+            'empresa'=>'required',
+            'valor'=>'required'
+            
+            ];
+      
+        $this->validate ($rules);
+
+        Flete::create([
+            'temporada_id'=>$this->temporada->id,
+            'etiqueta'=>$this->etiqueta,
+            'empresa'=>$this->empresa,
+            'valor'=>$this->valor
+        ]);
+        
+        $this->reset(['etiqueta','empresa','valor']);
         $this->temporada = Temporada::find($this->temporada->id);
     }
 }

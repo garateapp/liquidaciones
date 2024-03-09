@@ -19,13 +19,12 @@ return new class extends Migration
             ->constrained()
             ->onDelete('cascade');
 
+            $table->string('especie')->nullable();
             $table->string('n_productor')->nullable();
-            $table->string('val_max_tarifa')->nullable();
-            $table->string('volumen')->nullable();
+            $table->string('csg')->nullable();
             $table->string('kg')->nullable();
             $table->string('total_usd')->nullable();
-            $table->string('neto')->nullable();
-
+           
             $table->timestamps();
         });
     }

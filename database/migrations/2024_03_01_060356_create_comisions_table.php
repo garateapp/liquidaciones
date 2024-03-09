@@ -21,14 +21,7 @@ return new class extends Migration
 
             $table->string('productor')->nullable();
             $table->string('comision')->nullable();
-            $table->string('flete_huerto')->nullable();
-            $table->string('minimo_garantizado')->nullable();
-            $table->string('rebate')->nullable();
-            $table->string('tarifa_premium')->nullable();
-            $table->string('comparativa')->nullable();
-            $table->string('descuento_fruta_comercial')->nullable();
-            $table->string('cumplimiento')->nullable();
-
+            
             $table->timestamps();
         });
     }

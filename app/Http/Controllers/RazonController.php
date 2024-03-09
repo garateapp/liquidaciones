@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balancemasa;
+use App\Models\Balancemasados;
+use App\Models\Comision;
+use App\Models\CostoPacking;
+use App\Models\Flete;
 use App\Models\Razonsocial;
+use App\Models\Temporada;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -128,9 +134,16 @@ class RazonController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(Razonsocial $razonsocial,Temporada $temporada)
+    {       
+        $temporada=Temporada::find($temporada->id);
+        $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
+        $masas2=Balancemasados::where('temporada_id',$temporada->id)->get();
+        $fletes=Flete::where('temporada_id',$temporada->id)->get();
+        $packings=CostoPacking::where('temporada_id',$temporada->id)->where('csg',$razonsocial->csg)->get();
+        $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
+
+        return view('razonsocial.show',compact('razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**
