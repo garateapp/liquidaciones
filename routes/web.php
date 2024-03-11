@@ -58,6 +58,12 @@ Route::get('temporada/{temporada}/flete',[TemporadaController::class,'flete'])->
 
 Route::get('balance/{temporada}/masa',[TemporadaController::class,'balancemasa'])->name('temporada.balancemasa');
 
+Route::get('temporada/{temporada}/otrosgastos',[TemporadaController::class,'otrosgastos'])->name('temporada.otrosgastos');
+
+Route::get('temporada/{temporada}/finanzas',[TemporadaController::class,'finanzas'])->name('temporada.finanzas');
+
+Route::get('temporada/{temporada}/anticipos',[TemporadaController::class,'anticipos'])->name('temporada.anticipos');
+
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
 
 Route::post('costos/packing/import',[TemporadaController::class,'importCostosPacking'])->name('temporada.importCostosPacking');
@@ -84,3 +90,5 @@ Route::post('costos/balancedos/import',[TemporadaController::class,'importBalanc
 Route::post('costos/balancetres/import',[TemporadaController::class,'importBalance3'])->name('temporada.importBalance3');
 
 Route::post('costos/balancecuatro/import',[TemporadaController::class,'importBalance4'])->name('temporada.importBalance4');
+
+Route::post('costos/anticipo/import',[TemporadaController::class,'importAnticipo'])->name('temporada.importAnticipo');

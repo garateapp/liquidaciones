@@ -81,20 +81,36 @@
                 <p class="text-xs mt-1 text-center font-semibold">Balance de masa</p>
               </div>
             </a>
-            <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-              
-              <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
-                <i class="fas fa-shopping-basket fa-sm text-indigo-600"></i>
-            </div>
+            <a href="{{route('temporada.otrosgastos',$temporada)}}"
+            wire:navigate>
+              <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+                
+                <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
+                  <i class="fas fa-shopping-basket fa-sm text-indigo-600"></i>
+                </div>
                 <p class="text-xs mt-1 text-center font-semibold">Otros Costos</p>
               </div>
+            </a>
+            <a href="{{route('temporada.finanzas',$temporada)}}"
+            wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
               
                 <div class="rounded-full p-2 bg-indigo-200 flex flex-col items-center">
                   <i class="fas fa-shopping-basket fa-sm text-indigo-600"></i>
-              </div>
-                  <p class="text-xs mt-1 text-center font-semibold">Finanzas</p>
                 </div>
+                  <p class="text-xs mt-1 text-center font-semibold">Finanzas</p>
+              </div>
+            </a>
+            <a href="{{route('temporada.anticipos',$temporada)}}"
+            wire:navigate>
+              <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+              
+                <div class="rounded-full p-2 @if($$temporada->anticipos->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
+                  <i class="fas fa-shopping-basket fa-sm  @if($$temporada->anticipos->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+                </div>
+                  <p class="text-xs mt-1 text-center font-semibold">Anticipos</p>
+              </div>
+            </a>
             <!-- End Navitem -->
           </div>
           <!--End Sidebar for open menu -->

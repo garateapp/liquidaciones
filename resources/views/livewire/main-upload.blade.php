@@ -1,6 +1,6 @@
 <div>
         <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
-            <div class="grid pb-10  mt-4 " x-data="{packing: true, materiales:false, comision:false, exportacion:false, fletes:false , masas:false}">
+            <div class="grid pb-10  mt-4 " x-data="{packing: true, materiales:false, comision:false, exportacion:false, fletes:false , masas:false, anticipos:false}">
                 <!-- Start Content-->
                 <div class="mb-2 grid grid-cols-12 items-center">
                     <div class="col-span-12 sm:col-span-5 md:col-span-5 lg:col-span-5 xxl:col-span-5">
@@ -23,7 +23,7 @@
                     <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
                     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3 gap-x-2">
                         
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false">
                             
                                 @if ($CostosPackings->count()>0)
                                 <p class="text-xl font-bold"> {{$CostosPackings->count()}} </p>
@@ -34,7 +34,7 @@
                             
                             <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
                         </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false">
                                 @if ($materiales->count()>0)
                                 <p class="text-xl font-bold"> {{$materiales->count()}} </p>
                                 @else 
@@ -42,7 +42,7 @@
                                 @endif
                             <p class="text-xs font-semibold text-gray-400">Materiales</p>
                         </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false; anticipos = false">
                                 @if ($exportacions->count()>0)
                                     <p class="text-xl font-bold"> {{$exportacions->count()}} </p>
                                 @else 
@@ -51,7 +51,7 @@
                             <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false; anticipos = false">
                             @if ($fletes->count()>0)
                                 <p class="text-xl font-bold"> {{$fletes->count()}} </p>
                             @else 
@@ -60,7 +60,7 @@
                             <p class="text-xs font-semibold text-gray-400">Flete a Huerto</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false; anticipos = false">
                             @if ($comisions->count()>0)
                                 <p class="text-xl font-bold"> {{$comisions->count()}} </p>
                             @else 
@@ -70,9 +70,20 @@
                         </div>
                         
                     
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true ; anticipos = false">
                                 <p class="text-xl font-bold">5,700</p>
                                 <p class="text-xs font-semibold text-gray-400">Balance de masas</p>
+                        </div>
+
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': anticipos, 'bg-white': ! anticipos}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = true">
+                            <p class="text-xl font-bold">
+                                @if ($temporada->anticipos->count()>0)
+                                    {{$temporada->anticipos->count()}}
+                                @else
+                                    PENDIENTE
+                                @endif
+                            </p>
+                            <p class="text-xs font-semibold text-gray-400">Anticipos</p>
                         </div>
                     </div>
                     </div>
@@ -397,6 +408,36 @@
                         </h1>
                         <div class="">
                             <form action="{{route('temporada.importBalance')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
+
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                                <x-validation-errors class="errors">
+
+                                </x-validation-errors>
+
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center" x-show="anticipos">
+                    <div>
+                        <h1 class="text-xl font-semibold mb-4">
+                            Por favor selecione el archivo de "Anticipos" que desea importar
+                        </h1>
+                        <div class="">
+                            <form action="{{route('temporada.importAnticipo')}}"
                                 method="POST"
                                 class="bg-white rounded p-8 shadow"
                                 enctype="multipart/form-data">

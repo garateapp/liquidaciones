@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AnticipoImport;
 use App\Imports\Balance2Import;
 use App\Imports\Balance3Import;
 use App\Imports\Balance4Import;
@@ -11,6 +12,7 @@ use App\Imports\ExportacionImport;
 use App\Imports\MaterialImport;
 use App\Imports\PackingImport;
 use App\Imports\ResumenImport;
+use App\Models\Anticipo;
 use App\Models\Balancemasa;
 use App\Models\Comision;
 use App\Models\CostoPacking;
@@ -100,6 +102,27 @@ class TemporadaController extends Controller
         $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
 
         return view('temporadas.balancemasa',compact('temporada','masitas'));
+    }
+
+    public function otrosgastos(Temporada $temporada)
+    {  
+        $otrosgastos=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.otrosgastos',compact('temporada','otrosgastos'));
+    }
+
+    public function finanzas(Temporada $temporada)
+    {  
+        $finanzas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.finanzas',compact('temporada','finanzas'));
+    }
+    
+    public function anticipos(Temporada $temporada)
+    {  
+        $anticipos=Anticipo::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.anticipos',compact('temporada','anticipos'));
     }
 
   
@@ -234,6 +257,20 @@ class TemporadaController extends Controller
         $temporada=Temporada::find($request->temporada);
 
         return redirect()->route('temporada.balancemasa',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importAnticipo(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new AnticipoImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.anticipos',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance2(Request $request)

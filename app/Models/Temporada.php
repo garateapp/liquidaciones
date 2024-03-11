@@ -25,6 +25,10 @@ class Temporada extends Model
     public function materials(){
         return $this->hasmany('App\Models\Material');
     }
+
+    public function anticipos(){
+        return $this->hasmany('App\Models\Anticipo');
+    }
     
    
 

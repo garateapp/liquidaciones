@@ -324,7 +324,6 @@
           </div>
             <div class="flex justify-end">
               <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option value="5" class="text-left px-10">5 </option>
                   <option value="25" class="text-left px-10">25 </option>
                   <option value="50" class="text-left px-10">50 </option>
                   <option value="100" class="text-left px-10">100 </option>
@@ -957,6 +956,87 @@
 
                 @endif
 
+                @if ($vista=='ANTICIPOS')
+                <table class="min-w-full leading-normal">
+                  <thead>
+                    <tr>
+                      <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Grupo
+                      </th>
+                      <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Rut
+                      </th>
+                      <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Productor
+                    </th>
+                    <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Fecha
+                  </th>
+                  <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Cantidad
+                </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Acción
+                      </th>
+                  
+                    
+                  
+                  </tr>
+                  </thead>
+                  <tbody>
+                
+                      @foreach ($anticipos as $flete)
+                        <tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                             
+                                <div class="ml-3">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$flete->grupo}}
+                                  </p>
+                                </div>
+                              </div>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->rut}}</p>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->n_productor}}</p>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->fecha}}</p>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->cantidad}}</p>
+                          </td>
+                      
+                      
+
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <a href="{{route('flete.edit',['flete'=>$flete,'temporada'=>$temporada])}}">
+                              <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                    <span aria-hidden
+                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                              <span class="relative">Editar</span>
+                            </a>
+                            <span wire:click="flete_destroy({{$flete->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                              <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                              <span class="relative">Eliminar</span>
+                          </span>
+                            </span>
+                          </td>
+                        </tr>
+                      @endforeach
+            
+                  </tbody>
+                </table>
+
+                @endif
 
               
               </div>
