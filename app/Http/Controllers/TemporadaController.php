@@ -217,6 +217,18 @@ class TemporadaController extends Controller
 
     }
 
+    public function comisionedit(Comision $comision,Temporada $temporada)
+    {   
+        return view('comision.edit',compact('comision','temporada'));
+    }
+
+    public function comisionupdate(Request $request,Comision $comision)
+    {   
+        $comision->update($request->all());
+        return redirect(route('temporada.comision',$comision->temporada)."/#informacion");
+
+    }
+
     public function importExportacion(Request $request)
     {    $request->validate([
             'file'=>'required|mimes:csv,xlsx'

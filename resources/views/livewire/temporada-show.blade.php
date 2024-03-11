@@ -679,12 +679,12 @@
                         
 
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Editar</span>
-                              </span>
+                              <a href="{{route('comision.edit',['comision'=>$comision,'temporada'=>$temporada])}}">
+                                <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Editar</span>
+                                </span>
+                              </a>
                             </td>
                           </tr>
                         @endforeach

@@ -78,6 +78,10 @@ Route::get('editflete/{flete}/{temporada}',[TemporadaController::class,'fleteedi
 
 Route::post('updateflete/{flete}',[TemporadaController::class,'fleteupdate'])->name('flete.update');
 
+Route::get('editcomision/{comision}/{temporada}',[TemporadaController::class,'comisionedit'])->name('comision.edit');
+
+Route::post('updatecomision/{comision}',[TemporadaController::class,'comisionupdate'])->name('comision.update');
+
 
 Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
 
