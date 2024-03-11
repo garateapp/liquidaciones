@@ -213,7 +213,7 @@ class TemporadaController extends Controller
 
         $temporada=Temporada::find($request->temporada);
 
-        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance2(Request $request)
@@ -227,7 +227,7 @@ class TemporadaController extends Controller
 
         $temporada=Temporada::find($request->temporada);
 
-        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance3(Request $request)
@@ -241,7 +241,7 @@ class TemporadaController extends Controller
 
         $temporada=Temporada::find($request->temporada);
 
-        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance4(Request $request)
@@ -255,7 +255,7 @@ class TemporadaController extends Controller
 
         $temporada=Temporada::find($request->temporada);
 
-        return redirect()->route('temporada.balancedemasa',$temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$temporada)->with('info','Importación realizada con exito');
     }
 
 }
