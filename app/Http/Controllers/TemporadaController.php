@@ -96,12 +96,9 @@ class TemporadaController extends Controller
     }
 
     public function balancemasa(Temporada $temporada)
-    {   if (Cache::has('masitas')){
-            $masitas= Cache::get('masitas');
-        }else{
-            $masitas=Balancemasa::where('temporada_id',$temporada->id)->take(5);
-            Cache::put('masitas',$masitas);
-        }
+    {  
+        $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+
         return view('temporadas.balancemasa',compact('temporada','masitas'));
     }
 
