@@ -30,11 +30,15 @@
                           <tr>
                             <th
                               class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              Tipo
+                              Etiqueta
                             </th>
                             <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Empresa
+                          </th>
+                            <th
                               class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Precio USD
+                            Valor
                             </th>
                             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                               Acción
@@ -49,18 +53,28 @@
                               <tr>
                                 <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <div class="flex items-center">
-                                 
+                               
                                       <div class="ml-3">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                          {{$exportacion->type}}
+                                          {{$flete->etiqueta}}
                                         </p>
                                       </div>
                                     </div>
                                 </td>
-                                {!! Form::model($exportacion, ['route'=>['exportacion.update',$exportacion],'method' => 'post', 'autocomplete'=>'off']) !!}    
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <div class="flex items-center">
+                               
+                                      <div class="ml-3">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                          {{$flete->empresa}}
+                                        </p>
+                                      </div>
+                                    </div>
+                                </td>
+                                {!! Form::model($flete, ['route'=>['flete.update',$flete],'method' => 'post', 'autocomplete'=>'off']) !!}    
 
                                 <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                    {!! Form::text('precio_usd', null , ['class'=>'mt-1 block w-full rounded-lg', 'placeholder'=>'']) !!}
+                                    {!! Form::text('valor', null , ['class'=>'mt-1 block w-full rounded-lg', 'placeholder'=>'']) !!}
                                 </td>
                             
                             

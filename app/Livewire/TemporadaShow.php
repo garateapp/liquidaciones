@@ -103,6 +103,10 @@ class TemporadaShow extends Component
         $exportacion->delete();
     }
 
+    public function flete_destroy(Flete $flete){
+        $flete->delete();
+    }
+
     public function exportacion_store(){
         $rules = [
             'type'=>'required',

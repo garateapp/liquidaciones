@@ -182,6 +182,18 @@ class TemporadaController extends Controller
 
     }
 
+    public function fleteedit(Flete $flete,Temporada $temporada)
+    {   
+        return view('flete.edit',compact('flete','temporada'));
+    }
+
+    public function fleteupdate(Request $request,Flete $flete)
+    {   
+        $flete->update($request->all());
+        return redirect(route('temporada.flete',$flete->temporada)."/#informacion");
+
+    }
+
     public function importExportacion(Request $request)
     {    $request->validate([
             'file'=>'required|mimes:csv,xlsx'

@@ -778,11 +778,16 @@
                         
 
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Editar</span>
+                              <a href="{{route('flete.edit',['flete'=>$flete,'temporada'=>$temporada])}}">
+                                <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                      <span aria-hidden
+                                                          class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Editar</span>
+                              </a>
+                              <span wire:click="flete_destroy({{$flete->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Eliminar</span>
+                            </span>
                               </span>
                             </td>
                           </tr>

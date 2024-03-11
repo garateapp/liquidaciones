@@ -68,6 +68,10 @@ Route::get('edit/{exportacion}/{temporada}',[TemporadaController::class,'exporta
 
 Route::post('update/{exportacion}',[TemporadaController::class,'exportacionupdate'])->name('exportacion.update');
 
+Route::get('editflete/{flete}/{temporada}',[TemporadaController::class,'fleteedit'])->name('flete.edit');
+
+Route::post('updateflete/{flete}',[TemporadaController::class,'fleteupdate'])->name('flete.update');
+
 
 Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
 
