@@ -13,9 +13,107 @@
 
    
     
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-yellow-400">
+                      <tr>
+                          <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                          Grupo variedad
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Caja Bulto
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                          Kilos Netos
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Cajas Base
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Total Fob Liquidacion
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Total Comision
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Total Frio Packing
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Total Gastos de Exportacion
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                          Total Flete a puerto
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Total Materiales
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                          Retorno Productor
+                          </th>
+                          <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                            Retorno por kg
+                          </th>
+                          <th class="relative px-6 py-0">
+                          <span class="sr-only"></span>
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($unique_variedades as $item)
+                                <tr>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">{{$item}}</div>    
+                                  </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                    </td>
+                                    <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                    </tbody>
+                </table>
+            </div>
+          </div>
+      </div>
+    </div>
    
 
-    <div class="flex w-full bg-gray-300" x-data="{openMenu: 2}">
+    <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
         
         @livewire('menu-aside',['temporada'=>$temporada->id])
         <!-- End Sidebar -->
@@ -27,104 +125,6 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
 
-                <div class="flex flex-col">
-                  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-yellow-400">
-                                  <tr>
-                                      <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                                      Grupo variedad
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Caja Bulto
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                      Kilos Netos
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Cajas Base
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Fob Liquidacion
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Comision
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Frio Packing
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Gastos de Exportacion
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                      Total Flete a puerto
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Materiales
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                      Retorno Productor
-                                      </th>
-                                      <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Retorno por kg
-                                      </th>
-                                      <th class="relative px-6 py-0">
-                                      <span class="sr-only"></span>
-                                      </th>
-                                  </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                        @foreach ($unique_variedades as $item)
-                                            <tr>
-                                              <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">{{$item}}</div>    
-                                              </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                  <div class="text-sm text-gray-900">20.000</div>    
-                                                </td>
-                                                <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                      </div>
-                  </div>
-                </div>
 
               <h2 class="text-2xl font-semibold my-4">Filtros {{$vista}}</h2>
               <div class="mb-4 flex">

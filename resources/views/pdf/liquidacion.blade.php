@@ -58,7 +58,15 @@
 			padding-right: 2px;
 			text-align: center;
 		}
+		.fondo-abajo {
+			position: fixed;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
 
+			width: calc(100% - 60px); /* El ancho de la imagen es el 100% del ancho de la ventana menos los 60px de margen */
+			z-index: -1; /* Coloca la imagen detrás del contenido */
+		}
 
 	</style>
 </head>
@@ -70,8 +78,260 @@
 	</div>	
 	
 	<div class="cuerpo">
-		<h2 class="text-center">Informe liquidaciones {{$razonsocial->name}}</h2>
 
+		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px;" alt="">
+		<h3 style="text-align: center;">CUENTA CORRIENTE</h3>
+
+		{{-- Datos Productor --}}
+		<table style="width:100%; margin-bottom:30px; border-collapse: collapse;">
+			<thead>
+				<tr>
+					<td style="text-align: center; border: 1px solid black; padding: 2px;">
+						PRODUCTOR
+					</td>
+					<td style="text-align: center; border: 1px solid black; padding: 2px;">
+						{{$razonsocial->rut}}
+					</td>
+					<td style="text-align: center; border: 1px solid black; padding: 2px;">
+						{{$razonsocial->name}}
+					</td>
+				</tr>
+			</thead>
+		</table>
+
+		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
+		
+			<tr style="text-align: left;">
+				<td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT 1)</td>
+				<td>CAT 1</td>
+				<td>USD$</td>
+				<td>125.650,05</td>
+			  </tr>
+			<tr style="text-align: left;">
+			  <td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT I)</td>
+			  <td>CAT I</td>
+			  <td>USD$</td>
+			  <td>25.650,06</td>
+			</tr>
+			<tr>
+				<td>
+
+				</td>
+			</tr>
+			<tr>
+			  <td></td>
+			  <td></td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			</tr>
+		</table>
+
+		<h3 style="text-align: left;">Facturación (proformas)</h3>
+
+		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
+		
+			<tr style="text-align: left;">
+				<td style="text-align: left; width:60%;"></td>
+				<td>01/03/05</td>
+				<td>USD$</td>
+				<td>125.650,05</td>
+			  </tr>
+			<tr style="text-align: left;">
+			  <td style="text-align: left; width:60%;"></td>
+			  <td>01/03/05</td>
+			  <td>USD$</td>
+			  <td>25.650,06</td>
+			</tr>
+			<tr>
+				<td>
+
+				</td>
+			</tr>
+			<tr>
+			  <td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Total facturación (Proformas)</td>
+			  
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			</tr>
+		</table>
+
+		<h3 style="text-align: left;">Otro cargos</h3>
+
+		<table style="width:100%;border-collapse: collapse;">
+		
+			<tr style="text-align: left;">
+				<td style="text-align: left; width:60%;">Gastos de fruta no exportable</td>
+				<td>Kilos 18.500</td>
+				<td>USD$</td>
+				<td>125.650,05</td>
+			  </tr>
+			<tr style="text-align: left;">
+			  <td style="text-align: left; width:60%;">Cuenta corriente envases</td>
+			  <td></td>
+			  <td>USD$</td>
+			  <td>25.650,06</td>
+			</tr>
+			<tr style="text-align: left;">
+				<td style="text-align: left; width:60%;">Fletes huerto</td>
+				<td></td>
+				<td>USD$</td>
+				<td>25.650,06</td>
+			  </tr>
+			<tr>
+				<td>
+
+				</td>
+			</tr>
+			<tr>
+			  <td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Total cargos</td>
+			  
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			</tr>
+			<tr>
+				<td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Saldo</td>
+				
+				<td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
+				<td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			  </tr>
+
+			
+		
+		</table>
+		<table style="width: 100%;">
+			<tr style="text-align: left;">
+				<td style="text-align: left; width:60%;"></td>
+				<td>T/C</td>
+				<td>$814,75</td>
+				<td>25.650,06</td>
+			  </tr>
+		</table>
+
+		<table style="width: 100%; border: 2px solid black; border-collapse: collapse; margin-top: 20px;">
+			<tr>
+				<td colspan="6" style="font-weight: bold; font-size: 12pt;">
+					Nota de Débito
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: left; padding: 2px; margin-top: 5px;">
+					Ajuste final de precio de cereza exportación
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black; border-top: 2px solid black;">
+					Neto
+				</td>
+				<td style="border-top: 2px solid black;">
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: left; padding: 2px; margin-top: 5px;">
+					Temporada 2023-2024
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black;">
+					Iva
+				</td>
+				<td>
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black;">
+					Total
+				</td>
+				<td>
+					$52.451.356
+				</td>
+			</tr>
+		</table>
+
+		<table style="width: 100%; border: 2px solid black; border-collapse: collapse; margin-top: 20px;">
+			<tr>
+				<td colspan="6" style="font-weight: bold; font-size: 12pt;">
+					Nota de Débito
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: left; padding: 2px; margin-top: 5px;">
+					Ajuste final de precio de cereza nacional   
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black; border-top: 2px solid black;">
+					Neto
+				</td>
+				<td style="border-top: 2px solid black;">
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: left; padding: 2px; margin-top: 5px;">
+					Temporada 2023-2024
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black;">
+					Iva
+				</td>
+				<td>
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black;">
+					Total
+				</td>
+				<td>
+					$52.451.356
+				</td>
+			</tr>
+		</table>
+
+		<table style="width: 100%; border: 2px solid black; border-collapse: collapse; margin-top: 20px;">
+		
+			<tr>
+				<td style="text-align: left; padding: 2px; margin-top: 5px; width:70%;">
+					
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black; border-top: 2px solid black; width:15%;">
+					Neto
+				</td>
+				<td style="border-top: 2px solid black; width:15%;">
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right; padding: 2px; margin-top: 5px; width:70%; font-weight: bold; font-size:12pt; padding-right: 110px; ">
+					Total Final
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black; width:15%;">
+					Iva
+				</td>
+				<td style=" width:15%;">
+					$52.451.356
+				</td>
+			</tr>
+			<tr>
+				<td style=" width:70%;">
+					
+				</td>
+				<td style="font-weight: bold;border-left: 2px solid black; width:15%;">
+					Total
+				</td>
+				<td style=" width:15%;">
+					$52.451.356
+				</td>
+			</tr>
+		</table>
+
+		<img src="{{asset('image/footer.png')}}" class="fondo-abajo" style="margin-bottom: 30px;">
+		
+		<div class="page-break"></div>
+
+		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px;" alt="">
+		
 		<table id="balance" style="width:100%">
 			<thead>
 			  <tr>
@@ -151,6 +411,7 @@
 			</tbody>
 		</table>
 
+		{{-- comment
 		<div class="flex flex-col">
 			<div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
 			  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -368,10 +629,10 @@
 			  </div>
 			</div>
 
-		@foreach ($masas as $masa)
-			{{$masa->id}}<br>
-		@endforeach
-	</div>
-	
-</body>
+			@foreach ($masas as $masa)
+				{{$masa->id}}<br>
+			@endforeach
+		</div>
+	 --}}
+	</body>
 </html>

@@ -90,7 +90,7 @@ class TemporadaShow extends Component
                                                         'packings'=>$packings,
                                                         'comisions'=>$comisions]);
 
-        return $pdf->download('Liq. '.$razonsocial->name.'.pdf');
+        return $pdf->stream('Liq. '.$razonsocial->name.'.pdf');
         
     }
 
