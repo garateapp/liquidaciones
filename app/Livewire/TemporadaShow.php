@@ -19,7 +19,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $valor, $ctd=5;
+    public $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=5;
 
 
     #[Url]
@@ -92,6 +92,15 @@ class TemporadaShow extends Component
 
         return $pdf->stream('Liq. '.$razonsocial->name.'.pdf');
         
+    }
+
+    public function set_exportacionedit_id($id){
+        $this->exportacionedit_id=$id;
+        
+    }
+
+    public function exportacion_destroy(Exportacion $exportacion){
+        $exportacion->delete();
     }
 
     public function exportacion_store(){

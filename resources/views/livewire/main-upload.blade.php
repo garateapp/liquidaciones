@@ -196,9 +196,62 @@
                             </button>
                         </div>
                         @if ($temporada->exportacions->count()>0)
-                            @foreach ($temporada->exportacions as $exportacion)
-                                <p class="text-center">{{$exportacion->type}}/Precio:{{$exportacion->precio_usd}}</p><br>
-                            @endforeach
+                        <table class="min-w-full leading-normal">
+                            <thead>
+                              <tr>
+                                <th
+                                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                  Tipo
+                                </th>
+                                <th
+                                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Precio USD
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                  Acción
+                                  </th>
+                              
+                              
+                            
+                            </tr>
+                            </thead>
+                            <tbody>
+                          
+                                @foreach ($temporada->exportacions as $exportacion)
+                                  <tr>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 hidden">
+                                          <img class="w-full h-full rounded-full"
+                                                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                    alt="" />
+                                                            </div>
+                                          <div class="ml-3">
+                                            <p class="text-gray-900 whitespace-no-wrap">
+                                              {{$exportacion->type}}
+                                            </p>
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <p class="text-gray-900 whitespace-no-wrap"> {{$exportacion->precio_usd}}</p>
+                                    </td>
+                                
+                                
+        
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <a href="{{route('exportacion.edit',['exportacion'=>$exportacion,'temporada'=>$temporada])}}">
+                                          <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                              <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                              <span class="relative">Editar</span>
+                                          </span>
+                                        </a>
+                                    </td>
+                                  </tr>
+                                @endforeach
+                      
+                            </tbody>
+                          </table>
                         @endif
 
 

@@ -2,7 +2,7 @@
      <!-- Start Open Menu -->
       <aside class="animate__animated animate__fadeInLeft w-52 relative z-0 flex-shrink-0 hidden px-4 overflow-y-auto bg-gray-100 sm:block " 
           x-show="openMenu ==  1" 
-          @click.away="openMenu = null" 
+          
           style="display: none;">
         <div class="mb-6">
           <!--Start Sidebar for open menu -->

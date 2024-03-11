@@ -28,7 +28,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->middleware('auth')->name('dashboard');
 });
 
 
@@ -63,6 +63,11 @@ Route::post('data/import',[TemporadaController::class,'importdata'])->name('temp
 Route::post('costos/packing/import',[TemporadaController::class,'importCostosPacking'])->name('temporada.importCostosPacking');
 
 Route::post('costos/materiales/import',[TemporadaController::class,'importMateriales'])->name('temporada.importMateriales');
+
+Route::get('edit/{exportacion}/{temporada}',[TemporadaController::class,'exportacionedit'])->name('exportacion.edit');
+
+Route::post('update/{exportacion}',[TemporadaController::class,'exportacionupdate'])->name('exportacion.update');
+
 
 Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
 

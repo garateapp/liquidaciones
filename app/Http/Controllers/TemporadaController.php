@@ -170,6 +170,17 @@ class TemporadaController extends Controller
 
         return redirect()->route('temporada.materiales',$temporada)->with('info','Importación realizada con exito');
     }
+    public function exportacionedit(Exportacion $exportacion,Temporada $temporada)
+    {   
+        return view('exportacion.edit',compact('exportacion','temporada'));
+    }
+
+    public function exportacionupdate(Request $request,Exportacion $exportacion)
+    {   
+        $exportacion->update($request->all());
+        return redirect(route('temporada.exportacion',$exportacion->temporada)."/#informacion");
+
+    }
 
     public function importExportacion(Request $request)
     {    $request->validate([

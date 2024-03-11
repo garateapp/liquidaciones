@@ -10,4 +10,8 @@ class Exportacion extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function temporada(){
+        return $this->belongsTo('App\Models\Temporada');
+    }
 }
