@@ -81,7 +81,7 @@
 
                                               foreach ($materialestotal as $material) {
                                                 if ($material->c_embalaje==$masa->c_embalaje) {
-                                                  $totalmateriales+=$material->costo_por_caja_usd;
+                                                  $totalmateriales+=floatval($material->costo_por_caja_usd);
                                                 }  
                                                  
                                               }
