@@ -367,6 +367,11 @@
 						$pesoneto2j=0;
 						$pesonetoj=0;
 						$pesonetoxl=0;
+						$retorno4j=0;
+						$retorno3j=0;
+						$retorno2j=0;
+						$retornoj=0;
+						$retornoxl=0;
 					@endphp
 
 					@foreach ($masas as $masa)
@@ -375,6 +380,10 @@
 									@php
 										$cantidad4j+=$masa->cantidad;
 										$pesoneto4j+=$masa->peso_neto;
+										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+										$retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+										break;
+										}
 										$cantidadtotal+=$masa->cantidad;
 										$pesonetototal+=$masa->peso_neto;
 									@endphp	
@@ -383,6 +392,10 @@
 									@php
 										$cantidad3j+=$masa->cantidad;
 										$pesoneto3j+=$masa->peso_neto;
+										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+										$retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+										break;
+										}
 										$cantidadtotal+=$masa->cantidad;
 										$pesonetototal+=$masa->peso_neto;
 									@endphp	
@@ -391,6 +404,10 @@
 									@php
 										$cantidad2j+=$masa->cantidad;
 										$pesoneto2j+=$masa->peso_neto;
+										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+										$retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+										break;
+										}
 										$cantidadtotal+=$masa->cantidad;
 										$pesonetototal+=$masa->peso_neto;
 									@endphp	
@@ -399,6 +416,10 @@
 									@php
 										$cantidadj+=$masa->cantidad;
 											$pesonetoj+=$masa->peso_neto;
+											foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+											$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											break;
+										}
 											$cantidadtotal+=$masa->cantidad;
 										$pesonetototal+=$masa->peso_neto;
 									@endphp	
@@ -407,6 +428,10 @@
 									@php
 										$cantidadxl+=$masa->cantidad;
 										$pesonetoxl+=$masa->peso_neto;
+										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+										$retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+										break;
+										}
 										$cantidadtotal+=$masa->cantidad;
 										$pesonetototal+=$masa->peso_neto;
 									@endphp	
