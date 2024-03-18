@@ -66,6 +66,7 @@
                             $globalcajasbulto=0;
                             $globalpesoneto=0;
                             $globaltotalmateriales=0;
+                            $globalfletehuerto=0;
                         @endphp
                               @foreach ($unique_variedades as $item)
                                   <tr>
@@ -77,6 +78,7 @@
                                             $cajasbulto=0;
                                             $pesoneto=0;
                                             $totalmateriales=0;
+                                            $fletehuerto=0;
                                         @endphp
                                         @foreach ($masastotal as $masa)
                                           @php
@@ -90,9 +92,14 @@
                                                 if ($material->c_embalaje==$masa->c_embalaje) {
                                                   $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
                                                   $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                
                                                 }  
-                                                 
+                                              }
+
+                                              foreach ($fletestotal as $flete) {
+                                                if ($flete->rut==$masa->r_productor) {
+                                                  $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                }  
                                               }
                                                
 
@@ -123,7 +130,7 @@
                                         <div class="text-sm text-gray-900">20.000</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{$fletehuerto}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
@@ -168,7 +175,7 @@
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">20.000</div>    
+                                    <div class="text-sm text-gray-900">{{$globalfletehuerto}}</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2)}}</div>    
@@ -190,7 +197,7 @@
         </div>
       </div>
     @endif
-  <section id="informacion">
+    <section id="informacion">
     <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
         
         @livewire('menu-aside',['temporada'=>$temporada->id])

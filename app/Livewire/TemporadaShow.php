@@ -55,6 +55,8 @@ class TemporadaShow extends Component
 
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
+        
         $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
         $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
@@ -75,7 +77,7 @@ class TemporadaShow extends Component
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){
