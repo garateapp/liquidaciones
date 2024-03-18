@@ -350,12 +350,13 @@
 			<tbody>
 				@php
 					$variedadcount=1;
+					$cantidadtotal=0;
+					$pesonetototal=0;
 				@endphp
 				@foreach ($unique_variedades as $variedad)
 					@php
 						$calibrecount=1;
-						$cantidadtotal=0;
-						$pesonetototal=0;
+						
 						$cantidad4j=0;
 						$cantidad3j=0;
 						$cantidad2j=0;
