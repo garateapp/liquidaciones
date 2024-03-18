@@ -52,8 +52,8 @@
 		}
 
 		th, td {
-			padding-top: 5px;
-			padding-bottom: 5px;
+			padding-top: 3px;
+			padding-bottom: 3px;
 			padding-left: 2px;
 			padding-right: 2px;
 			text-align: center;
