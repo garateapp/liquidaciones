@@ -70,11 +70,14 @@
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         @php
                                             $cajasbulto=0;
+                                            $pesoneto=0;
                                         @endphp
                                         @foreach ($masastotal as $masa)
                                           @php
                                             if ($masa->n_variedad==$item) {
                                               $cajasbulto+=$masa->cantidad;
+                                              $pesoneto+=$masa->pesoneto;
+
                                             }
                                           @endphp
                                         @endforeach
