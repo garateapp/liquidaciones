@@ -465,7 +465,13 @@
 								<td>{{$cantidad4j}}</td>
 								<td>{{$pesoneto4j}} KGS</td>
 								<td>{{$retorno4j}} USD</td>
-						  		<td>{{$retorno4j/$pesoneto4j}} USD/kg</td>
+								<td>
+									@if ($pesoneto4j)
+										{{$retorno4j/$pesoneto4j}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 								
 							</tr>
 							@php
@@ -497,7 +503,13 @@
 								<td>{{$cantidad3j}}</td>
 								<td>{{$pesoneto3j}} KGS</td>
 								<td>{{$retorno3j}} USD</td>
-						  		<td>{{$retorno3j/$pesoneto3j}} USD/kg</td>
+								<td>
+									@if ($pesoneto3j)
+										{{$retorno3j/$pesoneto3j}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 								
 							</tr>
 							@php
@@ -529,7 +541,13 @@
 								<td>{{$cantidad2j}}</td>
 								<td>{{$pesoneto2j}} KGS</td>
 								<td>{{$retorno2j}} USD</td>
-						  		<td>{{$retorno2j/$pesoneto2j}} USD/kg</td>
+								<td>
+									@if ($pesoneto2j)
+										{{$retorno2j/$pesoneto2j}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 								
 							</tr>
 							@php
@@ -561,7 +579,13 @@
 								<td>{{$cantidadj}}</td>
 								<td>{{$pesonetoj}} KGS</td>
 								<td>{{$retornoj}} USD</td>
-						  		<td>{{$retornoj/$pesonetoj}} USD/kg</td>
+								<td>
+									@if ($pesonetoj)
+										{{$retornoj/$pesonetoj}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 	
 								
 							</tr>
@@ -594,7 +618,13 @@
 								<td>{{$cantidadxl}}</td>
 								<td>{{$pesonetoxl}} KGS</td>
 								<td>{{$retornoxl}} USD</td>
-						  		<td>{{$retornoxl/$pesonetoxl}} USD/kg</td>
+						  		<td>
+									@if ($pesonetoxl)
+										{{$retornoxl/$pesonetoxl}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 								
 							</tr>
 							@php
