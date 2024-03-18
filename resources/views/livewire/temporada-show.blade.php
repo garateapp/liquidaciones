@@ -144,7 +144,7 @@
                               @endforeach
                               <tr>
                                 <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{$item}}</div>    
+                                    <div class="text-sm text-gray-900">TOTAL</div>    
                                 </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
                                       <div class="text-sm text-gray-900">
