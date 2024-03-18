@@ -352,6 +352,7 @@
 					$variedadcount=1;
 					$cantidadtotal=0;
 					$pesonetototal=0;
+					$retornototal=0;
 				@endphp
 				@foreach ($unique_variedades as $variedad)
 					@php
@@ -381,7 +382,8 @@
 										$cantidad4j+=$masa->cantidad;
 										$pesoneto4j+=$masa->peso_neto;
 										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-										$retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 										break;
 										}
 										$cantidadtotal+=$masa->cantidad;
@@ -393,7 +395,8 @@
 										$cantidad3j+=$masa->cantidad;
 										$pesoneto3j+=$masa->peso_neto;
 										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-										$retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 										break;
 										}
 										$cantidadtotal+=$masa->cantidad;
@@ -405,7 +408,8 @@
 										$cantidad2j+=$masa->cantidad;
 										$pesoneto2j+=$masa->peso_neto;
 										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-										$retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 										break;
 										}
 										$cantidadtotal+=$masa->cantidad;
@@ -417,7 +421,8 @@
 										$cantidadj+=$masa->cantidad;
 											$pesonetoj+=$masa->peso_neto;
 											foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-											$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+												$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+												$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 											break;
 										}
 											$cantidadtotal+=$masa->cantidad;
@@ -429,7 +434,8 @@
 										$cantidadxl+=$masa->cantidad;
 										$pesonetoxl+=$masa->peso_neto;
 										foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-										$retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+											$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 										break;
 										}
 										$cantidadtotal+=$masa->cantidad;
@@ -649,8 +655,8 @@
 							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">100,00%</td>
 							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl}}</td>
 							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
-							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl}} USD</td>
+							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl),2)}} USD/KG</td>
 							
 						</tr>
 						
@@ -679,8 +685,8 @@
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidadtotal}}</td>
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KGS</td>
-					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retornototal}} USD</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal/$pesonetototal,2)}} usd/kg</td>
 					
 				</tr>
 						{{-- comment
@@ -761,11 +767,13 @@
 					$variedadcount=1;
 					$cantidadtotal=0;
 					$pesonetototal=0;
+					$retornototal=0;
 				  @endphp
 				  @foreach ($unique_variedades as $variedad)
 				   
 					@php
 						$calibrecount=1;
+						
 					@endphp
 					 
 					@foreach ($unique_semanas as $semana)
@@ -798,6 +806,7 @@
 								$pesoneto4j+=$masa->peso_neto;
 								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
 								  $retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  $retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 								  break;
 								}
 								$cantidadtotal+=$masa->cantidad;
@@ -810,6 +819,7 @@
 								$pesoneto3j+=$masa->peso_neto;
 								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
 								  $retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  $retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 								  break;
 								}
 								$cantidadtotal+=$masa->cantidad;
@@ -822,6 +832,7 @@
 								$pesoneto2j+=$masa->peso_neto;
 								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
 								  $retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  $retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 								  break;
 								}
 								$cantidadtotal+=$masa->cantidad;
@@ -834,6 +845,7 @@
 								  $pesonetoj+=$masa->peso_neto;
 								  foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
 									$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+									$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 									break;
 								  }
 								  $cantidadtotal+=$masa->cantidad;
@@ -846,6 +858,7 @@
 								$pesonetoxl+=$masa->peso_neto;
 								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
 								  $retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  $retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
 								  break;
 								}
 								$cantidadtotal+=$masa->cantidad;
@@ -1092,10 +1105,11 @@
 						
 						
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl}}</td>
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
-						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)}}  USD</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl),2)}}  USD/KGS</td>
 						  
 						</tr>
 					  @endif
@@ -1114,6 +1128,7 @@
 						  
 						  
 							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
 						
 						  
 						  
@@ -1122,8 +1137,8 @@
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl)}}</td>
 						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl)}} KGS</td>
-						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)}}  USD</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl))}}  USD/KG</td>
 						  
 						</tr>
 					  @endif
@@ -1141,6 +1156,7 @@
 				  
 					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total General</td>
 					
+					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
 					
 					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
 				  
@@ -1151,9 +1167,9 @@
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
 					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidadtotal}}</td>
-					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KGS</td>
-					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KG</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retornototal}} USD</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal/$pesonetototal,2)}} usd/kg</td>
 					
 				  </tr>
 				 
