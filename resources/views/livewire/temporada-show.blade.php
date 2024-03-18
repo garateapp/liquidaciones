@@ -76,7 +76,7 @@
                                           @php
                                             if ($masa->n_variedad==$item) {
                                               $cajasbulto+=$masa->cantidad;
-                                              $pesoneto+=$masa->pesoneto;
+                                              $pesoneto+=$masa->peso_neto;
 
                                             }
                                           @endphp
@@ -87,7 +87,7 @@
                                           </div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{$pesoneto}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">20.000</div>    
