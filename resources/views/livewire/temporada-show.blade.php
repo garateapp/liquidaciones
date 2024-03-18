@@ -90,7 +90,7 @@
                                         <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">20.000</div>    
