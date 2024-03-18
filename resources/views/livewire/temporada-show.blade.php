@@ -103,7 +103,7 @@
                                                   $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                 }  
                                               }
-
+                                              /*
                                               foreach ($embarquestotal as $embarque) {
                                                 if ($embarque->folio==$masa->folio) {
                                                   if ($embarque->transforte=='AEREO') {
@@ -118,7 +118,7 @@
                                                     
                                                 }  
                                               }
-                                               
+                                               */
 
                                             }
                                           @endphp
