@@ -503,7 +503,11 @@
 
                 <div>
                   <h1 class="text-xl font-semibold mb-4">
-                      Por favor selecione el archivo de "Materiales" que desea importar
+                      Por favor selecione el archivo de "Materiales" que desea importar {{$materiales->count()}}
+                  </h1>
+                 
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
+                    Fecha de importación: {{$materiales->first()->created_at}}
                   </h1>
 
                   <div class="flex">
