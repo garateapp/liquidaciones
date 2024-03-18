@@ -57,7 +57,7 @@ class TemporadaShow extends Component
         $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
-        $masasbalances=Balancemasa::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $masastotal=Balancemasa::where('temporada_id',$this->temporada->id)->get();
         
