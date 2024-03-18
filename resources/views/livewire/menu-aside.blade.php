@@ -6,7 +6,8 @@
           style="display: none;">
         <div class="mb-6">
           <!--Start Sidebar for open menu -->
-          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-6">
+          <h1 class="mt-4">Resumen</h1>
+          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
             <!-- Start Navitem -->
             <a href="{{route('temporadas.show',$temporada)}}" 
             wire:navigate>
@@ -17,6 +18,25 @@
                 <p class="text-xs mt-1 text-center font-semibold">Resumen</p>
               </div>
             </a>
+      
+            <!-- End Navitem -->
+          </div>
+
+          <h1 class="mt-4">Costos</h1>
+
+          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
+            <!-- Start Navitem -->
+
+            <a href="{{route('temporada.exportacion',$temporada)}}"
+            wire:navigate>
+            <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+              <div class="rounded-full p-2 @if($temporada->exportacions->count()>0)bg-green-200 @else bg-indigo-200 @endif  flex flex-col items-center">
+                <i class="fas fa-wallet fa-sm @if($temporada->exportacions->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+              </div>
+              <p class="text-xs mt-1 text-center font-semibold">Gastos de exportación</p>
+            </div>
+            </a>
+         
             <a href="{{route('temporada.packing',$temporada)}}"
             wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
@@ -39,15 +59,7 @@
             </a>
             <!-- End Navitem -->
             <!-- Start Navitem -->
-            <a href="{{route('temporada.exportacion',$temporada)}}"
-            wire:navigate>
-            <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-              <div class="rounded-full p-2 @if($temporada->exportacions->count()>0)bg-green-200 @else bg-indigo-200 @endif  flex flex-col items-center">
-                <i class="fas fa-wallet fa-sm @if($temporada->exportacions->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
-              </div>
-              <p class="text-xs mt-1 text-center font-semibold">Gastos de exportación</p>
-            </div>
-            </a>
+           
             <!-- End Navitem -->
             <!-- Start Navitem -->
             <a href="{{route('temporada.flete',$temporada)}}"
@@ -71,16 +83,35 @@
             </div>
             </a>
             <!-- End Navitem -->
+         
+            <!-- End Navitem -->
+          </div>
+          <h1 class="mt-4">Cuenta Corriente</h1>
+
+          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
             <!-- Start Navitem -->
-            <a href="{{route('temporada.balancemasa',$temporada)}}"
+           
+            <a href="{{route('temporada.anticipos',$temporada)}}"
             wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-                <div class="rounded-full p-2 @if($masascount->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
-                  <i class="fas fa-shopping-basket fa-sm @if($masascount->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+              
+                <div class="rounded-full p-2 @if($temporada->anticipos->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
+                  <i class="fas fa-shopping-basket fa-sm  @if($temporada->anticipos->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
                 </div>
-                <p class="text-xs mt-1 text-center font-semibold">Balance de masa</p>
+                  <p class="text-xs mt-1 text-center font-semibold">Anticipos</p>
               </div>
             </a>
+            <!-- End Navitem -->
+          </div>
+
+          <h1 class="mt-4">Ingresos</h1>
+
+          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
+            <!-- Start Navitem -->
+           
+        
+            <!-- Start Navitem -->
+        
             <a href="{{route('temporada.otrosgastos',$temporada)}}"
             wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
@@ -101,18 +132,44 @@
                   <p class="text-xs mt-1 text-center font-semibold">Finanzas</p>
               </div>
             </a>
-            <a href="{{route('temporada.anticipos',$temporada)}}"
-            wire:navigate>
-              <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-              
-                <div class="rounded-full p-2 @if($temporada->anticipos->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
-                  <i class="fas fa-shopping-basket fa-sm  @if($temporada->anticipos->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
-                </div>
-                  <p class="text-xs mt-1 text-center font-semibold">Anticipos</p>
-              </div>
-            </a>
+        
             <!-- End Navitem -->
           </div>
+          
+
+          <h1 class="mt-4">Balance de masa</h1>
+
+          <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
+            <!-- Start Navitem -->
+           
+        
+            <!-- Start Navitem -->
+            <a href="{{route('temporada.balancemasa',$temporada)}}"
+            wire:navigate>
+              <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+                <div class="rounded-full p-2 @if($masascount->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
+                  <i class="fas fa-shopping-basket fa-sm @if($masascount->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+                </div>
+                <p class="text-xs mt-1 text-center font-semibold">Balance de masa</p>
+              </div>
+            </a>
+
+              <!-- Start Navitem -->
+              <a href="{{route('temporada.fob',$temporada)}}"
+              wire:navigate>
+                <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+                  <div class="rounded-full p-2 @if($temporada->fobs->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
+                    <i class="fas fa-shopping-basket fa-sm @if($temporada->fobs->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+                  </div>
+                  <p class="text-xs mt-1 text-center font-semibold">Fob</p>
+                </div>
+              </a>
+   
+        
+            <!-- End Navitem -->
+          </div>
+
+         
           <!--End Sidebar for open menu -->
         </div>
       </aside>

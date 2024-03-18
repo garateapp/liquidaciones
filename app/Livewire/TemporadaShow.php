@@ -9,6 +9,7 @@ use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Exportacion;
 use App\Models\Flete;
+use App\Models\Fob;
 use App\Models\Material;
 use App\Models\Razonsocial;
 use App\Models\Resumen;
@@ -47,11 +48,11 @@ class TemporadaShow extends Component
     {   $resumes=Resumen::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $anticipos=Anticipo::where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
         $materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
         $masasbalances=Balancemasa::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
@@ -61,7 +62,6 @@ class TemporadaShow extends Component
 
         $masastotal2=Balancemasados::where('temporada_id',$this->temporada->id)->get();
 
-
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
         $unique_variedades = $masastotal2->pluck('n_variedad')->unique()->sort();
@@ -69,12 +69,10 @@ class TemporadaShow extends Component
         $razons= Razonsocial::filter($this->filters)->whereIn('csg', $unique_productores)->paginate($this->ctd);
 
         $razonsall=Razonsocial::whereIn('csg', $unique_productores)->get();
-       
-
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){
@@ -86,11 +84,20 @@ class TemporadaShow extends Component
         $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
         $packings=CostoPacking::where('temporada_id',$temporada->id)->where('csg',$razonsocial->csg)->get();
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
+        $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
+        $unique_semanas = $masas->pluck('semana')->unique()->sort();
+        $fobs = Fob::where('temporada_id',$temporada->id)->get();
+
+        $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
 
         $pdf = Pdf::loadView('pdf.liquidacion', ['razonsocial' => $razonsocial,
                                                         'masas' => $masas,
                                                         'packings'=>$packings,
-                                                        'comisions'=>$comisions]);
+                                                        'comisions'=>$comisions,
+                                                        'unique_variedades'=>$unique_variedades,
+                                                        'unique_calibres'=>$unique_calibres,
+                                                    'unique_semanas'=>$unique_semanas,
+                                                'fobs'=>$fobs]);
 
         return $pdf->stream('Liq. '.$razonsocial->name.'.pdf');
         

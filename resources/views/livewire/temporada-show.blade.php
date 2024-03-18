@@ -800,152 +800,115 @@
                 @if ($vista=='MASAS')
                   
                
-                  @if ($temporada->masasdos->count()==0)
-                    <div class="flex justify-center">
-                      <form action="{{route('temporada.importBalance2')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
+               
 
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                          <x-validation-errors class="errors">
-
-                          </x-validation-errors>
-
-                          <input type="file" name="file" accept=".csv,.xlsx">
-
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
-                    </div>
-                  @else 
-                    <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                        <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-                        </span>
-                        <span>ARCHIVO_2 OK</span>
-                    </button>
-                  @endif
-                  @if ($temporada->masatres->count()==0)
-                    <div class="flex justify-center">
-                      <form action="{{route('temporada.importBalance3')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
-
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                          <x-validation-errors class="errors">
-
-                          </x-validation-errors>
-
-                          <input type="file" name="file" accept=".csv,.xlsx">
-
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
-                    </div>
-                  @else
-                    <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                        <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-                        </span>
-                        <span>ARCHIVO_3 OK</span>
-                    </button>
-                  @endif
-                  @if ($temporada->masascuatros->count()==0)
-                    <div class="flex justify-center">
-                      <form action="{{route('temporada.importBalance4')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
-
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                          <x-validation-errors class="errors">
-
-                          </x-validation-errors>
-
-                          <input type="file" name="file" accept=".csv,.xlsx">
-
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
-                    </div>
-                  @else
-                    <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
-                        <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-                        </span>
-                        <span>ARCHIVO_4 OK</span>
-                    </button>
-                  @endif
-
-                  <table class="min-w-full leading-normal mt-4">
+                  <table class="min-w-full leading-normal">
                     <thead>
                       <tr>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Etiqueta
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Empresa
-                        </th>
-                        <th
-                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Valor
-                      </th>
-                      
-                    
-                    </tr>
+                        @php
+                              
+                              $columnas = [
+                                'tipo_g_produccion',
+                                'numero_g_produccion',
+                                'fecha_g_produccion_sh',
+                                'semana',
+                                'folio',
+                                'r_productor',
+                                'c_productor',
+                                'n_productor',
+                                'n_especie',
+                                'n_variedad',
+                                'c_embalaje',
+                                'n_embalaje',
+                                'n_categoria',
+                                't_categoria',
+                                'n_categoria_st',
+                                'n_calibre',
+                                'n_etiqueta',
+                                'cantidad',
+                                'peso_neto'
+                            ];
+
+                          
+                          foreach ($columnas as $columna) {
+                              echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
+                              echo ucfirst(str_replace('_', ' ', $columna));
+                              echo '</th>';
+                          }
+                          
+                        @endphp
+                      </tr>
                     </thead>
                     <tbody>
                   
                         @foreach ($masasbalances as $masa)
                           <tr>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <div class="flex items-center">
-                                <div class="flex-shrink-0 w-10 h-10 hidden">
-                                  <img class="w-full h-full rounded-full"
-                                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                            alt="" />
-                                                    </div>
-                                  <div class="ml-3">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                      {{$masa->id_check}}
-                                    </p>
-                                  </div>
-                                </div>
+                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_produccion }}</p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$masa->empresa}}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_produccion }}</p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$masa->valor}}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_produccion_sh))}}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <p class="text-gray-900 whitespace-no-wrap">{{date('W', strtotime($masa->fecha_g_produccion_sh))}}</p>
+                          </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->r_productor }}</p>
+                            </td>
+                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_productor }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_productor }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_especie }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_variedad }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_embalaje }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_embalaje }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->t_categoria }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria_st }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_calibre }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_etiqueta }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->peso_neto }}</p>
                             </td>
                         
                         
 
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                               <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                    class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                                                     <span aria-hidden
-                                                        class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Activo</span>
+                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                              <span class="relative">Editar</span>
                               </span>
                             </td>
                           </tr>
@@ -957,85 +920,174 @@
                 @endif
 
                 @if ($vista=='ANTICIPOS')
-                <table class="min-w-full leading-normal">
-                  <thead>
-                    <tr>
-                      <th
+                  <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Grupo
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Rut
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Productor
+                        </th>
+                        <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Grupo
-                      </th>
-                      <th
-                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Rut
+                      Fecha
                       </th>
                       <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Productor
+                    Cantidad
                     </th>
-                    <th
-                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Fecha
-                  </th>
-                  <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Cantidad
-                </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Acción
-                      </th>
-                  
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Acción
+                          </th>
+                      
+                        
+                      
+                      </tr>
+                      </thead>
+                      <tbody>
                     
-                  
-                  </tr>
-                  </thead>
-                  <tbody>
+                          @foreach ($anticipos as $flete)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                
+                                    <div class="ml-3">
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                        {{$flete->grupo}}
+                                      </p>
+                                    </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$flete->rut}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$flete->n_productor}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{date('d/m/Y', strtotime($flete->fecha))}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$flete->cantidad}}</p>
+                              </td>
+                          
+                          
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <a href="{{route('flete.edit',['flete'=>$flete,'temporada'=>$temporada])}}">
+                                  <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                        <span aria-hidden
+                                                            class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Editar</span>
+                                </a>
+                                <span wire:click="flete_destroy({{$flete->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                  <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Eliminar</span>
+                              </span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
                 
-                      @foreach ($anticipos as $flete)
+                      </tbody>
+                  </table>
+                @endif
+
+                @if ($vista=='FOB')
+                  <table class="min-w-full leading-normal">
+                      <thead>
                         <tr>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <div class="flex items-center">
-                             
-                                <div class="ml-3">
-                                  <p class="text-gray-900 whitespace-no-wrap">
-                                    {{$flete->grupo}}
-                                  </p>
-                                </div>
-                              </div>
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->rut}}</p>
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->n_productor}}</p>
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->fecha}}</p>
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap"> {{$flete->cantidad}}</p>
-                          </td>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            n_variedad
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Semana
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Etiqueta
+                        </th>
+                        <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Calibre
+                      </th>
+                      <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Color
+                    </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Categoria
+                          </th>
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Fob kilo salida
+                            </th>
                       
+                        
                       
+                      </tr>
+                      </thead>
+                      <tbody>
+                    
+                          @foreach ($fobs as $fob)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                
+                                    <div class="ml-3">
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                        {{$fob->n_variedad}}
+                                      </p>
+                                    </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->semana}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->etiqueta}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->n_calibre}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->color}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->fob_kilo_salida}}</p>
+                              </td>
+                          
+                          
 
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            <a href="{{route('flete.edit',['flete'=>$flete,'temporada'=>$temporada])}}">
-                              <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Editar</span>
-                            </a>
-                            <span wire:click="flete_destroy({{$flete->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                              <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Eliminar</span>
-                          </span>
-                            </span>
-                          </td>
-                        </tr>
-                      @endforeach
-            
-                  </tbody>
-                </table>
-
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <a href="">
+                                  <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                        <span aria-hidden
+                                                            class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Editar</span>
+                                </a>
+                                <span  class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                  <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Eliminar</span>
+                              </span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                
+                      </tbody>
+                  </table>
                 @endif
 
               

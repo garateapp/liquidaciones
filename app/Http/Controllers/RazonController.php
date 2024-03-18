@@ -7,6 +7,7 @@ use App\Models\Balancemasados;
 use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Flete;
+use App\Models\Fob;
 use App\Models\Razonsocial;
 use App\Models\Temporada;
 use Illuminate\Http\Request;
@@ -21,13 +22,6 @@ class RazonController extends Controller
     public function index()
     {   $razons=Razonsocial::all();
         return view('razonsocial.index',compact('razons'));
-    }
-
-    public function exportpdf()
-    {   $razons=Razonsocial::all();
-
-        $pdf = Pdf::loadView('pdf.liquidacion', ['razons' => $razons]);
-        return $pdf->download('Archivo_liquidacion.pdf');
     }
 
     
@@ -138,12 +132,21 @@ class RazonController extends Controller
     {       
         $temporada=Temporada::find($temporada->id);
         $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
+        foreach($masas as $masa){
+            $masa->update(['semana'=>date('W', strtotime($masa->fecha_g_produccion_sh))]);
+        }
+
+
         $masas2=Balancemasados::where('temporada_id',$temporada->id)->get();
         $fletes=Flete::where('temporada_id',$temporada->id)->get();
         $packings=CostoPacking::where('temporada_id',$temporada->id)->where('csg',$razonsocial->csg)->get();
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
+        $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
+        $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
+        $unique_semanas = $masas->pluck('semana')->unique()->sort();
+        $fobs = Fob::where('temporada_id',$temporada->id)->get();
 
-        return view('razonsocial.show',compact('razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        return view('razonsocial.show',compact('unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**

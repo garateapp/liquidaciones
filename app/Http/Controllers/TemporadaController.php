@@ -9,6 +9,7 @@ use App\Imports\Balance4Import;
 use App\Imports\BalanceImport;
 use App\Imports\ComisionImport;
 use App\Imports\ExportacionImport;
+use App\Imports\FobImport;
 use App\Imports\MaterialImport;
 use App\Imports\PackingImport;
 use App\Imports\ResumenImport;
@@ -18,6 +19,7 @@ use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Exportacion;
 use App\Models\Flete;
+use App\Models\Fob;
 use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
@@ -62,7 +64,7 @@ class TemporadaController extends Controller
      * Display the specified resource.
      */
     public function show(Temporada $temporada)
-    {    $resumes=Resumen::where('temporada_id',$temporada->id)->get();
+    {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
         $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
         return view('temporadas.show',compact('temporada','resumes','CostosPackings'));
     }
@@ -102,6 +104,13 @@ class TemporadaController extends Controller
         $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
 
         return view('temporadas.balancemasa',compact('temporada','masitas'));
+    }
+
+    public function fob(Temporada $temporada)
+    {  
+        $fob=Fob::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.fob',compact('temporada','fob'));
     }
 
     public function otrosgastos(Temporada $temporada)
@@ -283,6 +292,21 @@ class TemporadaController extends Controller
         $temporada=Temporada::find($request->temporada);
 
         return redirect()->route('temporada.anticipos',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    
+    public function importFob(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        FacadesExcel::import(new FobImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.fob',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance2(Request $request)

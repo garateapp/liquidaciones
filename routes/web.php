@@ -38,9 +38,9 @@ Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show']
 
 Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync');
 
-Route::get('pdf/exporting',[RazonController::class,'exportpdf'])->name('exportpdf');
-
 Route::get('pdf/export/{razonsocial}/{temporada}',[TemporadaShow::class,'exportpdf'])->name('exportpdff');
+
+Route::get('grafico/{razonsocial}/{variedad}',[TemporadaShow::class,'exportpdf'])->name('grafico.variedad');
 
 Route::resource('temporada', TemporadaController::class)->names('temporadas');
 
@@ -57,6 +57,8 @@ Route::get('temporada/{temporada}/exportacion',[TemporadaController::class,'expo
 Route::get('temporada/{temporada}/flete',[TemporadaController::class,'flete'])->name('temporada.flete');
 
 Route::get('balance/{temporada}/masa',[TemporadaController::class,'balancemasa'])->name('temporada.balancemasa');
+
+Route::get('balance/{temporada}/fob',[TemporadaController::class,'fob'])->name('temporada.fob');
 
 Route::get('temporada/{temporada}/otrosgastos',[TemporadaController::class,'otrosgastos'])->name('temporada.otrosgastos');
 
@@ -96,3 +98,5 @@ Route::post('costos/balancetres/import',[TemporadaController::class,'importBalan
 Route::post('costos/balancecuatro/import',[TemporadaController::class,'importBalance4'])->name('temporada.importBalance4');
 
 Route::post('costos/anticipo/import',[TemporadaController::class,'importAnticipo'])->name('temporada.importAnticipo');
+
+Route::post('costos/fob/import',[TemporadaController::class,'importFob'])->name('temporada.importFob');
