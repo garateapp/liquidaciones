@@ -7,6 +7,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Embarque;
 use App\Models\Exportacion;
 use App\Models\Flete;
 use App\Models\Fob;
@@ -50,6 +51,10 @@ class TemporadaShow extends Component
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
         $materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $embarques=Embarque::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $embarquestotal=Embarque::where('temporada_id',$this->temporada->id)->get();
+
+
         $materialestotal=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
 
@@ -77,7 +82,7 @@ class TemporadaShow extends Component
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){

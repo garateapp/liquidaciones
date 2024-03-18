@@ -102,3 +102,5 @@ Route::post('costos/anticipo/import',[TemporadaController::class,'importAnticipo
 Route::post('costos/fob/import',[TemporadaController::class,'importFob'])->name('temporada.importFob');
 
 Route::post('costos/flete/import',[TemporadaController::class,'importFlete'])->name('temporada.importFlete');
+
+Route::post('costos/embarque/import',[TemporadaController::class,'importEmbarque'])->name('temporada.importEmbarque');

@@ -570,101 +570,101 @@
                 @endif
                 @if ($vista=='MATERIALES') 
 
-                <div>
-                  <h1 class="text-xl font-semibold mb-4 ml-4">
-                      Por favor selecione el archivo de "Materiales" que desea importar {{$materialestotal->count()}}
-                  </h1>
-                 
-                  <h1 class="text-xl font-semibold mb-4 ml-4">
-                    Fecha de importación: {{$materialestotal->first()->created_at}}
-                  </h1>
-
-                  <div class="flex">
-                      
-                      <form action="{{route('temporada.importMateriales')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
-
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                          <x-validation-errors class="errors">
-
-                          </x-validation-errors>
-
-                          <input type="file" name="file" accept=".csv,.xlsx">
-
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
-                      </div>
-                  </div>
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <tr>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          CODIGO DE EMBALAJE
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          TARIFA (DolaresxCaja)
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          DESCRIPCION
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          ACCIÓN
-                        </th>
-                       
-                    </tr>
-                    </thead>
-                    <tbody>
+                  <div>
+                    <h1 class="text-xl font-semibold mb-4 ml-4">
+                        Por favor selecione el archivo de "Materiales" que desea importar {{$materialestotal->count()}}
+                    </h1>
                   
-                        @foreach ($materiales as $material)
-                          <tr>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <div class="flex items-center">
-                                <div class="flex-shrink-0 w-10 h-10 hidden">
-                                  <img class="w-full h-full rounded-full"
-                                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                            alt="" />
-                                                    </div>
-                                  <div class="ml-3">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                      {{$material->c_embalaje}}
-                                    </p>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$material->costo_por_caja_usd}}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">
-                                {{$material->descripcion}}
-                              </p>
-                            </td>
-                        
+                    <h1 class="text-xl font-semibold mb-4 ml-4">
+                      Fecha de importación: {{$materialestotal->first()->created_at}}
+                    </h1>
 
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Editar</span>
-                              </span>
-                            </td>
-                          </tr>
-                        @endforeach
-              
-                    </tbody>
-                  </table>
+                    <div class="flex">
+                        
+                        <form action="{{route('temporada.importMateriales')}}"
+                            method="POST"
+                            class="bg-white rounded p-8 shadow"
+                            enctype="multipart/form-data">
+                            
+                            @csrf
+
+                            <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                            <x-validation-errors class="errors">
+
+                            </x-validation-errors>
+
+                            <input type="file" name="file" accept=".csv,.xlsx">
+
+                            <x-button class="ml-4">
+                                Importar
+                            </x-button>
+                        </form>
+                        </div>
+                    </div>
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            CODIGO DE EMBALAJE
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            TARIFA (DolaresxCaja)
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            DESCRIPCION
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            ACCIÓN
+                          </th>
+                        
+                      </tr>
+                      </thead>
+                      <tbody>
+                    
+                          @foreach ($materiales as $material)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                  <div class="flex-shrink-0 w-10 h-10 hidden">
+                                    <img class="w-full h-full rounded-full"
+                                                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                              alt="" />
+                                                      </div>
+                                    <div class="ml-3">
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                        {{$material->c_embalaje}}
+                                      </p>
+                                    </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$material->costo_por_caja_usd}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                  {{$material->descripcion}}
+                                </p>
+                              </td>
+                          
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <span
+                                                      class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                      <span aria-hidden
+                                                          class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Editar</span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                
+                      </tbody>
+                    </table>
                 @endif
                 @if ($vista=='EXPORTACION') 
                   <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
@@ -689,6 +689,7 @@
                         </h1>
                     </button>
                   </div>
+
                   <table class="min-w-full leading-normal">
                     <thead>
                       <tr>
@@ -751,6 +752,180 @@
               
                     </tbody>
                   </table>
+                    
+                    <h1 class="text-xl font-semibold mb-4 ml-4 text-center">
+                        Por favor selecione el archivo de "Embarque" que desea importar 
+                    </h1>
+                  
+                    
+                    <div class="flex justify-center">
+                        
+                        <form action="{{route('temporada.importEmbarque')}}"
+                            method="POST"
+                            class="bg-white rounded p-8 shadow"
+                            enctype="multipart/form-data">
+                            
+                            @csrf
+
+                            <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                            <x-validation-errors class="errors">
+
+                            </x-validation-errors>
+
+                            <input type="file" name="file" accept=".csv,.xlsx">
+
+                            <x-button class="ml-4">
+                                Importar
+                            </x-button>
+                        </form>
+                      </div>
+                  
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            T Contenedor
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Destinatario
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            ETD
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            ETA
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Semana de Zarpe
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Semana de Arribo
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            País Destino
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Embarque
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Folio
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Productor
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Código de Productor
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Booking
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Puerto de Origen
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Puerto de Destino
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Nave
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Transporte
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Fecha de Despacho
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Exportadora de Embarque
+                        </th>
+                        
+                        
+                      </tr>
+                      </thead>
+                      <tbody>
+                    
+                          @foreach ($embarques as $material)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <div class="flex items-center">
+                                      <div class="ml-3">
+                                          <p class="text-gray-900 whitespace-no-wrap">
+                                              {{ $material->t_contenedor }}
+                                          </p>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_destinatario }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->etd }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->eta }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->semana_zarpe }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->semana_arribo }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_pais_destino }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_embarque }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->folio }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->r_productor }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->c_proveedor }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_productor }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->booking }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_puerto_origen }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_puerto_destino }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_nave }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->transporte }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->fecha_despacho }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_exportadora_embarque }}</p>
+                              </td>
+                            
+                          
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <span
+                                                      class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                      <span aria-hidden
+                                                          class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Editar</span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                
+                      </tbody>
+                    </table>
+                  
 
                 @endif
                 @if ($vista=='COMISION') 

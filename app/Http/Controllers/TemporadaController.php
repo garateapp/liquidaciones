@@ -8,6 +8,7 @@ use App\Imports\Balance3Import;
 use App\Imports\Balance4Import;
 use App\Imports\BalanceImport;
 use App\Imports\ComisionImport;
+use App\Imports\EmbarqueImport;
 use App\Imports\ExportacionImport;
 use App\Imports\FleteImport;
 use App\Imports\FobImport;
@@ -18,6 +19,7 @@ use App\Models\Anticipo;
 use App\Models\Balancemasa;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Embarque;
 use App\Models\Exportacion;
 use App\Models\Flete;
 use App\Models\Fob;
@@ -341,6 +343,26 @@ class TemporadaController extends Controller
         $temporada=Temporada::find($request->temporada);
 
         return redirect()->route('temporada.flete',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importEmbarque(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        $masas=Embarque::where('temporada_id',$request->temporada)->get();
+
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+
+        FacadesExcel::import(new EmbarqueImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.exportacion',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance2(Request $request)
