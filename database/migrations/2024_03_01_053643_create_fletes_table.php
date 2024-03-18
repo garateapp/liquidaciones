@@ -21,10 +21,9 @@ return new class extends Migration
 
             $table->string('grupo')->nullable();
             $table->string('rut')->nullable();
-            $table->float('productor')->nullable();
-            $table->float('tarifa')->nullable();
-           
-
+            $table->string('productor')->nullable();
+            $table->string('tarifa')->nullable();
+            
             $table->timestamps();
         });
     }
