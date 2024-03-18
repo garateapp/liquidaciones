@@ -67,6 +67,7 @@
                             $globalpesoneto=0;
                             $globaltotalmateriales=0;
                             $globalfletehuerto=0;
+                            $globalgastoexportacion=0;
                         @endphp
                               @foreach ($unique_variedades as $item)
                                   <tr>
@@ -79,6 +80,7 @@
                                             $pesoneto=0;
                                             $totalmateriales=0;
                                             $fletehuerto=0;
+                                            $gastoexportacion=0;
                                         @endphp
                                         @foreach ($masastotal as $masa)
                                           @php
@@ -99,6 +101,21 @@
                                                 if ($flete->rut==$masa->r_productor) {
                                                   $fletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                   $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                }  
+                                              }
+
+                                              foreach ($embarquestotal as $embarque) {
+                                                if ($embarque->folio==$masa->folio) {
+                                                  if ($embarque->transforte=='AEREO') {
+                                                    
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
+                                                  }
+                                                  if ($embarque->transforte=='MARITIMO') {
+                                                    $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
+                                                  }
+                                                    
                                                 }  
                                               }
                                                
@@ -127,7 +144,7 @@
                                         <div class="text-sm text-gray-900">20.000</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{$gastoexportacion}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{number_format($fletehuerto,2)}}</div>    
@@ -172,7 +189,7 @@
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                    <div class="text-sm text-gray-900">20.000</div>    
+                                    <div class="text-sm text-gray-900">{{$globalgastoexportacion}}</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
