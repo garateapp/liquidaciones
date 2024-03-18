@@ -800,34 +800,34 @@
                 @if ($vista=='MASAS')
                   
                
-                <h1 class="text-xl font-semibold mb-4 ml-4">
-                  Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
-                </h1>
-                <h1 class="text-xl font-semibold mb-4 ml-4">
-                  Fecha de importación: {{$masastotal->first()->created_at}}
-                </h1>
-                <div class="">
-                    <form action="{{route('temporada.importBalance')}}"
-                        method="POST"
-                        class="bg-white rounded p-8 shadow"
-                        enctype="multipart/form-data">
-                        
-                        @csrf
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
+                    Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
+                  </h1>
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
+                    Fecha de importación: {{$masastotal->first()->created_at}}
+                  </h1>
+                  <div class="">
+                      <form action="{{route('temporada.importBalance')}}"
+                          method="POST"
+                          class="bg-white rounded p-8 shadow"
+                          enctype="multipart/form-data">
+                          
+                          @csrf
 
-                        <input type="hidden" name="temporada" value={{$temporada->id}}>
+                          <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                        <x-validation-errors class="errors">
+                          <x-validation-errors class="errors">
 
-                        </x-validation-errors>
+                          </x-validation-errors>
 
-                        <input type="file" name="file" accept=".csv,.xlsx">
+                          <input type="file" name="file" accept=".csv,.xlsx">
 
-                        <x-button class="ml-4">
-                            Importar
-                        </x-button>
-                    </form>
+                          <x-button class="ml-4">
+                              Importar
+                          </x-button>
+                      </form>
 
-                </div>
+                  </div>
 
                   <table class="min-w-full leading-normal">
                     <thead>
