@@ -148,46 +148,46 @@
                               @endforeach
 
                               <tr class="bg-yellow-400">
-                                <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">Total</div>    
                                 </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">
                                           {{number_format($globalcajasbulto)}}
                                       </div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2)}}</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500 text-back">
+                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
-                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500 text-back">
-                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                      <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
                                   </td>
                               </tr>
                       </tbody>
