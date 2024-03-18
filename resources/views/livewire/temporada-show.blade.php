@@ -68,7 +68,20 @@
                                         <div class="text-sm text-gray-900">{{$item}}</div>    
                                     </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">20.000</div>    
+                                        @php
+                                            $cajasbulto=0;
+                                        @endphp
+                                        @foreach ($masastotal as $masa)
+                                          @php
+                                            if ($masa->n_variedad==$item) {
+                                              $cajasbulto+=$masa->cantidad;
+                                            }
+                                          @endphp
+                                        @endforeach
+
+                                          <div class="text-sm text-gray-900">
+                                              {{$cajasbulto}}
+                                          </div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">20.000</div>    
