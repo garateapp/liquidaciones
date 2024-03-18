@@ -826,7 +826,7 @@
 						  <td>{{$cantidad4j}}</td>
 						  <td>{{$pesoneto4j}} KGS</td>
 						  <td>{{$retorno4j}} USD</td>
-						  <td>9,73</td>
+						  <td>{{$retorno4j/$pesoneto4j}} USD/kg</td>
 						  
 						</tr>
 						@php
@@ -864,7 +864,7 @@
 						  <td>{{$cantidad3j}}</td>
 						  <td>{{$pesoneto3j}} KGS</td>
 						  <td>{{$retorno3j}} USD</td>
-						  <td>9,73</td>
+						  <td>{{$retorno3j/$pesoneto3j}} USD/kg</td>
 						  
 						</tr>
 						@php
@@ -902,7 +902,7 @@
 						  <td>{{$cantidad2j}}</td>
 						  <td>{{$pesoneto2j}} KGS</td>
 						  <td>{{$retorno2j}} USD</td>
-						  <td>9,73</td>
+						  <td>{{$retorno2j/$pesoneto2j}} USD/kg</td>
 						  
 						</tr>
 						@php
@@ -940,7 +940,7 @@
 						  <td>{{$cantidadj}}</td>
 						  <td>{{$pesonetoj}} KGS</td>
 						  <td>{{$retornoj}} USD</td>
-						  <td>9,73</td>
+						  <td>{{$retornoj/$pesonetoj}} USD/kg</td>
 						  
 						</tr>
 						@php
@@ -978,7 +978,7 @@
 						  <td>{{$cantidadxl}}</td>
 						  <td>{{$pesonetoxl}} KGS</td>
 						  <td>{{$retornoxl}} USD</td>
-						  <td>9,73</td>
+						  <td>{{$retornoxl/$pesonetoxl}} USD/kg</td>
 						  
 						</tr>
 						@php
