@@ -71,12 +71,21 @@
                                         @php
                                             $cajasbulto=0;
                                             $pesoneto=0;
+                                            $totalmateriales=0;
                                         @endphp
                                         @foreach ($masastotal as $masa)
                                           @php
                                             if ($masa->n_variedad==$item) {
                                               $cajasbulto+=$masa->cantidad;
                                               $pesoneto+=$masa->peso_neto;
+
+                                              foreach ($materialestotal as $material) {
+                                                if ($material->c_embalaje==$masa->c_embalaje) {
+                                                  $totalmateriales+=$material->costo_por_caja_usd;
+                                                }  
+                                                 
+                                              }
+                                               
 
                                             }
                                           @endphp
@@ -108,7 +117,7 @@
                                         <div class="text-sm text-gray-900">20.000</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{number_format($totalmateriales,2)}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">20.000</div>    
@@ -741,56 +750,53 @@
                   </table>
                 @endif
                 @if ($vista=='FLETES')
-                  <div class="grid grid-cols-4 gap-x-4 items-center mb-6">
+             
+                <h1 class="text-xl font-semibold mb-4 ml-4">
+                      Por favor selecione el archivo de "Flete a huerto" que desea importar {{$fletes->count()}}
+                  </h1>
+                
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
+                    Fecha de importación: {{$fletes->first()->created_at}}
+                  </h1>
 
-                    <select wire:model="etiqueta" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="" class="text-center">Selecciona una etiqueta</option>
-                        <option value="Agrofruta" class="text-center">Agrofruta</option>
-                        <option value="Diamond Cherries" class="text-center">Diamond Cherries</option>
-                        <option value="Golden Koi" class="text-center">Golden Koi</option>
-                        <option value="Loica" class="text-center">Loica</option>
-                        <option value="Weber" class="text-center">Weber</option>
 
-                        
+                  <form action="{{route('temporada.importFlete')}}"
+                      method="POST"
+                      class="bg-white rounded p-8 shadow"
+                      enctype="multipart/form-data">
+                      
+                      @csrf
 
-                    </select>
-                    <select wire:model="empresa" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="" class="text-center">Selecciona una empresa</option>
-                        <option value="GARATE" class="text-center">GARATE</option>
-                        <option value="AGROVIC" class="text-center">AGROVIC</option>
-                        <option value="AGROFRUTA" class="text-center">AGROFRUTA</option>
+                      <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                        
+                      <x-validation-errors class="errors">
 
-                    </select>
+                      </x-validation-errors>
 
-                    <input wire:model="valor" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
-                    
-                    <button wire:click="flete_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                      <input type="file" name="file" accept=".csv,.xlsx">
 
-                        <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
-                        Agregar
-                            
-                        </h1>
-                    </button>
-                  </div>
+                      <x-button class="ml-4">
+                          Importar
+                      </x-button>
+                  </form>
+
                   <table class="min-w-full leading-normal">
                     <thead>
                       <tr>
                         <th
                           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Etiqueta
+                          Grupo
                         </th>
                         <th
                           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Empresa
+                        Rut
                         </th>
                         <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Valor
+                      Productor
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Acción
+                        TARIFA
                         </th>
                     
                       
@@ -810,16 +816,19 @@
                                                     </div>
                                   <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                      {{$flete->etiqueta}}
+                                      {{$flete->grupo}}
                                     </p>
                                   </div>
                                 </div>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->empresa}}</p>
+                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->rut}}</p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->valor}}</p>
+                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->productor}}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->tarifa}}</p>
                             </td>
                         
                         

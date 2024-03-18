@@ -16,6 +16,10 @@ class Balancemasa extends Model
         return $this->hasone('App\Models\Balancemasados','id_check','id_check');
     }
 
+    public function costomaterial(){
+        return $this->hasone('App\Models\Material','c_embalaje','c_embalaje');
+    }
+
     public function scopeFilter($query,$filters){
         $query->when($filters['razonsocial'] ?? null,function($query,$serie){
             $query->where('c_embalaje','like','%'.$serie.'%')->orwhere('n_productor','like','%'.$serie.'%')

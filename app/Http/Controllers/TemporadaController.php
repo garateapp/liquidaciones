@@ -9,6 +9,7 @@ use App\Imports\Balance4Import;
 use App\Imports\BalanceImport;
 use App\Imports\ComisionImport;
 use App\Imports\ExportacionImport;
+use App\Imports\FleteImport;
 use App\Imports\FobImport;
 use App\Imports\MaterialImport;
 use App\Imports\PackingImport;
@@ -320,6 +321,26 @@ class TemporadaController extends Controller
         $temporada=Temporada::find($request->temporada);
 
         return redirect()->route('temporada.fob',$temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function importFlete(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        $masas=Flete::where('temporada_id',$request->temporada)->get();
+
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+
+        FacadesExcel::import(new FleteImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.flete',$temporada)->with('info','Importación realizada con exito');
     }
 
     public function importBalance2(Request $request)
