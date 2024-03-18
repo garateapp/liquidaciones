@@ -23,10 +23,10 @@
                             <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
                             Grupo variedad
                             </th>
-                            <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                            <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
                               Caja Bulto
                             </th>
-                            <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                            <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
                             Kilos Netos
                             </th>
                             <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
@@ -82,11 +82,11 @@
                                           @endphp
                                         @endforeach
 
-                                          <div class="text-sm text-gray-900 text-center">
+                                          <div class="text-sm text-gray-900">
                                               {{number_format($cajasbulto)}}
                                           </div>    
                                       </td>
-                                      <td class="px-6 py-0 whitespace-nowrap text-center">
+                                      <td class="px-6 py-0 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
                                       </td>
                                       <td class="px-6 py-0 whitespace-nowrap">
