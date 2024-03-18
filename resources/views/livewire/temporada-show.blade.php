@@ -62,6 +62,13 @@
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
+
+                              @php
+                                  $globalcajasbulto=0;
+                                  $globalpesoneto=0;
+                                  $globalmateriales=0;
+                              @endphp
+
                               @foreach ($unique_variedades as $item)
                                   <tr>
                                     <td class="px-6 py-0 whitespace-nowrap">
@@ -79,9 +86,14 @@
                                               $cajasbulto+=$masa->cantidad;
                                               $pesoneto+=$masa->peso_neto;
 
+                                              $globalcajasbulto+=$masa->cantidad;
+                                              $globalpesoneto+=$masa->peso_neto;
+                                              
+
                                               foreach ($materialestotal as $material) {
                                                 if ($material->c_embalaje==$masa->c_embalaje) {
-                                                  $totalmateriales+=floatval($material->costo_por_caja_usd);
+                                                  $totalmateriales+=floatval($material->costo_por_caja_usd*$cajasbulto);
+                                                  $globalmateriales+=floatval($material->costo_por_caja_usd*$cajasbulto);
                                                 }  
                                                  
                                               }
@@ -130,6 +142,49 @@
                                       </td>
                                   </tr>
                               @endforeach
+                              <tr>
+                                <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{$item}}</div>    
+                                </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">
+                                          {{number_format($globalcajasbulto)}}
+                                      </div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                      <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{number_format($globalmateriales,2)}}</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">20.000</div>    
+                                  </td>
+                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                  </td>
+                              </tr>
                       </tbody>
                   </table>
               </div>
