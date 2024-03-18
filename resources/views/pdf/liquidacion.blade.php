@@ -672,7 +672,7 @@
 
 			</tbody>
 		</table>
-
+		<div class="page-break"></div>
 		<h1 class="mt-6">
 			Desglose por semanas
 			</h1>
