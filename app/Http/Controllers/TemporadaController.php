@@ -273,11 +273,12 @@ class TemporadaController extends Controller
 
         $file = $request->file('file');
 
-        $masas=Balancemasa::all();
+        $masas=Balancemasa::where('temporada_id',$request->temporada)->get();
+        
         foreach ($masas as $masa){
             $masa->delete();
         }
-        
+
 
         FacadesExcel::import(new BalanceImport($request->temporada),$file);
 
