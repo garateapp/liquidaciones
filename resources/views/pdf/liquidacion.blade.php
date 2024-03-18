@@ -677,383 +677,399 @@
 			Desglose por semanas
 			</h1>
 
-		<table id="balance" style="width:100%; border-collapse: collapse;">
-			<thead>
-			  <tr>
-			  <th>Especie</th>
-			  <th>Variedad</th>
-			  <th>Categoría</th>
-			  <th>Semana embarque</th>
-			  <th>Serie</th>
-			  <th>Color </th>
-			  <th>Cajas</th>
-			  <th>Peso Neto</th>
-			  <th>Retorno Neto<br> Total</th>
-			  <th>Retorno Kilo</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  @php
-				$variedadcount=1;
-				$cantidadtotal=0;
-				$pesonetototal=0;
-			  @endphp
-			  @foreach ($unique_variedades as $variedad)
-			   
-				@php
-					$calibrecount=1;
-				@endphp
-				 
-				@foreach ($unique_semanas as $semana)
-
+			<table id="balance" style="width:100%; border-collapse: collapse;">
+				<thead>
+				  <tr>
+				  <th>Especie</th>
+				  <th>Variedad</th>
+				  <th>Categoría</th>
+				  <th>Semana embarque</th>
+				  <th>Serie</th>
+				  <th>Color </th>
+				  <th>Cajas</th>
+				  <th>Peso Neto</th>
+				  <th>Retorno Neto<br> Total</th>
+				  <th>Retorno Kilo</th>
+				  </tr>
+				</thead>
+				<tbody>
 				  @php
-					
-				   
-					$cantidad4j=0;
-					$cantidad3j=0;
-					$cantidad2j=0;
-					$cantidadj=0;
-					$cantidadxl=0;
-					$pesoneto4j=0;
-					$pesoneto3j=0;
-					$pesoneto2j=0;
-					$pesonetoj=0;
-					$pesonetoxl=0;
-					$retorno4j=0;
-					$retorno3j=0;
-					$retorno2j=0;
-					$retornoj=0;
-					$retornoxl=0;
+					$variedadcount=1;
+					$cantidadtotal=0;
+					$pesonetototal=0;
 				  @endphp
-		
-				  @foreach ($masas as $masa)
-				  
-					  @if (($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
-						  @php
-							$cantidad4j+=$masa->cantidad;
-							$pesoneto4j+=$masa->peso_neto;
-							foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
-							  $retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
-							  break;
-							}
-							$cantidadtotal+=$masa->cantidad;
-							$pesonetototal+=$masa->peso_neto;
-						  @endphp	
-					  @endif
-					  @if (($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
-						  @php
-							$cantidad3j+=$masa->cantidad;
-							$pesoneto3j+=$masa->peso_neto;
-							$cantidadtotal+=$masa->cantidad;
-							$pesonetototal+=$masa->peso_neto;
-						  @endphp	
-					  @endif
-					  @if (($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
-						  @php
-							$cantidad2j+=$masa->cantidad;
-							$pesoneto2j+=$masa->peso_neto;
-							$cantidadtotal+=$masa->cantidad;
-							$pesonetototal+=$masa->peso_neto;
-						  @endphp	
-					  @endif
-					  @if (($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
-						  @php
-							  $cantidadj+=$masa->cantidad;
-							  $pesonetoj+=$masa->peso_neto;
-							  $cantidadtotal+=$masa->cantidad;
-							  $pesonetototal+=$masa->peso_neto;
-						  @endphp	
-					  @endif
-					  @if (($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
-						  @php
-							$cantidadxl+=$masa->cantidad;
-							$pesonetoxl+=$masa->peso_neto;
-							$cantidadtotal+=$masa->cantidad;
-							$pesonetototal+=$masa->peso_neto;
-						  @endphp	
-					  @endif
+				  @foreach ($unique_variedades as $variedad)
 				   
+					@php
+						$calibrecount=1;
+					@endphp
+					 
+					@foreach ($unique_semanas as $semana)
+
+					  @php
+						
+					   
+						$cantidad4j=0;
+						$cantidad3j=0;
+						$cantidad2j=0;
+						$cantidadj=0;
+						$cantidadxl=0;
+						$pesoneto4j=0;
+						$pesoneto3j=0;
+						$pesoneto2j=0;
+						$pesonetoj=0;
+						$pesonetoxl=0;
+						$retorno4j=0;
+						$retorno3j=0;
+						$retorno2j=0;
+						$retornoj=0;
+						$retornoxl=0;
+					  @endphp
+			
+					  @foreach ($masas as $masa)
+					  
+						  @if (($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
+							  @php
+								$cantidad4j+=$masa->cantidad;
+								$pesoneto4j+=$masa->peso_neto;
+								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+								  $retorno4j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  break;
+								}
+								$cantidadtotal+=$masa->cantidad;
+								$pesonetototal+=$masa->peso_neto;
+							  @endphp	
+						  @endif
+						  @if (($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
+							  @php
+								$cantidad3j+=$masa->cantidad;
+								$pesoneto3j+=$masa->peso_neto;
+								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+								  $retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  break;
+								}
+								$cantidadtotal+=$masa->cantidad;
+								$pesonetototal+=$masa->peso_neto;
+							  @endphp	
+						  @endif
+						  @if (($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
+							  @php
+								$cantidad2j+=$masa->cantidad;
+								$pesoneto2j+=$masa->peso_neto;
+								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+								  $retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  break;
+								}
+								$cantidadtotal+=$masa->cantidad;
+								$pesonetototal+=$masa->peso_neto;
+							  @endphp	
+						  @endif
+						  @if (($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
+							  @php
+								  $cantidadj+=$masa->cantidad;
+								  $pesonetoj+=$masa->peso_neto;
+								  foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+									$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+									break;
+								  }
+								  $cantidadtotal+=$masa->cantidad;
+								  $pesonetototal+=$masa->peso_neto;
+							  @endphp	
+						  @endif
+						  @if (($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD') && $masa->n_variedad==$variedad && $masa->semana==$semana)
+							  @php
+								$cantidadxl+=$masa->cantidad;
+								$pesonetoxl+=$masa->peso_neto;
+								foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+								  $retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+								  break;
+								}
+								$cantidadtotal+=$masa->cantidad;
+								$pesonetototal+=$masa->peso_neto;
+							  @endphp	
+						  @endif
+					   
+						
+					  @endforeach
+					 
+					  @php
+						$semanacount=0;
+					  @endphp
+
+					  @if ($cantidad4j>0)
+						<tr>
+						  @if ($variedadcount==1 && $calibrecount==1)
+							<td>Cherries</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>{{$variedad}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>Cat 1</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  
+						  @if ($semanacount==0)
+							<td>{{$semana}}</td>
+						  @else
+							<td> </td>
+						  @endif
+
+						  <td>4J</td>
+						  <td>{{number_format($cantidad4j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
+						  <td>{{$cantidad4j}}</td>
+						  <td>{{$pesoneto4j}} KGS</td>
+						  <td>{{$retorno4j}} USD</td>
+						  <td>9,73</td>
+						  
+						</tr>
+						@php
+						  $semanacount+=1;
+						  $calibrecount+=1;
+						@endphp
+					  @endif
+					  @if ($cantidad3j>0)
+						<tr>
+						  @if ($variedadcount==1 && $calibrecount==1)
+							<td>Cherries</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>{{$variedad}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>Cat 1</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						 @if ($semanacount==0)
+							<td>{{$semana}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  <td>3J</td>
+						  <td>{{number_format($cantidad3j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
+						  
+						  <td>{{$cantidad3j}}</td>
+						  <td>{{$pesoneto3j}} KGS</td>
+						  <td>{{$retorno3j}} USD</td>
+						  <td>9,73</td>
+						  
+						</tr>
+						@php
+						  $calibrecount+=1;
+						  $semanacount+=1;
+						@endphp
+					  @endif
+					  @if ($cantidad2j>0)
+						<tr>
+						  @if ($variedadcount==1 && $calibrecount==1)
+							<td>Cherries</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>{{$variedad}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>Cat 1</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  @if ($semanacount==0)
+							<td>{{$semana}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  <td>2J</td>
+						  <td>{{number_format($cantidad2j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
+						  
+						  <td>{{$cantidad2j}}</td>
+						  <td>{{$pesoneto2j}} KGS</td>
+						  <td>{{$retorno2j}} USD</td>
+						  <td>9,73</td>
+						  
+						</tr>
+						@php
+						  $calibrecount+=1;
+						  $semanacount+=1;
+						@endphp
+					  @endif
+					  @if ($cantidadj>0)
+						<tr>
+						  @if ($variedadcount==1 && $calibrecount==1)
+							<td>Cherries</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>{{$variedad}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>Cat 1</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  
+						  @if ($semanacount==0)
+							<td>{{$semana}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  <td>J</td>
+						  <td>{{number_format($cantidadj*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
+						  <td>{{$cantidadj}}</td>
+						  <td>{{$pesonetoj}} KGS</td>
+						  <td>{{$retornoj}} USD</td>
+						  <td>9,73</td>
+						  
+						</tr>
+						@php
+						  $calibrecount+=1;
+						  $semanacount+=1;
+						@endphp
+					  @endif
+					  @if ($cantidadxl>0)
+						<tr>
+						  @if ($variedadcount==1 && $calibrecount==1)
+							<td>Cherries</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>{{$variedad}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  @if ($calibrecount==1)
+							<td>Cat 1</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  
+						  @if ($semanacount==0)
+							<td>{{$semana}}</td>
+						  @else
+							<td> </td>
+						  @endif
+						  
+						  <td>XL</td>
+						  <td>{{number_format($cantidadxl*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
+						  <td>{{$cantidadxl}}</td>
+						  <td>{{$pesonetoxl}} KGS</td>
+						  <td>{{$retornoxl}} USD</td>
+						  <td>9,73</td>
+						  
+						</tr>
+						@php
+						  $calibrecount+=1;
+						  $semanacount+=1;
+						@endphp
+					  @endif
+
+					  @if ($cantidad4j>0 || $cantidad3j>0 || $cantidad2j>0 || $cantidadj>0 || $cantidadxl>0)
+						<tr>
+						  
+						  <td> </td>
+					  
+					  
+						  <td> </td>
+						  <td> </td>
+					  
+						
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total {{$semana}} </td>
+					  
+						
+						
+						
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl}}</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+						  
+						</tr>
+					  @endif
+					  @php
+						  $semanacount+=1;
+					  @endphp
+					  
+					@endforeach
+					  @if ($cantidad4j>0 || $cantidad3j>0 || $cantidad2j>0 || $cantidadj>0 || $cantidadxl>0)
+						<tr>
+						  
+							<td> </td>
+						
+						
+							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total {{$variedad}}</td>
+						  
+						  
+							<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+						
+						  
+						  
+						  
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl)}}</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl)}} KGS</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
+						  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+						  
+						</tr>
+					  @endif
+		  
+					  @php
+						$variedadcount+=1;
+					  @endphp
 					
+		  
 				  @endforeach
+		  
+				  <tr>
+						
+					
+				  
+					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total General</td>
+					
+					
+					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+				  
+					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
+				  
+					
+					
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidadtotal}}</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KGS</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
+					<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
+					
+				  </tr>
 				 
-				  @php
-					$semanacount=0;
-				  @endphp
-
-				  @if ($cantidad4j>0)
-					<tr>
-					  @if ($variedadcount==1 && $calibrecount==1)
-						<td>Cherries</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>{{$variedad}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>Cat 1</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  
-					  @if ($semanacount==0)
-						<td>{{$semana}}</td>
-					  @else
-						<td> </td>
-					  @endif
-
-					  <td>4J</td>
-					  <td>{{number_format($cantidad4j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-					  <td>{{$cantidad4j}}</td>
-					  <td>{{$pesoneto4j}} KGS</td>
-					  <td>{{$retorno4j}}</td>
-					  <td>9,73</td>
-					  
-					</tr>
-					@php
-					  $semanacount+=1;
-					  $calibrecount+=1;
-					@endphp
-				  @endif
-				  @if ($cantidad3j>0)
-					<tr>
-					  @if ($variedadcount==1 && $calibrecount==1)
-						<td>Cherries</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>{{$variedad}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>Cat 1</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					 @if ($semanacount==0)
-						<td>{{$semana}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  <td>3J</td>
-					  <td>{{number_format($cantidad3j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-					  
-					  <td>{{$cantidad3j}}</td>
-					  <td>{{$pesoneto3j}} KGS</td>
-					  <td>{{$pesoneto3j}}</td>
-					  <td>9,73</td>
-					  
-					</tr>
-					@php
-					  $calibrecount+=1;
-					  $semanacount+=1;
-					@endphp
-				  @endif
-				  @if ($cantidad2j>0)
-					<tr>
-					  @if ($variedadcount==1 && $calibrecount==1)
-						<td>Cherries</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>{{$variedad}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>Cat 1</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  @if ($semanacount==0)
-						<td>{{$semana}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  <td>2J</td>
-					  <td>{{number_format($cantidad2j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-					  
-					  <td>{{$cantidad2j}}</td>
-					  <td>{{$pesoneto2j}} KGS</td>
-					  <td>{{$pesoneto2j}}</td>
-					  <td>9,73</td>
-					  
-					</tr>
-					@php
-					  $calibrecount+=1;
-					  $semanacount+=1;
-					@endphp
-				  @endif
-				  @if ($cantidadj>0)
-					<tr>
-					  @if ($variedadcount==1 && $calibrecount==1)
-						<td>Cherries</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>{{$variedad}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>Cat 1</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  
-					  @if ($semanacount==0)
-						<td>{{$semana}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  <td>J</td>
-					  <td>{{number_format($cantidadj*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-					  <td>{{$cantidadj}}</td>
-					  <td>{{$pesonetoj}} KGS</td>
-					  <td>{{$pesonetoj}}</td>
-					  <td>9,73</td>
-					  
-					</tr>
-					@php
-					  $calibrecount+=1;
-					  $semanacount+=1;
-					@endphp
-				  @endif
-				  @if ($cantidadxl>0)
-					<tr>
-					  @if ($variedadcount==1 && $calibrecount==1)
-						<td>Cherries</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>{{$variedad}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  @if ($calibrecount==1)
-						<td>Cat 1</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  
-					  @if ($semanacount==0)
-						<td>{{$semana}}</td>
-					  @else
-						<td> </td>
-					  @endif
-					  
-					  <td>XL</td>
-					  <td>{{number_format($cantidadxl*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-					  <td>{{$cantidadxl}}</td>
-					  <td>{{$pesonetoxl}} KGS</td>
-					  <td>{{$pesonetoxl}}</td>
-					  <td>9,73</td>
-					  
-					</tr>
-					@php
-					  $calibrecount+=1;
-					  $semanacount+=1;
-					@endphp
-				  @endif
-
-				  @if ($cantidad4j>0 || $cantidad3j>0 || $cantidad2j>0 || $cantidadj>0 || $cantidadxl>0)
-					<tr>
-					  
-					  <td> </td>
-				  
-				  
-					  <td> </td>
-					  <td> </td>
-				  
-					
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total {{$semana}} </td>
-				  
-					
-					
-					
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl}}</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
-					  
-					</tr>
-				  @endif
-				  @php
-					  $semanacount+=1;
-				  @endphp
-				  
-				@endforeach
-				  @if ($cantidad4j>0 || $cantidad3j>0 || $cantidad2j>0 || $cantidadj>0 || $cantidadxl>0)
-					<tr>
-					  
-						<td> </td>
-					
-					
-						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total {{$variedad}}</td>
-					  
-					  
-						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
-					
-					  
-					  
-					  
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl)}}</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl)}} KGS</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-					  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
-					  
-					</tr>
-				  @endif
-	  
-				  @php
-					$variedadcount+=1;
-				  @endphp
-				
-	  
-			  @endforeach
-	  
-			  <tr>
-					
-				
-			  
-				  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total General</td>
-				
-				
-				  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
-			  
-				  <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"> </td>
-			  
-				
-				
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidadtotal}}</td>
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KGS</td>
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">195 USD</td>
-				<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">9,73</td>
-				
-			  </tr>
-			 
-			</tbody>
-		  </table>
+				</tbody>
+			</table>
 
 		{{-- comment
 		<div class="flex flex-col">

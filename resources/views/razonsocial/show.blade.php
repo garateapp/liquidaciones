@@ -772,6 +772,10 @@
                                                   @php
                                                     $cantidad3j+=$masa->cantidad;
                                                     $pesoneto3j+=$masa->peso_neto;
+                                                    foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+                                                      $retorno3j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+                                                      break;
+                                                    }
                                                     $cantidadtotal+=$masa->cantidad;
                                                     $pesonetototal+=$masa->peso_neto;
                                                   @endphp	
@@ -780,6 +784,10 @@
                                                   @php
                                                     $cantidad2j+=$masa->cantidad;
                                                     $pesoneto2j+=$masa->peso_neto;
+                                                    foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+                                                      $retorno2j+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+                                                      break;
+                                                    }
                                                     $cantidadtotal+=$masa->cantidad;
                                                     $pesonetototal+=$masa->peso_neto;
                                                   @endphp	
@@ -788,6 +796,10 @@
                                                   @php
                                                       $cantidadj+=$masa->cantidad;
                                                       $pesonetoj+=$masa->peso_neto;
+                                                      foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+                                                        $retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+                                                        break;
+                                                      }
                                                       $cantidadtotal+=$masa->cantidad;
                                                       $pesonetototal+=$masa->peso_neto;
                                                   @endphp	
@@ -796,6 +808,10 @@
                                                   @php
                                                     $cantidadxl+=$masa->cantidad;
                                                     $pesonetoxl+=$masa->peso_neto;
+                                                    foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+                                                      $retornoxl+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+                                                      break;
+                                                    }
                                                     $cantidadtotal+=$masa->cantidad;
                                                     $pesonetototal+=$masa->peso_neto;
                                                   @endphp	
@@ -837,7 +853,7 @@
                                               <td>{{number_format($cantidad4j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
                                               <td>{{$cantidad4j}}</td>
                                               <td>{{$pesoneto4j}} KGS</td>
-                                              <td>{{$retorno4j}}</td>
+                                              <td>{{$retorno4j}} USD</td>
                                               <td>9,73</td>
                                               
                                             </tr>
@@ -875,7 +891,7 @@
                                               
                                               <td>{{$cantidad3j}}</td>
                                               <td>{{$pesoneto3j}} KGS</td>
-                                              <td>{{$pesoneto3j}}</td>
+                                              <td>{{$retorno3j}} USD</td>
                                               <td>9,73</td>
                                               
                                             </tr>
@@ -913,7 +929,7 @@
                                               
                                               <td>{{$cantidad2j}}</td>
                                               <td>{{$pesoneto2j}} KGS</td>
-                                              <td>{{$pesoneto2j}}</td>
+                                              <td>{{$retorno2j}} USD</td>
                                               <td>9,73</td>
                                               
                                             </tr>
@@ -951,7 +967,7 @@
                                               <td>{{number_format($cantidadj*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
                                               <td>{{$cantidadj}}</td>
                                               <td>{{$pesonetoj}} KGS</td>
-                                              <td>{{$pesonetoj}}</td>
+                                              <td>{{$retornoj}} USD</td>
                                               <td>9,73</td>
                                               
                                             </tr>
@@ -989,7 +1005,7 @@
                                               <td>{{number_format($cantidadxl*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
                                               <td>{{$cantidadxl}}</td>
                                               <td>{{$pesonetoxl}} KGS</td>
-                                              <td>{{$pesonetoxl}}</td>
+                                              <td>{{$retornoxl}} USD</td>
                                               <td>9,73</td>
                                               
                                             </tr>
