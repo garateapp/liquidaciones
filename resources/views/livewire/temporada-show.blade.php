@@ -62,13 +62,6 @@
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-
-                              @php
-                                  $globalcajasbulto=0;
-                                  $globalpesoneto=0;
-                                  $globalmateriales=0;
-                              @endphp
-
                               @foreach ($unique_variedades as $item)
                                   <tr>
                                     <td class="px-6 py-0 whitespace-nowrap">
@@ -86,14 +79,9 @@
                                               $cajasbulto+=$masa->cantidad;
                                               $pesoneto+=$masa->peso_neto;
 
-                                              $globalcajasbulto+=$masa->cantidad;
-                                              $globalpesoneto+=$masa->peso_neto;
-                                              
-
                                               foreach ($materialestotal as $material) {
                                                 if ($material->c_embalaje==$masa->c_embalaje) {
-                                                  $totalmateriales+=floatval($material->costo_por_caja_usd*$cajasbulto);
-                                                  $globalmateriales+=floatval($material->costo_por_caja_usd*$cajasbulto);
+                                                  $totalmateriales+=$material->costo_por_caja_usd*$cajasbulto;
                                                 }  
                                                  
                                               }
@@ -142,20 +130,44 @@
                                       </td>
                                   </tr>
                               @endforeach
+
                               <tr>
                                 <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">TOTAL</div>    
+                                    <div class="text-sm text-gray-900">Total</div>    
                                 </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
+                                    @php
+                                        $cajasbulto=0;
+                                        $pesoneto=0;
+                                        $totalmateriales=0;
+                                    @endphp
+                                    @foreach ($masastotal as $masa)
+                                      @php
+                                        if ($masa->n_variedad==$item) {
+                                          $cajasbulto+=$masa->cantidad;
+                                          $pesoneto+=$masa->peso_neto;
+
+                                          foreach ($materialestotal as $material) {
+                                            if ($material->c_embalaje==$masa->c_embalaje) {
+                                              $totalmateriales+=($material->costo_por_caja_usd*$cajasbulto);
+                                            }  
+                                             
+                                          }
+                                           
+
+                                        }
+                                      @endphp
+                                    @endforeach
+
                                       <div class="text-sm text-gray-900">
-                                          {{number_format($globalcajasbulto)}}
+                                          {{number_format($cajasbulto)}}
                                       </div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">20.000</div>    
@@ -173,7 +185,7 @@
                                     <div class="text-sm text-gray-900">20.000</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{number_format($globalmateriales,2)}}</div>    
+                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2)}}</div>    
                                   </td>
                                   <td class="px-6 py-0 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">20.000</div>    
