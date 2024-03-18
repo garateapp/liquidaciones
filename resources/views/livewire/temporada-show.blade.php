@@ -502,7 +502,7 @@
                 @if ($vista=='MATERIALES') 
 
                 <div>
-                  <h1 class="text-xl font-semibold mb-4">
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
                       Por favor selecione el archivo de "Materiales" que desea importar {{$materiales->count()}}
                   </h1>
                  
