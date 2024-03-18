@@ -310,12 +310,10 @@
 
 
                     <h1 class="text-xl font-semibold mb-4 ml-4">
-                        Por favor selecione el archivo de "Flete a huerto" que desea importar {{$fletes->count()}}
+                        Por favor selecione el archivo de "Flete a huerto" que desea importar
+                      
                     </h1>
                   
-                    <h1 class="text-xl font-semibold mb-4 ml-4">
-                      Fecha de importación: {{$fletes->first()->created_at}}
-                    </h1>
   
   
                     <form action="{{route('temporada.importFlete')}}"
