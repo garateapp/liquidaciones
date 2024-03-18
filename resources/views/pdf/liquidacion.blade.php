@@ -374,36 +374,43 @@
 									@php
 										$cantidad4j+=$masa->cantidad;
 										$pesoneto4j+=$masa->peso_neto;
+										$cantidadtotal+=$masa->cantidad;
+										$pesonetototal+=$masa->peso_neto;
 									@endphp	
 							@endif
 							@if (($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD') && $masa->n_variedad==$variedad)
 									@php
 										$cantidad3j+=$masa->cantidad;
 										$pesoneto3j+=$masa->peso_neto;
+										$cantidadtotal+=$masa->cantidad;
+										$pesonetototal+=$masa->peso_neto;
 									@endphp	
 							@endif
 							@if (($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD') && $masa->n_variedad==$variedad)
 									@php
 										$cantidad2j+=$masa->cantidad;
 										$pesoneto2j+=$masa->peso_neto;
+										$cantidadtotal+=$masa->cantidad;
+										$pesonetototal+=$masa->peso_neto;
 									@endphp	
 							@endif
 							@if (($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD') && $masa->n_variedad==$variedad)
 									@php
 										$cantidadj+=$masa->cantidad;
 											$pesonetoj+=$masa->peso_neto;
+											$cantidadtotal+=$masa->cantidad;
+										$pesonetototal+=$masa->peso_neto;
 									@endphp	
 							@endif
 							@if (($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD') && $masa->n_variedad==$variedad)
 									@php
 										$cantidadxl+=$masa->cantidad;
 										$pesonetoxl+=$masa->peso_neto;
+										$cantidadtotal+=$masa->cantidad;
+										$pesonetototal+=$masa->peso_neto;
 									@endphp	
 							@endif
-							@php
-								$cantidadtotal+=$masa->cantidad;
-								$pesonetototal+=$masa->peso_neto;
-							@endphp	
+						
 						
 					@endforeach
 
