@@ -501,6 +501,34 @@
                 @endif
                 @if ($vista=='MATERIALES') 
 
+                <div>
+                  <h1 class="text-xl font-semibold mb-4">
+                      Por favor selecione el archivo de "Materiales" que desea importar
+                  </h1>
+
+                  <div class="flex">
+                      
+                      <form action="{{route('temporada.importMateriales')}}"
+                          method="POST"
+                          class="bg-white rounded p-8 shadow"
+                          enctype="multipart/form-data">
+                          
+                          @csrf
+
+                          <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                          <x-validation-errors class="errors">
+
+                          </x-validation-errors>
+
+                          <input type="file" name="file" accept=".csv,.xlsx">
+
+                          <x-button class="ml-4">
+                              Importar
+                          </x-button>
+                      </form>
+                      </div>
+                  </div>
                   <table class="min-w-full leading-normal">
                     <thead>
                       <tr>
