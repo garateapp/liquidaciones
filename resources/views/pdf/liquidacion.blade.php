@@ -467,7 +467,7 @@
 								<td>{{$retorno4j}} USD</td>
 								<td>
 									@if ($pesoneto4j)
-										{{$retorno4j/$pesoneto4j}} USD/kg
+										{{number_format($retorno4j/$pesoneto4j,2)}} USD/kg
 									@else
 										0 USD/kg
 									@endif
@@ -505,7 +505,7 @@
 								<td>{{$retorno3j}} USD</td>
 								<td>
 									@if ($pesoneto3j)
-										{{$retorno3j/$pesoneto3j}} USD/kg
+										{{number_format($retorno3j/$pesoneto3j,2)}} USD/kg
 									@else
 										0 USD/kg
 									@endif
@@ -543,7 +543,7 @@
 								<td>{{$retorno2j}} USD</td>
 								<td>
 									@if ($pesoneto2j)
-										{{$retorno2j/$pesoneto2j}} USD/kg
+										{{number_format($retorno2j/$pesoneto2j,2)}} USD/kg
 									@else
 										0 USD/kg
 									@endif
@@ -581,7 +581,7 @@
 								<td>{{$retornoj}} USD</td>
 								<td>
 									@if ($pesonetoj)
-										{{$retornoj/$pesonetoj}} USD/kg
+										{{number_format($retornoj/$pesonetoj,2)}} USD/kg
 									@else
 										0 USD/kg
 									@endif
@@ -620,7 +620,7 @@
 								<td>{{$retornoxl}} USD</td>
 						  		<td>
 									@if ($pesonetoxl)
-										{{$retornoxl/$pesonetoxl}} USD/kg
+										{{number_format($retornoxl/$pesonetoxl,2)}} USD/kg
 									@else
 										0 USD/kg
 									@endif
@@ -890,8 +890,13 @@
 						  <td>{{$cantidad4j}}</td>
 						  <td>{{$pesoneto4j}} KGS</td>
 						  <td>{{$retorno4j}} USD</td>
-						  <td>{{$retorno4j/$pesoneto4j}} USD/kg</td>
-						  
+						  <td>
+									@if ($pesoneto4j)
+										{{number_format($retorno4j/$pesoneto4j,2)}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 						</tr>
 						@php
 						  $semanacount+=1;
@@ -928,8 +933,13 @@
 						  <td>{{$cantidad3j}}</td>
 						  <td>{{$pesoneto3j}} KGS</td>
 						  <td>{{$retorno3j}} USD</td>
-						  <td>{{$retorno3j/$pesoneto3j}} USD/kg</td>
-						  
+						  <td>
+									@if ($pesoneto3j)
+										{{number_format($retorno3j/$pesoneto3j,2)}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 						</tr>
 						@php
 						  $calibrecount+=1;
@@ -966,8 +976,13 @@
 						  <td>{{$cantidad2j}}</td>
 						  <td>{{$pesoneto2j}} KGS</td>
 						  <td>{{$retorno2j}} USD</td>
-						  <td>{{$retorno2j/$pesoneto2j}} USD/kg</td>
-						  
+						  <td>
+									@if ($pesoneto2j)
+										{{number_format($retorno2j/$pesoneto2j,2)}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 						</tr>
 						@php
 						  $calibrecount+=1;
@@ -1004,8 +1019,13 @@
 						  <td>{{$cantidadj}}</td>
 						  <td>{{$pesonetoj}} KGS</td>
 						  <td>{{$retornoj}} USD</td>
-						  <td>{{$retornoj/$pesonetoj}} USD/kg</td>
-						  
+						  <td>
+									@if ($pesonetoj)
+										{{number_format($retornoj/$pesonetoj,2)}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 						</tr>
 						@php
 						  $calibrecount+=1;
@@ -1042,8 +1062,13 @@
 						  <td>{{$cantidadxl}}</td>
 						  <td>{{$pesonetoxl}} KGS</td>
 						  <td>{{$retornoxl}} USD</td>
-						  <td>{{$retornoxl/$pesonetoxl}} USD/kg</td>
-						  
+						  <td>
+									@if ($pesonetoxl)
+										{{number_format($retornoxl/$pesonetoxl,2)}} USD/kg
+									@else
+										0 USD/kg
+									@endif
+								</td>
 						</tr>
 						@php
 						  $calibrecount+=1;
