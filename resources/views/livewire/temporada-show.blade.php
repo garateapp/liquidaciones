@@ -1003,11 +1003,11 @@
                 @endif
                 @if ($vista=='FLETES')
              
-                <h1 class="text-xl font-semibold mb-4 ml-4">
-                      Por favor selecione el archivo de "Flete a huerto" que desea importar
-                </h1>
+                  <h1 class="text-xl font-semibold mb-4 ml-4">
+                        Por favor selecione el archivo de "Flete a huerto" que desea importar
+                  </h1>
+                  
                 
-               
 
 
                   <form action="{{route('temporada.importFlete')}}"
@@ -1335,6 +1335,37 @@
                 @endif
 
                 @if ($vista=='FOB')
+
+                <div class="flex justify-center">
+                    <div>
+                      <h1 class="text-xl font-semibold mb-4">
+                          Por favor selecione el archivo de "FOB" que desea importar
+                      </h1>
+                      <div class="">
+                          <form action="{{route('temporada.importFob')}}"
+                              method="POST"
+                              class="bg-white rounded p-8 shadow"
+                              enctype="multipart/form-data">
+                              
+                              @csrf
+
+                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                              <x-validation-errors class="errors">
+
+                              </x-validation-errors>
+
+                              <input type="file" name="file" accept=".csv,.xlsx">
+
+                              <x-button class="ml-4">
+                                  Importar
+                              </x-button>
+                          </form>
+
+                      </div>
+                    </div>
+                </div>
+
                   <table class="min-w-full leading-normal">
                       <thead>
                         <tr>
