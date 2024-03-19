@@ -93,13 +93,16 @@
                                                 $globalpesoneto+=$masa->peso_neto;
                                                 
                                                 if ($masa->tipo_transporte=='AEREO') {
-                                                      
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
                                                   }
                                                 if ($masa->tipo_transporte=='MARITIMO') {
-                                                    $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                  if ($exportacions->where('type','aereo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
                                                   }
 
                                                 foreach ($materialestotal as $material) {
@@ -258,7 +261,7 @@
                   Variedades:<br>
                   <select wire:model.live="filters.variedad" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
-                    @foreach ($unique_variedades as $item->name)
+                    @foreach ($unique_variedades as $item)
                       <option value="{{$item->name}}">{{$item->name}}</option>
                     @endforeach
                    
@@ -736,7 +739,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                  
+                      
+                      @if ($exportacions)
+                          
                         @foreach ($exportacions as $exportacion)
                           <tr>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
@@ -775,7 +780,8 @@
                             </td>
                           </tr>
                         @endforeach
-              
+                      @endif
+
                     </tbody>
                   </table>
                     
