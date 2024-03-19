@@ -5,7 +5,7 @@
   @if ($CostosPackingsall->count()>0)
     @foreach ($CostosPackingsall as $packing)
         @php
-            $totalfriopacking+=$packing->total_usd;
+            $totalfriopacking+=intval($packing->total_usd);
         @endphp
           
     @endforeach
