@@ -38,6 +38,7 @@ return new class extends Migration
             $table->text('n_etiqueta')->nullable();
             $table->text('cantidad')->nullable();
             $table->text('peso_neto')->nullable();
+            $table->text('tipo_transporte')->nullable();
 
             $table->timestamps();
         });

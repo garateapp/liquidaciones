@@ -47,7 +47,8 @@ class BalanceImport implements ToCollection, WithStartRow
                     'n_calibre' => $row[14],
                     'n_etiqueta' => $row[15],
                     'cantidad' => $row[16],
-                    'peso_neto' => $row[17]
+                    'peso_neto' => $row[17],
+                    'tipo_transporte'=> $row[18]
                                       
 
                 ]);
