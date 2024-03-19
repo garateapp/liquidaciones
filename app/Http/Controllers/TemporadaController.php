@@ -318,6 +318,12 @@ class TemporadaController extends Controller
 
         $file = $request->file('file');
 
+        $masas=Fob::where('temporada_id',$request->temporada)->get();
+
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+
         FacadesExcel::import(new FobImport($request->temporada),$file);
 
         $temporada=Temporada::find($request->temporada);
