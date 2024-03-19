@@ -74,7 +74,7 @@
                                 @foreach ($unique_variedades as $item)
                                     <tr>
                                       <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{$item}}</div>    
+                                          <div class="text-sm text-gray-900">{{$item->name}}</div>    
                                       </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                           @php
@@ -86,7 +86,7 @@
                                           @endphp
                                           @foreach ($masastotal as $masa)
                                             @php
-                                              if ($masa->n_variedad==$item) {
+                                              if ($masa->n_variedad==$item->name) {
                                                 $cajasbulto+=$masa->cantidad;
                                                 $pesoneto+=$masa->peso_neto;
                                                 $globalcajasbulto+=$masa->cantidad;
@@ -209,7 +209,12 @@
               </div>
           </div>
         </div>
-        {{$unique_variedades}}
+        <a href="{{Route('variedades.refresh',$temporada)}}">
+          <x-button>
+            Actualizar Variedades
+          </x-button>
+        </a>
+       
     @endif
     <section id="informacion">
     <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
@@ -253,8 +258,8 @@
                   Variedades:<br>
                   <select wire:model.live="filters.variedad" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
-                    @foreach ($unique_variedades as $item)
-                      <option value="{{$item}}">{{$item}}</option>
+                    @foreach ($unique_variedades as $item->name)
+                      <option value="{{$item->name}}">{{$item->name}}</option>
                     @endforeach
                    
                   </select>

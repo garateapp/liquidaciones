@@ -15,6 +15,7 @@ use App\Models\Material;
 use App\Models\Razonsocial;
 use App\Models\Resumen;
 use App\Models\Temporada;
+use App\Models\Variedad;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -74,7 +75,7 @@ class TemporadaShow extends Component
 
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
-        $unique_variedades = $masastotal2->pluck('n_variedad')->unique()->sort();
+        $unique_variedades = Variedad::where('temporada_id',$this->temporada->id)->get();
         
         $razons= Razonsocial::filter($this->filters)->whereIn('csg', $unique_productores)->paginate($this->ctd);
 
@@ -115,6 +116,19 @@ class TemporadaShow extends Component
 
     public function set_exportacionedit_id($id){
         $this->exportacionedit_id=$id;
+        
+    }
+
+    public function updatevariedades(){
+
+       foreach($this->masastotal as $masa){
+            $variedad=Variedad::where('name',$masa->n_variedad)->first();
+            if ($variedad){
+
+            }else{
+                Variedad::create(['name'=>$masa->n_variedad]);
+            }
+       }
         
     }
 

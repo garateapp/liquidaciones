@@ -26,6 +26,7 @@ use App\Models\Fob;
 use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
+use App\Models\Variedad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Excel;
@@ -247,6 +248,20 @@ class TemporadaController extends Controller
     public function comisionedit(Comision $comision,Temporada $temporada)
     {   
         return view('comision.edit',compact('comision','temporada'));
+    }
+
+    public function variedadupdate(Temporada $temporada)
+    {   $masas=Balancemasa::where('temporada_id',$temporada->id)->get();
+        foreach($masas as $masa){
+            $variedad=Variedad::where('name',$masa->n_variedad)->where('temporada_id',$temporada->id)->first();
+            if ($variedad){
+
+            }else{
+                Variedad::create(['name'=>$masa->n_variedad,
+                                'temporada_id'=>$temporada->id]);
+            }
+       }
+        return redirect()->back();
     }
 
     public function comisionupdate(Request $request,Comision $comision)
