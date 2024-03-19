@@ -99,7 +99,7 @@
                                                       }
                                                   }
                                                 if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','aereo')->count()>0) {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
                                                       $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                     }
