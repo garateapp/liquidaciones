@@ -486,7 +486,7 @@
                                               {{$razon->csg}}
                                               </td>
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                <a href="{{route('exportpdff',['razonsocial'=>$razonsocial,'temporada'=>$temporada])}}" target="_blank">
+                                                <a href="{{route('exportpdff',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank">
                                                   <x-button>
                                                     Generar
                                                   </x-button>
