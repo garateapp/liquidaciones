@@ -2,12 +2,14 @@
   @php
       $totalfriopacking=0;
   @endphp
-  @foreach ($CostosPackingsall as $packing)
-      @php
-          $totalfriopacking+=$packing->total_usd;
-      @endphp
-        
-  @endforeach
+  @if ($CostosPackingsall->count()>0)
+    @foreach ($CostosPackingsall as $packing)
+        @php
+            $totalfriopacking+=$packing->total_usd;
+        @endphp
+          
+    @endforeach
+  @endif
     <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1> {{$vista}}
     <hr class="mt-2 mb-6">
 
