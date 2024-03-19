@@ -1164,7 +1164,8 @@
                                 'n_calibre',
                                 'n_etiqueta',
                                 'cantidad',
-                                'peso_neto'
+                                'peso_neto',
+                                'transporte'
                             ];
 
                           
@@ -1238,6 +1239,9 @@
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->peso_neto }}</p>
                             </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
+                          </td>
                         
                         
 
