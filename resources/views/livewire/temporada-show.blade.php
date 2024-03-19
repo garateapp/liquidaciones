@@ -95,11 +95,11 @@
                                                 if ($masa->tipo_transporte=='AEREO') {
                                                       
                                                       $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
                                                   }
                                                 if ($masa->tipo_transporte=='MARITIMO') {
                                                     $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                   }
 
                                                 foreach ($materialestotal as $material) {
@@ -209,7 +209,7 @@
               </div>
           </div>
         </div>
-    
+        {{$unique_variedades}}
     @endif
     <section id="informacion">
     <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
