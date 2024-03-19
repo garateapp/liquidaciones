@@ -15,7 +15,7 @@
 
    
     @if ($vista=="resumes")
-      @if ($unique_variedades->count()>0)
+      @if ($masasbalances->count()>0)
         <div class="flex flex-col">
           <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -92,6 +92,16 @@
                                                 $pesoneto+=$masa->peso_neto;
                                                 $globalcajasbulto+=$masa->cantidad;
                                                 $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                    $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
+                                                  }
 
                                                 foreach ($materialestotal as $material) {
                                                   if ($material->c_embalaje==$masa->c_embalaje) {
@@ -106,23 +116,7 @@
                                                     $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                   }  
                                                 }
-                                                /*
-                                                foreach ($embarquestotal as $embarque) {
-                                                  if ($embarque->folio==$masa->folio) {
-                                                    if ($embarque->transforte=='AEREO') {
-                                                      
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->firtst()->precio_usd;
-                                                    }
-                                                    if ($embarque->transforte=='MARITIMO') {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->firtst()->precio_usd;
-                                                    }
-                                                      
-                                                  }  
-                                                }
-                                                */
-
+                                                
                                               }
                                             @endphp
                                           @endforeach
