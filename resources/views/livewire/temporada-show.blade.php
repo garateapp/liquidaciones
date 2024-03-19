@@ -15,7 +15,6 @@
 
    
     @if ($vista=="resumes")
-      @if ($masasbalances->count()>0)
         <div class="flex flex-col">
           <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -210,7 +209,7 @@
               </div>
           </div>
         </div>
-      @endif
+    
     @endif
     <section id="informacion">
     <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
