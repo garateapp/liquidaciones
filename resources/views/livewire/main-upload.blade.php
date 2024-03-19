@@ -1,6 +1,6 @@
 <div>
         <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
-            <div class="grid pb-10  mt-4 " x-data="{packing: true, materiales:false, comision:false, exportacion:false, fletes:false , masas:false, anticipos:false , fob:false}">
+            <div class="grid pb-10  mt-4 " x-data="{@if($vista=='packing') packing: true @else packing: false @endif, @if($vista=='materiales') materiales: true @else materiales: false @endif, @if($vista=='comision') comision: true @else comision: false @endif, @if($vista=='exportacion') exportacion: true @else exportacion: false @endif, @if($vista=='fletes') fletes: true @else fletes: false @endif, @if($vista=='masas') masas: true @else masas: false @endif, @if($vista=='anticipos') anticipos: true @else anticipos: false @endif ,  @if($vista=='fob') fob: true @else fob: false @endif }">
                 <!-- Start Content-->
                 <div class="mb-2 grid grid-cols-12 items-center">
                     <div class="col-span-12 sm:col-span-5 md:col-span-5 lg:col-span-5 xxl:col-span-5">

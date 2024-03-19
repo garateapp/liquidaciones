@@ -23,7 +23,7 @@
                 <hr class="mt-2 mb-6">
                 <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
                     @livewire('menu-aside',['temporada'=>$temporada->id])
-                    @livewire('main-upload', ['temporada' => $temporada], key($temporada->id))
+                    @livewire('main-upload', ['temporada' => $temporada,'vista'=>'materiales'], key($temporada->id))
                 </div>    
             @else
                 @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'MATERIALES'], key($temporada->id))

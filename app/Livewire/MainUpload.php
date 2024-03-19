@@ -12,10 +12,11 @@ use App\Models\Temporada;
 use Livewire\Component;
 
 class MainUpload extends Component
-{   public $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor;
+{   public $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor,$vista;
 
-    public function mount(Temporada $temporada){
+    public function mount(Temporada $temporada,$vista){
         $this->temporada=$temporada;
+        $this->vista=$vista;
     }
     public function render()
     {   $materiales=Material::where('temporada_id',$this->temporada->id)->get();
