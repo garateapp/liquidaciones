@@ -161,7 +161,7 @@
                                           <div class="text-sm text-gray-900">20.000</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($gastoexportacion,8,'.','.')}}</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
@@ -206,7 +206,7 @@
                                       <div class="text-sm text-gray-900">20.000</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,8,'.','.')}}</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
