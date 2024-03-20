@@ -179,10 +179,10 @@
                                           <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}</div>    
+                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">20.000</div>    
+                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
