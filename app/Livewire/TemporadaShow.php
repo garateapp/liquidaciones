@@ -51,7 +51,9 @@ class TemporadaShow extends Component
     {   $resumes=Resumen::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $anticipos=Anticipo::where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
+        
         $materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $embarques=Embarque::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $embarquestotal=Embarque::where('temporada_id',$this->temporada->id)->get();

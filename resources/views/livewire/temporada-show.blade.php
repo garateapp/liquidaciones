@@ -73,6 +73,7 @@
                               $globalgastoexportacion=0;
                               $globalventafob=0;
                               $globalkgsp=0;
+                              $globalcostopacking=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
                                     <tr>
@@ -88,6 +89,7 @@
                                               $gastoexportacion=0;
                                               $ventafob=0;
                                               $kgsp=0;
+                                              $costopacking=0;
                                           @endphp
                                           @foreach ($masastotal as $masa)
                                             @php
@@ -134,6 +136,13 @@
                                                   }  
                                                 }
 
+                                                foreach ($CostosPackingsall as $costo) {
+                                                  if ($costo->variedad==$masa->n_variedad) {
+                                                    $costopacking+=$masa->$costo->total_usd;
+                                                    $globalcostopacking+=$costo->total_usd;
+                                                  }  
+                                                }
+
                                                     
                                                
                                                 
@@ -158,7 +167,7 @@
                                             <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">20.000</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
@@ -203,7 +212,7 @@
                                         <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">20.000</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
