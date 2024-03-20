@@ -29,6 +29,8 @@ class Balancemasa extends Model
             if ($precioFob == 'null') {
                 $query->whereNull('precio_fob');
             }
+        })->when($filters['ncategoria'] ?? null, function ($query, $nCategoria) {
+            $query->where('n_categoria_st', $nCategoria);
         });
     }
     

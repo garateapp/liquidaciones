@@ -37,6 +37,7 @@ class TemporadaShow extends Component
         'fromDate'=>'',
         'toDate'=>'',
         'precioFob'=>'',
+        'ncategoria'=>'',
     ];
 
     #[Url]
@@ -74,8 +75,9 @@ class TemporadaShow extends Component
             ->where('temporada_id', $this->temporada->id)
             ->orderByDesc('precio_fob') // Ordenar por precio_fob descendente
             ->paginate($this->ctd);
+
             
-        $masastotal=Balancemasa::where('temporada_id',$this->temporada->id)->get();
+        $masastotal=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
         
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
