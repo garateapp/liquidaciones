@@ -182,7 +182,14 @@
                                           <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}</div>    
+                                          <div class="text-sm text-gray-900">
+                                            @if ($pesoneto==0)
+                                              0      
+                                            @else
+                                             {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                
+                                            @endif
+                                          </div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
@@ -227,7 +234,13 @@
                                       <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                      <div class="text-sm text-gray-900">
+                                        @if ($globalpesoneto==0)
+                                            0
+                                        @else
+                                          {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                            
+                                        @endif
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
                                         <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>

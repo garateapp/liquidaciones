@@ -17,13 +17,14 @@ use App\Models\Resumen;
 use App\Models\Temporada;
 use App\Models\Variedad;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $masasbalances, $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
 
 
     #[Url]
@@ -71,10 +72,25 @@ class TemporadaShow extends Component
         $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances=Balancemasa::filter($this->filters)
-            ->where('temporada_id', $this->temporada->id)
-            ->orderByDesc('precio_fob') // Ordenar por precio_fob descendente
-            ->paginate($this->ctd);
+        // Verificar si los datos están en la caché
+        $cacheKey = 'masasbalances_' . $this->temporada->id;
+        
+        if (Cache::has($cacheKey)) {
+            // Si están en la caché, obtenerlos de la caché
+            $data = Cache::get($cacheKey);
+        } else {
+            // Si no están en la caché, obtenerlos de la base de datos
+            $data = Balancemasa::filter($this->filters)
+                ->where('temporada_id', $this->temporada->id)
+                ->orderByDesc('precio_fob') // Ordenar por precio_fob descendente
+                ->paginate($this->ctd);
+
+            // Guardar los datos en la caché
+            Cache::put($cacheKey, $data);
+        }
+
+        // Asignar solo los datos relevantes a la propiedad masasbalances
+        $this->masasbalances = $data->items();
 
             
         $masastotal=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
@@ -93,7 +109,7 @@ class TemporadaShow extends Component
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','razonsall'));
     }
 
     public function set_view($vista){
