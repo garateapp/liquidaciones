@@ -447,16 +447,19 @@
                    
                   </select>
                 </div>
-                <div class="ml-4">
-                  Precio_fob:<br>
-                  <select wire:model.live="filters.preciofob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
+                @if ($vista=='MASAS')
+                  <div class="ml-4">
+                    Precio_fob:<br>
+                    <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      
+                        <option value="null"> Sin Precio Fob</option>
+                      
                     
-                      <option value="null"> Sin Precio Fob</option>
-                    
-                   
-                  </select>
-                </div>
+                    </select>
+                  </div>
+                @endif
+
                 @if ($vista=='PACKING')
                   <div class="ml-auto p-3 shadow-lg rounded-lg bg-white">
                     <h1 class="text-center font-bold text-xl">{{number_format($totalfriopacking,1)}} usd</h1>

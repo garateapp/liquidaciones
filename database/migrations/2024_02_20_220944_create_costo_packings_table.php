@@ -20,6 +20,7 @@ return new class extends Migration
             ->onDelete('cascade');
 
             $table->string('especie')->nullable();
+            $table->string('variedad')->nullable();
             $table->string('n_productor')->nullable();
             $table->string('csg')->nullable();
             $table->string('kg')->nullable();
