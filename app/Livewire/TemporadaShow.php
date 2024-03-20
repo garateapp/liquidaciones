@@ -64,8 +64,9 @@ class TemporadaShow extends Component
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
         $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->where('n_categoria','Cat 1')->where('n_etiqueta','!=','Alsu')->paginate($this->ctd);
         
         $masastotal=Balancemasa::where('temporada_id',$this->temporada->id)->get();
         
@@ -83,7 +84,7 @@ class TemporadaShow extends Component
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){

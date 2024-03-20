@@ -264,6 +264,71 @@ class TemporadaController extends Controller
         return redirect()->back();
     }
 
+    public function fobupdate(Temporada $temporada)
+    {   $masas=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
+        $fobsall=Fob::where('temporada_id',$temporada->id)->get();
+        $nro=0;
+        foreach($masas as $masa){
+                if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+				    $calibre='4J';
+									
+                    if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                          $color='Dark';
+                    }else{
+                      $color='Light';
+                    }
+        		}
+				if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                        $calibre='3J';
+                  if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                          $color='Dark';
+                    }else{
+                      $color='Light';
+                    }
+				}
+				if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                    $calibre='2J';
+                    if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                            $color='Dark';
+                       
+                    }else{
+                        $color='Light';
+                    }
+				}
+				if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                        $calibre='J';
+                    if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                            $color='Dark';
+                    }else{
+                        $color='Light';
+                    }
+                }
+			    if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                    $calibre='XL';
+                  if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                          $color='Dark';
+                    }else{
+                      $color='Light';
+                    }
+                }
+
+                foreach ($fobsall->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+                
+                    if ($fob->n_calibre==$calibre && $fob->etiqueta==$masa->n_etiqueta && $fob->color==$color){
+                        if(IS_NULL($masa->precio_fob)){    
+                            $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                            $nro+=1;
+                        }
+                    }
+
+                }
+               
+
+       }
+
+        return redirect()->back()->with('info',$nro.' Actualizados con Éxito');
+    }
+
     public function comisionupdate(Request $request,Comision $comision)
     {   
         $comision->update($request->all());

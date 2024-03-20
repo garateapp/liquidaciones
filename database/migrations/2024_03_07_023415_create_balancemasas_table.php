@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('cantidad')->nullable();
             $table->text('peso_neto')->nullable();
             $table->text('tipo_transporte')->nullable();
+            $table->text('precio_fob')->nullable();
 
             $table->timestamps();
         });

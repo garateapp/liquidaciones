@@ -29,11 +29,11 @@ class FobImport implements ToCollection, WithStartRow
                     'temporada_id'=>$this->temporada,
 
                     'n_variedad'=> $row[0],
-                    'semana'=> $row[1],
-                    'etiqueta'=> $row[2],
-                    'n_calibre'=> $row[3],
-                    'color'=> $row[4],
-                    'categoria'=> $row[5],
+                    'semana'=> trim($row[1]),
+                    'etiqueta'=> trim($row[2]),
+                    'n_calibre'=> trim($row[3]),
+                    'color'=> trim($row[4]),
+                    'categoria'=> trim($row[5]),
                     'fob_kilo_salida'=> $row[6]
                    
                 ]);

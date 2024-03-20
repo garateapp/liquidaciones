@@ -15,7 +15,8 @@
 
    
     @if ($vista=="resumes")
-        <div class="flex flex-col">
+    
+        <div class="flex flex-col mb-2">
           <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                   <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -70,6 +71,7 @@
                               $globaltotalmateriales=0;
                               $globalfletehuerto=0;
                               $globalgastoexportacion=0;
+                              $globalventafob=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
                                     <tr>
@@ -83,6 +85,7 @@
                                               $totalmateriales=0;
                                               $fletehuerto=0;
                                               $gastoexportacion=0;
+                                              $ventafob=0;
                                           @endphp
                                           @foreach ($masastotal as $masa)
                                             @php
@@ -91,6 +94,9 @@
                                                 $pesoneto+=$masa->peso_neto;
                                                 $globalcajasbulto+=$masa->cantidad;
                                                 $globalpesoneto+=$masa->peso_neto;
+
+                                                $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
                                                 
                                                 if ($masa->tipo_transporte=='AEREO') {
                                                       if ($exportacions->where('type','aereo')->count()>0) {
@@ -118,6 +124,9 @@
                                                     $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                   }  
                                                 }
+
+                                                    
+                                               
                                                 
                                               }
                                             @endphp
@@ -134,7 +143,7 @@
                                           <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">20.000</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2)}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">20.000</div>    
@@ -179,7 +188,7 @@
                                       <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">20.000</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2)}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                         <div class="text-sm text-gray-900">20.000</div>    
@@ -212,6 +221,163 @@
               </div>
           </div>
         </div>
+ {{-- commen
+        <table>
+
+          @foreach ($masasbalances as $masa)
+
+          <tr>
+            <td>
+              ID: {{$masa->id}} 
+            </td>
+            <td>
+               S: {{$masa->semana}}
+            </td>
+           
+            
+            <td>
+              VAR: {{$masa->n_variedad}}
+            </td>
+            <td>
+              ETIQUETA: {{$masa->n_etiqueta}}
+            </td>
+            
+            <td>
+                CALIBRE: {{$masa->n_calibre}}           
+            </td> 
+            <td>
+                COLOR: {{$masa->n_calibre}}           
+            </td> 
+
+            <td>
+              PESO: {{$masa->peso_neto}}
+            </td>
+           
+                  
+          </tr>
+          @if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD')
+									@php
+									  $calibre='4J';
+									@endphp	
+
+                  @if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD')
+                      @php
+                          $color='Dark';
+                      @endphp
+                  @else
+                    @php
+                      $color='Light';
+                    @endphp
+                      
+                  @endif
+
+							@endif
+							@if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD')
+                  @php
+                    $calibre='3J';
+                  @endphp	
+                  @if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD')
+                      @php
+                          $color='Dark';
+                      @endphp
+                  @else
+                    @php
+                      $color='Light';
+                    @endphp
+                      
+                  @endif
+							@endif
+							@if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD')
+                @php
+                  $calibre='2J';
+                @endphp	
+                @if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD')
+                    @php
+                        $color='Dark';
+                    @endphp
+                @else
+                  @php
+                    $color='Light';
+                  @endphp
+                @endif
+							@endif
+							@if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD')
+                  @php
+                    $calibre='J';
+                  @endphp	
+                  @if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD')
+                      @php
+                          $color='Dark';
+                      @endphp
+                  @else
+                    @php
+                      $color='Light';
+                    @endphp
+                      
+                  @endif
+							@endif
+							@if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD')
+                  @php
+                    $calibre='XL';
+                  @endphp	
+                  @if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD')
+                      @php
+                          $color='Dark';
+                      @endphp
+                  @else
+                    @php
+                      $color='Light';
+                    @endphp
+                      
+                  @endif
+							@endif
+
+            @foreach ($fobsall->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob)
+            
+              @if ($fob->n_calibre==$calibre && $fob->etiqueta==$masa->n_etiqueta && $fob->color==$color)
+                  
+                <tr>
+                  <td>
+                   <b> FOB: {{$fob->id}} </b>
+                  </td>
+                  <td>
+                     S: {{$fob->semana}}
+                  </td>
+                  <td>
+                    VAR: {{$fob->n_variedad}}
+                  </td>
+                  <td>
+                    ETIQUETA: {{$fob->etiqueta}}
+                    </td>
+                    <td>
+                      CALIBRE: {{$fob->n_calibre}}
+                      </td>
+                      <td>
+                        COLOR: {{$fob->color}}
+                        </td>
+                      <td>
+                        <b>
+                      fob: {{$fob->fob_kilo_salida}} {{$fob->etiqueta}} <br>
+                    </b>
+                  </td>                 
+                </tr>
+
+               
+                @endif
+
+            @endforeach
+            <tr>
+              <td>
+
+              </td>
+            </tr>
+          @endforeach
+
+         
+
+        </table>
+       --}}
+       
         <a href="{{Route('variedades.refresh',$temporada)}}">
           <x-button>
             Actualizar Variedades
@@ -220,7 +386,7 @@
        
     @endif
     <section id="informacion">
-    <div class="flex w-full bg-gray-300"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
+    <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
         
         @livewire('menu-aside',['temporada'=>$temporada->id])
         <!-- End Sidebar -->
@@ -429,7 +595,15 @@
               </div>
             </div>
           </div>
-            <div class="flex justify-end">
+            <div class="flex justify-between ml-4">
+              @if ($vista=='MASAS')
+                <a href="{{Route('preciofob.refresh',$temporada)}}">
+                  <x-button>
+                    Actualizar PRECIO FOB
+                  </x-button>
+                </a>
+              @endif
+              
               <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
                   <option value="25" class="text-left px-10">25 </option>
                   <option value="50" class="text-left px-10">50 </option>
@@ -1120,37 +1294,40 @@
                 @endif
                 
                 @if ($vista=='MASAS')
-                  
+
+                
                
-                  <h1 class="text-xl font-semibold mb-4 ml-4">
-                    Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
-                  </h1>
-                  <h1 class="text-xl font-semibold mb-4 ml-4">
-                    Fecha de importación: {{$masastotal->first()->created_at}}
-                  </h1>
+                <div class="flex justify-start">
                   <div class="">
-                      <form action="{{route('temporada.importBalance')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
+                    <h1 class="text-xl font-semibold mb-4 ml-4">
+                      Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
+                    </h1>
+                    <h1 class="text-xl font-semibold mb-4 ml-4">
+                      Fecha de importación: {{$masastotal->first()->created_at}}
+                    </h1>
+                    
+                        <form action="{{route('temporada.importBalance')}}"
+                            method="POST"
+                            class="bg-white rounded p-8 shadow"
+                            enctype="multipart/form-data">
+                            
+                            @csrf
 
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
+                            <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                          <x-validation-errors class="errors">
+                            <x-validation-errors class="errors">
 
-                          </x-validation-errors>
+                            </x-validation-errors>
 
-                          <input type="file" name="file" accept=".csv,.xlsx">
+                            <input type="file" name="file" accept=".csv,.xlsx">
 
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
+                            <x-button class="ml-4">
+                                Importar
+                            </x-button>
+                        </form>
 
                   </div>
-
+                </div>
                   <table class="min-w-full leading-normal">
                     <thead>
                       <tr>
@@ -1176,7 +1353,8 @@
                                 'n_etiqueta',
                                 'cantidad',
                                 'peso_neto',
-                                'transporte'
+                                'transporte',
+                                'precio_fob'
                             ];
 
                           
@@ -1252,6 +1430,9 @@
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                               <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
                           </td>
                         
                         

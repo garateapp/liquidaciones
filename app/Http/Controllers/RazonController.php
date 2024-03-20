@@ -132,9 +132,7 @@ class RazonController extends Controller
     {       
         $temporada=Temporada::find($temporada->id);
         $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
-        foreach($masas as $masa){
-            $masa->update(['semana'=>date('W', strtotime($masa->fecha_g_produccion_sh))]);
-        }
+       
 
 
         $masas2=Balancemasados::where('temporada_id',$temporada->id)->get();
