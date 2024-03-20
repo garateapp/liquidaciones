@@ -1502,19 +1502,32 @@
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                               <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
                             </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
-                          </td>
+                            <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                              @if ($masaid==$masa->id)
+                                  <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                              @else
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                              @endif
+                               
+
+                            </td>
                         
                         
 
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Editar</span>
-                              </span>
+                              @if ($masaid==$masa->id)
+                                <span wire:click='save_masaid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                  <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Guardar</span>
+                                </span>
+                              @else
+                                <span wire:click='set_masaid({{$masa->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                  <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Editar</span>
+                                </span>
+                              @endif
+                             
+
                             </td>
                           </tr>
                         @endforeach
