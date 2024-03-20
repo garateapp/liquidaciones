@@ -386,13 +386,18 @@
 
         </table>
        --}}
-       
-        <a href="{{Route('variedades.refresh',$temporada)}}">
+    <div class="flex ">
+        <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
           <x-button>
             Actualizar Variedades
           </x-button>
         </a>
-       
+        <a href="{{Route('preciofob.refresh',$temporada)}}">
+          <x-button>
+            Actualizar PRECIO FOB
+          </x-button>
+        </a>
+      </div>
     @endif
     <section id="informacion">
     <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
