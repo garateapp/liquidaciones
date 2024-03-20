@@ -20,7 +20,7 @@ return new class extends Migration
             ->onDelete('cascade');
 
             $table->string('type')->nullable();
-            $table->float('precio_usd')->nullable();
+            $table->string('precio_usd')->nullable();
            
 
             $table->timestamps();

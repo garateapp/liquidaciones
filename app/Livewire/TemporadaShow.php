@@ -35,6 +35,7 @@ class TemporadaShow extends Component
         'toNumber'=>'',
         'fromDate'=>'',
         'toDate'=>'',
+        'preciofob'=>'',
     ];
 
     #[Url]

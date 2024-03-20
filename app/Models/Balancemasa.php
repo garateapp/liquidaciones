@@ -22,7 +22,8 @@ class Balancemasa extends Model
 
     public function scopeFilter($query,$filters){
         $query->when($filters['razonsocial'] ?? null,function($query,$serie){
-            $query->where('c_embalaje','like','%'.$serie.'%')->orwhere('n_productor','like','%'.$serie.'%')
+            $query->where('c_embalaje','like','%'.$serie.'%')
+            ->orwhere('n_productor','like','%'.$serie.'%')
             ->orwhere('r_productor','like','%'.$serie.'%');
         });
     }
