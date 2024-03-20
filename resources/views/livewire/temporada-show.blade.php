@@ -72,6 +72,7 @@
                               $globalfletehuerto=0;
                               $globalgastoexportacion=0;
                               $globalventafob=0;
+                              $globalkgsp=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
                                     <tr>
@@ -86,6 +87,7 @@
                                               $fletehuerto=0;
                                               $gastoexportacion=0;
                                               $ventafob=0;
+                                              $kgsp=0;
                                           @endphp
                                           @foreach ($masastotal as $masa)
                                             @php
@@ -94,9 +96,16 @@
                                                 $pesoneto+=$masa->peso_neto;
                                                 $globalcajasbulto+=$masa->cantidad;
                                                 $globalpesoneto+=$masa->peso_neto;
-
-                                                $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                
+                                                if (!IS_NULL($masa->precio_fob)) {
+                                                  $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                  $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                 
                                                 
                                                 if ($masa->tipo_transporte=='AEREO') {
                                                       if ($exportacions->where('type','aereo')->count()>0) {
@@ -143,7 +152,7 @@
                                           <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2)}}</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2)}} ({{number_format($kgsp)}} Kilos/SP)</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">20.000</div>    
@@ -188,7 +197,7 @@
                                       <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2)}}</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2)}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                         <div class="text-sm text-gray-900">20.000</div>    

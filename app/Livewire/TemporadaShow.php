@@ -66,7 +66,7 @@ class TemporadaShow extends Component
         $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->where('n_categoria','Cat 1')->where('n_etiqueta','!=','Alsu')->paginate($this->ctd);
+        $masasbalances=Balancemasa::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $masastotal=Balancemasa::where('temporada_id',$this->temporada->id)->get();
         
