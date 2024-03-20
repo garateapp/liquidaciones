@@ -137,7 +137,7 @@
                                                 }
 
                                                 foreach ($CostosPackingsall as $costo) {
-                                                  if ($costo->variedad==$masa->n_variedad) {
+                                                  if ($costo->variedad==$item->name) {
                                                     $costopacking+=$masa->$costo->total_usd;
                                                     $globalcostopacking+=$costo->total_usd;
                                                   }  
