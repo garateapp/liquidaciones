@@ -31,6 +31,7 @@ class TemporadaShow extends Component
         'exportadora'=>'',
         'razonsocial'=>'',
         'especie'=>'',
+        'variedad'=>'',
         'fromNumber'=>'',
         'toNumber'=>'',
         'fromDate'=>'',

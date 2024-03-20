@@ -135,21 +135,21 @@
                                                     $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                   }  
                                                 }
-
-                                                foreach ($CostosPackingsall as $costo) {
-                                                  if ($costo->variedad==$item->name) {
-                                                    $costopacking+=$masa->$costo->total_usd;
-                                                    $globalcostopacking+=$costo->total_usd;
-                                                  }  
-                                                }
-
-                                                    
-                                               
-                                                
                                               }
+                                              
                                             @endphp
                                           @endforeach
+                                              @php
+                                                  
+                                          foreach ($CostosPackingsall as $costo) {
+                                            if ($costo->variedad==$item->name) {
+                                              $costopacking+=$costo->total_usd;
+                                              $globalcostopacking+=$costo->total_usd;
+                                            }  
+                                          }
 
+                                          @endphp
+                                          
                                             <div class="text-sm text-gray-900">
                                                 {{number_format($cajasbulto)}}
                                             </div>    

@@ -16,6 +16,8 @@ class CostoPacking extends Model
             $query->where('n_productor','like','%'.$razonsocial.'%')->orwhere('csg','like','%'.$razonsocial.'%');
         })->when($filters['especie'] ?? null,function($query,$especie){
             $query->where('especie','like','%'.$especie.'%');
+        })->when($filters['variedad'] ?? null,function($query,$variedad){
+            $query->where('variedad',$variedad);
         });
         
     }
