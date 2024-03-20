@@ -152,10 +152,10 @@
                                           <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2)}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">20.000</div>    
+                                            <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">20.000</div>    
@@ -164,10 +164,10 @@
                                           <div class="text-sm text-gray-900">{{$gastoexportacion}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($fletehuerto,2)}}</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                          <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')'.','.')}}</div>    
                                         </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">20.000</div>    
@@ -197,10 +197,10 @@
                                       <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2)}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                        <div class="text-sm text-gray-900">20.000</div>    
+                                        <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">20.000</div>    
@@ -212,7 +212,7 @@
                                       <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2)}}</div>    
+                                      <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
                                     </td>
                                     <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
                                       <div class="text-sm text-gray-900">20.000</div>    
