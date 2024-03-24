@@ -770,7 +770,7 @@
 			
 		
 
-		@if ($n>1)
+		@if ($n>2)
 			
 			<div class="page-break"></div>
 		@endif
