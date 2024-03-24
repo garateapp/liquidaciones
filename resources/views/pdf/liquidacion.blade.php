@@ -1176,6 +1176,24 @@
 				</tbody>
 			</table>
 
+
+			<h1 class="mt-6">
+				GRAFICOS
+				</h1>
+			<table style="width:100%;">
+				@foreach ($graficos as $item)
+					<tr>
+						
+						
+						<td>
+							<img style="width:100%;" src="{{$item}}" alt="" >
+						</td>
+							
+					</tr>
+				@endforeach
+				
+			</table>
+
 		{{-- comment
 		<div class="flex flex-col">
 			<div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
