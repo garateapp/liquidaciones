@@ -369,7 +369,7 @@
         
         @php
             $colorbarra='#6FAB1B';
-            
+            $tamanoletra='28px'
         @endphp
 
       <script>
@@ -381,6 +381,7 @@
         var promedio = <?php echo json_encode($promedio) ?>;
         var colorbarra = <?php echo json_encode($colorbarra) ?>;
         var name = <?php echo json_encode($name) ?>;
+        var tamanoletra = <?php echo json_encode($tamanoletra) ?>;
 
         console.log(curvacalibre_array); // Esto puede ayudar a verificar si se está pasando correctamente
         Highcharts.chart('container', {
@@ -424,7 +425,7 @@
             format: '{value:.2f} %',
             style: {
                 color: 'black',
-                fontSize: '20px', // Ajustar el tamaño del texto en el eje Y
+                fontSize: tamanoletra, // Ajustar el tamaño del texto en el eje Y
                 fontWeight: 'bold'
             }
         }
@@ -441,7 +442,7 @@
             format: 'USD {value:.2f}',
             style: {
                 color: 'black',
-                fontSize: '20px', // Ajustar el tamaño del texto en el eje Y
+                fontSize: tamanoletra, // Ajustar el tamaño del texto en el eje Y
                 fontWeight: 'bold'
             }
         },
