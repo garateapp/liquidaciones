@@ -754,7 +754,7 @@
 						
 						
 						<td>
-							<img style="width:100%;" src="{{$item}}" alt="" >
+							<img style="width:80%;" src="{{$item}}" alt="" >
 						</td>
 							
 					</tr>
