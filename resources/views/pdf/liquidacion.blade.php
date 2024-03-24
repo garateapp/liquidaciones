@@ -749,7 +749,7 @@
 				$n=1;
 			@endphp
 			@foreach ($graficos as $item)
-				<table style="width:100%;">
+				<table style="width:100%; margin: 250px auto;">
 					<tr>
 						
 						
