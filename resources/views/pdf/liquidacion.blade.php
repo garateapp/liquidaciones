@@ -759,7 +759,7 @@
 							
 					</tr>
 				</table>
-				@if ($n==2 || $n==4 || $n==6)
+				@if ($n==1 || $n==3 || $n==5)
 					<div class="page-break"></div>
 				@endif
 				@php
