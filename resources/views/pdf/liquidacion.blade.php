@@ -770,8 +770,11 @@
 			
 		
 
+		@if ($n>1)
+			
+			<div class="page-break"></div>
+		@endif
 
-		<div class="page-break"></div>
 		<h1 class="mt-6">
 			Desglose por semanas
 			</h1>
