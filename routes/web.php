@@ -40,7 +40,7 @@ Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync')
 
 Route::get('pdf/export/{razonsocial}/{temporada}',[TemporadaShow::class,'exportpdf'])->name('exportpdff');
 
-Route::get('grafico/{razonsocial}/{variedad}',[TemporadaShow::class,'exportpdf'])->name('grafico.variedad');
+Route::get('grafico/{razonsocial}/{temporada}/{variedad}',[TemporadaController::class,'graficogenerate'])->name('grafico.variedad');
 
 Route::resource('temporada', TemporadaController::class)->names('temporadas');
 

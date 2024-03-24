@@ -115,13 +115,15 @@ class TemporadaShow extends Component
     public function exportpdf(Razonsocial $razonsocial, Temporada $temporada){
         
         $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
+        $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
+        
         $packings=CostoPacking::where('temporada_id',$temporada->id)->where('csg',$razonsocial->csg)->get();
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
 
-        $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
+        
 
         $pdf = Pdf::loadView('pdf.liquidacion', ['razonsocial' => $razonsocial,
                                                         'masas' => $masas,

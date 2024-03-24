@@ -24,6 +24,7 @@ use App\Models\Exportacion;
 use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Material;
+use App\Models\Razonsocial;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use App\Models\Variedad;
@@ -40,6 +41,18 @@ class TemporadaController extends Controller
     public function index()
     {
         //
+    }
+
+    public function graficogenerate(Razonsocial $razonsocial, Temporada $temporada, Variedad $variedad)
+    {   
+        $masas=Balancemasa::where('temporada_id',$temporada->id)->where('c_productor',$razonsocial->csg)->get();
+        $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
+        $fobs = Fob::where('temporada_id',$temporada->id)->get();
+        $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
+
+        $unique_variedades = $masas->where('n_variedad', $variedad->name)->pluck('n_variedad')->unique()->sort();
+
+        return view('grafico.variedad',compact('unique_calibres','unique_variedades','razonsocial','temporada','variedad','unique_variedades','masas','fobs'));
     }
 
     /**

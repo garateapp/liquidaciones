@@ -10,6 +10,7 @@ use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Razonsocial;
 use App\Models\Temporada;
+use App\Models\Variedad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -141,10 +142,12 @@ class RazonController extends Controller
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
         $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
+        $variedades = Variedad::whereIn('name', $unique_variedades)->get();
+
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
 
-        return view('razonsocial.show',compact('unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        return view('razonsocial.show',compact('variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**
