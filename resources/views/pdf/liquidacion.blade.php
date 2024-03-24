@@ -742,6 +742,31 @@
 
 			</tbody>
 		</table>
+
+		
+		
+			@php
+				$n=1;
+			@endphp
+			@foreach ($graficos as $item)
+				<table style="width:100%;">
+					<tr>
+						
+						
+						<td>
+							<img style="width:100%;" src="{{$item}}" alt="" >
+						</td>
+							
+					</tr>
+				</table>
+				@if ($n==2 || $n==4 || $n==6)
+					<div class="page-break"></div>
+				@endif
+			@endforeach
+			
+		
+
+
 		<div class="page-break"></div>
 		<h1 class="mt-6">
 			Desglose por semanas
@@ -1176,23 +1201,9 @@
 				</tbody>
 			</table>
 
+			<div class="page-break"></div>
 
-			<h1 class="mt-6">
-				GRAFICOS
-				</h1>
-			<table style="width:100%;">
-				@foreach ($graficos as $item)
-					<tr>
-						
-						
-						<td>
-							<img style="width:100%;" src="{{$item}}" alt="" >
-						</td>
-							
-					</tr>
-				@endforeach
-				
-			</table>
+			
 
 		{{-- comment
 		<div class="flex flex-col">
