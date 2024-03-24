@@ -762,6 +762,10 @@
 				@if ($n==2 || $n==4 || $n==6)
 					<div class="page-break"></div>
 				@endif
+				@php
+					$n+=1;
+				@endphp
+				
 			@endforeach
 			
 		
