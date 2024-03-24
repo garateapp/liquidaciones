@@ -126,7 +126,7 @@ class TemporadaShow extends Component
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
         $graficos=[];
         foreach ($variedades as $variedad){
-            $graficos[]='https://v1.nocodeapi.com/greenex/screen/CbrYLdYsupiNNAot/screenshot?url=https://greenexweb.cl/grafico/'.$razonsocial->id.'/'.$temporada->id.'/'.$variedad->id.'.html&viewport=800x220';
+            $graficos[]='https://v1.nocodeapi.com/greenex/screen/CbrYLdYsupiNNAot/screenshot?url=https://greenexweb.cl/grafico/'.$razonsocial->id.'/'.$temporada->id.'/'.$variedad->id.'.html&viewport=1400x600';
         }
         $pdf = Pdf::loadView('pdf.liquidacion', ['razonsocial' => $razonsocial,
                                                         'masas' => $masas,
