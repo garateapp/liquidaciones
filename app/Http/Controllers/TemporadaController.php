@@ -21,8 +21,10 @@ use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Embarque;
 use App\Models\Exportacion;
+use App\Models\Familia;
 use App\Models\Flete;
 use App\Models\Fob;
+use App\Models\Gasto;
 use App\Models\Material;
 use App\Models\Razonsocial;
 use App\Models\Resumen;
@@ -160,6 +162,13 @@ class TemporadaController extends Controller
         return view('temporadas.anticipos',compact('temporada','anticipos'));
     }
 
+    public function gastos(Temporada $temporada)
+    {  
+        $gastos=Gasto::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.gastos',compact('temporada','gastos'));
+    }
+
   
 
     /**
@@ -237,6 +246,11 @@ class TemporadaController extends Controller
     public function exportacionedit(Exportacion $exportacion,Temporada $temporada)
     {   
         return view('exportacion.edit',compact('exportacion','temporada'));
+    }
+
+    public function gastoedit(Gasto $gasto,Temporada $temporada)
+    {   $familias=Familia::pluck('name','id');
+        return view('gastos.edit',compact('gasto','temporada','familias'));
     }
 
     public function exportacionupdate(Request $request,Exportacion $exportacion)

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FamiliaController;
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\RazonController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\UserController;
@@ -44,6 +46,10 @@ Route::get('grafico/{razonsocial}/{temporada}/{variedad}',[TemporadaController::
 
 Route::resource('temporada', TemporadaController::class)->names('temporadas');
 
+Route::resource('familia', FamiliaController::class)->names('familias');
+
+Route::resource('gasto', GastoController::class)->names('gastos');
+
 Route::get('temporada/{temporada}/resumen',[TemporadaController::class,'resume'])->name('temporada.resume');
 
 Route::get('temporada/{temporada}/packing',[TemporadaController::class,'packing'])->name('temporada.packing');
@@ -66,6 +72,8 @@ Route::get('temporada/{temporada}/finanzas',[TemporadaController::class,'finanza
 
 Route::get('temporada/{temporada}/anticipos',[TemporadaController::class,'anticipos'])->name('temporada.anticipos');
 
+Route::get('temporada/{temporada}/gastos',[TemporadaController::class,'gastos'])->name('temporada.gastos');
+
 Route::post('data/import',[TemporadaController::class,'importdata'])->name('temporada.importData');
 
 Route::post('costos/packing/import',[TemporadaController::class,'importCostosPacking'])->name('temporada.importCostosPacking');
@@ -73,6 +81,8 @@ Route::post('costos/packing/import',[TemporadaController::class,'importCostosPac
 Route::post('costos/materiales/import',[TemporadaController::class,'importMateriales'])->name('temporada.importMateriales');
 
 Route::get('edit/{exportacion}/{temporada}',[TemporadaController::class,'exportacionedit'])->name('exportacion.edit');
+
+Route::get('edit/gasto/{gasto}/{temporada}',[TemporadaController::class,'gastoedit'])->name('gasto.edit');
 
 Route::post('update/{exportacion}',[TemporadaController::class,'exportacionupdate'])->name('exportacion.update');
 

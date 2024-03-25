@@ -9,8 +9,10 @@ use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Embarque;
 use App\Models\Exportacion;
+use App\Models\Familia;
 use App\Models\Flete;
 use App\Models\Fob;
+use App\Models\Gasto;
 use App\Models\Material;
 use App\Models\Razonsocial;
 use App\Models\Resumen;
@@ -23,7 +25,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $masaid, $preciomasa, $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $familia,$unidad, $item, $descuenta, $categoria, $masaid, $preciomasa, $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
 
 
     #[Url]
@@ -93,11 +95,35 @@ class TemporadaShow extends Component
 
         $comisions=Comision::all();
 
-        return view('livewire.temporada-show',compact('fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        $familias=Familia::where('status','active')->get();
+
+        return view('livewire.temporada-show',compact('familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){
         $this->vista=$vista;
+    }
+
+    public function gasto_store(){
+        $rules = [
+            'item'=>'required',
+            'descuenta'=>'required'
+            
+            ];
+      
+        $this->validate ($rules);
+
+        Gasto::create([
+            'temporada_id'=>$this->temporada->id,
+            'item'=>$this->item,
+            'categoria'=>$this->categoria,
+            'familia_id'=>$this->familia,
+            'descuenta'=>$this->descuenta, 
+            'unidad'=>$this->unidad
+        ]);
+        
+        $this->reset(['item','categoria','familia','descuenta','unidad']);
+        $this->temporada = Temporada::find($this->temporada->id);
     }
 
     public function set_masaid($masaid){

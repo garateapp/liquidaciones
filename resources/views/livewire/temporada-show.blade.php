@@ -1030,178 +1030,7 @@
                     </tbody>
                   </table>
                     
-                    <h1 class="text-xl font-semibold mb-4 ml-4 text-center">
-                        Por favor selecione el archivo de "Embarque" que desea importar 
-                    </h1>
-                  
-                    
-                    <div class="flex justify-center">
-                        
-                        <form action="{{route('temporada.importEmbarque')}}"
-                            method="POST"
-                            class="bg-white rounded p-8 shadow"
-                            enctype="multipart/form-data">
-                            
-                            @csrf
-
-                            <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                            <x-validation-errors class="errors">
-
-                            </x-validation-errors>
-
-                            <input type="file" name="file" accept=".csv,.xlsx">
-
-                            <x-button class="ml-4">
-                                Importar
-                            </x-button>
-                        </form>
-                      </div>
-                  
-                    <table class="min-w-full leading-normal">
-                      <thead>
-                        <tr>
-                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            T Contenedor
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Destinatario
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            ETD
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            ETA
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Semana de Zarpe
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Semana de Arribo
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            País Destino
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Embarque
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Folio
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Productor
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Código de Productor
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Booking
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Puerto de Origen
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Puerto de Destino
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Nave
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Transporte
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Fecha de Despacho
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Exportadora de Embarque
-                        </th>
-                        
-                        
-                      </tr>
-                      </thead>
-                      <tbody>
-                    
-                          @foreach ($embarques as $material)
-                            <tr>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <div class="flex items-center">
-                                      <div class="ml-3">
-                                          <p class="text-gray-900 whitespace-no-wrap">
-                                              {{ $material->t_contenedor }}
-                                          </p>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_destinatario }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->etd }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->eta }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->semana_zarpe }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->semana_arribo }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_pais_destino }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_embarque }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->folio }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->r_productor }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->c_proveedor }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_productor }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->booking }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_puerto_origen }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_puerto_destino }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_nave }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->transporte }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->fecha_despacho }}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $material->n_exportadora_embarque }}</p>
-                              </td>
-                            
-                          
-
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <span
-                                                      class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                      <span aria-hidden
-                                                          class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                <span class="relative">Editar</span>
-                                </span>
-                              </td>
-                            </tr>
-                          @endforeach
                 
-                      </tbody>
-                    </table>
                   
 
                 @endif
@@ -1366,174 +1195,174 @@
                 
                 @if ($vista=='MASAS')
 
-                
-               
-                <div class="flex justify-start">
-                  <div class="">
-                    <h1 class="text-xl font-semibold mb-4 ml-4">
-                      Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
-                    </h1>
-                    <h1 class="text-xl font-semibold mb-4 ml-4">
-                      Fecha de importación: {{$masastotal->first()->created_at}}
-                    </h1>
-                    
-                        <form action="{{route('temporada.importBalance')}}"
-                            method="POST"
-                            class="bg-white rounded p-8 shadow"
-                            enctype="multipart/form-data">
-                            
-                            @csrf
-
-                            <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                            <x-validation-errors class="errors">
-
-                            </x-validation-errors>
-
-                            <input type="file" name="file" accept=".csv,.xlsx">
-
-                            <x-button class="ml-4">
-                                Importar
-                            </x-button>
-                        </form>
-
-                  </div>
-                </div>
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <tr>
-                        @php
-                              
-                              $columnas = [
-                                'tipo_g_produccion',
-                                'numero_g_produccion',
-                                'fecha_g_produccion_sh',
-                                'semana',
-                                'folio',
-                                'r_productor',
-                                'c_productor',
-                                'n_productor',
-                                'n_especie',
-                                'n_variedad',
-                                'c_embalaje',
-                                'n_embalaje',
-                                'n_categoria',
-                                't_categoria',
-                                'n_categoria_st',
-                                'n_calibre',
-                                'n_etiqueta',
-                                'cantidad',
-                                'peso_neto',
-                                'transporte',
-                                'precio_fob'
-                            ];
-
-                          
-                          foreach ($columnas as $columna) {
-                              echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
-                              echo ucfirst(str_replace('_', ' ', $columna));
-                              echo '</th>';
-                          }
-                          
-                        @endphp
-                      </tr>
-                    </thead>
-                    <tbody>
                   
-                        @foreach ($masasbalances as $masa)
-                          <tr>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_produccion }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_produccion }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_produccion_sh))}}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">{{date('W', strtotime($masa->fecha_g_produccion_sh))}}</p>
-                          </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->r_productor }}</p>
-                            </td>
-                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_productor }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_productor }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_especie }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_variedad }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_embalaje }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_embalaje }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->t_categoria }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria_st }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_calibre }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_etiqueta }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->peso_neto }}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
-                            </td>
-                            <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
-                              @if ($masaid==$masa->id)
-                                  <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
-                              @else
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
-                              @endif
-                               
+                
+                  <div class="flex justify-start">
+                    <div class="">
+                      <h1 class="text-xl font-semibold mb-4 ml-4">
+                        Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
+                      </h1>
+                      <h1 class="text-xl font-semibold mb-4 ml-4">
+                        Fecha de importación: {{$masastotal->first()->created_at}}
+                      </h1>
+                      
+                          <form action="{{route('temporada.importBalance')}}"
+                              method="POST"
+                              class="bg-white rounded p-8 shadow"
+                              enctype="multipart/form-data">
+                              
+                              @csrf
 
-                            </td>
-                        
-                        
+                              <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              @if ($masaid==$masa->id)
-                                <span wire:click='save_masaid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                  <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                  <span class="relative">Guardar</span>
-                                </span>
-                              @else
-                                <span wire:click='set_masaid({{$masa->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                  <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                  <span class="relative">Editar</span>
-                                </span>
-                              @endif
-                             
+                              <x-validation-errors class="errors">
 
+                              </x-validation-errors>
+
+                              <input type="file" name="file" accept=".csv,.xlsx">
+
+                              <x-button class="ml-4">
+                                  Importar
+                              </x-button>
+                          </form>
+
+                    </div>
+                  </div>
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          @php
+                                
+                                $columnas = [
+                                  'tipo_g_produccion',
+                                  'numero_g_produccion',
+                                  'fecha_g_produccion_sh',
+                                  'semana',
+                                  'folio',
+                                  'r_productor',
+                                  'c_productor',
+                                  'n_productor',
+                                  'n_especie',
+                                  'n_variedad',
+                                  'c_embalaje',
+                                  'n_embalaje',
+                                  'n_categoria',
+                                  't_categoria',
+                                  'n_categoria_st',
+                                  'n_calibre',
+                                  'n_etiqueta',
+                                  'cantidad',
+                                  'peso_neto',
+                                  'transporte',
+                                  'precio_fob'
+                              ];
+
+                            
+                            foreach ($columnas as $columna) {
+                                echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
+                                echo ucfirst(str_replace('_', ' ', $columna));
+                                echo '</th>';
+                            }
+                            
+                          @endphp
+                        </tr>
+                      </thead>
+                      <tbody>
+                    
+                          @foreach ($masasbalances as $masa)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_produccion }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_produccion }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_produccion_sh))}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{date('W', strtotime($masa->fecha_g_produccion_sh))}}</p>
                             </td>
-                          </tr>
-                        @endforeach
-              
-                    </tbody>
-                  </table>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->r_productor }}</p>
+                              </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_productor }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_productor }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_especie }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_variedad }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_embalaje }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_embalaje }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->t_categoria }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria_st }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_calibre }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_etiqueta }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->peso_neto }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
+                              </td>
+                              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                                @if ($masaid==$masa->id)
+                                    <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                @endif
+                                
+
+                              </td>
+                          
+                          
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($masaid==$masa->id)
+                                  <span wire:click='save_masaid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Guardar</span>
+                                  </span>
+                                @else
+                                  <span wire:click='set_masaid({{$masa->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Editar</span>
+                                  </span>
+                                @endif
+                              
+
+                              </td>
+                            </tr>
+                          @endforeach
+                
+                      </tbody>
+                    </table>
 
                 @endif
 
@@ -1737,6 +1566,158 @@
                 
                       </tbody>
                   </table>
+                @endif
+
+                @if ($vista=='GASTOS') 
+                  
+                    <div> 
+                      <div class="grid grid-cols-6 gap-x-4 items-center mb-6">
+
+                          <select wire:model="familia" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                              <option value="1" class="text-center">Selecciona una familia</option>
+                              
+                              @foreach ($familias as $familia)
+                                  <option value="{{$familia->id}}" class="text-center">{{$familia->name}}</option>
+                              @endforeach
+                              
+
+                          </select>
+
+                          
+                          <select wire:model="categoria" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                              <option value="" class="text-center">Selecciona una categoria</option>
+                              
+                            
+                                  <option value="nacional" class="text-center">Nacional</option>
+                                  <option value="exportacion" class="text-center">Exportación</option>
+                                  <option value="todas" class="text-center">Todas</option>
+                            
+                          </select>
+
+                          <input wire:model="item" type="text" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
+                        
+
+                          <select wire:model="descuenta" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                              <option value="" class="text-center">¿Donde Descuenta?</option>
+                                  <option value="fob" class="text-center">Fob</option>
+                                  <option value="ctacorriente" class="text-center">Cuenta Corriente</option>
+                          </select>
+
+                          <select wire:model="unidad" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="" class="text-center">¿Unidad?</option>
+                                <option value="caja" class="text-center">Caja</option>
+                                <option value="kg" class="text-center">KG</option>
+                          </select>
+
+                          <button wire:click="gasto_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+
+                              <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                              Agregar
+                                  
+                              </h1>
+                          </button>
+                      </div>
+                      @if ($temporada->gastos->count()>0)
+                          <table class="min-w-full leading-normal">
+                          <thead>
+                            <tr>
+                              <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                  Familia
+                                  </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                item
+                              </th>
+                            
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      Etiqueta
+                                      </th>
+                              <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Descuenta
+                              </th>
+                            
+                            
+                            
+                          
+                          </tr>
+                          </thead>
+                          <tbody>
+                        
+                              @foreach ($temporada->gastos as $gasto)
+                                <tr>
+                                  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->familia->name}}</p>
+                                    </td>
+                                  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                    <div class="flex items-center">
+                                      <div class="flex-shrink-0 w-10 h-10 hidden">
+                                        <img class="w-full h-full rounded-full"
+                                                                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                  alt="" />
+                                                          </div>
+                                        <div class="ml-3">
+                                          <p class="text-gray-900 whitespace-no-wrap">
+                                            {{$gasto->item}}
+                                          </p>
+                                        </div>
+                                      </div>
+                                  </td>
+                                
+                                  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->categoria}}</p>
+                                    </td>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->descuenta}}</p>
+                                    </td>
+                              
+                              
+      
+                                  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <a href="{{Route('gasto.edit',['gasto'=>$gasto,'temporada'=>$temporada])}}">
+                                        <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                            <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">Editar</span>
+                                        </span>
+                                      </a>
+                                  </td>
+                                </tr>
+                              @endforeach
+                    
+                          </tbody>
+                        </table>
+                      @endif
+
+
+                      <h1 class="text-xl text-center font-semibold mb-4 ">
+                          Por favor selecione el archivo de "Gastos" que desea importar
+                      </h1>
+                      <div class="flex justify-center">
+                          
+                          <form action="{{route('temporada.importExportacion')}}"
+                              method="POST"
+                              class="bg-white rounded p-8 shadow"
+                              enctype="multipart/form-data">
+                              
+                              @csrf
+
+                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                              <x-validation-errors class="errors">
+
+                              </x-validation-errors>
+
+                              <input type="file" name="file" accept=".csv,.xlsx">
+
+                              <x-button class="ml-4">
+                                  Importar
+                              </x-button>
+                          </form>
+                      </div>
+
+                  </div>
+                
+
                 @endif
 
               

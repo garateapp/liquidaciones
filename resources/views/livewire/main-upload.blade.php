@@ -1,6 +1,6 @@
 <div>
         <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
-            <div class="grid pb-10  mt-4 " x-data="{@if($vista=='packing') packing: true @else packing: false @endif, @if($vista=='materiales') materiales: true @else materiales: false @endif, @if($vista=='comision') comision: true @else comision: false @endif, @if($vista=='exportacion') exportacion: true @else exportacion: false @endif, @if($vista=='fletes') fletes: true @else fletes: false @endif, @if($vista=='masas') masas: true @else masas: false @endif, @if($vista=='anticipos') anticipos: true @else anticipos: false @endif ,  @if($vista=='fob') fob: true @else fob: false @endif }">
+            <div class="grid pb-10  mt-4 " x-data="{@if($vista=='packing') packing: true @else packing: false @endif, @if($vista=='materiales') materiales: true @else materiales: false @endif, @if($vista=='comision') comision: true @else comision: false @endif, @if($vista=='exportacion') exportacion: true @else exportacion: false @endif, @if($vista=='fletes') fletes: true @else fletes: false @endif, @if($vista=='masas') masas: true @else masas: false @endif, @if($vista=='anticipos') anticipos: true @else anticipos: false @endif ,  @if($vista=='fob') fob: true @else fob: false @endif , @if($vista=='gastos') gastos: true @else gastos: false @endif  }">
                 <!-- Start Content-->
                 <div class="mb-2 grid grid-cols-12 items-center">
                     <div class="col-span-12 sm:col-span-5 md:col-span-5 lg:col-span-5 xxl:col-span-5">
@@ -23,7 +23,7 @@
                     <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
                     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3 gap-x-2">
                         
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
                             
                                 @if ($CostosPackings->count()>0)
                                 <p class="text-xl font-bold"> {{$CostosPackings->count()}} </p>
@@ -34,7 +34,7 @@
                             
                             <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
                         </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
                                 @if ($materiales->count()>0)
                                 <p class="text-xl font-bold"> {{$materiales->count()}} </p>
                                 @else 
@@ -42,7 +42,7 @@
                                 @endif
                             <p class="text-xs font-semibold text-gray-400">Materiales</p>
                         </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false; anticipos = false ;  fob= false">
+                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
                                 @if ($exportacions->count()>0)
                                     <p class="text-xl font-bold"> {{$exportacions->count()}} </p>
                                 @else 
@@ -51,7 +51,7 @@
                             <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false; anticipos = false ;  fob= false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false; anticipos = false ;  fob= false ; gastos = false">
                             @if ($fletes->count()>0)
                                 <p class="text-xl font-bold"> {{$fletes->count()}} </p>
                             @else 
@@ -60,7 +60,7 @@
                             <p class="text-xs font-semibold text-gray-400">Flete a Huerto</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
                             @if ($comisions->count()>0)
                                 <p class="text-xl font-bold"> {{$comisions->count()}} </p>
                             @else 
@@ -70,12 +70,12 @@
                         </div>
                         
                     
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true ; anticipos = false ;  fob= false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true ; anticipos = false ;  fob= false ; gastos = false">
                                 <p class="text-xl font-bold">5,700</p>
                                 <p class="text-xs font-semibold text-gray-400">Balance de masas</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': anticipos, 'bg-white': ! anticipos}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = true  ; fob = false">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': anticipos, 'bg-white': ! anticipos}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = true  ; fob = false ; gastos = false">
                             <p class="text-xl font-bold">
                                 @if ($temporada->anticipos->count()>0)
                                     {{$temporada->anticipos->count()}}
@@ -86,7 +86,7 @@
                             <p class="text-xs font-semibold text-gray-400">Anticipos</p>
                         </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fob , 'bg-white': ! fob }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = true">
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fob , 'bg-white': ! fob }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = true ; gastos = false">
                             <p class="text-xl font-bold">
                                 @if ($temporada->fobs->count()>0)
                                     {{$temporada->fobs->count()}}
@@ -95,6 +95,16 @@
                                 @endif
                             </p>
                             <p class="text-xs font-semibold text-gray-400">FOB</p>
+                        </div>
+                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': gastos , 'bg-white': ! gastos }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = false ; gastos = true">
+                            <p class="text-xl font-bold">
+                                @if ($temporada->gastos->count()>0)
+                                    {{$temporada->gastos->count()}}
+                                @else
+                                    PENDIENTE
+                                @endif
+                            </p>
+                            <p class="text-xs font-semibold text-gray-400">GASTOS</p>
                         </div>
                     </div>
                     </div>
@@ -491,6 +501,155 @@
                             </form>
 
                         </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center" x-show="gastos">
+                    <div> 
+                        <div class="grid grid-cols-6 gap-x-4 items-center mb-6">
+
+                            <select wire:model="familia" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <option value="1" class="text-center">Selecciona una familia</option>
+                                 
+                                @foreach ($familias as $familia)
+                                    <option value="{{$familia->id}}" class="text-center">{{$familia->name}}</option>
+                                @endforeach
+                                
+
+                            </select>
+
+                            
+                            <select wire:model="categoria" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <option value="" class="text-center">Selecciona una categoria</option>
+                                 
+                               
+                                    <option value="nacional" class="text-center">Nacional</option>
+                                    <option value="exportacion" class="text-center">Exportación</option>
+                                    <option value="todas" class="text-center">Todas</option>
+                               
+                            </select>
+
+                            <input wire:model="item" type="text" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
+                           
+
+                            <select wire:model="descuenta" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <option value="" class="text-center">¿Donde Descuenta?</option>
+                                    <option value="fob" class="text-center">Fob</option>
+                                    <option value="ctacorriente" class="text-center">Cuenta Corriente</option>
+                            </select>
+
+                            <select wire:model="unidad" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <option value="" class="text-center">¿Unidad?</option>
+                                    <option value="caja" class="text-center">Caja</option>
+                                    <option value="kg" class="text-center">KG</option>
+                              </select>
+
+                            <button wire:click="gasto_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+
+                                <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                                Agregar
+                                    
+                                </h1>
+                            </button>
+                        </div>
+                        @if ($temporada->gastos->count()>0)
+                            <table class="min-w-full leading-normal">
+                            <thead>
+                              <tr>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Familia
+                                    </th>
+                                <th
+                                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                  item
+                                </th>
+                               
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Etiqueta
+                                        </th>
+                                <th
+                                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Descuenta
+                                </th>
+                               
+                              
+                              
+                            
+                            </tr>
+                            </thead>
+                            <tbody>
+                          
+                                @foreach ($temporada->gastos as $gasto)
+                                  <tr>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->familia->name}}</p>
+                                      </td>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 hidden">
+                                          <img class="w-full h-full rounded-full"
+                                                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                    alt="" />
+                                                            </div>
+                                          <div class="ml-3">
+                                            <p class="text-gray-900 whitespace-no-wrap">
+                                              {{$gasto->item}}
+                                            </p>
+                                          </div>
+                                        </div>
+                                    </td>
+                                  
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->categoria}}</p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap"> {{$gasto->descuenta}}</p>
+                                      </td>
+                                
+                                
+        
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <a href="">
+                                          <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                              <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                              <span class="relative">Editar</span>
+                                          </span>
+                                        </a>
+                                    </td>
+                                  </tr>
+                                @endforeach
+                      
+                            </tbody>
+                          </table>
+                        @endif
+
+
+                        <h1 class="text-xl font-semibold mb-4 hidden">
+                            Por favor selecione el archivo de "Gastos de Exportación" que desea importar
+                        </h1>
+                        <div class="flex hidden">
+                            
+                            <form action="{{route('temporada.importExportacion')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
+
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                                <x-validation-errors class="errors">
+
+                                </x-validation-errors>
+
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
                 

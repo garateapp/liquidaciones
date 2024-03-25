@@ -5,14 +5,16 @@ namespace App\Livewire;
 use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Exportacion;
+use App\Models\Familia;
 use App\Models\Flete;
+use App\Models\Gasto;
 use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use Livewire\Component;
 
 class MainUpload extends Component
-{   public $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor,$vista;
+{   public $familia,$unidad, $item, $descuenta, $categoria, $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor,$vista;
 
     public function mount(Temporada $temporada,$vista){
         $this->temporada=$temporada;
@@ -25,8 +27,9 @@ class MainUpload extends Component
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->get();
         $fletes=Flete::where('temporada_id',$this->temporada->id)->get();
         $comisions=Comision::where('temporada_id',$this->temporada->id)->get();
+        $familias=Familia::where('status','active')->get();
        
-        return view('livewire.main-upload',compact('materiales','resumes','CostosPackings','exportacions','fletes','comisions'));
+        return view('livewire.main-upload',compact('familias','materiales','resumes','CostosPackings','exportacions','fletes','comisions'));
     }
 
     public function exportacion_store(){
@@ -45,6 +48,28 @@ class MainUpload extends Component
         ]);
         
         $this->reset(['type','precio_usd']);
+        $this->temporada = Temporada::find($this->temporada->id);
+    }
+
+    public function gasto_store(){
+        $rules = [
+            'item'=>'required',
+            'descuenta'=>'required'
+            
+            ];
+      
+        $this->validate ($rules);
+
+        Gasto::create([
+            'temporada_id'=>$this->temporada->id,
+            'item'=>$this->item,
+            'categoria'=>$this->categoria,
+            'familia_id'=>$this->familia,
+            'descuenta'=>$this->descuenta, 
+            'unidad'=>$this->unidad
+        ]);
+        
+        $this->reset(['item','categoria','familia','descuenta','unidad']);
         $this->temporada = Temporada::find($this->temporada->id);
     }
 
