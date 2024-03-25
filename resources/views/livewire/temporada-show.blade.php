@@ -1701,7 +1701,7 @@
                       </h1>
                       <div class="flex justify-center">
                           
-                          <form action="{{route('temporada.importExportacion')}}"
+                          <form action="{{route('temporada.importGasto')}}"
                               method="POST"
                               class="bg-white rounded p-8 shadow"
                               enctype="multipart/form-data">
@@ -1721,6 +1721,94 @@
                               </x-button>
                           </form>
                       </div>
+
+                      @if ($temporada->detalles->count()>0)
+                      <table class="min-w-full leading-normal">
+                        <thead>
+                          <tr>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Grupo
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Rut
+                            </th>
+                            <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Productor
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Item
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Fecha
+                        </th>
+                        <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Cantidad
+                      </th>
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Acción
+                            </th>
+                        
+                          
+                        
+                        </tr>
+                        </thead>
+                        <tbody>
+                      
+                            @foreach ($temporada->detalles as $detalle)
+                              <tr>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <div class="flex items-center">
+                                  
+                                      <div class="ml-3">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                          {{$detalle->grupo}}
+                                        </p>
+                                      </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$detalle->rut}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$detalle->n_productor}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$detalle->item}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{date('d/m/Y', strtotime($detalle->fecha))}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$detalle->cantidad}}</p>
+                                </td>
+                            
+                            
+  
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <a href="">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                          <span aria-hidden
+                                                              class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Editar</span>
+                                  </a>
+                                  <span wire:click="" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Eliminar</span>
+                                </span>
+                                  </span>
+                                </td>
+                              </tr>
+                            @endforeach
+                  
+                        </tbody>
+                    </table>
+                      @endif
 
                   </div>
                 

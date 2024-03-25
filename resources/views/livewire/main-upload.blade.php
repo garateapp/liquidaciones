@@ -316,13 +316,14 @@
                     </div>
                 </div>
 
+                <h1 class="text-xl text-center font-semibold mb-4 ml-4" x-show="fletes">
+                    Por favor selecione el archivo de "Flete a huerto" que desea importar
+                  
+                </h1>
                 <div class="flex justify-center" x-show="fletes">
 
 
-                    <h1 class="text-xl font-semibold mb-4 ml-4">
-                        Por favor selecione el archivo de "Flete a huerto" que desea importar
-                      
-                    </h1>
+                  
                   
   
   

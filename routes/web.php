@@ -115,6 +115,8 @@ Route::post('costos/flete/import',[TemporadaController::class,'importFlete'])->n
 
 Route::post('costos/embarque/import',[TemporadaController::class,'importEmbarque'])->name('temporada.importEmbarque');
 
+Route::post('costos/gasto/import',[TemporadaController::class,'importGasto'])->name('temporada.importGasto');
+
 Route::get('update/{temporada}',[TemporadaController::class,'variedadupdate'])->name('variedades.refresh');
 
 Route::get('updatefob/{temporada}',[TemporadaController::class,'fobupdate'])->name('preciofob.refresh');
