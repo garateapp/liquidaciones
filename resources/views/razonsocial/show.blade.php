@@ -398,6 +398,8 @@
                                   @endforeach
 
                                   
+
+                                  
                                   <table id="balance" style="width:100%; border-collapse: collapse;">
                                     <thead>
                                       <tr>
