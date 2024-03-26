@@ -730,18 +730,18 @@
                                               {{$razon->csg}}
                                               </td>
                                              
-                                              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                              <td class="text-sm text-gray-900 font-light px-2 py-4 whitespace-nowrap">
                                                 <a href="{{route('exportpdff',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank">
                                                   <x-button>
                                                     Generar
                                                   </x-button>
                                                 </a>
                                               </td>
-                                              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                              <td class="text-sm text-gray-900 font-light py-4">
 
                                                 @if ($razon->informe)
-                                                    <a href="" target="_blank" class="h-10 m-2 w-full mr-2 items-center content-center">   
-                                                      <img class="h-10 m-2 w-full mr-2" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
+                                                    <a href="" target="_blank" class="h-10 w-full mr-2 items-center content-center">   
+                                                      <img class="h-10 m-2 ml-4 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
                                                     </a>
                                                 
                                                     
