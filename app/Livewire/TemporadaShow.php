@@ -19,6 +19,7 @@ use App\Models\Resumen;
 use App\Models\Temporada;
 use App\Models\Variedad;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -151,7 +152,7 @@ class TemporadaShow extends Component
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
         $graficos=[];
-        foreach ($variedades as $variedad){
+        foreach ($variedades->reverse() as $variedad){
             $graficos[]='https://v1.nocodeapi.com/greenex/screen/CbrYLdYsupiNNAot/screenshot?url=https://greenexweb.cl/grafico/'.$razonsocial->id.'/'.$temporada->id.'/'.$variedad->id.'.html&viewport=1400x600';
         }
         $pdf = Pdf::loadView('pdf.liquidacion', ['razonsocial' => $razonsocial,
@@ -163,6 +164,15 @@ class TemporadaShow extends Component
                                                     'unique_semanas'=>$unique_semanas,
                                                 'fobs'=>$fobs,
                                                 'graficos'=>$graficos]);
+
+        $pdfContent = $pdf->output();
+        $filename = 'Liquidacion '.$razonsocial->name.'.pdf';
+                                                    
+        Storage::put('pdf-liquidaciones/' . $filename, $pdfContent);
+
+        $razonsocial->update([
+            'informe'=>'pdf-liquidaciones/'.$filename
+        ]);
 
         return $pdf->stream('Liq. '.$razonsocial->name.'.pdf');
         
