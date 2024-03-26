@@ -741,7 +741,7 @@
 
                                                 @if ($razon->informe)
                                                     <a href="" target="_blank" class="h-10 w-full mr-2 items-center content-center">   
-                                                      <img class="h-10 m-2 ml-4 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
+                                                      <img class="h-10 m-2 ml-6 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
                                                     </a>
                                                 
                                                     
