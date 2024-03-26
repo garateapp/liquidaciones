@@ -737,11 +737,11 @@
                                                   </x-button>
                                                 </a>
                                               </td>
-                                              <td class="text-sm text-gray-900 font-light py-4">
+                                              <td class="text-sm text-gray-900 font-light py-4 text-center justify-center">
 
                                                 @if ($razon->informe)
-                                                    <a href="" target="_blank" class="h-10 w-full mr-2 items-center content-center">   
-                                                      <img class="h-10 m-2 ml-6 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
+                                                    <a href="" target="_blank" class="h-10 mx-auto justify-center mr-2 items-center content-center">   
+                                                      <img class="h-10 ml-6 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
                                                     </a>
                                                 
                                                     
