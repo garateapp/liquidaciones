@@ -36,7 +36,7 @@
 		.container {
 			width: 100%; /* Ancho completo */
             height: 100%;
-			background-image: url({{asset('image/bg_informe.png'); }}); /* Ruta de la imagen de fondo */
+			background-image: url({{asset('image/bg_informe.jpg'); }}); /* Ruta de la imagen de fondo */
 			background-size: cover; /* Para cubrir toda el área del cuerpo */
 			background-position: center; /* Para centrar la imagen */
 		}
