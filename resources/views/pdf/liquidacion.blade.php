@@ -331,6 +331,8 @@
 		<div class="page-break"></div>
 
 		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px;" alt="">
+		<h3 style="text-align: center;">CUENTA CORRIENTE</h3>
+		<h5 style="text-align: center;">{{$razonsocial->name}}</h5>
 		
 		<table id="balance" style="width:100%; border-collapse: collapse;">
 			<thead>
