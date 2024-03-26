@@ -43,7 +43,7 @@
 		.cuerpo {
 		margin-left: 30px;
 		margin-right: 30px;
-		font-size: 12px;
+		font-size: 10px;
 		}
 		
 		thead {
@@ -52,8 +52,8 @@
 		}
 
 		th, td {
-			padding-top: 3px;
-			padding-bottom: 3px;
+			padding-top: 1px;
+			padding-bottom: 1px;
 			padding-left: 2px;
 			padding-right: 2px;
 			text-align: center;
@@ -762,7 +762,7 @@
 							
 					</tr>
 				</table>
-				@if ($n==1 || $n==3 || $n==5)
+				@if ($n==1 || $n==4 || $n==7)
 					<div class="page-break"></div>
 				@endif
 				@php
@@ -777,7 +777,9 @@
 			
 			<div class="page-break"></div>
 		@endif
-		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
+			
+			<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
+
 		<h3 style="text-align: center; margin: 0; line-height: 1;">EXPORTACIÓN DENTRO DE NORMA</h3>
 		<p style="text-align: center; margin: 0; line-height: 1;" >Detalle por semana de embarque</p>
 		<p style="text-align: center; margin: 0; line-height: 1;" >{{$razonsocial->name}}</p>
@@ -1212,231 +1214,11 @@
 			</table>
 
 			<div class="page-break"></div>
-
-			
-
-		{{-- comment
-		<div class="flex flex-col">
-			<div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
-			  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-			  
-				<h1 class="mt-6">
-				  Gastos Frio Packing
-				</h1>
-				<table class="min-w-full leading-normal mt-4">
-				  <thead>
-					<tr>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						Especie
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						Nombre Productor
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  CSG
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						KG
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						TotalUSD
-					  </th>
-					  <th
-					  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  NETO
-					</th>
-				  
-				  </tr>
-				  </thead>
-				  <tbody>
-					
-					  @foreach ($packings as $packing)
-						<tr>
-						  
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
-						  </td>
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<div class="flex items-center">
-							
-								<div class="ml-3">
-								  <p class="text-gray-900 whitespace-no-wrap">
-									{{$packing->n_productor}}
-								  </p>
-								</div>
-							  </div>
-						  </td>
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
-						  </td>
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<p class="text-gray-900 whitespace-no-wrap">
-							  {{$packing->kg}}
-							</p>
-						  </td>
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<p class="text-gray-900 whitespace-no-wrap">
-							
-							  {{number_format($packing->total_usd,2)}}
-							</p>
-						  </td>
-
-						  <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							<span
-												  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-												  <span aria-hidden
-													  class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-							<span class="relative">Activo</span>
-							</span>
-						  </td>
-						</tr>
-					  @endforeach
-				  
-				  </tbody>
-				</table>
-
-				<h1 class="mt-6">
-				  Comision
-				  </h1>
-				
-				 <table class="min-w-full leading-normal">
-				   <thead>
-					 <tr>
-					   <th
-						 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						 Productor
-					   </th>
-					   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					   Comisión
-					   </th>
-					   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						 Acción
-						 </th>
-					 
-				   
-				   </tr>
-				   </thead>
-				   <tbody>
-				 
-					   @foreach ($comisions as $comision)
-						 <tr>
-						   <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							 <div class="flex items-center">
-							   <div class="flex-shrink-0 w-10 h-10 hidden">
-								
-								 <div class="ml-3">
-								   <p class="text-gray-900 whitespace-no-wrap">
-									 {{$comision->productor}}
-								   </p>
-								 </div>
-							   </div>
-						   </td>
-						   <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							 <p class="text-gray-900 whitespace-no-wrap"> {{$comision->comision*100}}%</p>
-						   </td>
-					   
-					   
-
-						   <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-							 <span
-												   class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-												   <span aria-hidden
-													   class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-							 <span class="relative">Editar</span>
-							 </span>
-						   </td>
-						 </tr>
-					   @endforeach
-			 
-				   </tbody>
-				 </table>
-
-				<h1 class="mt-6">
-				  Gastos exportacion, pendiente (Tipo_nave)
-				</h1>
-				<table class="min-w-full leading-normal">
-				  <thead>
-					<tr>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						TIPO/NAVE
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					   -
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						-
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					</th>
-				  
-				  </tr>
-				  </thead>
-				  <tbody>
-					
-				  </tbody>
-				</table>
-				<h1 class="mt-6">
-				 Flete a Huerto
-				</h1>
-				<table class="min-w-full leading-normal">
-				  <thead>
-					<tr>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						TIPO/NAVE
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					   -
-					  </th>
-					  <th
-						class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-						-
-					  </th>
-					  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-					  -
-					</th>
-				  
-				  </tr>
-				  </thead>
-				  <tbody>
-					
-				  </tbody>
-				</table>
-			   
-				@foreach ($masas as $masa)
-				  {{$masa->n_centrocosto}}<br>
-				@endforeach
-
-				</div>
-			  </div>
-			</div>
-
-			@foreach ($masas as $masa)
-				{{$masa->id}}<br>
-			@endforeach
-		</div>
-	 --}}
+			<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
+			<h3 style="text-align: center; margin: 0; line-height: 1;">EXPORTACIÓN FUERA01 DE NORMA</h3>
+			<p style="text-align: center; margin: 0; line-height: 1;" >Detalle por semana de embarque</p>
+			<p style="text-align: center; margin: 0; line-height: 1;" >{{$razonsocial->name}}</p>
+	
+		
 	</body>
 </html>
