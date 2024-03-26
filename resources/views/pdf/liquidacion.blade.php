@@ -779,6 +779,7 @@
 		@endif
 		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
 		<h3 style="text-align: center; margin: 0; line-height: 1;">EXPORTACIÓN DENTRO DE NORMA</h3>
+		<p style="text-align: center; margin: 0; line-height: 1;" >Detalle por semana de embarque</p>
 		<p style="text-align: center; margin: 0; line-height: 1;" >{{$razonsocial->name}}</p>
 
 			<table id="balance" style="width:100%; border-collapse: collapse; margin-top: 15px;">
