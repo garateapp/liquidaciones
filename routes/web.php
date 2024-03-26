@@ -120,3 +120,6 @@ Route::post('costos/gasto/import',[TemporadaController::class,'importGasto'])->n
 Route::get('update/{temporada}',[TemporadaController::class,'variedadupdate'])->name('variedades.refresh');
 
 Route::get('updatefob/{temporada}',[TemporadaController::class,'fobupdate'])->name('preciofob.refresh');
+
+Route::get('download/razonsocial/{razonsocial}.pdf', [RazonController::class,'downloadpdf'])->name('informe.download');
+

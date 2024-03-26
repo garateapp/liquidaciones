@@ -740,7 +740,7 @@
                                               <td class="text-sm text-gray-900 font-light py-4 text-center">
 
                                                 @if ($razon->informe)
-                                                    <a href="" target="_blank" class="h-10 mr-2 items-center content-center">   
+                                                    <a href="{{route('informe.download',$razon)}}" target="_blank" class="h-10 mr-2 items-center content-center">   
                                                       <img class="h-10 ml-4 pl-2 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
                                                     </a>
                                                 

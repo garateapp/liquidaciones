@@ -25,6 +25,13 @@ class RazonController extends Controller
         return view('razonsocial.index',compact('razons'));
     }
 
+    public function downloadpdf(Razonsocial $razonsocial) {
+
+        return response()->file(storage_path('app/'.$razonsocial->informe));
+
+      
+    }
+
     
     public function razonsync(){
         $users= Http::post('https://apigarate.azurewebsites.net/api/v1.0/Productor/ObtenerProductor');
