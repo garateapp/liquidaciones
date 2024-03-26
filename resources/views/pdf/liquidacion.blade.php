@@ -67,9 +67,7 @@
 			width: calc(100% - 60px); /* El ancho de la imagen es el 100% del ancho de la ventana menos los 60px de margen */
 			z-index: -1; /* Coloca la imagen detrás del contenido */
 		}
-		.lineas-reducidas {
-        	line-height: 0; /* Puedes ajustar este valor según tus necesidades */
-    	}
+		
 
 	</style>
 </head>
@@ -333,11 +331,11 @@
 		 --}}
 		<div class="page-break"></div>
 
-		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px;" alt="">
-		<h3 style="text-align: center;">CUENTA CORRIENTE</h3>
-		<h5 style="text-align: center;" class="lineas-reducidas">{{$razonsocial->name}}</h5>
+		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
+		<h3 style="text-align: center; margin: 0; line-height: 1;">EXPORTACIÓN DENTRO DE NORMA</h3>
+		<p style="text-align: center; margin: 0; line-height: 1;" >{{$razonsocial->name}}</p>
 		
-		<table id="balance" style="width:100%; border-collapse: collapse;">
+		<table id="balance" style="width:100%; border-collapse: collapse; margin-top: 20px;">
 			<thead>
 			  <tr>
 				<th>Especie</th>
@@ -779,12 +777,11 @@
 			
 			<div class="page-break"></div>
 		@endif
+		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px; margin-bottom: 15px;" alt="">
+		<h3 style="text-align: center; margin: 0; line-height: 1;">EXPORTACIÓN DENTRO DE NORMA</h3>
+		<p style="text-align: center; margin: 0; line-height: 1;" >{{$razonsocial->name}}</p>
 
-		<h1 class="mt-6">
-			Desglose por semanas
-			</h1>
-
-			<table id="balance" style="width:100%; border-collapse: collapse;">
+			<table id="balance" style="width:100%; border-collapse: collapse; margin-top: 15px;">
 				<thead>
 				  <tr>
 				  <th>Especie</th>
