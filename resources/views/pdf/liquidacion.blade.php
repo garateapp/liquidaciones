@@ -67,6 +67,9 @@
 			width: calc(100% - 60px); /* El ancho de la imagen es el 100% del ancho de la ventana menos los 60px de margen */
 			z-index: -1; /* Coloca la imagen detrás del contenido */
 		}
+		.lineas-reducidas {
+        	line-height: 0; /* Puedes ajustar este valor según tus necesidades */
+    	}
 
 	</style>
 </head>
@@ -332,7 +335,7 @@
 
 		<img src="{{asset('image/cabecera.png')}}" style="margin-top: 30px;" alt="">
 		<h3 style="text-align: center;">CUENTA CORRIENTE</h3>
-		<h5 style="text-align: center;">{{$razonsocial->name}}</h5>
+		<h5 style="text-align: center;" class="lineas-reducidas">{{$razonsocial->name}}</h5>
 		
 		<table id="balance" style="width:100%; border-collapse: collapse;">
 			<thead>
