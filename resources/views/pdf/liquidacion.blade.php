@@ -748,7 +748,7 @@
 			@php
 				$n=1;
 			@endphp
-			@foreach ($graficos as $item)
+			@foreach ($graficos->reverse() as $item)
 				<table style="width:100%; margin: 50px auto;">
 					<tr>
 						
