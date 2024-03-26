@@ -148,6 +148,7 @@ class TemporadaShow extends Component
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
+        $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
@@ -155,15 +156,16 @@ class TemporadaShow extends Component
         foreach ($variedades->reverse() as $variedad){
             $graficos[]='https://v1.nocodeapi.com/greenex/screen/CbrYLdYsupiNNAot/screenshot?url=https://greenexweb.cl/grafico/'.$razonsocial->id.'/'.$temporada->id.'/'.$variedad->id.'.html&viewport=1400x600';
         }
-        $pdf = Pdf::loadView('pdf.liquidacion', ['razonsocial' => $razonsocial,
-                                                        'masas' => $masas,
-                                                        'packings'=>$packings,
-                                                        'comisions'=>$comisions,
-                                                        'unique_variedades'=>$unique_variedades,
-                                                        'unique_calibres'=>$unique_calibres,
+        $pdf = Pdf::loadView('pdf.liquidacion', [   'razonsocial' => $razonsocial,
+                                                    'masas' => $masas,
+                                                    'packings'=>$packings,
+                                                    'comisions'=>$comisions,
+                                                    'unique_variedades'=>$unique_variedades,
+                                                    'unique_calibres'=>$unique_calibres,
                                                     'unique_semanas'=>$unique_semanas,
-                                                'fobs'=>$fobs,
-                                                'graficos'=>$graficos]);
+                                                    'fobs'=>$fobs,
+                                                    'graficos'=>$graficos,
+                                                    'unique_categorias'=>$unique_categorias]);
 
         $pdfContent = $pdf->output();
         $filename = 'Liquidacion '.$razonsocial->name.'.pdf';
