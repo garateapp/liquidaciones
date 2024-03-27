@@ -69,6 +69,7 @@ class TemporadaShow extends Component
 
 
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+
         $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
@@ -157,6 +158,7 @@ class TemporadaShow extends Component
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
         $gastos = Gasto::where('temporada_id',$temporada->id)->get();
+        $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
@@ -176,7 +178,8 @@ class TemporadaShow extends Component
                                                     'unique_categorias'=>$unique_categorias,
                                                     'anticipos'=>$anticipos,
                                                     'detalles'=>$detalles,
-                                                    'gastos'=>$gastos]);
+                                                    'gastos'=>$gastos,
+                                                    'exportacions'=>$exportacions]);
 
         $pdfContent = $pdf->output();
         $filename = 'Liquidacion '.$razonsocial->name.'.pdf';
