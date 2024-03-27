@@ -103,29 +103,50 @@
 			@php
 				$cat1=0;
 				$kspcat1=0;
+				$costoexportcat1=0;
+
 				$cati=0;
 				$kspcati=0;
+				$costoexportcati=0;
 
 			@endphp
 			@foreach ($masas as $masa)
 				@if ($masa->n_categoria=='Cat 1')
 						@php
-							
 							if($masa->precio_fob){
 								$cat1+=$masa->peso_neto*$masa->precio_fob;
 							}else{
 								$kspcat1+=$masa->peso_neto;
 							}
+							if ($masa->tipo_transporte=='AEREO') {
+                                    if ($exportacions->where('type','aereo')->count()>0) {
+                                      	$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                    }
+                            }
+                            if ($masa->tipo_transporte=='MARITIMO') {
+                              	if ($exportacions->where('type','maritimo')->count()>0) {
+									$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                }
+                            }
 						@endphp	
 				@endif
 				@if ($masa->n_categoria=='Cat I')
 						@php
-							$cati+=$masa->peso_neto;
 							if($masa->precio_fob){
 								$cati+=$masa->peso_neto*$masa->precio_fob;
 							}else{
 								$kspcati+=$masa->peso_neto;
 							}
+							if ($masa->tipo_transporte=='AEREO') {
+                                    if ($exportacions->where('type','aereo')->count()>0) {
+                                      	$costoexportcati+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                    }
+                            }
+                            if ($masa->tipo_transporte=='MARITIMO') {
+                              	if ($exportacions->where('type','maritimo')->count()>0) {
+									$costoexportcati+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                }
+                            }
 						@endphp	
 				@endif
 			@endforeach
@@ -136,19 +157,27 @@
 				<td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT 1)</td>
 				<td>CAT 1</td>
 				<td>USD$</td>
-				<td>{{number_format($cat1,2)}}
-				@if ($kspcat1>0)
-					({{$kspcat1}} kgs s/p)
-				@endif</td>
+				<td>{{number_format($cat1-$costoexportcat1,2)}}
+					@if ($kspcat1>0)
+						({{$kspcat1}} kgs s/p)
+					@endif
+					@if ($costoexportcat1>0)
+						({{$costoexportcat1}} usd CE)
+					@endif
+				</td>
 			  </tr>
 			<tr style="text-align: left;">
 			  <td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT I)</td>
 			  <td>CAT I</td>
 			  <td>USD$</td>
-			  <td>{{number_format($cati,2)}}
-			@if ($kspcati>0)
-				({{$kspcati}} kgs s/p)
-			@endif</td>
+			  <td>{{number_format($cati-$costoexportcati,2)}}
+				@if ($kspcati>0)
+					({{$kspcati}} kgs s/p)
+				@endif
+				@if ($costoexportcati>0)
+					({{$costoexportcati}} usd CE)
+				@endif
+			</td>
 			</tr>
 			<tr>
 				<td>
