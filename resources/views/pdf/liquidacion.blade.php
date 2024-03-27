@@ -206,8 +206,8 @@
 							@if ($masa->n_calibre=='Comercial' || $masa->n_calibre=='Precalibre' || $masa->n_calibre=='Desecho' || $masa->n_calibre=='Merma')
 								
 										@php
-											$cantidadtotal+=$masa->peso_neto;
-											$pesonetototal+=$masa->peso_neto*1.092;
+											$cantidadtotal+=$masa->peso_neto*1.092;
+											$pesonetototal+=$masa->peso_neto;
 										@endphp	
 								
 								
@@ -221,12 +221,12 @@
 		
 			<tr style="text-align: left;">
 				<td style="text-align: left; width:60%;">Gastos de fruta no exportable</td>
-				<td>Kilos {{number_format($cantidadtotal)}}</td>
+				<td>Kilos {{number_format($pesonetototal)}}</td>
 				<td>USD$</td>
-				<td>{{number_format($pesonetototal)}}</td>
+				<td>{{number_format($cantidadtotal)}}</td>
 			  </tr>
 			  @php
-				  $totalgastos=0;
+				  $totalgastos=$cantidadtotal;
 			  @endphp
 
 			@foreach ($gastos as $gasto)
