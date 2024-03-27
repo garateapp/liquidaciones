@@ -235,7 +235,7 @@
 										<td style="text-align: left; width:60%;">{{$gasto->item}}</td>
 										<td></td>
 										<td>USD$</td>
-										<td>25.650,06</td>
+										<td>{{number_format($detalle->cantidad,2)}}</td>
 							</tr>
 							
 						@endif
