@@ -276,7 +276,12 @@
 			<tr style="text-align: left;">
 				<td style="text-align: left; width:60%;"></td>
 				<td>T/C</td>
-				<td>$814,75</td>
+				@if ($razonsocial->tc)
+					<td>${{$razonsocial->tc}}</td>
+				@else
+					<td>$814,75</td>
+				@endif
+				
 
 				@if ($razonsocial->tc)
 					<td>{{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc)}}</td>
