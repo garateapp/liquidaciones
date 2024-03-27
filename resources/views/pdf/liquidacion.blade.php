@@ -1816,6 +1816,19 @@
 											$pesonetototal+=$masa->peso_neto;
 										@endphp	
 								@endif
+								@if (($masa->n_calibre=='Merma') && $masa->n_variedad==$variedad)
+										@php
+											$cantidadj+=$masa->cantidad;
+											$pesonetoj+=$masa->peso_neto;
+											foreach ($fobs->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob){
+												$retornoj+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+												$retornototal+=intval($masa->peso_neto)*intval($fob->fob_kilo_salida);
+												break;
+											}
+											$cantidadtotal+=$masa->cantidad;
+											$pesonetototal+=$masa->peso_neto;
+										@endphp	
+								@endif
 								
 								
 							@endif
@@ -1891,6 +1904,29 @@
 									$calibrecount+=1;
 								@endphp
 							@endif
+							@if ($pesonetoj>0)
+								<tr>
+								
+									@if ($calibrecount==1)
+										<td>{{$variedad}}</td>
+									@else
+										<td> </td>
+									@endif
+									
+									
+									
+									<td>Merma</td>
+									
+								
+									<td>{{$pesonetoj}} KGS</td>
+									<td>{{$retornoj}} USD</td>
+									
+									
+								</tr>
+								@php
+									$calibrecount+=1;
+								@endphp
+							@endif
 
 							
 	
@@ -1901,8 +1937,8 @@
 								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">Total {{$variedad}}</td>
 								
 								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
-								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j}} KGS</td>
-								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retorno4j+$retorno3j+$retorno2j}} USD</td>
+								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj}} KGS</td>
+								<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retorno4j+$retorno3j+$retorno2j+$retornoj}} USD</td>
 								
 							</tr>
 							
