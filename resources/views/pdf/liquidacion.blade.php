@@ -284,9 +284,9 @@
 				
 
 				@if ($razonsocial->tc)
-					<td>{{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc)}}</td>
+					<td>{{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc,0)}}</td>
 				@else
-					<td>{{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*814.75,2)}}</td>
+					<td>{{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 				@endif
 
 			  </tr>
