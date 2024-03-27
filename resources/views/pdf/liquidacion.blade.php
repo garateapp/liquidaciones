@@ -109,7 +109,7 @@
 				$kspcati=0;
 				$costoexportcati=0;
 
-				$costopacking=$packings->first()->cantidad;
+				$costopacking=$packings->first()->total_usd;
 
 			@endphp
 			@foreach ($masas as $masa)
