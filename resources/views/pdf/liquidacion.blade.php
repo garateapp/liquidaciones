@@ -225,6 +225,9 @@
 				<td>USD$</td>
 				<td>{{number_format($pesonetototal)}}</td>
 			  </tr>
+			  @php
+				  $totalgastos=0;
+			  @endphp
 
 			@foreach ($gastos as $gasto)
 				@if ($gasto->familia->name=='Cuenta Corriente')
@@ -237,6 +240,9 @@
 										<td>USD$</td>
 										<td>{{number_format($detalle->cantidad,2)}}</td>
 							</tr>
+							@php
+								$totalgastos+=floatval($detalle->cantidad);
+							@endphp
 							
 						@endif
 					@endforeach
@@ -254,7 +260,7 @@
 			  <td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Total cargos</td>
 			  
 			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
-			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> {{number_format($totalgastos,2)}}</td>
 			</tr>
 			<tr>
 				<td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Saldo</td>
