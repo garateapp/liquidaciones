@@ -229,7 +229,7 @@
 			@foreach ($gastos as $gasto)
 				@if ($gasto->familia->name=='Cuenta Corriente')
 			  		@foreach ($detalles as $detalle)
-						@if ($detalle->item==$gasto->item)
+						@if (strtolower($detalle->item)==strtolower($gasto->item))
 							
 							<tr style="text-align: left;">
 										<td style="text-align: left; width:60%;">{{$gasto->item}}</td>
