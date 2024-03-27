@@ -130,7 +130,7 @@
                             }
 						@endphp	
 				@endif
-				@if ($masa->n_categoria=='Cat I')
+				@if (strtolower($masa->n_categoria)=='cat i')
 						@php
 							if($masa->precio_fob){
 								$cati+=$masa->peso_neto*$masa->precio_fob;
