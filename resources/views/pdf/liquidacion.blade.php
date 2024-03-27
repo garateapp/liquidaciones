@@ -227,19 +227,21 @@
 			  </tr>
 
 			@foreach ($gastos as $gasto)
-				@foreach ($detalles as $item)
-					@if ($gasto->familia->name==$item)
-						
-					@endif
-				@endforeach
+				@if ($gasto->familia->name=='Cuenta Corriente')
+					@foreach ($detalles as $detalle)
+						@if ($gasto->item==$detalle->item)
+							<tr style="text-align: left;">
+								<td style="text-align: left; width:60%;">{{$detalle->item}}</td>
+								<td></td>
+								<td>USD$</td>
+								<td>25.650,06</td>
+							</tr>
+						@endif
+					@endforeach
+				@endif
 			@endforeach
 
-			<tr style="text-align: left;">
-			  <td style="text-align: left; width:60%;">Cuenta corriente envases</td>
-			  <td></td>
-			  <td>USD$</td>
-			  <td>25.650,06</td>
-			</tr>
+			
 			<tr style="text-align: left;">
 				<td style="text-align: left; width:60%;">Fletes huerto</td>
 				<td></td>
