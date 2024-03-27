@@ -109,6 +109,8 @@
 				$kspcati=0;
 				$costoexportcati=0;
 
+				$costopacking=$packings->first()->cantidad;
+
 			@endphp
 			@foreach ($masas as $masa)
 				@if ($masa->n_categoria=='Cat 1')
@@ -157,12 +159,15 @@
 				<td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT 1)</td>
 				<td>CAT 1</td>
 				<td>USD$</td>
-				<td>{{number_format($cat1-$costoexportcat1,2)}}
+				<td>{{number_format($cat1-$costoexportcat1-$costopacking*($cat1/($cat1+$cati)),2)}}
 					@if ($kspcat1>0)
 						({{$kspcat1}} kgs s/p)
 					@endif
 					@if ($costoexportcat1>0)
 						({{$costoexportcat1}} usd CE)
+					@endif
+					@if ($costopacking>0)
+						({{$costopacking*($cat1/($cat1+$cati))}} usd CE)
 					@endif
 				</td>
 			  </tr>
@@ -170,12 +175,15 @@
 			  <td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT I)</td>
 			  <td>CAT I</td>
 			  <td>USD$</td>
-			  <td>{{number_format($cati-$costoexportcati,2)}}
+			  <td>{{number_format($cati-$costoexportcati-$costopacking*($cati/($cat1+$cati)),2)}}
 				@if ($kspcati>0)
 					({{$kspcati}} kgs s/p)
 				@endif
 				@if ($costoexportcati>0)
 					({{$costoexportcati}} usd CE)
+				@endif
+				@if ($costopacking>0)
+					({{$costopacking*($cati/($cat1+$cati))}} usd CE)
 				@endif
 			</td>
 			</tr>
