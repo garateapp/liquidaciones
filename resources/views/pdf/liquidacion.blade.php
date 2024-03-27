@@ -228,16 +228,14 @@
 
 			@foreach ($gastos as $gasto)
 				@if ($gasto->familia->name=='Cuenta Corriente')
-					@foreach ($detalles as $detalle)
-						@if ($gasto->item==$detalle->item)
+					
 							<tr style="text-align: left;">
 								<td style="text-align: left; width:60%;">{{$detalle->item}}</td>
 								<td></td>
 								<td>USD$</td>
 								<td>25.650,06</td>
 							</tr>
-						@endif
-					@endforeach
+						
 				@endif
 			@endforeach
 
