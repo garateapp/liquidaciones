@@ -244,13 +244,6 @@
 			@endforeach
 
 			
-			<tr style="text-align: left;">
-				<td style="text-align: left; width:60%;">Fletes huerto</td>
-				<td></td>
-				<td>USD$</td>
-				<td>25.650,07</td>
-			  </tr>
-			<tr>
 
 
 				<td>
