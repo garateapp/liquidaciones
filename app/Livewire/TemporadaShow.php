@@ -54,7 +54,7 @@ class TemporadaShow extends Component
 
     public function render()
     {   $resumes=Resumen::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-        $anticipos=Anticipo::where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
+        $anticipos=Anticipo::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
@@ -145,11 +145,16 @@ class TemporadaShow extends Component
         $unique_variedades = $masas->pluck('n_variedad')->unique()->sort();
 
         $packings=CostoPacking::where('temporada_id',$temporada->id)->where('csg',$razonsocial->csg)->get();
+
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
+
+        $anticipos=Anticipo::where('temporada_id',$temporada->id)->where('rut',$razonsocial->rut)->get();
+
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
+        
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
         $graficos=[];
@@ -165,7 +170,8 @@ class TemporadaShow extends Component
                                                     'unique_semanas'=>$unique_semanas,
                                                     'fobs'=>$fobs,
                                                     'graficos'=>$graficos,
-                                                    'unique_categorias'=>$unique_categorias]);
+                                                    'unique_categorias'=>$unique_categorias,
+                                                    'anticipos'=>$anticipos]);
 
         $pdfContent = $pdf->output();
         $filename = 'Liquidacion '.$razonsocial->name.'.pdf';

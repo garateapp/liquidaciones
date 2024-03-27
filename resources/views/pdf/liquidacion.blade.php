@@ -100,19 +100,55 @@
 			</thead>
 		</table>
 
+			@php
+				$cat1=0;
+				$kspcat1=0;
+				$cati=0;
+				$kspcati=0;
+
+			@endphp
+			@foreach ($masas as $masa)
+				@if ($masa->n_categoria=='Cat 1')
+						@php
+							
+							if($masa->precio_fob){
+								$cat1+=$masa->peso_neto*$masa->precio_fob;
+							}else{
+								$kspcat1+=$masa->peso_neto;
+							}
+						@endphp	
+				@endif
+				@if ($masa->n_categoria=='Cat I')
+						@php
+							$cati+=$masa->peso_neto;
+							if($masa->precio_fob){
+								$cati+=$masa->peso_neto*$masa->precio_fob;
+							}else{
+								$kspcati+=$masa->peso_neto;
+							}
+						@endphp	
+				@endif
+			@endforeach
+
 		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
 		
 			<tr style="text-align: left;">
 				<td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT 1)</td>
 				<td>CAT 1</td>
 				<td>USD$</td>
-				<td>125.650,05</td>
+				<td>{{number_format($cat1,2)}}
+				@if ($kspcat1>0)
+					({{$kspcat1}} kgs s/p)
+				@endif</td>
 			  </tr>
 			<tr style="text-align: left;">
 			  <td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT I)</td>
 			  <td>CAT I</td>
 			  <td>USD$</td>
-			  <td>25.650,06</td>
+			  <td>{{number_format($cati,2)}}
+			@if ($kspcati>0)
+				({{$kspcati}} kgs s/p)
+			@endif</td>
 			</tr>
 			<tr>
 				<td>
@@ -123,26 +159,30 @@
 			  <td></td>
 			  <td></td>
 			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
-			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> {{number_format($cat1+$cati,2)}}</td>
 			</tr>
 		</table>
 
 		<h3 style="text-align: left;">Facturación (proformas)</h3>
 
 		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
-		
-			<tr style="text-align: left;">
-				<td style="text-align: left; width:60%;"></td>
-				<td>01/03/05</td>
-				<td>USD$</td>
-				<td>125.650,05</td>
-			  </tr>
-			<tr style="text-align: left;">
-			  <td style="text-align: left; width:60%;"></td>
-			  <td>01/03/05</td>
-			  <td>USD$</td>
-			  <td>25.650,06</td>
-			</tr>
+			@php
+				$totalproforma=0;
+			@endphp
+			@foreach ($anticipos as $anticipo)
+				@php
+					$fechaprint=new DateTime($anticipo->fecha);
+					$totalproforma+=floatval($anticipo->cantidad);
+				@endphp
+				<tr style="text-align: left;">
+					<td style="text-align: left; width:60%;"></td>
+					<td>{{$fechaprint->format('d-m-Y')}}</td>
+					<td>USD$</td>
+					<td>{{number_format($anticipo->cantidad,2)}}</td>
+				</tr>
+				
+			@endforeach
+
 			<tr>
 				<td>
 
@@ -152,9 +192,28 @@
 			  <td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Total facturación (Proformas)</td>
 			  
 			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
-			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> 125.000,12</td>
+			  <td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> {{number_format($totalproforma,2)}}</td>
 			</tr>
 		</table>
+
+						@php
+							
+							$cantidadtotal=0;
+							$pesonetototal=0;
+						@endphp
+	
+						@foreach ($masas as $masa)
+							@if ($masa->n_calibre=='Comercial' || $masa->n_calibre=='Precalibre' || $masa->n_calibre=='Desecho' || $masa->n_calibre=='Merma')
+								
+										@php
+											$cantidadtotal+=$masa->peso_neto;
+											$pesonetototal+=$masa->peso_neto*1.092;
+										@endphp	
+								
+								
+							@endif
+							
+						@endforeach
 
 		<h3 style="text-align: left;">Otro cargos</h3>
 
@@ -162,10 +221,12 @@
 		
 			<tr style="text-align: left;">
 				<td style="text-align: left; width:60%;">Gastos de fruta no exportable</td>
-				<td>Kilos 18.500</td>
+				<td>Kilos {{number_format($cantidadtotal)}}</td>
 				<td>USD$</td>
-				<td>125.650,05</td>
+				<td>{{number_format($pesonetototal)}}</td>
 			  </tr>
+
+
 			<tr style="text-align: left;">
 			  <td style="text-align: left; width:60%;">Cuenta corriente envases</td>
 			  <td></td>
@@ -1776,7 +1837,7 @@
 						@endphp
 	
 						@foreach ($masas as $masa)
-							@if ($masa->n_calibre=='Comercial' || $masa->n_calibre=='Precalibre' || $masa->n_calibre=='Desecho')
+							@if ($masa->n_calibre=='Comercial' || $masa->n_calibre=='Precalibre' || $masa->n_calibre=='Desecho' || $masa->n_calibre=='Merma')
 								@if (($masa->n_calibre=='Comercial') && $masa->n_variedad==$variedad)
 										@php
 											$cantidad4j+=$masa->cantidad;

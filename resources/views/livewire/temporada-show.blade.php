@@ -252,175 +252,21 @@
               </div>
           </div>
         </div>
- {{-- commen
-        <table>
-
-          @foreach ($masasbalances as $masa)
-
-          <tr>
-            <td>
-              ID: {{$masa->id}} 
-            </td>
-            <td>
-               S: {{$masa->semana}}
-            </td>
-           
-            
-            <td>
-              VAR: {{$masa->n_variedad}}
-            </td>
-            <td>
-              ETIQUETA: {{$masa->n_etiqueta}}
-            </td>
-            
-            <td>
-                CALIBRE: {{$masa->n_calibre}}           
-            </td> 
-            <td>
-                COLOR: {{$masa->n_calibre}}           
-            </td> 
-
-            <td>
-              PESO: {{$masa->peso_neto}}
-            </td>
-           
-                  
-          </tr>
-          @if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD')
-									@php
-									  $calibre='4J';
-									@endphp	
-
-                  @if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD')
-                      @php
-                          $color='Dark';
-                      @endphp
-                  @else
-                    @php
-                      $color='Light';
-                    @endphp
-                      
-                  @endif
-
-							@endif
-							@if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD')
-                  @php
-                    $calibre='3J';
-                  @endphp	
-                  @if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD')
-                      @php
-                          $color='Dark';
-                      @endphp
-                  @else
-                    @php
-                      $color='Light';
-                    @endphp
-                      
-                  @endif
-							@endif
-							@if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD')
-                @php
-                  $calibre='2J';
-                @endphp	
-                @if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD')
-                    @php
-                        $color='Dark';
-                    @endphp
-                @else
-                  @php
-                    $color='Light';
-                  @endphp
-                @endif
-							@endif
-							@if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD')
-                  @php
-                    $calibre='J';
-                  @endphp	
-                  @if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD')
-                      @php
-                          $color='Dark';
-                      @endphp
-                  @else
-                    @php
-                      $color='Light';
-                    @endphp
-                      
-                  @endif
-							@endif
-							@if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD')
-                  @php
-                    $calibre='XL';
-                  @endphp	
-                  @if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD')
-                      @php
-                          $color='Dark';
-                      @endphp
-                  @else
-                    @php
-                      $color='Light';
-                    @endphp
-                      
-                  @endif
-							@endif
-
-            @foreach ($fobsall->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana) as $fob)
-            
-              @if ($fob->n_calibre==$calibre && $fob->etiqueta==$masa->n_etiqueta && $fob->color==$color)
-                  
-                <tr>
-                  <td>
-                   <b> FOB: {{$fob->id}} </b>
-                  </td>
-                  <td>
-                     S: {{$fob->semana}}
-                  </td>
-                  <td>
-                    VAR: {{$fob->n_variedad}}
-                  </td>
-                  <td>
-                    ETIQUETA: {{$fob->etiqueta}}
-                    </td>
-                    <td>
-                      CALIBRE: {{$fob->n_calibre}}
-                      </td>
-                      <td>
-                        COLOR: {{$fob->color}}
-                        </td>
-                      <td>
-                        <b>
-                      fob: {{$fob->fob_kilo_salida}} {{$fob->etiqueta}} <br>
-                    </b>
-                  </td>                 
-                </tr>
-
-               
-                @endif
-
-            @endforeach
-            <tr>
-              <td>
-
-              </td>
-            </tr>
-          @endforeach
-
-         
-
-        </table>
-       --}}
-    <div class="flex ">
-        <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
-          <x-button>
-            Actualizar Variedades
-          </x-button>
-        </a>
-        <a href="{{Route('preciofob.refresh',$temporada)}}">
-          <x-button>
-            Actualizar PRECIO FOB
-          </x-button>
-        </a>
-      </div>
+    
+        <div class="flex ">
+            <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
+              <x-button>
+                Actualizar Variedades
+              </x-button>
+            </a>
+            <a href="{{Route('preciofob.refresh',$temporada)}}">
+              <x-button>
+                Actualizar PRECIO FOB
+              </x-button>
+            </a>
+          </div>
     @endif
+
     <section id="informacion">
     <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
         
@@ -736,7 +582,7 @@
                                                     Generar
                                                   </x-button>
                                                 </a>
-                                              </td>
+                                              </td> 
                                               <td class="text-sm text-gray-900 font-light py-4 text-center">
 
                                                 @if ($razon->informe)
@@ -1388,6 +1234,33 @@
                 @endif
 
                 @if ($vista=='ANTICIPOS')
+                     <div>
+                        <h1 class="text-xl font-semibold mb-4">
+                            Por favor selecione el archivo de "Anticipos" que desea importar
+                        </h1>
+                        <div class="">
+                            <form action="{{route('temporada.importAnticipo')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
+
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                                <x-validation-errors class="errors">
+
+                                </x-validation-errors>
+
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+
+                        </div>
+                    </div>
                   <table class="min-w-full leading-normal">
                       <thead>
                         <tr>

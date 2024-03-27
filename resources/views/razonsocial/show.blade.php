@@ -358,7 +358,7 @@
                                       {{$masa->id}}) - {{$masa->n_etiqueta}}-({{$masa->peso_neto}} Kgs) 
                                         @foreach ($fletes as $flete)
                                             @if ($flete->etiqueta==$masa->n_etiqueta)
-                                            (+{{$flete->valor*$masa->peso_neto}}) 
+                                              (+{{$flete->valor*$masa->peso_neto}}) 
                                             @endif
                                         @endforeach
                                       - {{$masa->n_vategoria}} - {{$masa->cantidad}} * PRECIO_UNITARIO
@@ -822,6 +822,7 @@
                                   SEMANA 1 <br>
                                   Variedad Bing <br>
                                   Calibre 3j <br>
+                                  
                                   @foreach ($fobs->where('n_variedad','Lapins')->where('semana','1') as $fob)
                                         @if (strpos($fob->n_calibre, "4J") !== false)
 

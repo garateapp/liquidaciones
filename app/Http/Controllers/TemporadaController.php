@@ -420,6 +420,12 @@ class TemporadaController extends Controller
 
         $file = $request->file('file');
 
+        $masas=Anticipo::where('temporada_id',$request->temporada)->get();
+
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+
         FacadesExcel::import(new AnticipoImport($request->temporada),$file);
 
         $temporada=Temporada::find($request->temporada);
