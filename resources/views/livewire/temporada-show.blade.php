@@ -1590,34 +1590,41 @@
                       @endif
 
 
-                      <h1 class="text-xl text-center font-semibold mb-4 ">
-                          Por favor selecione el archivo de "Gastos" que desea importar
-                      </h1>
-                      <div class="flex justify-center">
+                     
+
+                  </div>
+                
+
+                @endif
+                @if ($vista=='OTROSGASTOS') 
+                    <h1 class="text-xl text-center font-semibold mb-4 ">
+                      Por favor selecione el archivo de "Gastos" que desea importar
+                  </h1>
+                  <div class="flex justify-center">
+                      
+                      <form action="{{route('temporada.importGasto')}}"
+                          method="POST"
+                          class="bg-white rounded p-8 shadow"
+                          enctype="multipart/form-data">
                           
-                          <form action="{{route('temporada.importGasto')}}"
-                              method="POST"
-                              class="bg-white rounded p-8 shadow"
-                              enctype="multipart/form-data">
-                              
-                              @csrf
+                          @csrf
 
-                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+                          <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                              <x-validation-errors class="errors">
+                          <x-validation-errors class="errors">
 
-                              </x-validation-errors>
+                          </x-validation-errors>
 
-                              <input type="file" name="file" accept=".csv,.xlsx">
+                          <input type="file" name="file" accept=".csv,.xlsx">
 
-                              <x-button class="ml-4">
-                                  Importar
-                              </x-button>
-                          </form>
-                      </div>
+                          <x-button class="ml-4">
+                              Importar
+                          </x-button>
+                      </form>
+                  </div>
 
-                      @if ($temporada->detalles->count()>0)
-                      <table class="min-w-full leading-normal">
+                  @if ($temporada->detalles->count()>0)
+                    <table class="min-w-full leading-normal">
                         <thead>
                           <tr>
                             <th
@@ -1683,7 +1690,7 @@
                                 </td>
                             
                             
-  
+
                                 <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <a href="">
                                     <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
@@ -1702,11 +1709,7 @@
                   
                         </tbody>
                     </table>
-                      @endif
-
-                  </div>
-                
-
+                  @endif
                 @endif
 
               

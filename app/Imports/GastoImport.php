@@ -32,7 +32,7 @@ class GastoImport implements ToCollection, WithStartRow
                     'temporada_id'=>$this->temporada,
 
                     'grupo'=> $row[0],
-                    'rut'=> $row[1],
+                    'rut'=> preg_replace('/[\.\-\s]+/', '', $row[1]),
                     'n_productor'=> $row[2],
                     'item'=> $row[3],
                     'fecha'=>  Carbon::instance(Date::excelToDateTimeObject($row[4])),

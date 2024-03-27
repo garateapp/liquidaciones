@@ -226,6 +226,13 @@
 				<td>{{number_format($pesonetototal)}}</td>
 			  </tr>
 
+			@foreach ($gastos as $gasto)
+				@foreach ($detalles as $item)
+					@if ($gasto->familia->name==$item)
+						
+					@endif
+				@endforeach
+			@endforeach
 
 			<tr style="text-align: left;">
 			  <td style="text-align: left; width:60%;">Cuenta corriente envases</td>
@@ -240,6 +247,8 @@
 				<td>25.650,06</td>
 			  </tr>
 			<tr>
+
+
 				<td>
 
 				</td>

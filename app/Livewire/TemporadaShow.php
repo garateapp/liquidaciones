@@ -154,6 +154,7 @@ class TemporadaShow extends Component
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
+        $gastos = Gasto::where('temporada_id',$temporada->id)->get();
         
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
@@ -171,7 +172,8 @@ class TemporadaShow extends Component
                                                     'fobs'=>$fobs,
                                                     'graficos'=>$graficos,
                                                     'unique_categorias'=>$unique_categorias,
-                                                    'anticipos'=>$anticipos]);
+                                                    'anticipos'=>$anticipos,
+                                                    'gastos'=>$gastos]);
 
         $pdfContent = $pdf->output();
         $filename = 'Liquidacion '.$razonsocial->name.'.pdf';
