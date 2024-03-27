@@ -158,7 +158,7 @@ class TemporadaShow extends Component
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
         $gastos = Gasto::where('temporada_id',$temporada->id)->get();
-        $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->get();
+        $exportacions=Exportacion::where('temporada_id',$temporada->id)->get();
         
 
         $variedades = Variedad::whereIn('name', $unique_variedades)->get();
