@@ -7,6 +7,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Detalle;
 use App\Models\Embarque;
 use App\Models\Exportacion;
 use App\Models\Familia;
@@ -149,6 +150,7 @@ class TemporadaShow extends Component
         $comisions=Comision::where('temporada_id',$temporada->id)->where('productor',$razonsocial->name)->get();
 
         $anticipos=Anticipo::where('temporada_id',$temporada->id)->where('rut',$razonsocial->rut)->get();
+        $detalles=Detalle::where('temporada_id',$temporada->id)->where('rut',$razonsocial->rut)->get();
 
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
@@ -173,6 +175,7 @@ class TemporadaShow extends Component
                                                     'graficos'=>$graficos,
                                                     'unique_categorias'=>$unique_categorias,
                                                     'anticipos'=>$anticipos,
+                                                    'detalles'=>$detalles,
                                                     'gastos'=>$gastos]);
 
         $pdfContent = $pdf->output();
