@@ -228,14 +228,12 @@
 
 			@foreach ($gastos as $gasto)
 				@if ($gasto->familia->name=='Cuenta Corriente')
-					
-							<tr style="text-align: left;">
-								<td style="text-align: left; width:60%;">{{$detalle->item}}</td>
+					<tr style="text-align: left;">
+								<td style="text-align: left; width:60%;">{{$gasto->item}}</td>
 								<td></td>
 								<td>USD$</td>
 								<td>25.650,06</td>
-							</tr>
-						
+					</tr>
 				@endif
 			@endforeach
 
@@ -244,7 +242,7 @@
 				<td style="text-align: left; width:60%;">Fletes huerto</td>
 				<td></td>
 				<td>USD$</td>
-				<td>25.650,06</td>
+				<td>25.650,07</td>
 			  </tr>
 			<tr>
 

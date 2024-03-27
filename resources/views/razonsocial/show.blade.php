@@ -347,7 +347,7 @@
                                   </table>
                                
                                   <h1 class="mt-6">
-                                    Calcular CAT1 CATI
+                                    Calcular CAT1 CAT
                                   </h1>
                                   @php
                                       $n=1;
@@ -822,7 +822,7 @@
                                   SEMANA 1 <br>
                                   Variedad Bing <br>
                                   Calibre 3j <br>
-                                  
+
                                   @foreach ($fobs->where('n_variedad','Lapins')->where('semana','1') as $fob)
                                         @if (strpos($fob->n_calibre, "4J") !== false)
 
