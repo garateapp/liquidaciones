@@ -306,7 +306,13 @@
 					Neto
 				</td>
 				<td style="border-top: 2px solid black;">
-					$52.451.356
+
+					@if ($razonsocial->tc)
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc,0)}}
+					@else
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*814.75,0)}}
+					@endif
+					
 				</td>
 			</tr>
 			<tr>
@@ -317,7 +323,11 @@
 					Iva
 				</td>
 				<td>
-					$52.451.356
+					@if ($razonsocial->tc)
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc*0.19,0)}}
+					@else
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*814.75*0.19,0)}}
+					@endif
 				</td>
 			</tr>
 			<tr>
@@ -328,7 +338,11 @@
 					Total
 				</td>
 				<td>
-					$52.451.356
+					@if ($razonsocial->tc)
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*$razonsocial->tc*1.19,0)}}
+					@else
+						${{number_format((($cat1+$cati)-($totalgastos+$totalproforma))*814.75*1.19,0)}}
+					@endif
 				</td>
 			</tr>
 		</table>
