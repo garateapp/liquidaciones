@@ -167,7 +167,7 @@
 						({{$costoexportcat1}} usd CE)
 					@endif
 					@if ($costopacking>0)
-						({{$costopacking*($cat1/($cat1+$cati))}} usd CE)
+						({{$costopacking*($cat1/($cat1+$cati))}} usd CP)
 					@endif
 				</td>
 			  </tr>
@@ -183,7 +183,7 @@
 					({{$costoexportcati}} usd CE)
 				@endif
 				@if ($costopacking>0)
-					({{$costopacking*($cati/($cat1+$cati))}} usd CE)
+					({{$costopacking*($cati/($cat1+$cati))}} usd CP)
 				@endif
 			</td>
 			</tr>
