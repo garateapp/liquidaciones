@@ -94,9 +94,18 @@ class TemporadaController extends Controller
         } else {
             return view('temporadas.balancemasa',compact('temporada','masitas'));
         }
-        
-        
-       
+    }
+
+    public function nacional(Temporada $temporada)
+    {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
+        $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
+
+        $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+        if ($masitas->count()>0) {
+            return view('temporadas.shownacional',compact('temporada','resumes','CostosPackings'));
+        } else {
+            return view('temporadas.balancemasa',compact('temporada','masitas'));
+        }
     }
 
     public function resume(Temporada $temporada)

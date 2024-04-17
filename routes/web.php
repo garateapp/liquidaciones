@@ -52,6 +52,8 @@ Route::resource('gasto', GastoController::class)->names('gastos');
 
 Route::get('temporada/{temporada}/resumen',[TemporadaController::class,'resume'])->name('temporada.resume');
 
+Route::get('temporada/{temporada}/nacional',[TemporadaController::class,'nacional'])->name('temporada.nacional');
+
 Route::get('temporada/{temporada}/packing',[TemporadaController::class,'packing'])->name('temporada.packing');
 
 Route::get('temporada/{temporada}/comision',[TemporadaController::class,'comision'])->name('temporada.comision');
