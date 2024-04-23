@@ -87,6 +87,8 @@ class TemporadaShow extends Component
         
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
+        $unique_calibres = $masastotal->pluck('n_calibre')->unique()->sort();
+
         $masastotal2=Balancemasados::where('temporada_id',$this->temporada->id)->get();
 
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
@@ -101,7 +103,7 @@ class TemporadaShow extends Component
 
         $familias=Familia::where('status','active')->get();
 
-        return view('livewire.temporada-show',compact('familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function set_view($vista){
@@ -155,6 +157,7 @@ class TemporadaShow extends Component
         $detalles=Detalle::where('temporada_id',$temporada->id)->where('rut',$razonsocial->rut)->get();
 
         $unique_calibres = $masas->pluck('n_calibre')->unique()->sort();
+
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
