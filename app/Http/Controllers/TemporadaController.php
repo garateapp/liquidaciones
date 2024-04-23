@@ -313,6 +313,7 @@ class TemporadaController extends Controller
         $etiqueta=0;
         $categoria=0;
         $etiq=[];
+        $suma=0;
         foreach($masascat1 as $masa){
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
 				    $calibre='4J';
@@ -363,7 +364,6 @@ class TemporadaController extends Controller
                         //calibre
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
                             $cali+=1;
-                            $etiq[]=$calibre;
                         }
                         //etiqueta
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
@@ -377,6 +377,10 @@ class TemporadaController extends Controller
                         //categoria
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
                             $categoria+=1;
+                        }
+
+                        if((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)))&& (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)))){
+                            $suma+=1;
                         }
                         
                         
@@ -452,8 +456,7 @@ class TemporadaController extends Controller
 
         }
 
-        dd($etiq);
-        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'/'.$nro2.' Actualizados con Éxito');
+        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.$suma.'/'.$nro2.' Actualizados con Éxito');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
