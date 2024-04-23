@@ -87,9 +87,10 @@ class TemporadaShow extends Component
         
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
-        $unique_calibres = $masastotal->pluck('n_calibre')->unique()->sort();
-
+        
         $masastotal2=Balancemasados::where('temporada_id',$this->temporada->id)->get();
+
+        $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();
 
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
