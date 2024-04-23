@@ -447,7 +447,7 @@ class TemporadaController extends Controller
 
         }
 
-        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.'/'.$nro2.' Actualizados con Éxito');
+        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'/'.$nro2.' Actualizados con Éxito');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
