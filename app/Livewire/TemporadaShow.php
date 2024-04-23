@@ -42,6 +42,7 @@ class TemporadaShow extends Component
         'toDate'=>'',
         'precioFob'=>'',
         'ncategoria'=>'',
+        'calibre'=>'',
     ];
 
     #[Url]
@@ -73,7 +74,7 @@ class TemporadaShow extends Component
         $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
-        $fobs=Fob::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
 
         $masasbalances=Balancemasa::filter($this->filters)
