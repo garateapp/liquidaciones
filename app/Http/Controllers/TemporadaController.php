@@ -354,10 +354,12 @@ class TemporadaController extends Controller
                 foreach ($fobsall as $fob){
                     
                     if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_variedad))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_variedad)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->semana))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->semana))) {
+
                         if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
                                 $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                                $nro+=1;
+                               
                         }
+                        $nro+=1;
                         
                     }
                 }
