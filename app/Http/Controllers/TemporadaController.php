@@ -349,10 +349,10 @@ class TemporadaController extends Controller
                       $color='Light';
                     }
                 }
-                $nro+=1;
+                
                 foreach ($fobsall as $fob){
-                    if ((strtolower($fob->n_variedad)==strtolower($masa->n_variedad))){
-                      
+                    if ($fob->n_variedad==$masa->n_variedad){
+                        $nro+=1;
                     }
                     
                     if ((strtolower($fob->n_variedad)==strtolower($masa->n_variedad)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->semana))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->semana))) {
