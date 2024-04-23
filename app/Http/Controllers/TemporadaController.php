@@ -351,7 +351,7 @@ class TemporadaController extends Controller
                 }
                 
                 foreach ($fobsall as $fob){
-                    if ($fob->n_variedad==$masa->n_variedad){
+                    if (str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)){
                         $nro+=1;
                     }
                     
