@@ -359,7 +359,7 @@ class TemporadaController extends Controller
                 $nro2+=1; 
                 foreach ($fobsall as $fob){
                     
-                    if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && str_replace(' ', '', $fob->semana)==str_replace(' ', '', $masa->semana) ) {
+                    if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana ) {
                         
                         //calibre
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
