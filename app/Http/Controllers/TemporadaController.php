@@ -351,7 +351,7 @@ class TemporadaController extends Controller
                 }
                 
                 foreach ($fobsall as $fob){
-                    if (str_replace(' ', '', $fob->semana)==str_replace(' ', '', $masa->semana)){
+                    if ($fob->semana==$masa->semana){
                         $nro+=1;
                     }
                     
