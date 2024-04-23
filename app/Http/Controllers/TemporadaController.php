@@ -312,6 +312,7 @@ class TemporadaController extends Controller
         $col=0;
         $etiqueta=0;
         $categoria=0;
+        $etiq=[];
         foreach($masascat1 as $masa){
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
 				    $calibre='4J';
@@ -366,6 +367,7 @@ class TemporadaController extends Controller
                         //etiqueta
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
                             $etiqueta+=1;
+                            $etiq[]=$masa->n_etiqueta;
                         }
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
@@ -447,6 +449,7 @@ class TemporadaController extends Controller
 
         }
 
+        dd($etiq);
         return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'/'.$nro2.' Actualizados con Éxito');
     }
 
