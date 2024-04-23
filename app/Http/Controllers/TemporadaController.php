@@ -352,6 +352,9 @@ class TemporadaController extends Controller
                 
                 foreach ($fobsall as $fob){
                     if($fob->semana){
+                        
+                    }
+                    if($masa->semana){
                         $nro+=1;
                     }
                     if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) ) {
