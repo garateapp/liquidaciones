@@ -303,11 +303,12 @@ class TemporadaController extends Controller
     }
 
     public function fobupdate(Temporada $temporada)
-    {   $masas=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->orwhere('n_categoria','Cat I')->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
         $fobsall=Fob::where('temporada_id',$temporada->id)->get();
         $nro1=0;
         $nro2=0;
-        foreach($masas as $masa){
+        foreach($masascat1 as $masa){
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
 				    $calibre='4J';
 									
@@ -366,7 +367,67 @@ class TemporadaController extends Controller
                 }
                
 
-       }
+        }
+        foreach($masascati as $masa){
+            if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                $calibre='4J';
+                                
+                if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+            if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                    $calibre='3J';
+            if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+            if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                $calibre='2J';
+                if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                        $color='Dark';
+                
+                }else{
+                    $color='Light';
+                }
+            }
+            if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                    $calibre='J';
+                if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                        $color='Dark';
+                }else{
+                    $color='Light';
+                }
+            }
+            if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                $calibre='XL';
+            if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+            $nro2+=1; 
+            foreach ($fobsall as $fob){
+                
+                if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana ) {
+                    
+                
+                    if ((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                    
+                        $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                        $nro1+=1; 
+                    
+                    }
+                }
+            }
+        
+
+        }
 
         return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito');
     }
