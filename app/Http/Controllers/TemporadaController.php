@@ -350,7 +350,7 @@ class TemporadaController extends Controller
                     }
                 }
                 
-                foreach ($fobsall->where('semana',$masa->semana) as $fob){
+                foreach ($fobsall as $fob){
                     
                         $nro+=1;
                     
