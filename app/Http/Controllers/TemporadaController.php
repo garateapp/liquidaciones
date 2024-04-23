@@ -308,7 +308,7 @@ class TemporadaController extends Controller
         $fobsall=Fob::where('temporada_id',$temporada->id)->get();
         $nro1=0;
         $nro2=0;
-        $calibre=0;
+        $cali=0;
         $color=0;
         $etiqueta=0;
         $categoria=0;
@@ -361,7 +361,7 @@ class TemporadaController extends Controller
                         
                         //calibre
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
-                            $calibre+=1;
+                            $cali+=1;
                         }
                         //etiqueta
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
@@ -449,7 +449,7 @@ class TemporadaController extends Controller
 
         }
 
-        return redirect()->back()->with('info',$nro1.'-'.$calibre.'-'.$etiqueta.'-'.$color.'-'.$categoria.'-'.'/'.$nro2.' Actualizados con Éxito');
+        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$color.'-'.$categoria.'-'.'/'.$nro2.' Actualizados con Éxito');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
