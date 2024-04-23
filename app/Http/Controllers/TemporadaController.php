@@ -303,11 +303,10 @@ class TemporadaController extends Controller
     }
 
     public function fobupdate(Temporada $temporada)
-    {   $masas=Balancemasa::where('temporada_id',$temporada->id)->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
+    {   $masas=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->orwhere('n_categoria','Cat I')->where('n_etiqueta','!=','Alsu')->whereNull('precio_fob')->paginate(5000);
         $fobsall=Fob::where('temporada_id',$temporada->id)->get();
         $nro=0;
         foreach($masas as $masa){
-                $calibre="";
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
 				    $calibre='4J';
 									
@@ -354,12 +353,10 @@ class TemporadaController extends Controller
                 foreach ($fobsall as $fob){
                     
                     if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_variedad))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_variedad)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->semana))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->semana))) {
-
                         if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
                                 $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                               
+                                $nro+=1;
                         }
-                        $nro+=1;
                         
                     }
                 }
