@@ -309,43 +309,42 @@ class TemporadaController extends Controller
         $nro1=0;
         $nro2=0;
         foreach($masascat1 as $masa){
-                if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JDD'){
+                if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
 				    $calibre='4J';
-									
-                    if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JDD'){
+					if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                           $color='Dark';
                     }else{
                       $color='Light';
                     }
         		}
-				if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JDD'){
+				if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
                         $calibre='3J';
-                    if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JDD'){
+                    if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
                           $color='Dark';
                     }else{
                       $color='Light';
                     }
 				}
-				if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JDD'){
+				if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                     $calibre='2J';
-                    if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JDD'){
+                    if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                             $color='Dark';
                        
                     }else{
                         $color='Light';
                     }
 				}
-				if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JDD'){
+				if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
                         $calibre='J';
-                    if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JDD'){
+                    if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
                             $color='Dark';
                     }else{
                         $color='Light';
                     }
                 }
-			    if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XL' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLDD'){
+			    if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                     $calibre='XL';
-                  if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLDD'){
+                  if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                           $color='Dark';
                     }else{
                       $color='Light';
@@ -369,46 +368,46 @@ class TemporadaController extends Controller
 
         }
         foreach($masascati as $masa){
-            if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JDD'){
+            if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                 $calibre='4J';
                                 
-                if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='4JDD'){
-                      $color='Dark';
+                if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                    $color='Dark';
                 }else{
-                  $color='Light';
+                $color='Light';
                 }
             }
-            if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JDD'){
+            if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
                     $calibre='3J';
-                if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='3JDD'){
-                      $color='Dark';
+            if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                    $color='Dark';
                 }else{
-                  $color='Light';
+                $color='Light';
                 }
             }
-            if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JDD'){
+            if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                 $calibre='2J';
-                if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='2JDD'){
+                if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                         $color='Dark';
-                   
+                
                 }else{
                     $color='Light';
                 }
             }
-            if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='J' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JDD'){
+            if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
                     $calibre='J';
-                if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='JDD'){
+                if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
                         $color='Dark';
                 }else{
                     $color='Light';
                 }
             }
-            if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XL' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLDD'){
+            if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                 $calibre='XL';
-              if (preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLD' || preg_replace('/[\.\-\s]+/', '', $masa->n_calibre)=='XLDD'){
-                      $color='Dark';
+            if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                    $color='Dark';
                 }else{
-                  $color='Light';
+                $color='Light';
                 }
             }
             $nro2+=1; 
