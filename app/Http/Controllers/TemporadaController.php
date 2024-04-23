@@ -350,7 +350,7 @@ class TemporadaController extends Controller
                     }
                 }
 
-                foreach ($fobsall->where('n_variedad','like','%'.$masa->n_variedad.'%')->where('semana',$masa->semana)->get() as $fob){
+                foreach ($fobsall as $fob){
                 
                     if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
 
