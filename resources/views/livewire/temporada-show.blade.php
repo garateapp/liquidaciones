@@ -598,7 +598,7 @@
                     <option value="">Todos</option>
                     @foreach ($unique_calibres as $calibre)
                       @if ($calibre)
-                        <option value="{{$calibre}}">{{$calibre}}</option>
+                        <option value="{{$calibre}}">"{{$calibre}}"</option>
                       @endif
 
                     @endforeach
