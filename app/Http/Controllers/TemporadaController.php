@@ -351,7 +351,7 @@ class TemporadaController extends Controller
                 }
                 
                 foreach ($fobsall as $fob){
-                    if ($fob->semana==$masa->semana){
+                    if (intval($fob->semana)==intval($masa->semana)){
                         $nro+=1;
                     }
                     
