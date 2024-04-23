@@ -33,6 +33,8 @@ class Balancemasa extends Model
             $query->where('n_categoria_st', $nCategoria);
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
+        })->when($filters['variedad'] ?? null,function($query,$variedad){
+            $query->where('n_variedad',$variedad);
         });
     }
     
