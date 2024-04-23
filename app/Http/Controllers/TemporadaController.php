@@ -373,7 +373,7 @@ class TemporadaController extends Controller
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
                             $col+=1;
-                            $etiq[]=$color;
+                            $etiq[]=preg_replace('/[\.\-\s]+/', '', strtolower($color));
                         }
                         //categoria
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
