@@ -309,7 +309,7 @@ class TemporadaController extends Controller
         $nro1=0;
         $nro2=0;
         $cali=0;
-        $color=0;
+        $col=0;
         $etiqueta=0;
         $categoria=0;
         foreach($masascat1 as $masa){
@@ -369,7 +369,7 @@ class TemporadaController extends Controller
                         }
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
-                            $color+=1;
+                            $col+=1;
                         }
                         //categoria
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
@@ -385,8 +385,6 @@ class TemporadaController extends Controller
                         }
                     }
                 }
-               
-
         }
         foreach($masascati as $masa){
             if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
@@ -449,7 +447,7 @@ class TemporadaController extends Controller
 
         }
 
-        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$color.'-'.$categoria.'-'.'/'.$nro2.' Actualizados con Éxito');
+        return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.'/'.$nro2.' Actualizados con Éxito');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
