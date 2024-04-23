@@ -27,7 +27,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $familia,$unidad, $item, $descuenta, $categoria, $masaid, $preciomasa, $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $preciomasa, $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
 
 
     #[Url]
@@ -105,6 +105,14 @@ class TemporadaShow extends Component
         $familias=Familia::where('status','active')->get();
 
         return view('livewire.temporada-show',compact('unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+    }
+
+    public function getUsersProperty(){
+        return  Razonsocial::filter($this->filters)->paginate(3);
+    }
+
+    public function set_productorid($id){
+
     }
 
     public function set_view($vista){

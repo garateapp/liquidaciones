@@ -571,6 +571,16 @@
                 <div class="ml-4">
                   Productor/Csg/Código de embalaje
                   <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
+                  @if ($filters['razonsocial'])
+                    <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
+                      @forelse ($this->users as $objet)
+                          <li class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
+                              <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
+                          </li>
+                          @empty
+                      @endforelse
+                    </ul>
+                  @endif
                 </div>
                 <div class="ml-4">
                   Especie:<br>
