@@ -597,7 +597,10 @@
                   <select wire:model.live="filters.calibre" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
                     @foreach ($unique_calibres as $calibre)
-                      <option value="{{$calibre}}">{{$calibre}}</option>
+                      @if ($calibre)
+                        <option value="{{$calibre}}">{{$calibre}}</option>
+                      @endif
+
                     @endforeach
                   </select>
                 </div>
