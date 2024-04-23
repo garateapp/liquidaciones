@@ -351,11 +351,11 @@ class TemporadaController extends Controller
                 }
                 
                 foreach ($fobsall as $fob){
-                    if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->semana))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->semana))){
+                    if (str_replace(' ', '', $fob->semana)==str_replace(' ', '', $masa->semana)){
                         $nro+=1;
                     }
                     
-                    if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->semana))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->semana)))) {
+                    if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) ) {
                         
                         if (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)) && preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
                             
