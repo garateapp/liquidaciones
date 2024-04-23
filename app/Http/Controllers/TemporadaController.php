@@ -457,7 +457,7 @@ class TemporadaController extends Controller
         
 
         }
-        dd($etiq);
+        //dd($etiq);
         return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.$suma.'/'.$nro2.' Actualizados con Éxito');
     }
 
