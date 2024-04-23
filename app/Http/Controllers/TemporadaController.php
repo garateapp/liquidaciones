@@ -363,11 +363,12 @@ class TemporadaController extends Controller
                         //calibre
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
                             $cali+=1;
+                            $etiq[]=$calibre;
                         }
                         //etiqueta
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
                             $etiqueta+=1;
-                            $etiq[]=$masa->n_etiqueta;
+                           
                         }
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
@@ -376,7 +377,9 @@ class TemporadaController extends Controller
                         //categoria
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
                             $categoria+=1;
-                        }                        
+                        }
+                        
+                        
                         
 
                           
