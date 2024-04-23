@@ -373,6 +373,7 @@ class TemporadaController extends Controller
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
                             $col+=1;
+                            $etiq[]=$color;
                         }
                         //categoria
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
@@ -381,7 +382,7 @@ class TemporadaController extends Controller
 
                         if((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre)))&& (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color)))){
                             $suma+=1;
-                            $etiq[]=$masa->n_etiqueta;
+                           
                         }
                         
                         
@@ -456,7 +457,7 @@ class TemporadaController extends Controller
         
 
         }
-      //  dd($etiq);
+        dd($etiq);
         return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.$suma.'/'.$nro2.' Actualizados con Éxito');
     }
 
