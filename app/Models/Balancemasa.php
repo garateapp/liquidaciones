@@ -109,7 +109,15 @@ class Balancemasa extends Model
                     $query->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
-                    $query->where('n_categoria_st', 'Merma');
+                    $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp']) {
+                    $query->where('n_categoria_st', 'Exportacion');
+                } elseif ($filters['mie']) {
+                    $query->where('n_categoria_st', 'Mercado Interno Exportacion');
+                } elseif ($filters['mn']) {
+                    $query->where('n_categoria_st', 'Mercado Nacional');
+                } elseif ($filters['desc']) {
+                    $query->where('n_categoria_st', 'Desecho');
                 }
             });
         });
@@ -207,7 +215,15 @@ class Balancemasa extends Model
                     $query->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
-                    $query->where('n_categoria_st', 'Merma');
+                    $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp']) {
+                    $query->where('n_categoria_st', 'Exportacion');
+                } elseif ($filters['mie']) {
+                    $query->where('n_categoria_st', 'Mercado Interno Exportacion');
+                } elseif ($filters['mn']) {
+                    $query->where('n_categoria_st', 'Mercado Nacional');
+                } elseif ($filters['desc']) {
+                    $query->where('n_categoria_st', 'Desecho');
                 }
             });
         });
@@ -305,7 +321,15 @@ class Balancemasa extends Model
                     $query->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
-                    $query->where('n_categoria_st', 'Merma');
+                    $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp']) {
+                    $query->where('n_categoria_st', 'Exportacion');
+                } elseif ($filters['mie']) {
+                    $query->where('n_categoria_st', 'Mercado Interno Exportacion');
+                } elseif ($filters['mn']) {
+                    $query->where('n_categoria_st', 'Mercado Nacional');
+                } elseif ($filters['desc']) {
+                    $query->where('n_categoria_st', 'Desecho');
                 }
             });
         });
