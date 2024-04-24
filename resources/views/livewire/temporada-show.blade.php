@@ -564,6 +564,21 @@
 
 
               <h2 class="text-2xl font-semibold my-4">Filtros {{$vista}}</h2>
+              <div class="mb-4">
+                Productor/Csg/Código de embalaje
+                <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
+                @if ($filters['razonsocial'])
+                  <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
+                    @forelse ($this->users as $objet)
+                        <li class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
+                            <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
+                        </li>
+                        @empty
+                    @endforelse
+                  </ul>
+                @endif
+              </div>
+
               <div class="mb-4 flex">
                 <div>
                   Exportadora:<br>
@@ -573,20 +588,8 @@
                   </select>
                 </div>
                 
-                <div class="ml-4">
-                  Productor/Csg/Código de embalaje
-                  <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
-                  @if ($filters['razonsocial'])
-                    <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
-                      @forelse ($this->users as $objet)
-                          <li class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                              <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
-                          </li>
-                          @empty
-                      @endforelse
-                    </ul>
-                  @endif
-                </div>
+               
+
                 <div class="ml-4">
                   Especie:<br>
                   <select wire:model.live="filters.especie" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
@@ -616,6 +619,16 @@
                         <option value="{{$calibre}}">{{$calibre}}</option>
                       @endif
 
+                    @endforeach
+                  </select>
+                </div>
+                <div class="ml-4">
+                  Etiqueta:<br>
+                  <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    <option value="">Todos</option>
+                    @foreach ($unique_etiquetas as $etiqueta)
+                        <option value="{{$etiqueta}}">{{$etiqueta}}</option>
+                     
                     @endforeach
                   </select>
                 </div>

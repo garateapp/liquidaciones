@@ -501,6 +501,7 @@ class TemporadaController extends Controller
                             $nro1+=1; 
                         }
                     }
+                    
                 }
             }
         
