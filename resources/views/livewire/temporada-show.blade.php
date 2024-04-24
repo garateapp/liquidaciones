@@ -587,9 +587,6 @@
                     <option value="greenex">Greenex</option>
                   </select>
                 </div>
-                
-               
-
                 <div class="ml-4">
                   Especie:<br>
                   <select wire:model.live="filters.especie" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
@@ -645,6 +642,9 @@
                     @endforeach
                   </select>
                 </div>
+              </div>
+              
+              <div class="mb-4 flex">
                 <div class="ml-4">
                   Categoria:<br>
                   <select wire:model.live="filters.ncategoria" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
@@ -678,6 +678,7 @@
                   </div>
                 @endif
               </div>
+
               <div class="flex mb-4 hidden">
                 <div class="mr-4">
                   Desde:
