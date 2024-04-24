@@ -665,16 +665,7 @@
                   </div>
 
 
-                  <select wire:model.live="filters.ncategoria" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    <option value="Exportacion">Exportación</option>
-                    <option value="Mercado Interno Exportacion">MI exportación</option>
-                    
-                    <option value="Mercado Nacional">Mercado Nacional</option>
-                    <option value="Desecho">Desecho</option>
-                    
-                   
-                  </select>
+                
                 </div>
                
                 @if ($vista=='MASAS')
