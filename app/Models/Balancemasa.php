@@ -37,11 +37,108 @@ class Balancemasa extends Model
             $query->where('n_etiqueta',$etiqueta);
         })->when($filters['material'] ?? null,function($query,$material){
             $query->where('c_embalaje',$material);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] , function ($query) use ($filters) {
+        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho')
                           ->orWhere('n_categoria_st', 'Merma');
@@ -50,6 +147,26 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
@@ -110,6 +227,8 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp']) {
                     $query->where('n_categoria_st', 'Exportacion');
                 } elseif ($filters['mie']) {
@@ -143,11 +262,108 @@ class Balancemasa extends Model
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] , function ($query) use ($filters) {
+        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho')
                           ->orWhere('n_categoria_st', 'Merma');
@@ -156,6 +372,26 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
@@ -216,6 +452,8 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp']) {
                     $query->where('n_categoria_st', 'Exportacion');
                 } elseif ($filters['mie']) {
@@ -249,11 +487,108 @@ class Balancemasa extends Model
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] , function ($query) use ($filters) {
+        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho')
                           ->orWhere('n_categoria_st', 'Merma');
@@ -262,6 +597,26 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Nacional')
                           ->orWhere('n_categoria_st', 'Desecho');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['exp'] && $filters['mie'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['exp'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
+                } elseif ($filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
+                          ->orWhere('n_categoria_st', 'Mercado Nacional')
+                          ->orWhere('n_categoria_st', 'Desecho')
+                          ->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Exportacion')
                           ->orWhere('n_categoria_st', 'Mercado Interno Exportacion')
@@ -322,6 +677,8 @@ class Balancemasa extends Model
                           ->orWhere('n_categoria_st', 'Desecho');
                 } elseif ($filters['mer']) {
                     $query->orWhere('n_categoria_st', 'Merma');
+                } elseif ($filters['mi']) {
+                    $query->orWhere('n_categoria_st', 'Mercado Interno');
                 } elseif ($filters['exp']) {
                     $query->where('n_categoria_st', 'Exportacion');
                 } elseif ($filters['mie']) {
@@ -333,7 +690,6 @@ class Balancemasa extends Model
                 }
             });
         });
-        
     }
     
 }

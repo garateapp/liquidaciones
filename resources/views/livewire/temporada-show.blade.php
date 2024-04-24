@@ -660,6 +660,10 @@
                       <label for="mn">Mercado Nacional</label>
                   </div>
                   <div>
+                    <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <label for="mi">Mercado Interno</label>
+                  </div>
+                  <div>
                     <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <label for="desc">Desecho</label>
                   </div>
