@@ -366,9 +366,10 @@ class TemporadaController extends Controller
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
                             $cali+=1;
                         }
-                        //etiqueta
+                        //etiqueta    
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
                             $etiqueta+=1;
+                            
                             $etiq[]=$fob->color.'-'.$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.FOB:'.$fob->etiqueta.'-E.MASA'.$masa->n_etiqueta;
                         }
                         //color
@@ -400,6 +401,7 @@ class TemporadaController extends Controller
                     }
                 }
         }
+        /*
         foreach($masascati as $masa){
             if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                 $calibre='4J';
@@ -460,6 +462,7 @@ class TemporadaController extends Controller
         
 
         }
+        */
         dd($etiq);
         return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.$suma.'/'.$nro2.' Actualizados con Éxito');
     }
