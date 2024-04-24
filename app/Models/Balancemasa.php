@@ -25,6 +25,8 @@ class Balancemasa extends Model
             $query->where('c_embalaje', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
+        })->when($filters['variedad'] ?? null,function($query,$variedad){
+            $query->where('n_variedad',$variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob == 'null') {
                 $query->whereNull('precio_fob');
@@ -33,8 +35,8 @@ class Balancemasa extends Model
             $query->where('n_categoria_st', $nCategoria);
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
-        })->when($filters['variedad'] ?? null,function($query,$variedad){
-            $query->where('n_variedad',$variedad);
+        })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
+            $query->where('n_etiqueta',$etiqueta);
         });
     }
 
@@ -46,6 +48,8 @@ class Balancemasa extends Model
             $query->where('c_embalaje', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
+        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
+            $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
@@ -54,8 +58,8 @@ class Balancemasa extends Model
             $query->where('n_categoria_st', $nCategoria);
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
-        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
-            $query->where('n_variedad', $variedad);
+        })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
+            $query->where('n_cetiqueta, $etiqueta);
         });
     }
 
@@ -67,6 +71,8 @@ class Balancemasa extends Model
             $query->where('c_embalaje', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
+        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
+            $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
@@ -75,8 +81,8 @@ class Balancemasa extends Model
             $query->where('n_categoria_st', $nCategoria);
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
-        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
-            $query->where('n_variedad', $variedad);
+        })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
+            $query->where('n_cetiqueta, $etiqueta);
         });
         
     }
