@@ -14,7 +14,7 @@
     <hr class="mt-2 mb-6">
 
     <div class="flex mb-4">
-      @if(Route::currentRouteName() == 'temporadas.show')
+      @if($vista=="resumes")
         <button class="inline-flex items-center px-4 mr-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
           EXPORTACIÓN
         </button>
@@ -25,7 +25,7 @@
           </button>
         </a>
       @endif
-      @if(Route::currentRouteName() == 'temporada.nacional')
+      @if($vista=="resumesnacional")
         <button class="inline-flex items-center px-4 ml-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
           NACIONAL
         </button>
@@ -101,81 +101,80 @@
                               $globalcostopacking=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
+                                @php
+                                    $cajasbulto=0;
+                                    $pesoneto=0;
+                                    $totalmateriales=0;
+                                    $fletehuerto=0;
+                                    $gastoexportacion=0;
+                                    $ventafob=0;
+                                    $kgsp=0;
+                                    $costopacking=0;
+                                @endphp
+                                @foreach ($masastotal as $masa)
+                                  @php
+                                    if ($masa->n_variedad==$item->name) {
+                                      $cajasbulto+=$masa->cantidad;
+                                      $pesoneto+=$masa->peso_neto;
+                                      $globalcajasbulto+=$masa->cantidad;
+                                      $globalpesoneto+=$masa->peso_neto;
+                                      
+                                      if (!IS_NULL($masa->precio_fob)) {
+                                        $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                        $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                      } else {
+                                        $kgsp+=intval($masa->peso_neto);
+                                        $globalkgsp+=intval($masa->peso_neto);
+                                      }
+                                      
+                                      
+                                      
+                                      if ($masa->tipo_transporte=='AEREO') {
+                                            if ($exportacions->where('type','aereo')->count()>0) {
+                                              $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                              $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                            }
+                                        }
+                                      if ($masa->tipo_transporte=='MARITIMO') {
+                                        if ($exportacions->where('type','maritimo')->count()>0) {
+                                            $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                            $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                          }
+                                        }
 
+                                      foreach ($materialestotal as $material) {
+                                        if ($material->c_embalaje==$masa->c_embalaje) {
+                                          $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                          $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                        }  
+                                      }
+
+                                      foreach ($fletestotal as $flete) {
+                                        if ($flete->rut==$masa->r_productor) {
+                                          $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                          $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                        }  
+                                      }
+                                    }
+                                    
+                                  @endphp
+                                @endforeach
+                                @php
+                                        
+                                    foreach ($CostosPackingsall as $costo) {
+                                      if ($costo->variedad==$item->name) {
+                                        $costopacking+=$costo->total_usd;
+                                        $globalcostopacking+=$costo->total_usd;
+                                      }  
+                                    }
+
+                                @endphp
+                                  @if ($pesoneto>0)
                                     <tr>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">{{$item->name}}</div>    
                                       </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          @php
-                                              $cajasbulto=0;
-                                              $pesoneto=0;
-                                              $totalmateriales=0;
-                                              $fletehuerto=0;
-                                              $gastoexportacion=0;
-                                              $ventafob=0;
-                                              $kgsp=0;
-                                              $costopacking=0;
-                                          @endphp
-                                          @foreach ($masastotal as $masa)
-                                            @php
-                                              if ($masa->n_variedad==$item->name) {
-                                                $cajasbulto+=$masa->cantidad;
-                                                $pesoneto+=$masa->peso_neto;
-                                                $globalcajasbulto+=$masa->cantidad;
-                                                $globalpesoneto+=$masa->peso_neto;
-                                                
-                                                if (!IS_NULL($masa->precio_fob)) {
-                                                  $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                  $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                } else {
-                                                  $kgsp+=intval($masa->peso_neto);
-                                                  $globalkgsp+=intval($masa->peso_neto);
-                                                }
-                                                
-                                                 
-                                                
-                                                if ($masa->tipo_transporte=='AEREO') {
-                                                      if ($exportacions->where('type','aereo')->count()>0) {
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      }
-                                                  }
-                                                if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','maritimo')->count()>0) {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                    }
-                                                  }
-
-                                                foreach ($materialestotal as $material) {
-                                                  if ($material->c_embalaje==$masa->c_embalaje) {
-                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                  }  
-                                                }
-
-                                                foreach ($fletestotal as $flete) {
-                                                  if ($flete->rut==$masa->r_productor) {
-                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                  }  
-                                                }
-                                              }
-                                              
-                                            @endphp
-                                          @endforeach
-                                              @php
-                                                  
-                                          foreach ($CostosPackingsall as $costo) {
-                                            if ($costo->variedad==$item->name) {
-                                              $costopacking+=$costo->total_usd;
-                                              $globalcostopacking+=$costo->total_usd;
-                                            }  
-                                          }
-
-                                          @endphp
-
                                             <div class="text-sm text-gray-900">
                                                 {{number_format($cajasbulto)}}
                                             </div>    
@@ -221,6 +220,7 @@
                                             <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
                                         </td>
                                     </tr>
+                                  @endif
                                 @endforeach
 
                                 <tr class="bg-yellow-400">
@@ -354,79 +354,82 @@
                               $globalcostopacking=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
+                                @php
+                                  $cajasbulto=0;
+                                  $pesoneto=0;
+                                  $totalmateriales=0;
+                                  $fletehuerto=0;
+                                  $gastoexportacion=0;
+                                  $ventafob=0;
+                                  $kgsp=0;
+                                  $costopacking=0;
+                              @endphp
+                              @foreach ($masastotalnacional as $masa)
+                                @php
+                                    if ($masa->n_variedad==$item->name) {
+                                      $cajasbulto+=$masa->cantidad;
+                                      $pesoneto+=$masa->peso_neto;
+                                      $globalcajasbulto+=$masa->cantidad;
+                                      $globalpesoneto+=$masa->peso_neto;
+                                      
+                                      if (!IS_NULL($masa->precio_fob)) {
+                                        $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                        $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                      } else {
+                                        $kgsp+=intval($masa->peso_neto);
+                                        $globalkgsp+=intval($masa->peso_neto);
+                                      }
+                                      
+                                      
+                                      
+                                      if ($masa->tipo_transporte=='AEREO') {
+                                            if ($exportacions->where('type','aereo')->count()>0) {
+                                              $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                              $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                            }
+                                        }
+                                      if ($masa->tipo_transporte=='MARITIMO') {
+                                        if ($exportacions->where('type','maritimo')->count()>0) {
+                                            $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                            $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                          }
+                                        }
+
+                                      foreach ($materialestotal as $material) {
+                                        if ($material->c_embalaje==$masa->c_embalaje) {
+                                          $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                          $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                        }  
+                                      }
+
+                                      foreach ($fletestotal as $flete) {
+                                        if ($flete->rut==$masa->r_productor) {
+                                          $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                          $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                        }  
+                                      }
+                                    }
+                                    
+                                  @endphp
+                              @endforeach
+                                @php
+                                        
+                                  foreach ($CostosPackingsall as $costo) {
+                                    if ($costo->variedad==$item->name) {
+                                      $costopacking+=$costo->total_usd;
+                                      $globalcostopacking+=$costo->total_usd;
+                                    }  
+                                  }
+
+                                @endphp
+                                
+                                  @if ($pesoneto>0)
                                     <tr>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">{{$item->name}}</div>    
                                       </td>
                                         <td class="px-6 py-0 whitespace-nowrap">
-                                          @php
-                                              $cajasbulto=0;
-                                              $pesoneto=0;
-                                              $totalmateriales=0;
-                                              $fletehuerto=0;
-                                              $gastoexportacion=0;
-                                              $ventafob=0;
-                                              $kgsp=0;
-                                              $costopacking=0;
-                                          @endphp
-                                          @foreach ($masastotalnacional as $masa)
-                                            @php
-                                              if ($masa->n_variedad==$item->name) {
-                                                $cajasbulto+=$masa->cantidad;
-                                                $pesoneto+=$masa->peso_neto;
-                                                $globalcajasbulto+=$masa->cantidad;
-                                                $globalpesoneto+=$masa->peso_neto;
-                                                
-                                                if (!IS_NULL($masa->precio_fob)) {
-                                                  $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                  $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                } else {
-                                                  $kgsp+=intval($masa->peso_neto);
-                                                  $globalkgsp+=intval($masa->peso_neto);
-                                                }
-                                                
-                                                 
-                                                
-                                                if ($masa->tipo_transporte=='AEREO') {
-                                                      if ($exportacions->where('type','aereo')->count()>0) {
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      }
-                                                  }
-                                                if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','maritimo')->count()>0) {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                    }
-                                                  }
-
-                                                foreach ($materialestotal as $material) {
-                                                  if ($material->c_embalaje==$masa->c_embalaje) {
-                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                  }  
-                                                }
-
-                                                foreach ($fletestotal as $flete) {
-                                                  if ($flete->rut==$masa->r_productor) {
-                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                  }  
-                                                }
-                                              }
-                                              
-                                            @endphp
-                                          @endforeach
-                                              @php
-                                                  
-                                          foreach ($CostosPackingsall as $costo) {
-                                            if ($costo->variedad==$item->name) {
-                                              $costopacking+=$costo->total_usd;
-                                              $globalcostopacking+=$costo->total_usd;
-                                            }  
-                                          }
-
-                                          @endphp
+                                       
 
                                             <div class="text-sm text-gray-900">
                                                 {{number_format($cajasbulto)}}
@@ -473,6 +476,7 @@
                                             <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
                                         </td>
                                     </tr>
+                                  @endif
                                 @endforeach
 
                                 <tr class="bg-yellow-400">
