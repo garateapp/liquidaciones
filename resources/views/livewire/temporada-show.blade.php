@@ -614,7 +614,7 @@
                   Materiales:<br>
                   <select wire:model.live="filters.material" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
-                    @foreach ($unique_variedades as $item)
+                    @foreach ($unique_materiales as $item)
                       <option value="{{$item->name}}">{{$item->name}}</option>
                     @endforeach
                    

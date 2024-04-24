@@ -97,6 +97,8 @@ class TemporadaShow extends Component
         $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();
         
         $unique_etiquetas = $masastotal2->pluck('n_etiqueta')->unique()->sort();
+        
+        $unique_materiales = $masastotal2->pluck('c_embalaje')->unique()->sort();
 
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
@@ -110,7 +112,7 @@ class TemporadaShow extends Component
 
         $familias=Familia::where('status','active')->get();
 
-        return view('livewire.temporada-show',compact('unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function getUsersProperty(){
