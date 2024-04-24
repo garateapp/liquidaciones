@@ -91,7 +91,7 @@ class TemporadaShow extends Component
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
         
-        $masastotal2=Balancemasados::where('temporada_id',$this->temporada->id)->get();
+        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->get();
 
         $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();
         
