@@ -1411,7 +1411,9 @@
 
                       </h1>
                       <h1 class="text-xl font-semibold mb-4 ml-4">
-                        Fecha de importación: {{$masastotal->first()->created_at}}
+                        @if ($masastotal)
+                            Fecha de importación: {{$masastotal->first()->created_at}}
+                        @endif
                       </h1>
                       
                           <form action="{{route('temporada.importBalance')}}"
