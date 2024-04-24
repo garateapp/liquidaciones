@@ -77,7 +77,7 @@ class TemporadaShow extends Component
         $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances=Balancemasa::filter1($this->filters)
+        $masasbalances=Balancemasa::filter($this->filters)
             ->where('temporada_id', $this->temporada->id)
             ->orderByDesc('updated_at') // Ordenar por precio_fob descendente
             ->paginate($this->ctd);
