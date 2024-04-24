@@ -358,6 +358,9 @@ class TemporadaController extends Controller
                     }
                 }
                 $nro2+=1; 
+                
+                $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+                       
                 foreach ($fobsall as $fob){
                     
                     if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana ) {
@@ -370,7 +373,6 @@ class TemporadaController extends Controller
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
                             $etiqueta+=1;
                             
-                            $etiq[]=$fob->color.'-'.$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.FOB:'.$fob->etiqueta.'-E.MASA'.$masa->n_etiqueta;
                         }
                         //color
                         if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
