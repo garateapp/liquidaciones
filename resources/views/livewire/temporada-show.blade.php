@@ -645,7 +645,7 @@
               </div>
               
               <div class="mb-4 flex">
-                <div class="ml-4">
+                <div class="">
                   Categoria:<br>
                   <select wire:model.live="filters.ncategoria" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
