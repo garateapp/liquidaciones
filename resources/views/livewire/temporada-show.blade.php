@@ -647,10 +647,29 @@
               <div class="mb-4 flex">
                 <div class="">
                   Categoria:<br>
+                  <div>
+                    <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <label for="exp">Exportación</label>
+                  </div>
+                  <div>
+                      <input type="checkbox" wire:model.live="filters.mie" id="mie" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="mie">MI exportación</label>
+                  </div>
+                  <div>
+                      <input type="checkbox" wire:model.live="filters.mn" id="mn" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="mn">Mercado Nacional</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <label for="desc">Desecho</label>
+                  </div>
+
+
                   <select wire:model.live="filters.ncategoria" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
                     <option value="Exportacion">Exportación</option>
                     <option value="Mercado Interno Exportacion">MI exportación</option>
+                    
                     <option value="Mercado Nacional">Mercado Nacional</option>
                     <option value="Desecho">Desecho</option>
                     

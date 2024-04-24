@@ -31,15 +31,28 @@ class Balancemasa extends Model
             if ($precioFob == 'null') {
                 $query->whereNull('precio_fob');
             }
-        })->when($filters['ncategoria'] ?? null, function ($query, $nCategoria) {
-            $query->where('n_categoria_st', $nCategoria);
+        })->when(($filters['exp'] ?? null) || ($filters['mie'] ?? null) || ($filters['mn'] ?? null) || ($filters['desc'] ?? null), function ($query) use ($filters) {
+            $query->where(function ($query) use ($filters) {
+                if ($filters['exp'] ?? null) {
+                    $query->orWhere('n_categoria', 'Exportacion');
+                }
+                if ($filters['mie'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Interno Exportacion');
+                }
+                if ($filters['mn'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Nacional');
+                }
+                if ($filters['desc'] ?? null) {
+                    $query->orWhere('n_categoria', 'Desecho');
+                }
+            });
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
             $query->where('n_etiqueta',$etiqueta);
         })->when($filters['material'] ?? null,function($query,$material){
             $query->where('c_embalaje',$material);
-        });;
+        });
     }
 
     public function scopeFilter1($query,$filters){
@@ -56,15 +69,28 @@ class Balancemasa extends Model
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
             }
-        })->when($filters['ncategoria'] ?? null, function ($query, $nCategoria) {
-            $query->where('n_categoria_st', $nCategoria);
+        })->when(($filters['exp'] ?? null) || ($filters['mie'] ?? null) || ($filters['mn'] ?? null) || ($filters['desc'] ?? null), function ($query) use ($filters) {
+            $query->where(function ($query) use ($filters) {
+                if ($filters['exp'] ?? null) {
+                    $query->orWhere('n_categoria', 'Exportacion');
+                }
+                if ($filters['mie'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Interno Exportacion');
+                }
+                if ($filters['mn'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Nacional');
+                }
+                if ($filters['desc'] ?? null) {
+                    $query->orWhere('n_categoria', 'Desecho');
+                }
+            });
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
-        });;
+        });
     }
 
     public function scopeFilter2($query,$filters){
@@ -81,15 +107,28 @@ class Balancemasa extends Model
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
             }
-        })->when($filters['ncategoria'] ?? null, function ($query, $nCategoria) {
-            $query->where('n_categoria_st', $nCategoria);
+        })->when(($filters['exp'] ?? null) || ($filters['mie'] ?? null) || ($filters['mn'] ?? null) || ($filters['desc'] ?? null), function ($query) use ($filters) {
+            $query->where(function ($query) use ($filters) {
+                if ($filters['exp'] ?? null) {
+                    $query->orWhere('n_categoria', 'Exportacion');
+                }
+                if ($filters['mie'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Interno Exportacion');
+                }
+                if ($filters['mn'] ?? null) {
+                    $query->orWhere('n_categoria', 'Mercado Nacional');
+                }
+                if ($filters['desc'] ?? null) {
+                    $query->orWhere('n_categoria', 'Desecho');
+                }
+            });
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
-        });;
+        });
         
     }
     
