@@ -1371,7 +1371,7 @@
                   <div class="flex justify-start">
                     <div class="">
                       <h1 class="text-xl font-semibold mb-4 ml-4">
-                        Por favor selecione el archivo de "Balance de masas" que desea importar. {{$masastotal->count()}}
+                        Por favor selecione el archivo de "Balance de masas" que desea importar. {{($masastotal->count()+$masastotalnacional->count())}}
                       </h1>
                       <h1 class="text-xl font-semibold mb-4 ml-4">
                         Fecha de importación: {{$masastotal->first()->created_at}}
