@@ -359,7 +359,11 @@ class TemporadaController extends Controller
                 }
                 $nro2+=1; 
 
-                $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+                if($masa->id==71991){
+                    $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+                }
+
+               
                        
                 foreach ($fobsall as $fob){
                     
