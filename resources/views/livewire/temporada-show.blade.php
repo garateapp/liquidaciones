@@ -1411,7 +1411,7 @@
 
                       </h1>
                       <h1 class="text-xl font-semibold mb-4 ml-4">
-                        @if ($masastotal)
+                        @if ($masastotal->count())
                             Fecha de importación: {{$masastotal->first()->created_at}}
                         @endif
                       </h1>
