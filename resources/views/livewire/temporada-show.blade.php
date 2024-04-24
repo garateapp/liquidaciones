@@ -1400,6 +1400,7 @@
                           @php
                                 
                                 $columnas = [
+                                  'id',
                                   'tipo_g_produccion',
                                   'numero_g_produccion',
                                   'fecha_g_produccion_sh',
@@ -1437,6 +1438,9 @@
                     
                           @foreach ($masasbalances as $masa)
                             <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->id }}</p>
+                              </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_produccion }}</p>
                               </td>
