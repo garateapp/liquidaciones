@@ -412,26 +412,26 @@ class TemporadaController extends Controller
         foreach($masascati as $masa){
             if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                 $calibre='4J';
-                                
                 if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
-                    $color='Dark';
+                      $color='Dark';
                 }else{
-                $color='Light';
+                  $color='Light';
                 }
             }
             if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
-                    $calibre='3J';
-            if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
-                    $color='Dark';
+                $calibre='3J';
+
+                if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                      $color='Dark';
                 }else{
-                $color='Light';
+                  $color='Light';
                 }
             }
             if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                 $calibre='2J';
                 if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                         $color='Dark';
-                
+                   
                 }else{
                     $color='Light';
                 }
@@ -446,29 +446,63 @@ class TemporadaController extends Controller
             }
             if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                 $calibre='XL';
-            if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
-                    $color='Dark';
+              if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                      $color='Dark';
                 }else{
-                $color='Light';
+                  $color='Light';
                 }
             }
             $nro2+=1; 
+
+            /*
+            if($masa->id==71991){
+                $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+            }*/
+
+           
+                   
             foreach ($fobsall as $fob){
                 
-                if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana ) {
-                    
-                
-                    if ((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
-                    
-                        $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                        $nro1+=1; 
-                    
+                    if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana ) {
+                        
+                        //calibre
+                        if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))){
+                            $cali+=1;
+                        }
+                        //etiqueta    
+                        if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))){
+                            $etiqueta+=1;
+                            
+                        }
+                        //color
+                        if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))){
+                            $col+=1;
+                        }
+                        //categoria
+                        if(preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria))){
+                            $categoria+=1;
+                        }
+
+                        if((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)))){
+                            
+                                $suma+=1;
+
+                            
+                        
+                        }
+                        
+                        
+                        
+
+                        
+                        if ((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                        
+                            $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                            $nro1+=1; 
+                        }
                     }
                 }
             }
-        
-
-        }
         
        // dd($etiq);
         return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito');
