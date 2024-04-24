@@ -44,6 +44,7 @@ class TemporadaShow extends Component
         'ncategoria'=>'',
         'calibre'=>'',
         'etiqueta'=>'',
+        'material'=>'',
     ];
 
     #[Url]

@@ -37,7 +37,9 @@ class Balancemasa extends Model
             $query->where('n_calibre',$calibre);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
             $query->where('n_etiqueta',$etiqueta);
-        });
+        })->when($filters['material'] ?? null,function($query,$material){
+            $query->where('c_embalaje',$material);
+        });;
     }
 
     public function scopeFilter1($query,$filters){
@@ -60,7 +62,9 @@ class Balancemasa extends Model
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
-        });
+        })->when($filters['material'] ?? null, function ($query, $material) {
+            $query->where('c_embalaje', $material);
+        });;
     }
 
     public function scopeFilter2($query,$filters){
@@ -83,7 +87,9 @@ class Balancemasa extends Model
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
-        });
+        })->when($filters['material'] ?? null, function ($query, $material) {
+            $query->where('c_embalaje', $material);
+        });;
         
     }
     

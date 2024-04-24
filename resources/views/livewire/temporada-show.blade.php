@@ -611,6 +611,16 @@
                   </select>
                 </div>
                 <div class="ml-4">
+                  Materiales:<br>
+                  <select wire:model.live="filters.material" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    <option value="">Todos</option>
+                    @foreach ($unique_variedades as $item)
+                      <option value="{{$item->name}}">{{$item->name}}</option>
+                    @endforeach
+                   
+                  </select>
+                </div>
+                <div class="ml-4">
                   Calibre:<br>
                   <select wire:model.live="filters.calibre" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
