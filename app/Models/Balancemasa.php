@@ -59,7 +59,7 @@ class Balancemasa extends Model
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
-            $query->where('n_cetiqueta, $etiqueta);
+            $query->where('n_etiqueta', $etiqueta);
         });
     }
 
@@ -82,7 +82,7 @@ class Balancemasa extends Model
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
-            $query->where('n_cetiqueta, $etiqueta);
+            $query->where('n_etiqueta', $etiqueta);
         });
         
     }
