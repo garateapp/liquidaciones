@@ -1451,7 +1451,7 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_produccion_sh))}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{date('W', strtotime($masa->fecha_g_produccion_sh))}}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{$masa->semana}}</p>
                             </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
