@@ -101,6 +101,7 @@
                               $globalcostopacking=0;
                           @endphp
                                 @foreach ($unique_variedades as $item)
+
                                     <tr>
                                       <td class="px-6 py-0 whitespace-nowrap">
                                           <div class="text-sm text-gray-900">{{$item->name}}</div>    
@@ -368,7 +369,7 @@
                                               $kgsp=0;
                                               $costopacking=0;
                                           @endphp
-                                          @foreach ($masastotal as $masa)
+                                          @foreach ($masastotalnacional as $masa)
                                             @php
                                               if ($masa->n_variedad==$item->name) {
                                                 $cajasbulto+=$masa->cantidad;
@@ -822,7 +823,7 @@
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
 
-                @if ($vista=='resumes')
+                @if ($vista=='resumes' || $vista=='resumesnacional')
                   <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
