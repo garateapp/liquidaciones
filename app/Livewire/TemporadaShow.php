@@ -113,8 +113,8 @@ class TemporadaShow extends Component
         return  Razonsocial::filter($this->filters)->paginate(3);
     }
 
-    public function set_productorid($id){
-
+    public function set_productorid(Razonsocial $razonsocial){
+        $this->productorid=$razonsocial;
     }
 
     public function set_view($vista){
