@@ -382,6 +382,7 @@ class TemporadaController extends Controller
                         if((preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta)))){
                             
                                 $suma+=1;
+
                                 $etiq[]=$fob->color.'-'.$masa->n_calibre.'-'.$color.'-'.$masa->semana;
                         
                         }
@@ -458,7 +459,7 @@ class TemporadaController extends Controller
         
 
         }
-        //dd($etiq);
+        dd($etiq);
         return redirect()->back()->with('info',$nro1.'-'.$cali.'-'.$etiqueta.'-'.$col.'-'.$categoria.'-'.$suma.'/'.$nro2.' Actualizados con Éxito');
     }
 
