@@ -663,6 +663,10 @@
                     <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <label for="desc">Desecho</label>
                   </div>
+                  <div>
+                    <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <label for="mer">Merma</label>
+                  </div>
 
 
                 
