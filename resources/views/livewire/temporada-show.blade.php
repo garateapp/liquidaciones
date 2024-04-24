@@ -565,7 +565,7 @@
 
               <h2 class="text-2xl font-semibold my-4">Filtros {{$vista}}</h2>
               <div class="mb-4">
-                Productor/Csg/Código de embalaje
+                Productor/Csg
                 <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
                 @if ($filters['razonsocial'])
                   <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
