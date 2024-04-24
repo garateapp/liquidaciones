@@ -127,6 +127,7 @@ class TemporadaShow extends Component
 
     public function set_productorid(Razonsocial $razonsocial){
         $this->productorid=$razonsocial;
+        $this->filters['razonsocial']=$razonsocial->csg;
     }
 
     public function set_view($vista){
