@@ -316,7 +316,14 @@ class TemporadaController extends Controller
         $suma=0;
         foreach($masascat1 as $masa){
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
-				    $calibre='4J';
+                    if ($masa->n_etiqueta=='Alsu') {
+                        $calibre=$masa->n_calibre;
+                    } else {
+                        $calibre='4J';
+                    }
+                    
+				     
+
 					if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                           $color='Dark';
                     }else{
@@ -324,7 +331,12 @@ class TemporadaController extends Controller
                     }
         		}
 				if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
-                    $calibre='3J';
+                    if ($masa->n_etiqueta=='Alsu') {
+                        $calibre=$masa->n_calibre;
+                    } else {
+                        $calibre='3J';
+                    }
+                  
 
                     if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
                           $color='Dark';
@@ -333,7 +345,11 @@ class TemporadaController extends Controller
                     }
 				}
 				if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
-                    $calibre='2J';
+                    if ($masa->n_etiqueta=='Alsu') {
+                        $calibre=$masa->n_calibre;
+                    } else {
+                        $calibre='2J';
+                    }
                     if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
                             $color='Dark';
                        
@@ -342,7 +358,11 @@ class TemporadaController extends Controller
                     }
 				}
 				if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                    if ($masa->n_etiqueta=='Alsu') {
+                        $calibre=$masa->n_calibre;
+                    } else {
                         $calibre='J';
+                    }
                     if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
                             $color='Dark';
                     }else{
@@ -350,7 +370,11 @@ class TemporadaController extends Controller
                     }
                 }
 			    if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
-                    $calibre='XL';
+                    if ($masa->n_etiqueta=='Alsu') {
+                        $calibre=$masa->n_calibre;
+                    } else {
+                        $calibre='XL';
+                    }
                   if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                           $color='Dark';
                     }else{
