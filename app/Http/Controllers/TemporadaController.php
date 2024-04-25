@@ -308,6 +308,7 @@ class TemporadaController extends Controller
         $fobsall=Fob::where('temporada_id',$temporada->id)->get();
         $nro1=0;
         $nro2=0;
+        $nro3=0;
         $cali=0;
         $col=0;
         $etiqueta=0;
@@ -412,6 +413,7 @@ class TemporadaController extends Controller
                                 'fob_kilo_salida'=> 'null'
                                
                             ]);
+                            $nro3+=1;
 
                         }
                     
@@ -519,6 +521,7 @@ class TemporadaController extends Controller
                                 'fob_kilo_salida'=> 'null'
                                
                             ]);
+                            $nro3+=1;
 
                         }
                  
@@ -527,7 +530,7 @@ class TemporadaController extends Controller
             }
         
        // dd($etiq);
-        return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito');
+        return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito y '.$nro3.' fobs creados');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
