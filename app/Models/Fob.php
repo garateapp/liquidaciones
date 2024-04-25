@@ -18,7 +18,7 @@ class Fob extends Model
     public function scopeFilter($query,$filters){
         $query->when($filters['variedad'] ?? null,function($query,$variedad){
             $query->where('n_variedad','like','%'.$variedad.'%');
-        })->when($filters['razonsocial'] ?? null,function($query,$search){
+        })->when($filters['etiqueta'] ?? null,function($query,$search){
             $query->where('etiqueta','like','%'.$search.'%');
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);

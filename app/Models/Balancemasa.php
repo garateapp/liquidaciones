@@ -22,7 +22,7 @@ class Balancemasa extends Model
 
     public function scopeFilter($query,$filters){
         $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('c_embalaje', 'like', '%' . $serie . '%')
+            $query->where('c_productor', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
         })->when($filters['variedad'] ?? null,function($query,$variedad){
@@ -247,7 +247,7 @@ class Balancemasa extends Model
             $query->where('n_categoria', 'Cat 1')
                 ->orWhere('n_categoria', 'Cat I');
         })->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('c_embalaje', 'like', '%' . $serie . '%')
+            $query->where('c_productor', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
         })->when($filters['variedad'] ?? null, function ($query, $variedad) {
@@ -472,7 +472,7 @@ class Balancemasa extends Model
             $query->where('n_categoria', '!=', 'Cat 1')
                 ->where('n_categoria', '!=', 'Cat I');
         })->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('c_embalaje', 'like', '%' . $serie . '%')
+            $query->where('c_productor', 'like', '%' . $serie . '%')
                 ->orWhere('n_productor', 'like', '%' . $serie . '%')
                 ->orWhere('r_productor', 'like', '%' . $serie . '%');
         })->when($filters['variedad'] ?? null, function ($query, $variedad) {
