@@ -37,6 +37,8 @@ class Balancemasa extends Model
             $query->where('n_etiqueta',$etiqueta);
         })->when($filters['material'] ?? null,function($query,$material){
             $query->where('c_embalaje',$material);
+        })->when($filters['semana'] ?? null,function($query,$semana){
+            $query->where('semana',$semana);
         })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
                 if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
@@ -262,6 +264,8 @@ class Balancemasa extends Model
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
+        })->when($filters['semana'] ?? null,function($query,$semana){
+            $query->where('semana',$semana);
         })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
                 if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
@@ -487,6 +491,8 @@ class Balancemasa extends Model
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
+        })->when($filters['semana'] ?? null,function($query,$semana){
+            $query->where('semana',$semana);
         })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
             $query->where(function ($query) use ($filters) {
                 if ($filters['exp'] && $filters['mie'] && $filters['mn'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {

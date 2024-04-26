@@ -713,12 +713,12 @@
                   </div>
                   <div class="ml-4">
                     Semana:<br>
-                    <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                       <option value="">Todos</option>
                       
-                      @foreach ($unique_etiquetas as $etiqueta)
-                      @if ($etiqueta)
-                        <option value="{{$etiqueta}}">{{$etiqueta}}</option>
+                      @foreach ($unique_semanas as $semana)
+                      @if ($semana)
+                        <option value="{{$semana}}">{{$semana}}</option>
                       @endif
                     @endforeach
                       

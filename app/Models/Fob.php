@@ -22,6 +22,8 @@ class Fob extends Model
             $query->where('etiqueta','like','%'.$etiqueta.'%');
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
+        })->when($filters['semana'] ?? null,function($query,$semana){
+            $query->where('semana',$semana);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob === 'null') {
                 $query->where('fob_kilo_salida','null');
