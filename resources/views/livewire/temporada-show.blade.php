@@ -877,7 +877,7 @@
           </div>
             <div class="flex justify-between ml-4">
               @if ($vista=='MASAS')
-                <div>
+                <div class="grid grid-cols-1">
                   <a href="{{Route('preciofob.refresh',$temporada)}}" class="mb-2">
                     <x-button>
                       Actualizar PRECIO FOB
