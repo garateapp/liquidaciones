@@ -1832,18 +1832,30 @@
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->fob_kilo_salida}}</p>
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$fob->fob_kilo_salida}}</p>
+                                @endif
+
+                             
                               </td>
                           
                           
 
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <a href="">
-                                  <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                        <span aria-hidden
-                                                            class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                  <span class="relative">Editar</span>
-                                </a>
+                                @if ($fobid==$fob->id)
+                                  <span wire:click='save_fobid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Guardar</span>
+                                  </span>
+                                @else
+                                  <span wire:click='set_fobid({{$fob->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Editar</span>
+                                  </span>
+                                @endif
+
                                 <span  class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                                   <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
                                   <span class="relative">Eliminar</span>
