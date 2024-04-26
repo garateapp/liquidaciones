@@ -1112,7 +1112,7 @@
                         @endif 
                     </h1>
                   
-                    @if ($materialestotal)
+                    @if ($materialestotal->count()>0)
                         
                       <h1 class="text-xl font-semibold mb-4 ml-4">
                         Fecha de importación: {{$materialestotal->first()->created_at}}
