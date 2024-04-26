@@ -303,8 +303,8 @@ class TemporadaController extends Controller
     }
 
     public function fobupdate(Temporada $temporada)
-    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(1000);
-        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(1000);
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
         $fobsall=Fob::where('temporada_id',$temporada->id)->get();
         $nro1=0;
         $nro2=0;
@@ -397,7 +397,9 @@ class TemporadaController extends Controller
                                 $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
                                 $nro1+=1; 
                             }
-                        }else{
+                        }
+                        /*
+                        else{
 
                             $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
                             if ($test) {
@@ -418,7 +420,7 @@ class TemporadaController extends Controller
                                 $nro3+=1;
                             }
 
-                        }
+                        }*/
                     
             }
             foreach($masascati as $masa){
@@ -502,7 +504,8 @@ class TemporadaController extends Controller
                                 $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
                                 $nro1+=1; 
                             }
-                        }else{
+                        }
+                        /*else{
                             $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
                             if ($test) {
                                
@@ -521,7 +524,7 @@ class TemporadaController extends Controller
                                 ]);
                                 $nro3+=1;
                             }
-                        }
+                        }*/
                  
                     
             }
