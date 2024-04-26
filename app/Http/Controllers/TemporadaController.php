@@ -305,7 +305,7 @@ class TemporadaController extends Controller
     public function fobupdate(Temporada $temporada)
     {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
         $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
-        $fobsall=Fob::where('temporada_id',$temporada->id)->get();
+       
         $nro1=0;
         $nro2=0;
         $nro3=0;
@@ -316,6 +316,8 @@ class TemporadaController extends Controller
         $etiq=[];
         $suma=0;
         foreach($masascat1 as $masa){
+            $fobsall=Fob::where('temporada_id',$temporada->id)->where('semana',$masa->semana)->get();
+
                 if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                     if ($masa->n_etiqueta=='Alsu') {
                         $calibre=$masa->n_calibre;
@@ -428,6 +430,8 @@ class TemporadaController extends Controller
         }
         
         foreach($masascati as $masa){
+            $fobsall=Fob::where('temporada_id',$temporada->id)->where('semana',$masa->semana)->get();
+            
             if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                 if ($masa->n_etiqueta=='Alsu') {
                     $calibre=$masa->n_calibre;
