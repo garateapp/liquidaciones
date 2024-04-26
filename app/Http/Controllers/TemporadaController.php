@@ -401,19 +401,24 @@ class TemporadaController extends Controller
                             $nro1+=1; 
                         }else{
 
-                            Fob::create([ 
-                                'temporada_id'=>$masa->temporada_id,
-            
-                                'n_variedad'=> $masa->n_variedad,
-                                'semana'=> $masa->semana,
-                                'etiqueta'=> $masa->n_etiqueta,
-                                'n_calibre'=> $masa->n_calibre,
-                                'color'=> $color,
-                                'categoria'=> $masa->n_categoria,
-                                'fob_kilo_salida'=> 'null'
+                            $fob=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                            if ($fob) {
                                
-                            ]);
-                            $nro3+=1;
+                            } else {
+                                Fob::create([ 
+                                    'temporada_id'=>$masa->temporada_id,
+                
+                                    'n_variedad'=> $masa->n_variedad,
+                                    'semana'=> $masa->semana,
+                                    'etiqueta'=> $masa->n_etiqueta,
+                                    'n_calibre'=> $masa->n_calibre,
+                                    'color'=> $color,
+                                    'categoria'=> $masa->n_categoria,
+                                    'fob_kilo_salida'=> 'null'
+                                
+                                ]);
+                                $nro3+=1;
+                            }
 
                         }
                     
@@ -508,21 +513,24 @@ class TemporadaController extends Controller
                             $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
                             $nro1+=1; 
                         }else{
-
-                            Fob::create([ 
-                                'temporada_id'=>$masa->temporada_id,
-            
-                                'n_variedad'=> $masa->n_variedad,
-                                'semana'=> $masa->semana,
-                                'etiqueta'=> $masa->n_etiqueta,
-                                'n_calibre'=> $masa->n_calibre,
-                                'color'=> $color,
-                                'categoria'=> $masa->n_categoria,
-                                'fob_kilo_salida'=> 'null'
+                            $fob=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                            if ($fob) {
                                
-                            ]);
-                            $nro3+=1;
-
+                            } else {
+                                Fob::create([ 
+                                    'temporada_id'=>$masa->temporada_id,
+                
+                                    'n_variedad'=> $masa->n_variedad,
+                                    'semana'=> $masa->semana,
+                                    'etiqueta'=> $masa->n_etiqueta,
+                                    'n_calibre'=> $masa->n_calibre,
+                                    'color'=> $color,
+                                    'categoria'=> $masa->n_categoria,
+                                    'fob_kilo_salida'=> 'null'
+                                
+                                ]);
+                                $nro3+=1;
+                            }
                         }
                  
                     
