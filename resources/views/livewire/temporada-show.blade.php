@@ -285,7 +285,7 @@
                 Actualizar Variedades
               </x-button>
             </a>
-            <a href="{{Route('preciofob.refresh',$temporada)}}">
+            <a href="{{Route('preciofob.refresh',$temporada)}}"  class="mr-2">
               <x-button>
                 Actualizar PRECIO FOB
               </x-button>
