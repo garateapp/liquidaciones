@@ -573,7 +573,20 @@
               <h2 @click.on="openMenu = 1"  class="cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
 
 
-              <h2 class="text-2xl font-semibold my-4">Filtros {{$vista}}</h2>
+              <h2 class="text-2xl font-semibold my-4">Filtros {{$vista}} 
+                @if ($vista=='FOB' && $fobs)
+                  ({{$fobs->count()}} Resultados)
+                @endif
+                @if ($vista=='MASAS')
+                  @if ($masastotal && $masastotalnacional)
+                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados)
+                  @elseif($masastotal)
+                    ({{($masastotal->count())}} Resultados)
+                  @elseif($masastotalnacional)
+                    ({{($masastotalnacional->count())}} Resultados)
+                  @endif
+                @endif
+              </h2>
               <div class="mb-4">
                 Productor/Csg
                 <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
