@@ -174,7 +174,7 @@ class TemporadaShow extends Component
     }
 
     public function save_fobid(){
-        $fob=Balancemasa::find($this->fobid);
+        $fob=Fob::find($this->fobid);
         $fob->update(['fob_kilo_salida'=>$this->preciofob]);    
         $this->reset(['preciofob','fobid']);
         
