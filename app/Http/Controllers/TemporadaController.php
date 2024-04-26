@@ -397,8 +397,10 @@ class TemporadaController extends Controller
                           
                         if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
                           
-                            $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                            $nro1+=1; 
+                            if($fob->fob_kilo_salida!='null'){
+                                $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                                $nro1+=1; 
+                            }
                         }else{
 
                             $fob=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
@@ -509,9 +511,10 @@ class TemporadaController extends Controller
 
                         
                         if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
-                        
-                            $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                            $nro1+=1; 
+                            if($fob->fob_kilo_salida!='null'){
+                                $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                                $nro1+=1; 
+                            }
                         }else{
                             $fob=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
                             if ($fob) {
