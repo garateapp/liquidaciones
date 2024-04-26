@@ -53,7 +53,15 @@ class FobExport implements FromCollection, WithCustomStartCell, WithMapping, Wit
             $fob->semana,
             $fob->n_calibre,
             $fob->color,
-            $fob->categoria
+            $fob->categoria,
+            $fob->fob_kilo_salida,
+           
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
            
         ];
     }
