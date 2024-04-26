@@ -292,7 +292,7 @@
             </a>
             <a href="{{Route('preciofob.create',$temporada)}}">
               <x-button>
-                Crear PRECIO FOB Pendiente
+                Crear PRECIOS FOB Pendientes
               </x-button>
             </a>
           </div>
@@ -553,7 +553,7 @@
             </a>
             <a href="{{Route('preciofob.create',$temporada)}}">
               <x-button>
-                Crear PRECIO FOB Pendiente
+                Crear PRECIOS FOB Pendientes
               </x-button>
             </a>
           </div>
@@ -885,7 +885,7 @@
                   </a>
                   <a href="{{Route('preciofob.create',$temporada)}}">
                     <x-button>
-                      Crear PRECIO FOB Pendiente
+                      Crear PRECIOS FOB Pendientes
                     </x-button>
                   </a>
                 </div>
