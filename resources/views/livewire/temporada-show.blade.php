@@ -898,9 +898,14 @@
                       Actualizar PRECIO FOB
                     </x-button>
                   </a>
-                  <a href="{{Route('preciofob.create',$temporada)}}">
+                  <a href="{{Route('preciofob.create',$temporada)}}" class="mb-2"> 
                     <x-button>
                       Crear PRECIOS FOB Pendientes
+                    </x-button>
+                  </a>
+                  <a href="{{Route('fob.export',$temporada)}}" class="mb-2">
+                    <x-button>
+                     Exportar Fob Prendientes
                     </x-button>
                   </a>
                 </div>

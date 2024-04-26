@@ -25,7 +25,7 @@ class FobExport implements FromCollection, WithCustomStartCell, WithMapping, Wit
 
     public function collection()
     {
-        return Fob::where('temporada_id',$this->temporada->id)->latest('n_proceso')->get();
+        return Fob::where('temporada_id',$this->temporada->id)->orderby('fob_kilo_salida','desc')->get();
     }
 
     public function startCell(): string
@@ -51,6 +51,7 @@ class FobExport implements FromCollection, WithCustomStartCell, WithMapping, Wit
         return [
             $fob->n_variedad,
             $fob->semana,
+            $fob->etiqueta,
             $fob->n_calibre,
             $fob->color,
             $fob->categoria,

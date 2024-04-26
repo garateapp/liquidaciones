@@ -127,3 +127,4 @@ Route::get('createfob/{temporada}',[TemporadaController::class,'fobcreate'])->na
 
 Route::get('download/razonsocial/{razonsocial}.pdf', [RazonController::class,'downloadpdf'])->name('informe.download');
 
+Route::get('/fobsexport/{temporada}', [TemporadaController::class,'fobexport'])->name('fob.export');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FobExport;
 use App\Imports\AnticipoImport;
 use App\Imports\Balance2Import;
 use App\Imports\Balance3Import;
@@ -45,6 +46,11 @@ class TemporadaController extends Controller
     public function index()
     {
         //
+    }
+
+    public function fobexport(Temporada $temporada)
+    {   
+        return FacadesExcel::download(new FobExport($temporada->id),'Fobs.xlsx');
     }
 
     public function graficogenerate(Razonsocial $razonsocial, Temporada $temporada, Variedad $variedad)
