@@ -877,16 +877,18 @@
           </div>
             <div class="flex justify-between ml-4">
               @if ($vista=='MASAS')
-                <a href="{{Route('preciofob.refresh',$temporada)}}">
-                  <x-button>
-                    Actualizar PRECIO FOB
-                  </x-button>
-                </a>
-                <a href="{{Route('preciofob.create',$temporada)}}">
-                  <x-button>
-                    Crear PRECIO FOB Pendiente
-                  </x-button>
-                </a>
+                <div>
+                  <a href="{{Route('preciofob.refresh',$temporada)}}" class="mb-2">
+                    <x-button>
+                      Actualizar PRECIO FOB
+                    </x-button>
+                  </a>
+                  <a href="{{Route('preciofob.create',$temporada)}}">
+                    <x-button>
+                      Crear PRECIO FOB Pendiente
+                    </x-button>
+                  </a>
+                </div>
               @endif
               
               <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
