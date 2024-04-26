@@ -426,7 +426,8 @@ class TemporadaController extends Controller
                         }
                     
             }
-        
+        }
+            foreach ($fobsall as $fob){
                 foreach($masascati as $masa){
                         if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                             if ($masa->n_etiqueta=='Alsu') {
@@ -537,7 +538,7 @@ class TemporadaController extends Controller
                  
                     
                 }
-        }
+            }
         
        // dd($etiq);
         return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito y '.$nro3.' fobs creados');
