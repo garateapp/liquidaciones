@@ -51,6 +51,7 @@ class TemporadaShow extends Component
         'material'=>'',
         'mer'=>'',
         'mi'=>'',
+        'semana'=>'',
     ];
 
     #[Url]
