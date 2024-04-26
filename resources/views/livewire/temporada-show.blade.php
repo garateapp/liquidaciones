@@ -668,38 +668,39 @@
               </div>
               
               <div class="mb-4 flex">
-                <div class="">
-                  Categoria:<br>
-                  <div>
-                    <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <label for="exp">Exportación</label>
-                  </div>
-                  <div>
-                      <input type="checkbox" wire:model.live="filters.mie" id="mie" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="mie">MI exportación</label>
-                  </div>
-                  <div>
-                      <input type="checkbox" wire:model.live="filters.mn" id="mn" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="mn">Mercado Nacional</label>
-                  </div>
-                  <div>
-                    <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <label for="mi">Mercado Interno</label>
-                  </div>
-                  <div>
-                    <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <label for="desc">Desecho</label>
-                  </div>
-                  <div>
-                    <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <label for="mer">Merma</label>
-                  </div>
-
-
-                
-                </div>
-               
                 @if ($vista=='MASAS' || $vista=='FOB')
+                  <div class="">
+                    Categoria:<br>
+                    <div>
+                      <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="exp">Exportación</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" wire:model.live="filters.mie" id="mie" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="mie">MI exportación</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" wire:model.live="filters.mn" id="mn" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="mn">Mercado Nacional</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="mi">Mercado Interno</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="desc">Desecho</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                      <label for="mer">Merma</label>
+                    </div>
+
+
+                  
+                  </div>
+               
+               
                   <div class="ml-4">
                     Precio_fob:<br>
                     <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
