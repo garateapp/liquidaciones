@@ -290,6 +290,11 @@
                 Actualizar PRECIO FOB
               </x-button>
             </a>
+            <a href="{{Route('preciofob.create',$temporada)}}">
+              <x-button>
+                Crear PRECIO FOB Pendiente
+              </x-button>
+            </a>
           </div>
     @endif
     @if ($vista=="resumesnacional")
@@ -544,6 +549,11 @@
             <a href="{{Route('preciofob.refresh',$temporada)}}">
               <x-button>
                 Actualizar PRECIO FOB
+              </x-button>
+            </a>
+            <a href="{{Route('preciofob.create',$temporada)}}">
+              <x-button>
+                Crear PRECIO FOB Pendiente
               </x-button>
             </a>
           </div>
@@ -857,6 +867,11 @@
                 <a href="{{Route('preciofob.refresh',$temporada)}}">
                   <x-button>
                     Actualizar PRECIO FOB
+                  </x-button>
+                </a>
+                <a href="{{Route('preciofob.create',$temporada)}}">
+                  <x-button>
+                    Crear PRECIO FOB Pendiente
                   </x-button>
                 </a>
               @endif

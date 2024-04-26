@@ -123,5 +123,7 @@ Route::get('update/{temporada}',[TemporadaController::class,'variedadupdate'])->
 
 Route::get('updatefob/{temporada}',[TemporadaController::class,'fobupdate'])->name('preciofob.refresh');
 
+Route::get('createfob/{temporada}',[TemporadaController::class,'fobcreate'])->name('preciofob.create');
+
 Route::get('download/razonsocial/{razonsocial}.pdf', [RazonController::class,'downloadpdf'])->name('informe.download');
 

@@ -530,7 +530,227 @@ class TemporadaController extends Controller
             }
         
        // dd($etiq);
-        return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito y '.$nro3.' fobs creados');
+        return redirect()->back()->with('info',$nro1.'/'.$nro2.' Actualizados con Éxito.');
+    }
+
+    public function fobcreate(Temporada $temporada)
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
+        $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat 1')->get();
+        $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat I')->get();
+        $nro1=0;
+        $nro2=0;
+        $nro3=0;
+        $cali=0;
+        $col=0;
+        $etiqueta=0;
+        $categoria=0;
+        $etiq=[];
+        $suma=0;
+        
+        
+            foreach($masascat1 as $masa){
+                    if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='4J';
+                        }
+                        
+                        
+
+                        if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='3J';
+                        }
+                    
+
+                        if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='2J';
+                        }
+                        if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                                $color='Dark';
+                        
+                        }else{
+                            $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='J';
+                        }
+                        if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                                $color='Dark';
+                        }else{
+                            $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='XL';
+                        }
+                    if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    $nro2+=1; 
+
+                    /*
+                    if($masa->id==71991){
+                        $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+                    }*/
+                    foreach ($fobscat1 as $fob){
+                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                            
+                            }else{
+
+                                $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                                if ($test) {
+                                
+                                } else {
+                                    Fob::create([ 
+                                        'temporada_id'=>$masa->temporada_id,
+                    
+                                        'n_variedad'=> $masa->n_variedad,
+                                        'semana'=> $masa->semana,
+                                        'etiqueta'=> $masa->n_etiqueta,
+                                        'n_calibre'=> $masa->n_calibre,
+                                        'color'=> $color,
+                                        'categoria'=> $masa->n_categoria,
+                                        'fob_kilo_salida'=> 'null'
+                                    
+                                    ]);
+                                    $nro3+=1;
+                                }
+
+                            }
+                    }
+            }
+        
+            foreach($masascati as $masa){
+                    if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='4J';
+                        }
+                        
+                        
+
+                        if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='3J';
+                        }
+                    
+
+                        if ($masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='2J';
+                        }
+                        if ($masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD'){
+                                $color='Dark';
+                        
+                        }else{
+                            $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='J' || $masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='J';
+                        }
+                        if ($masa->n_calibre=='JD' || $masa->n_calibre=='JDD'){
+                                $color='Dark';
+                        }else{
+                            $color='Light';
+                        }
+                    }
+                    if ($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                        if ($masa->n_etiqueta=='Alsu') {
+                            $calibre=$masa->n_calibre;
+                        } else {
+                            $calibre='XL';
+                        }
+                    if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                            $color='Dark';
+                        }else{
+                        $color='Light';
+                        }
+                    }
+                    $nro2+=1; 
+
+                    /*
+                    if($masa->id==71991){
+                        $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
+                    }*/
+
+                    foreach ($fobscati as $fob){
+                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                            }else{
+                                $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                                if ($test) {
+                                
+                                } else {
+                                    Fob::create([ 
+                                        'temporada_id'=>$masa->temporada_id,
+                    
+                                        'n_variedad'=> $masa->n_variedad,
+                                        'semana'=> $masa->semana,
+                                        'etiqueta'=> $masa->n_etiqueta,
+                                        'n_calibre'=> $masa->n_calibre,
+                                        'color'=> $color,
+                                        'categoria'=> $masa->n_categoria,
+                                        'fob_kilo_salida'=> 'null'
+                                    
+                                    ]);
+                                    $nro3+=1;
+                                }
+                            }
+                    }
+            }
+        
+       // dd($etiq);
+        return redirect()->back()->with('info',$nro3.' fobs creados con Éxito.');
     }
 
     public function comisionupdate(Request $request,Comision $comision)
