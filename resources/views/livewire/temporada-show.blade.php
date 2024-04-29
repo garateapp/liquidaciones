@@ -1011,10 +1011,10 @@
                 @endif
                 @if ($vista=='PACKING')
                 <div>
-                  <h1 class="text-xl font-semibold mb-4">
+                  <h1 class="text-xl font-semibold mb-4 text-center">
                       Por favor selecione el archivo de "Costos de packing" que desea importar
                   </h1>
-                  <div class="flex">
+                  <div class="flex justify-center ">
                       
                       <form action="{{route('temporada.importCostosPacking')}}"
                           method="POST"
