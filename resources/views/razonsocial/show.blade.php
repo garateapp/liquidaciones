@@ -258,6 +258,14 @@
                                                     }
                                                 @endphp	
                                             @endif
+                                            @php
+                                                 foreach ($fletestotal as $flete) {
+                                                    if ($flete->rut==$masa->r_productor) {
+                                                      $fletehuerto+=float_val($masa->peso_neto)*float_val($flete->tarifa);
+                                                      $globalfletehuerto+=float_val($masa->peso_neto)*float_val($flete->tarifa);
+                                                    }  
+                                                  }
+                                            @endphp
                                           @endif
                                         @endforeach
                                         @php
@@ -267,12 +275,7 @@
                                               $totalcostopacking+=$costo->total_usd;
                                             }  
                                           }
-                                          foreach ($fletestotal as $flete) {
-                                            if ($flete->rut==$masa->r_productor) {
-                                              $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                              $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                            }  
-                                          }
+                                         
                                         @endphp
                               
                                           @if ($unique_calibres->contains('4J') || $unique_calibres->contains('4JD') || $unique_calibres->contains('4JDD'))
