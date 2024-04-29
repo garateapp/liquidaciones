@@ -44,7 +44,7 @@ Route::get('pdf/export/{razonsocial}/{temporada}',[TemporadaShow::class,'exportp
 
 Route::get('grafico/{razonsocial}/{temporada}/{variedad}',[TemporadaController::class,'graficogenerate'])->name('grafico.variedad');
 
-Route::resource('temporada', TemporadaController::class)->names('temporadas');
+Route::resource('temporada', TemporadaController::class)->middleware('auth')->names('temporadas');
 
 Route::resource('familia', FamiliaController::class)->names('familias');
 
