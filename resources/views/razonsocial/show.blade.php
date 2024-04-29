@@ -620,6 +620,7 @@
                                       <th>Peso Neto</th>
                                       <th>Ingresos</th>
                                       <th>Comisión</th>
+                                      <th>FrioPacking</th>
                                       <th>Retorno Neto<br> Total</th>
                                       <th>Retorno Kilo</th>
                                       </tr>
@@ -630,6 +631,8 @@
                                       $cantidadtotal=0;
                                       $pesonetototal=0;
                                       $retornototal=0;
+                                     
+                                      $totalcostopacking=0;
                                       @endphp
                                       @foreach ($unique_variedades as $variedad)
                                        
@@ -652,8 +655,19 @@
                                         $subpesoneto2j=0;
                                         $subpesonetoj=0;
                                         $subpesonetoxl=0;
+
+                                        $costopacking=0;
+
+                                        foreach ($packings as $costo) {
+                                            if ($costo->variedad==$variedad) {
+                                              $costopacking+=$costo->total_usd;
+                                              $totalcostopacking+=$costo->total_usd;
+                                            }  
+                                          }
                                         
                                       @endphp
+
+                                      
                                        
                                       @foreach ($unique_semanas as $semana)
                             
@@ -745,7 +759,7 @@
                                             $pesonetototal+=$masa->peso_neto;
                                             @endphp	
                                           @endif
-                                        @endif
+                                          @endif
                                         @endforeach
                                        
                                         @php
@@ -782,7 +796,10 @@
                                           <td>{{$cantidad4j}}</td>
                                           <td>{{$pesoneto4j}} KGS</td>
                                           <td>{{number_format($retorno4j,2,',','.')}} USD</td>
+                                          <td>{{number_format($retorno4j*0.08,2,',','.')}} USD</td>
+                                          <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                           <td>{{number_format($retorno4j,2,',','.')}} USD</td>
+                                          
                                             <td>
                                               @if ($pesoneto4j)
                                                 {{number_format($retorno4j/$pesoneto4j,2)}} USD/kg
@@ -826,6 +843,8 @@
                                           <td>{{$cantidad3j}}</td>
                                           <td>{{$pesoneto3j}} KGS</td>
                                           <td>{{number_format($retorno3j,2,',','.')}} USD</td>
+                                          <td>{{number_format($retorno3j*0.08,2,',','.')}} USD</td>
+                                          <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                           <td>{{number_format($retorno3j,2,',','.')}} USD</td>
                                           <td>
                                               @if ($pesoneto3j)
@@ -870,6 +889,8 @@
                                           <td>{{$cantidad2j}}</td>
                                           <td>{{$pesoneto2j}} KGS</td>
                                           <td>{{number_format($retorno2j,2,',','.')}} USD</td>
+                                          <td>{{number_format($retorno2j*0.08,2,',','.')}} USD</td>
+                                          <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                           <td>{{number_format($retorno2j,2,',','.')}} USD</td>
                                           <td>
                                               @if ($pesoneto2j)
@@ -914,6 +935,8 @@
                                           <td>{{$cantidadj}}</td>
                                           <td>{{$pesonetoj}} KGS</td>
                                           <td>{{number_format($retornoj,2,',','.')}} USD</td>
+                                          <td>{{number_format($retornoj*0.08,2,',','.')}} USD</td>
+                                          <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                           <td>{{number_format($retornoj,2,',','.')}} USD</td>
                                           <td>
                                               @if ($pesonetoj)
@@ -958,6 +981,8 @@
                                           <td>{{$cantidadxl}}</td>
                                           <td>{{$pesonetoxl}} KGS</td>
                                           <td>{{number_format($retornoxl,2,',','.')}} USD</td>
+                                          <td>{{number_format($retornoxl*0.08,2,',','.')}} USD</td>
+                                          <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                           <td>{{number_format($retornoxl,2,',','.')}} USD</td>
                                           <td>
                                               @if ($pesonetoxl)
@@ -993,6 +1018,9 @@
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl}}</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl),2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)*0.08,2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($costopacking,2,',','.')}}  USD</td>
+                                          
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl),2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl),2)}}  USD/KGS</td>
                                           
@@ -1023,7 +1051,9 @@
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($subcantidad4j+$subcantidad3j+$subcantidad2j+$subcantidadj+$subcantidadxl)}}</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($subpesoneto4j+$subpesoneto3j+$subpesoneto2j+$subpesonetoj+$subpesonetoxl)}} KGS</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl)*0.08,2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalcostopacking,2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($subpesoneto4j+$subpesoneto3j+$subpesoneto2j+$subpesonetoj+$subpesonetoxl))}}  USD/KG</td>
                                           
                                         </tr>
@@ -1055,6 +1085,7 @@
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($cantidadtotal)}}</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesonetototal)}} KG</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
+                                      <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal*0.08,2,',','.')}} USD</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal/$pesonetototal,2)}} usd/kg</td>
                                       
