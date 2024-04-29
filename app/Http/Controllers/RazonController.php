@@ -156,7 +156,7 @@ class RazonController extends Controller
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
         
         $exportacions=Exportacion::where('temporada_id',$temporada->id)->get();
-        $fletestotal=Flete::where('rut',$razonsocial->rut)->get();
+        $fletestotal=Flete::all();
 
         return view('razonsocial.show',compact('fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }

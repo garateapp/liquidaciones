@@ -260,7 +260,7 @@
                                             @endif
                                             @php
                                                  foreach ($fletestotal as $flete) {
-                                                    if (preg_replace('/[\.\-\s]+/', '', strtolower($flete->rut))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->r_productor))) {
+                                                    if ($flete->rut==$masa->r_productor) {
                                                       $fletehuerto+=float_val($masa->peso_neto)*float_val($flete->tarifa);
                                                       $globalfletehuerto+=float_val($masa->peso_neto)*float_val($flete->tarifa);
                                                     }  
