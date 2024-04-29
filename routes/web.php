@@ -36,7 +36,7 @@ Route::middleware([
 
 Route::get('lista/filtros',[RazonController::class,'index'])->name('razonsocial.index');
 
-Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show'])->name('razonsocial.show');
+Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show'])->middleware('auth')->name('razonsocial.show');
 
 Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync');
 
