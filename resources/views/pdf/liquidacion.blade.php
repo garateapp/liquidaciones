@@ -127,7 +127,7 @@
                             }
                             if ($masa->tipo_transporte=='MARITIMO') {
                               	if ($exportacions->where('type','maritimo')->count()>0) {
-									$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+									$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                 }
                             }
 						@endphp	
@@ -146,7 +146,7 @@
                             }
                             if ($masa->tipo_transporte=='MARITIMO') {
                               	if ($exportacions->where('type','maritimo')->count()>0) {
-									$costoexportcati+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+									$costoexportcati+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                 }
                             }
 						@endphp	
@@ -159,15 +159,20 @@
 				<td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT 1)</td>
 				<td>CAT 1</td>
 				<td>USD$</td>
-				<td>{{number_format($cat1-$costoexportcat1-$costopacking*($cat1/($cat1+$cati)),2)}}
-					@if ($kspcat1>0)
-						({{$kspcat1}} kgs s/p)
-					@endif
-					@if ($costoexportcat1>0)
-						({{$costoexportcat1}} usd CE)
-					@endif
-					@if ($costopacking>0)
-						({{$costopacking}} usd CP)
+				
+				<td>
+					@if (($cat1+$cati)>0)
+							{{number_format($cat1-$costoexportcat1-$costopacking*($cat1/($cat1+$cati)),2)}}
+						@if ($kspcat1>0)
+							({{$kspcat1}} kgs s/p)
+						@endif
+						@if ($costoexportcat1>0)
+							({{$costoexportcat1}} usd CE)
+						@endif
+						@if ($costopacking>0)
+							({{$costopacking}} usd CP)
+						@endif
+					
 					@endif
 				</td>
 			  </tr>
@@ -175,15 +180,19 @@
 			  <td style="text-align: left;">Total venta cerezas exportación temporada 2022-2023 (CAT I)</td>
 			  <td>CAT I</td>
 			  <td>USD$</td>
-			  <td>{{number_format($cati-$costoexportcati-$costopacking*($cati/($cat1+$cati)),2)}}
-				@if ($kspcati>0)
-					({{$kspcati}} kgs s/p)
-				@endif
-				@if ($costoexportcati>0)
-					({{$costoexportcati}} usd CE)
-				@endif
-				@if ($costopacking>0)
-					({{$costopacking}} usd CP)
+			  <td>
+				@if (($cat1+$cati)>0)
+					{{number_format($cati-$costoexportcati-$costopacking*($cati/($cat1+$cati)),2)}}
+					@if ($kspcati>0)
+						({{$kspcati}} kgs s/p)
+					@endif
+					@if ($costoexportcati>0)
+						({{$costoexportcati}} usd CE)
+					@endif
+					@if ($costopacking>0)
+						({{$costopacking}} usd CP)
+					@endif
+				
 				@endif
 			</td>
 			</tr>

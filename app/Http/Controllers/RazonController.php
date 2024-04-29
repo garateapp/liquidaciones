@@ -6,6 +6,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Exportacion;
 use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Razonsocial;
@@ -153,8 +154,10 @@ class RazonController extends Controller
 
         $unique_semanas = $masas->pluck('semana')->unique()->sort();
         $fobs = Fob::where('temporada_id',$temporada->id)->get();
+        
+        $exportacions=Exportacion::where('temporada_id',$temporada->id)->get();
 
-        return view('razonsocial.show',compact('variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        return view('razonsocial.show',compact('exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**
