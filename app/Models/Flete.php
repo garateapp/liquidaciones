@@ -17,7 +17,7 @@ class Flete extends Model
 
     public function scopeFilter($query,$filters){
         $query->when($filters['razonsocial'] ?? null,function($query,$search){
-            $query->where('rut','like','%'.$search.'%');
+            $query->where('productor','like','%'.$search.'%');
         });
     }
 }
