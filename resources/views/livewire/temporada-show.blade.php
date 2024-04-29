@@ -1010,103 +1010,129 @@
                   </div>
                 @endif
                 @if ($vista=='PACKING')
-                
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <tr>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Especie
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Variedad
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Nombre Productor
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        CSG
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          KG
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          TotalUSD
-                        </th>
-                        <th
-                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        NETO
-                      </th>
-                    
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div>
+                  <h1 class="text-xl font-semibold mb-4">
+                      Por favor selecione el archivo de "Costos de packing" que desea importar
+                  </h1>
+                  <div class="flex">
                       
-                        @foreach ($CostosPackings as $packing)
-                          <tr>
-                            
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
-                            </td>
-                            
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
-                            </td>
+                      <form action="{{route('temporada.importCostosPacking')}}"
+                          method="POST"
+                          class="bg-white rounded p-8 shadow"
+                          enctype="multipart/form-data">
+                          
+                          @csrf
 
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <div class="flex items-center">
-                                <div class="flex-shrink-0 w-10 h-10 hidden">
-                                  <img class="w-full h-full rounded-full"
-                                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                            alt="" />
-                                                    </div>
-                                  <div class="ml-3">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                      @foreach ($razonsall as $razon)
-                                          @if ($razon->csg==$packing->csg)
-                                            <a href="{{route('razonsocial.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
-                                              {{$packing->n_productor}}
-                                            </a>
-                                          @endif
-                                      @endforeach
-                                      
-                                    </p>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">
-                                {{$packing->kg}}
-                              </p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap">
+                          <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                          <x-validation-errors class="errors">
+
+                          </x-validation-errors>
+
+                          <input type="file" name="file" accept=".csv,.xlsx">
+
+                          <x-button class="ml-4">
+                              Importar
+                          </x-button>
+                      </form>
+                  </div>
+                  </div>
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Especie
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Variedad
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Nombre Productor
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          CSG
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            KG
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            TotalUSD
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          NETO
+                        </th>
+                      
+                      </tr>
+                      </thead>
+                      <tbody>
+                        
+                          @foreach ($CostosPackings as $packing)
+                            <tr>
                               
-                                {{number_format($packing->total_usd,2)}}
-                              </p>
-                            </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
+                              </td>
+                              
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
+                              </td>
 
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <span
-                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                    <span aria-hidden
-                                                        class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                              <span class="relative">Activo</span>
-                              </span>
-                            </td>
-                          </tr>
-                        @endforeach
-                    
-                    </tbody>
-                  </table>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                  <div class="flex-shrink-0 w-10 h-10 hidden">
+                                    <img class="w-full h-full rounded-full"
+                                                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                              alt="" />
+                                                      </div>
+                                    <div class="ml-3">
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                        @foreach ($razonsall as $razon)
+                                            @if ($razon->csg==$packing->csg)
+                                              <a href="{{route('razonsocial.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
+                                                {{$packing->n_productor}}
+                                              </a>
+                                            @endif
+                                        @endforeach
+                                        
+                                      </p>
+                                    </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                  {{$packing->kg}}
+                                </p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                
+                                  {{number_format($packing->total_usd,2)}}
+                                </p>
+                              </td>
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <span
+                                                      class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                      <span aria-hidden
+                                                          class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Activo</span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                      
+                      </tbody>
+                    </table>
                 @endif
                 @if ($vista=='MATERIALES') 
 
