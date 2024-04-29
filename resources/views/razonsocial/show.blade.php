@@ -1052,8 +1052,8 @@
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($subpesoneto4j+$subpesoneto3j+$subpesoneto2j+$subpesonetoj+$subpesonetoxl)}} KGS</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl)*0.08,2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($costopacking,2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
-                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalcostopacking,2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($subpesoneto4j+$subpesoneto3j+$subpesoneto2j+$subpesonetoj+$subpesonetoxl))}}  USD/KG</td>
                                           
                                         </tr>
@@ -1086,6 +1086,7 @@
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesonetototal)}} KG</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal*0.08,2,',','.')}} USD</td>
+                                      <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalcostopacking,2,',','.')}} USD</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
                                       <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal/$pesonetototal,2)}} usd/kg</td>
                                       
