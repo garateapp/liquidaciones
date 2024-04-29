@@ -80,7 +80,7 @@ class TemporadaShow extends Component
 
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
-        $fletes=Flete::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fletes=Flete::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
         $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);

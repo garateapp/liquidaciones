@@ -14,4 +14,10 @@ class Flete extends Model
     public function temporada(){
         return $this->belongsTo('App\Models\Temporada');
     }
+
+    public function scopeFilter($query,$filters){
+        $query->when($filters['razonsocial'] ?? null,function($query,$search){
+            $query->where('rut','like','%'.$search.'%');
+        });
+    }
 }
