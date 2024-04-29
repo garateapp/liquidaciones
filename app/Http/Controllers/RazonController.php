@@ -9,6 +9,7 @@ use App\Models\CostoPacking;
 use App\Models\Exportacion;
 use App\Models\Flete;
 use App\Models\Fob;
+use App\Models\Material;
 use App\Models\Razonsocial;
 use App\Models\Temporada;
 use App\Models\Variedad;
@@ -157,8 +158,9 @@ class RazonController extends Controller
         
         $exportacions=Exportacion::where('temporada_id',$temporada->id)->get();
         $fletestotal=Flete::all();
+        $materialestotal=Material::all();
 
-        return view('razonsocial.show',compact('fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        return view('razonsocial.show',compact('materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**

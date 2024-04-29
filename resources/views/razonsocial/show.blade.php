@@ -97,6 +97,7 @@
                                       <th>Frio<br>Packing</th>
                                       <th>Exportacion</th>
                                       <th>Flete a <br> Puerto</th>
+                                      <th>Materiales</th>
                                       <th>Retorno Neto<br> Total</th>
                                       <th>Retorno Kilo</th>
                                       </tr>
@@ -109,6 +110,7 @@
                                         $retornototal=0;
                                         $exportaciontotal=0;
                                         $totalcostopacking=0;
+                                        $totalmateriales=0;
                                         $globalfletehuerto=0;
 
                                       @endphp
@@ -127,6 +129,12 @@
                                           $exportacion2j=0;
                                           $exportacionj=0;
                                           $exportacionxl=0;
+
+                                          $material4j=0;
+                                          $material3j=0;
+                                          $material2j=0;
+                                          $materialj=0;
+                                          $materialxl=0;
 
                                           $pesoneto4j=0;
                                           $pesoneto3j=0;
@@ -167,6 +175,12 @@
                                                         $exportaciontotal+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
                                                     }
+                                                    foreach ($materialestotal as $material) {
+                                                      if ($material->c_embalaje==$masa->c_embalaje) {
+                                                        $material4j+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                        $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                      }  
+                                                    }
                                                 @endphp	
                                                 
                                             @endif
@@ -190,6 +204,12 @@
                                                         $exportaciontotal+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
                                                     }
+                                                    foreach ($materialestotal as $material) {
+                                                      if ($material->c_embalaje==$masa->c_embalaje) {
+                                                        $material3j+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                        $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                      }  
+                                                    }
                                                 @endphp	
                                             @endif
                                             @if (($masa->n_calibre=='2J' || $masa->n_calibre=='2JD' || $masa->n_calibre=='2JDD') && $masa->n_variedad==$variedad)
@@ -211,6 +231,12 @@
                                                         $exportacion2j+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                         $exportaciontotal+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
+                                                    }
+                                                    foreach ($materialestotal as $material) {
+                                                      if ($material->c_embalaje==$masa->c_embalaje) {
+                                                        $material2j+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                        $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                      }  
                                                     }
                                                 @endphp	
                                             @endif
@@ -234,6 +260,12 @@
                                                         $exportaciontotal+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
                                                     }
+                                                    foreach ($materialestotal as $material) {
+                                                      if ($material->c_embalaje==$masa->c_embalaje) {
+                                                        $materialj+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                        $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                      }  
+                                                    }
                                                 @endphp	
                                             @endif
                                             @if (($masa->n_calibre=='XL' || $masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD') && $masa->n_variedad==$variedad)
@@ -255,6 +287,12 @@
                                                         $exportacionxl+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                         $exportaciontotal+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
+                                                    }
+                                                    foreach ($materialestotal as $material) {
+                                                      if ($material->c_embalaje==$masa->c_embalaje) {
+                                                        $materialxl+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                        $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                      }  
                                                     }
                                                 @endphp	
                                             @endif
@@ -307,6 +345,7 @@
                                               <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                               <td>{{number_format($exportacion4j,2,',','.')}} USD</td>
                                               <td>{{number_format($fletehuerto,2,',','.')}} USD</td>
+                                              <td>{{number_format($material4j,2,',','.')}} USD</td>
                                               <td>{{number_format($retorno4j*0.92,2,',','.')}} USD</td>
                                               <td>
                                                 @if ($pesoneto4j)
@@ -350,6 +389,7 @@
                                               <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                               <td>{{number_format($exportacion3j,2,',','.')}} USD</td>
                                               <td>{{number_format($fletehuerto,2,',','.')}} USD</td>
+                                              <td>{{number_format($material3j,2,',','.')}} USD</td>
                                               <td>{{number_format($retorno3j*0.92,2,',','.')}} USD</td>
                                               <td>
                                                 @if ($pesoneto3j)
@@ -393,6 +433,7 @@
                                               <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                               <td>{{number_format($exportacion2j,2,',','.')}} USD</td>
                                               <td>{{number_format($fletehuerto,2,',','.')}} USD</td>
+                                              <td>{{number_format($material2j,2,',','.')}} USD</td>
                                               <td>{{number_format($retorno2j*0.92,2,',','.')}} USD</td>
                                               <td>
                                                 @if ($pesoneto2j)
@@ -436,6 +477,7 @@
                                               <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                               <td>{{number_format($exportacionj,2,',','.')}} USD</td>
                                               <td>{{number_format($fletehuerto,2,',','.')}} USD</td>
+                                              <td>{{number_format($materialj,2,',','.')}} USD</td>
                                               <td>{{number_format($retornoj*0.92,2,',','.')}} USD</td>
                                               <td>
                                                 @if ($pesonetoj)
@@ -480,6 +522,7 @@
                                               <td>{{number_format($costopacking,2,',','.')}} USD</td>
                                               <td>{{number_format($exportacionxl,2,',','.')}} USD</td>
                                               <td>{{number_format($fletehuerto,2,',','.')}} USD</td>
+                                              <td>{{number_format($materialxl,2,',','.')}} USD</td>
                                               <td>{{number_format($retornoxl*0.92,2,',','.')}} USD</td>
                                                 <td>
                                                 @if ($pesonetoxl)
@@ -517,6 +560,7 @@
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($costopacking),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($exportacion4j+$exportacion3j+$exportacion2j+$exportacionj+$exportacionxl),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($fletehuerto),2,',','.')}} USD</td>
+                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($material4j+$material3j+$material2j+$materialj+$materialxl)*0.92,2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)*0.92,2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl),2)}} USD/KG</td>
                                             
@@ -553,6 +597,7 @@
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($exportaciontotal,2,',','.')}} USD</td>
                                         
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($globalfletehuerto),2,',','.')}} USD</td>
+                                        <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalmateriales*0.92,2,',','.')}} USD</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal*0.92,2,',','.')}} USD</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal/$pesonetototal,2)}} usd/kg</td>
                                         
