@@ -7,8 +7,8 @@
     
     <div class="pb-8 pt-2">
     
-      <div class="card">
-        <div class="px-2 md:px-6 py-4">
+      <div class="">
+        <div class="px-2 md:px-2 py-4">
         
 
           <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
@@ -18,7 +18,7 @@
               @livewire('menu-aside',['temporada'=>$temporada->id])
 
               <div class="pb-12 pt-6 w-full">
-                  <div class="mx-auto sm:px-6 lg:px-8">
+                  <div class="mx-auto sm:px-6 lg:px-2">
                       <div class="flex justify-between mb-6">
                         <div class="items-center"> 
                           <h2 @click.on="openMenu = 1"  class="cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
@@ -622,6 +622,7 @@
                                       <th>Comisión</th>
                                       <th>FrioPacking</th>
                                       <th>Exportación</th>
+                                      <th>Flete a <br> Puerto</th>
                                       <th>Retorno Neto<br> Total</th>
                                       <th>Retorno Kilo</th>
                                       </tr>
