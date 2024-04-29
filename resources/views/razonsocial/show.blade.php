@@ -634,6 +634,11 @@
                                        
                                       @php
                                         $calibrecount=1;
+                                        $subretorno4j=0;
+                                        $subretorno3j=0;
+                                        $subretorno2j=0;
+                                        $subretornoj=0;
+                                        $subretornoxl=0;
                                         
                                       @endphp
                                        
@@ -652,6 +657,7 @@
                                         $pesoneto2j=0;
                                         $pesonetoj=0;
                                         $pesonetoxl=0;
+
                                         $retorno4j=0;
                                         $retorno3j=0;
                                         $retorno2j=0;
@@ -666,6 +672,7 @@
                                             $cantidad4j+=$masa->cantidad;
                                             $pesoneto4j+=$masa->peso_neto;
                                               $retorno4j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
+                                              $subretorno4j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                               $retornototal+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                             $cantidadtotal+=$masa->cantidad;
                                             $pesonetototal+=$masa->peso_neto;
@@ -676,6 +683,7 @@
                                             $cantidad3j+=$masa->cantidad;
                                             $pesoneto3j+=$masa->peso_neto;
                                               $retorno3j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
+                                              $subretorno3j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                               $retornototal+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                             $cantidadtotal+=$masa->cantidad;
                                             $pesonetototal+=$masa->peso_neto;
@@ -686,6 +694,7 @@
                                             $cantidad2j+=$masa->cantidad;
                                             $pesoneto2j+=$masa->peso_neto;
                                               $retorno2j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
+                                              $subretorno2j+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                               $retornototal+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                             $cantidadtotal+=$masa->cantidad;
                                             $pesonetototal+=$masa->peso_neto;
@@ -706,6 +715,7 @@
                                             $cantidadxl+=$masa->cantidad;
                                             $pesonetoxl+=$masa->peso_neto;
                                               $retornoxl+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
+                                              $subretornoxl+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                               $retornototal+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
                                             $cantidadtotal+=$masa->cantidad;
                                             $pesonetototal+=$masa->peso_neto;
@@ -988,8 +998,8 @@
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl)}}</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl)}} KGS</td>
-                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl),2,',','.')}}  USD</td>
-                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl),2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
+                                          <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($subretorno4j+$subretorno3j+$subretorno2j+$subretornoj+$subretornoxl),2,',','.')}}  USD</td>
                                           <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)/($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl))}}  USD/KG</td>
                                           
                                         </tr>
