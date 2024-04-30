@@ -160,7 +160,9 @@ class RazonController extends Controller
         $fletestotal=Flete::all();
         $materialestotal=Material::all();
 
-        return view('razonsocial.show',compact('materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
+
+        return view('razonsocial.show',compact('unique_categorias','materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**
