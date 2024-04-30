@@ -587,11 +587,11 @@
                     @endphp
                   @endforeach
                   @if ($masastotal && $masastotalnacional)
-                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados)({{$kgstotmas}} KGS)
+                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @elseif($masastotal)
-                    ({{($masastotal->count())}} Resultados)({{$kgstotmas}} KGS)
+                    ({{($masastotal->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @elseif($masastotalnacional)
-                    ({{($masastotalnacional->count())}} Resultados)({{$kgstotmas}} KGS)
+                    ({{($masastotalnacional->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @endif
                 @endif
               </h2>
