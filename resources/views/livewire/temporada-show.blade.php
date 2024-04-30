@@ -578,12 +578,20 @@
                   ({{$fobs->count()}} Resultados)
                 @endif
                 @if ($vista=='MASAS')
+                  @php
+                      $kgstotmas=0;
+                  @endphp
+                  @foreach ($masastotal as $masa)
+                    @php
+                        $kgstotmas+=$masa->peso_neto;
+                    @endphp
+                  @endforeach
                   @if ($masastotal && $masastotalnacional)
-                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados)
+                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados)({{$kgstotmas->count()}} KGS)
                   @elseif($masastotal)
-                    ({{($masastotal->count())}} Resultados)
+                    ({{($masastotal->count())}} Resultados)({{$kgstotmas->count()}} KGS)
                   @elseif($masastotalnacional)
-                    ({{($masastotalnacional->count())}} Resultados)
+                    ({{($masastotalnacional->count())}} Resultados)({{$kgstotmas->count()}} KGS)
                   @endif
                 @endif
               </h2>

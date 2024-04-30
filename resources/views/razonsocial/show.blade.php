@@ -80,7 +80,93 @@
 
                          
                                 
-
+                                <h1 class="mt-6">
+                                  Gastos Frio Packing
+                                </h1>
+                                <table class="min-w-full leading-normal mt-4">
+                                  <thead>
+                                    <tr>
+                                      <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Especie
+                                      </th>
+                                      <th
+                                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Variedad
+                                      </th>
+                                      <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Nombre Productor
+                                      </th>
+                                      <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      CSG
+                                      </th>
+                                      <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        KG
+                                      </th>
+                                      <th
+                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        TotalUSD
+                                      </th>
+                                      <th
+                                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      NETO
+                                    </th>
+                                  
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                    
+                                      @foreach ($packings as $packing)
+                                        <tr>
+                                          
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
+                                          </td>
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
+                                          </td>
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <div class="flex items-center">
+                                             
+                                                <div class="ml-3">
+                                                  <p class="text-gray-900 whitespace-no-wrap">
+                                                    {{$packing->n_productor}}
+                                                  </p>
+                                                </div>
+                                              </div>
+                                          </td>
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
+                                          </td>
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap">
+                                              {{$packing->kg}}
+                                            </p>
+                                          </td>
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap">
+                                          
+                                              {{number_format($packing->total_usd,2)}}
+                                            </p>
+                                          </td>
+              
+                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <span
+                                                                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                                  <span aria-hidden
+                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">Activo</span>
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      @endforeach
+                                  
+                                  </tbody>
+                                </table>
+                                
                                   <table id="balance" style="width:100%; border-collapse: collapse; margin-top: 20px;">
                                     <thead>
                                       <tr>
@@ -2008,92 +2094,7 @@
                                   NACIONAL (TOTAL - EXPORTACIÓN)
                                 </h1>
                                 
-                                <h1 class="mt-6">
-                                  Gastos Frio Packing
-                                </h1>
-                                <table class="min-w-full leading-normal mt-4">
-                                  <thead>
-                                    <tr>
-                                      <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Especie
-                                      </th>
-                                      <th
-                                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Variedad
-                                      </th>
-                                      <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Nombre Productor
-                                      </th>
-                                      <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                      CSG
-                                      </th>
-                                      <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        KG
-                                      </th>
-                                      <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        TotalUSD
-                                      </th>
-                                      <th
-                                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                      NETO
-                                    </th>
-                                  
-                                  </tr>
-                                  </thead>
-                                  <tbody>
-                                    
-                                      @foreach ($packings as $packing)
-                                        <tr>
-                                          
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
-                                          </td>
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
-                                          </td>
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <div class="flex items-center">
-                                             
-                                                <div class="ml-3">
-                                                  <p class="text-gray-900 whitespace-no-wrap">
-                                                    {{$packing->n_productor}}
-                                                  </p>
-                                                </div>
-                                              </div>
-                                          </td>
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
-                                          </td>
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                              {{$packing->kg}}
-                                            </p>
-                                          </td>
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                          
-                                              {{number_format($packing->total_usd,2)}}
-                                            </p>
-                                          </td>
-              
-                                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                                  <span aria-hidden
-                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                            <span class="relative">Activo</span>
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      @endforeach
-                                  
-                                  </tbody>
-                                </table>
+                               
 
                                   <h1 class="mt-6">
                                   Comision
