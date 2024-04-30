@@ -1334,6 +1334,13 @@
                                             $retornoj=0;
                                             $retornoxl=0;
                                             $retornol=0;
+
+                                            $material4j=0;
+                                            $material3j=0;
+                                            $material2j=0;
+                                            $materialj=0;
+                                            $materialxl=0;
+                                            $materiall=0;
                                           @endphp
                                 
                                           @foreach ($masas as $masa)
