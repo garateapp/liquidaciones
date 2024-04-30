@@ -182,7 +182,7 @@
                                       <th class="bg-red-100">Comision</th>
                                       <th>Frio<br>Packing</th>
                                       <th>Exportacion</th>
-                                      <th>Flete a <br> Puerto</th>
+                                      <th>Flete a <br> Huerto</th>
                                       <th>Materiales</th>
                                       <th class="bg-yellow-100">Retorno Neto<br> Total</th>
                                       <th>Retorno Kilo</th>
@@ -406,9 +406,9 @@
                                           foreach ($packings as $costo) {
                                             if ($costo->variedad==$variedad) {
                                               $costopacking+=$costo->total_usd;
-                                              $totalcostopacking+=$costo->total_usd;
                                             }  
                                           }
+                                          $totalcostopacking+=($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl))/$kgstotmas;
                                          
                                         @endphp
                               
@@ -653,7 +653,7 @@
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl}} KGS</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($retorno4j+$retorno3j+$retorno2j+$retornoj+$retornoxl)*0.08,2,',','.')}} USD</td>
-                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format((($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl))/$kgstotmas),2,',','.')}} USD {{$kgstotmas}}</td>
+                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format((($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj+$pesonetoxl))/$kgstotmas),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($exportacion4j+$exportacion3j+$exportacion2j+$exportacionj+$exportacionxl),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($fletehuerto),2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($material4j+$material3j+$material2j+$materialj+$materialxl)*0.92,2,',','.')}} USD</td>
@@ -689,7 +689,7 @@
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesonetototal)}} KGS</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal*0.08,2,',','.')}} USD</td>
-                                        <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($totalcostopacking*$pesonetototal)/$kgsglobmas,2,',','.')}} USD {{$kgsglobmas}}</td>
+                                        <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($totalcostopacking),2,',','.')}} USD</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($exportaciontotal,2,',','.')}} USD</td>
                                         
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($globalfletehuerto),2,',','.')}} USD</td>
@@ -718,7 +718,7 @@
                                       <th class="bg-red-100">Comision</th>
                                       <th>FrioPacking</th>
                                       <th>Exportación</th>
-                                      <th>Flete a <br> Puerto</th>
+                                      <th>Flete a <br> Huerto</th>
                                       <th>Materiales</th>
                                       <th class="bg-yellow-100">Retorno Neto<br> Total</th>
                                       <th>Retorno Kilo</th>
@@ -1403,7 +1403,7 @@
                                           $retornototal=0;
                                           $exportaciontotal=0;
                                           $totalmateriales=0;
-
+                                          $kgsglobmas=0;
                                         @endphp
                                         @foreach ($unique_variedades as $variedad)
                                           @php
@@ -1655,6 +1655,7 @@
                                             @php
                                               if ($masa->n_variedad==$variedad) {
                                                   $kgstotmas+=$masa->peso_neto;
+                                                  $kgsglobmas+=$masa->peso_neto;
                                               }
                                             @endphp
                                           @endforeach
@@ -2048,7 +2049,7 @@
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$pesonetototal}} KGS</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal*0.08,2,',','.')}} USD</td>
-                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($costopacking,2,',','.')}} USD</td>
+                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($costopacking,2,',','.')}} USD {{$kgsglobmas}}</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($exportaciontotal,2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($fletehuerto,2,',','.')}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalmateriales,2,',','.')}} USD</td>
