@@ -2436,7 +2436,7 @@
                                               <td>{{$retorno4j}} USD</td>
                                               <td>{{number_format(($costopacking*$pesoneto4j)/$kgstotmas,2,',','.')}} USD</td>
                                                {{-- Retorno - CostoPacking --}}
-                                              <td>{{number_format($retorno4j-($costopacking*$pesoneto4j)/$kgstotmas,2,',','.')}} USD</td>
+                                              <td>{{number_format($retorno4j,2,',','.')}} CLP</td>
                                               
                                               
                                             </tr>
@@ -2460,7 +2460,7 @@
                                               <td>{{$retorno3j}} USD</td>
                                               <td>{{number_format(($costopacking*$pesoneto3j)/$kgstotmas,2,',','.')}} USD</td>
                                                {{-- Retorno - CostoPacking --}}
-                                              <td>{{number_format($retorno3j-($costopacking*$pesoneto3j)/$kgstotmas,2,',','.')}} USD</td>
+                                              <td>{{number_format($retorno3j,2,',','.')}} CLP</td>
                                               
                                               
                                             </tr>
@@ -2484,7 +2484,7 @@
                                               <td>{{$retorno2j}} USD</td>
                                               <td>{{number_format(($costopacking*$pesoneto2j)/$kgstotmas,2,',','.')}} USD</td>
                                                {{-- Retorno - CostoPacking --}}
-                                              <td>{{number_format($retorno2j-($costopacking*$pesoneto2j)/$kgstotmas,2,',','.')}} USD</td>
+                                              <td>{{number_format($retorno2j,2,',','.')}} CLP</td>
                                               
                                               
                                             </tr>
@@ -2509,7 +2509,7 @@
                                               <td>{{$retornoj}} USD</td>
                                               <td>{{($costopacking*$pesonetoj)/$kgstotmas}} USD</td>
                                                {{-- Retorno - CostoPacking --}}
-                                              <td>{{number_format($retornoj-(($costopacking*$pesonetoj)/$kgstotmas),2,',','.')}} USD</td>
+                                              <td>{{number_format($retornoj,2,',','.')}} CLP</td>
                                               
                                               
                                             </tr>
@@ -2531,7 +2531,7 @@
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retorno4j+$retorno3j+$retorno2j+$retornoj}} USD</td>
                                             <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format(($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj))/$kgstotmas,2,',','.')}} USD </td>
                                              {{-- Retorno - CostoPacking --}}
-                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj-(($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj))/$kgstotmas),2,',','.')}} USD</td>
+                                            <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj,2,',','.')}} CLP</td>
                                             
                                           </tr>
                                           
@@ -2558,7 +2558,7 @@
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{$retornototal}} USD</td>
                                         <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($totalcostopacking,2,',','.')}} USD</td>
                                         {{-- Retorno - CostoPacking --}}
-                                        <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal-($totalcostopacking),2,',','.')}} USD</td>
+                                        <td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retornototal,2,',','.')}} CLP</td>
                                      
                                       </tr>
                                           
