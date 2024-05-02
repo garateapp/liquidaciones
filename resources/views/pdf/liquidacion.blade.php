@@ -1797,7 +1797,7 @@
 				<td>{{number_format($gastosfrutanoexp)}}</td>
 			  </tr>
 			  @php
-				  $totalgastos=$cantidadtotal;
+				  $totalgastos=$gastosfrutanoexp;
 			  @endphp
 
 			@foreach ($gastos as $gasto)
