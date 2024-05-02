@@ -1803,8 +1803,8 @@
 				@endif
 				
 
-				@if ($razonsocial->tc)
-					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$razonsocial->tc,0)}}</td>
+				@if ($temporada->tc)
+					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
 				@else
 					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 				@endif

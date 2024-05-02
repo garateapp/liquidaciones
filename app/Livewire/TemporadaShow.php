@@ -243,7 +243,8 @@ class TemporadaShow extends Component
                                                     'gastos'=>$gastos,
                                                     'exportacions'=>$exportacions,
                                                     'materialestotal'=>$materialestotal,
-                                                    'fletestotal'=>$fletestotal]);
+                                                    'fletestotal'=>$fletestotal,
+                                                    'temporada'=>$temporada]);
 
         $pdfContent = $pdf->output();
         $filename = 'Liquidacion '.$razonsocial->name.'.pdf';
