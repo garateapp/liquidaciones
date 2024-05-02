@@ -4098,7 +4098,7 @@
 						  
 						  <td>{{number_format($pesoneto4j)}} KGS</td>
 						   {{-- Retorno - CostoPacking --}}
-						  <td>{{number_format($retorno4j-($costopacking*$pesoneto4j)/$kgstotmas,2,',','.')}} USD</td>
+						  <td>{{number_format($retorno4j,2,',','.')}} USD</td>
 						  
 						  
 						</tr>
@@ -4120,7 +4120,7 @@
 						  
 						  <td>{{number_format($pesoneto3j)}} KGS</td>
 						   {{-- Retorno - CostoPacking --}}
-						  <td>{{number_format($retorno3j-($costopacking*$pesoneto3j)/$kgstotmas,2,',','.')}} USD</td>
+						  <td>{{number_format($retorno3j,2,',','.')}} USD</td>
 						  
 						  
 						</tr>
@@ -4142,7 +4142,7 @@
 						
 						  <td>{{number_format($pesoneto2j)}} KGS</td>
 						   {{-- Retorno - CostoPacking --}}
-						  <td>{{number_format($retorno2j-($costopacking*$pesoneto2j)/$kgstotmas,2,',','.')}} USD</td>
+						  <td>{{number_format($retorno2j,2,',','.')}} USD</td>
 						  
 						  
 						</tr>
@@ -4165,7 +4165,7 @@
 						
 						  <td>{{number_format($pesonetoj)}} KGS</td>
 						   {{-- Retorno - CostoPacking --}}
-						  <td>{{number_format($retornoj-(($costopacking*$pesonetoj)/$kgstotmas),2,',','.')}} USD</td>
+						  <td>{{number_format($retornoj,2,',','.')}} USD</td>
 						  
 						  
 						</tr>
@@ -4185,7 +4185,7 @@
 						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;"></td>
 						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj)}}</td>
 						 {{-- Retorno - CostoPacking --}}
-						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj-(($costopacking*($pesoneto4j+$pesoneto3j+$pesoneto2j+$pesonetoj))/$kgstotmas),2,',','.')}} USD</td>
+						<td style="border-top: 2px solid black; border-bottom: 2px solid black; padding-bottom: 4px; margin-top: 10px; font-weight: bold;">{{number_format($retorno4j+$retorno3j+$retorno2j+$retornoj,2,',','.')}} USD</td>
 						
 					  </tr>
 					  
