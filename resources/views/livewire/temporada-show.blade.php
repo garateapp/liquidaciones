@@ -73,7 +73,7 @@
                                 Total Gastos de Exportacion
                               </th>
                               <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Total Flete a puerto
+                              Total Flete a huerto
                               </th>
                               <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
                                 Total Materiales
@@ -331,7 +331,7 @@
                                 Total Gastos de Exportacion
                               </th>
                               <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Total Flete a puerto
+                              Total Flete a huerto
                               </th>
                               <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
                                 Total Materiales
