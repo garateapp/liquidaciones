@@ -1828,9 +1828,9 @@
 				<td style="border-top: 2px solid black;">
 
 					@if ($temporada->tc)
-						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
+						{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}
 					@else
-						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
+						{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}
 					@endif
 					
 				</td>
