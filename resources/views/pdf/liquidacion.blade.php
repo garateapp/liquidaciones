@@ -1649,8 +1649,6 @@
 			</thead>
 		</table>
 
-		
-
 		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
 		
 			<tr style="text-align: left;">
@@ -1717,7 +1715,6 @@
 		</table>
 
 						@php
-							
 							$cantidadtotal=0;
 							$pesonetototal=0;
 						@endphp
