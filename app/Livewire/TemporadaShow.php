@@ -121,7 +121,7 @@ class TemporadaShow extends Component
 
         $familias=Familia::where('status','active')->get();
 
-        $detalles=Detalle::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $detalles=Detalle::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
         return view('livewire.temporada-show',compact('detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
