@@ -1649,58 +1649,7 @@
 			</thead>
 		</table>
 
-			@php
-				$cat1=0;
-				$kspcat1=0;
-				$costoexportcat1=0;
-
-				$cati=0;
-				$kspcati=0;
-				$costoexportcati=0;
-
-				$costopacking=$packings->first()->total_usd;
-
-			@endphp
-			@foreach ($masas as $masa)
-				@if ($masa->n_categoria=='Cat 1')
-						@php
-							if($masa->precio_fob){
-								$cat1+=$masa->peso_neto*$masa->precio_fob;
-							}else{
-								$kspcat1+=$masa->peso_neto;
-							}
-							if ($masa->tipo_transporte=='AEREO') {
-                                    if ($exportacions->where('type','aereo')->count()>0) {
-                                      	$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                    }
-                            }
-                            if ($masa->tipo_transporte=='MARITIMO') {
-                              	if ($exportacions->where('type','maritimo')->count()>0) {
-									$costoexportcat1+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                }
-                            }
-						@endphp	
-				@endif
-				@if (strtolower($masa->n_categoria)=='cat i')
-						@php
-							if($masa->precio_fob){
-								$cati+=$masa->peso_neto*$masa->precio_fob;
-							}else{
-								$kspcati+=$masa->peso_neto;
-							}
-							if ($masa->tipo_transporte=='AEREO') {
-                                    if ($exportacions->where('type','aereo')->count()>0) {
-                                      	$costoexportcati+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                    }
-                            }
-                            if ($masa->tipo_transporte=='MARITIMO') {
-                              	if ($exportacions->where('type','maritimo')->count()>0) {
-									$costoexportcati+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                }
-                            }
-						@endphp	
-				@endif
-			@endforeach
+		
 
 		<table style="width:100%;border-collapse: collapse; margin-bottom: 30px;">
 		
@@ -1837,7 +1786,7 @@
 				<td style="text-align: left; border: 2px solid black;padding: 2px; margin-top: 5px;" colspan="2"> Saldo</td>
 				
 				<td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> USD$</td>
-				<td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> {{number_format(($cat1+$cati)-($totalgastos+$totalproforma),2)}}</td>
+				<td style="text-align: center; border: 2px solid black;padding: 2px; margin-top: 5px;"> {{number_format(($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma),2)}}</td>
 			  </tr>
 
 			
