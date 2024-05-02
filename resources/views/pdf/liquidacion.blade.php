@@ -1828,9 +1828,9 @@
 				<td style="border-top: 2px solid black;">
 
 					@if ($temporada->tc)
-						{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
 					@else
-						{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
 					
 				</td>
@@ -1844,9 +1844,9 @@
 				</td>
 				<td>
 					@if ($temporada->tc)
-					{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc)*0.19,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc)*0.19,0)}}</td>
 					@else
-					{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75*0.19,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75*0.19,0)}}</td>
 					@endif
 				</td>
 			</tr>
@@ -1881,7 +1881,7 @@
 					Neto
 				</td>
 				<td style="border-top: 2px solid black;">
-					$0
+					$
 				</td>
 			</tr>
 			<tr>
@@ -1892,7 +1892,7 @@
 					Iva
 				</td>
 				<td>
-					$0
+					$
 				</td>
 			</tr>
 			<tr>
@@ -1903,11 +1903,11 @@
 					Total
 				</td>
 				<td>
-					$0
+					$
 				</td>
 			</tr>
 		</table>
-
+{{-- comment
 		<table style="width: 100%; border: 2px solid black; border-collapse: collapse; margin-top: 20px;">
 		
 			<tr>
@@ -1944,7 +1944,7 @@
 				</td>
 			</tr>
 		</table>
-		{{-- comment
+		
 			<img src="{{asset('image/footer.png')}}" class="fondo-abajo" style="margin-bottom: 30px;">
 		 --}}
 		<div class="page-break"></div>
