@@ -15,9 +15,11 @@
 
     <div class="flex mb-4">
       @if($vista=="resumes")
-        <button class="inline-flex items-center px-4 mr-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-          EXPORTACIÓN
-        </button>
+        <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
+          <button class="inline-flex items-center px-4 mr-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            EXPORTACIÓN
+          </button>
+        </a>
       @elseif($vista=="resumesnacional")
         <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
           <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
@@ -26,9 +28,11 @@
         </a>
       @endif
       @if($vista=="resumesnacional")
-        <button class="inline-flex items-center px-4 ml-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-          NACIONAL
-        </button>
+        <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
+          <button class="inline-flex items-center px-4 ml-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            NACIONAL
+          </button>
+        </a>
       @elseif($vista=="resumes")
         <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
           <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
