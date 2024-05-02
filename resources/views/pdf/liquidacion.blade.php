@@ -1881,7 +1881,7 @@
 					Neto
 				</td>
 				<td style="border-top: 2px solid black;">
-					$52.451.356
+					$0
 				</td>
 			</tr>
 			<tr>
@@ -1892,7 +1892,7 @@
 					Iva
 				</td>
 				<td>
-					$52.451.356
+					$0
 				</td>
 			</tr>
 			<tr>
@@ -1903,7 +1903,7 @@
 					Total
 				</td>
 				<td>
-					$52.451.356
+					$0
 				</td>
 			</tr>
 		</table>
