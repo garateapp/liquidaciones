@@ -75,7 +75,7 @@ class TemporadaShow extends Component
         $embarquestotal=Embarque::where('temporada_id',$this->temporada->id)->get();
 
 
-        $materialestotal=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
+        $materialestotal=Material::where('temporada_id',$this->temporada->id)->get();
 
 
         $exportacions=Exportacion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);

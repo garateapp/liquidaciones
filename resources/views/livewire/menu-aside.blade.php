@@ -131,7 +131,7 @@
                 <p class="text-xs mt-1 text-center font-semibold">Otros Costos</p>
               </div>
             </a>
-            <a href="{{route('temporada.finanzas',$temporada)}}"
+            <a href="{{route('temporada.finanzas',$temporada)}}" class="hidden"
             wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
               
