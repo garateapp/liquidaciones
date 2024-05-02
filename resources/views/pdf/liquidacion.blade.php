@@ -1870,7 +1870,7 @@
 		<table style="width: 100%; border: 2px solid black; border-collapse: collapse; margin-top: 20px;">
 			<tr>
 				<td colspan="6" style="font-weight: bold; font-size: 12pt;">
-					Nota de Débito
+					Factura
 				</td>
 			</tr>
 			<tr>
