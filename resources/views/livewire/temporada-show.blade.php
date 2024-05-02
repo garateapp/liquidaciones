@@ -2171,7 +2171,7 @@
                       </form>
                   </div>
 
-                  @if ($temporada->detalles->count()>0)
+                  @if ($detalles->count()>0)
                     <table class="min-w-full leading-normal">
                         <thead>
                           <tr>
@@ -2209,7 +2209,7 @@
                         </thead>
                         <tbody>
                       
-                            @foreach ($temporada->detalles as $detalle)
+                            @foreach ($detalles as $detalle)
                               <tr>
                                 <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <div class="flex items-center">
@@ -2234,23 +2234,36 @@
                                   <p class="text-gray-900 whitespace-no-wrap"> {{date('d/m/Y', strtotime($detalle->fecha))}}</p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format($detalle->cantidad,2,',','.')}}</p>
+                                  @if ($gastoid==$detalle->id)
+                                      <input wire:model="gastocant" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                  @else
+                                    <p class="text-gray-900 whitespace-no-wrap"> {{number_format($detalle->cantidad,2,',','.')}}</p>
+                                  @endif
+                                
+                                  
                                 </td>
                             
                             
 
-                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <a href="">
-                                    <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                                          <span aria-hidden
-                                                              class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                    <span class="relative">Editar</span>
-                                  </a>
-                                  <span wire:click="" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                    <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                    <span class="relative">Eliminar</span>
-                                </span>
-                                  </span>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
+                                  @if ($gastoid==$detalle->id)
+                                    <span wire:click='save_gastoid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                      <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                      <span class="relative">Guardar</span>
+                                    </span>
+                                  @else
+                                    <span wire:click='set_gastoid({{$detalle->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight mr-2">
+                                      <span aria-hidden     class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                      <span class="relative">Editar</span>
+                                    </span>
+                                    
+                                    <span wire:click="" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                      <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                      <span class="relative">Eliminar</span>
+                                    </span>
+                                  @endif
+                                
+                                 
                                 </td>
                               </tr>
                             @endforeach

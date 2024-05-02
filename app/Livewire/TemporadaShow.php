@@ -27,7 +27,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
 
 
     #[Url]
@@ -121,7 +121,9 @@ class TemporadaShow extends Component
 
         $familias=Familia::where('status','active')->get();
 
-        return view('livewire.temporada-show',compact('unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        $detalles=Detalle::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+
+        return view('livewire.temporada-show',compact('detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function getUsersProperty(){
@@ -131,6 +133,19 @@ class TemporadaShow extends Component
     public function set_productorid(Razonsocial $razonsocial){
         //$this->productorid=$razonsocial;
         $this->filters['razonsocial']=$razonsocial->csg;
+    }
+
+    public function set_gastoid($detalle_id){
+        $this->gastoid=$detalle_id;
+        $detalle=Detalle::find($detalle_id);
+        $this->gastocant= $detalle->cantidad;
+    }
+
+    public function save_gastoid(){
+        $detalle=Detalle::find($this->gastoid);
+        $detalle->update(['cantidad'=>$this->gastocant]);    
+        $this->reset(['gastocant','gastoid']);
+        
     }
 
     public function set_view($vista){
@@ -182,6 +197,7 @@ class TemporadaShow extends Component
         $this->reset(['preciofob','fobid']);
         
     }
+    
 
     public function exportpdf(Razonsocial $razonsocial, Temporada $temporada){
         
