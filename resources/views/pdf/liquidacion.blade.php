@@ -1827,10 +1827,10 @@
 				</td>
 				<td style="border-top: 2px solid black;">
 
-					@if ($razonsocial->tc)
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$razonsocial->tc,0)}}
+					@if ($temporada->tc)
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
 					@else
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
 					
 				</td>
@@ -1843,10 +1843,10 @@
 					Iva
 				</td>
 				<td>
-					@if ($razonsocial->tc)
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$razonsocial->tc*0.19,0)}}
+					@if ($temporada->tc)
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
 					@else
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75*0.19,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
 				</td>
 			</tr>
@@ -1858,10 +1858,10 @@
 					Total
 				</td>
 				<td>
-					@if ($razonsocial->tc)
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$razonsocial->tc*1.19,0)}}
+					@if ($temporada->tc)
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
 					@else
-						${{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75*1.19,0)}}
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
 				</td>
 			</tr>
