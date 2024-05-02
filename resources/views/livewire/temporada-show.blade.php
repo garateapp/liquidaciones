@@ -2237,7 +2237,7 @@
                                   @if ($gastoid==$detalle->id)
                                       <input wire:model="gastocant" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                   @else
-                                    <p class="text-gray-900 whitespace-no-wrap"> {{number_format($detalle->cantidad,2,',','.')}}</p>
+                                    <p class="text-gray-900 whitespace-no-wrap"> {{$detalle->cantidad}}</p>
                                   @endif
                                 
                                   
