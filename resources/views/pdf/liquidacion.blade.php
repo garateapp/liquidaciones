@@ -1749,7 +1749,7 @@
 					<td style="text-align: left; width:60%;"></td>
 					<td>{{$fechaprint->format('d-m-Y')}}</td>
 					<td>USD$</td>
-					<td>{{number_format($anticipo->cantidad,2)}}</td>
+					<td>{{number_format(floatval($anticipo->cantidad),2)}}</td>
 				</tr>
 				
 			@endforeach
@@ -1809,7 +1809,7 @@
 										<td style="text-align: left; width:60%;">{{$gasto->item}}</td>
 										<td></td>
 										<td>USD$</td>
-										<td>{{number_format($detalle->cantidad,2)}}</td>
+										<td>{{number_format(floatval($detalle->cantidad),2)}}</td>
 							</tr>
 							@php
 								$totalgastos+=floatval($detalle->cantidad);
