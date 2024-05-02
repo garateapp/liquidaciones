@@ -1796,15 +1796,15 @@
 			<tr style="text-align: left;">
 				<td style="text-align: left; width:60%;"></td>
 				<td>T/C</td>
-				@if ($razonsocial->tc)
-					<td>${{$razonsocial->tc}}</td>
+				@if ($temporada->tc)
+					<td>${{$temporada->tc}}</td>
 				@else
 					<td>$814,75</td>
 				@endif
 				
 
 				@if ($temporada->tc)
-					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
+					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
 				@else
 					<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 				@endif
@@ -1828,7 +1828,7 @@
 				<td style="border-top: 2px solid black;">
 
 					@if ($temporada->tc)
-						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
 					@else
 						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
@@ -1844,7 +1844,7 @@
 				</td>
 				<td>
 					@if ($temporada->tc)
-						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
 					@else
 						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
@@ -1859,7 +1859,7 @@
 				</td>
 				<td>
 					@if ($temporada->tc)
-						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*$temporada->tc,0)}}</td>
+						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*floatval($temporada->tc),0)}}</td>
 					@else
 						<td>{{number_format((($totaldentrodenorma+$totalfueradenorma)-($totalgastos+$totalproforma))*814.75,0)}}</td>
 					@endif
