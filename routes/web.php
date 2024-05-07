@@ -33,6 +33,9 @@ Route::middleware([
     })->middleware('auth')->name('dashboard');
 });
 
+Route::get('production/refresh/{temporada}', [TemporadaController::class,'production_refresh'])->middleware('auth')->name('production.refresh');
+
+Route::get('proceso/refresh/{temporada}', [TemporadaController::class,'proceso_refresh'])->middleware('auth')->name('proceso.refresh');
 
 Route::get('lista/filtros',[RazonController::class,'index'])->name('razonsocial.index');
 
@@ -99,7 +102,6 @@ Route::post('updateflete/{flete}',[TemporadaController::class,'fleteupdate'])->n
 Route::get('editcomision/{comision}/{temporada}',[TemporadaController::class,'comisionedit'])->name('comision.edit');
 
 Route::post('updatecomision/{comision}',[TemporadaController::class,'comisionupdate'])->name('comision.update');
-
 
 Route::post('costos/exportacion/import',[TemporadaController::class,'importExportacion'])->name('temporada.importExportacion');
 

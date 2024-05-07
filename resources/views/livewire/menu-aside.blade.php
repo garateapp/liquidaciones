@@ -174,8 +174,8 @@
                 </div>
               </a>
               
-              @if (Route::currentRouteName() == 'temporada.balancemasa')
-                <a href="{{route('temporada.balancemasa',$temporada)}}"
+              @if (Route::currentRouteName() == 'temporada.balancemasa' || Route::currentRouteName() == 'temporada.recepcion' || Route::currentRouteName() == 'temporada.procesos')
+                <a href="{{route('temporada.recepcion',$temporada)}}"
                 wire:navigate class="col-span-2">
                   <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                     <div class="rounded-full p-2 @if($masascount->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
@@ -184,7 +184,7 @@
                     <p class="text-xs mt-1 text-center font-semibold">Recepciones</p>
                   </div>
                 </a>
-                <a href="{{route('temporada.balancemasa',$temporada)}}"
+                <a href="{{route('temporada.procesos',$temporada)}}"
                 wire:navigate class="col-span-2">
                   <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
                     <div class="rounded-full p-2 @if($masascount->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">

@@ -981,6 +981,7 @@
               </div>
             </div>
           </div>
+
             <div class="flex justify-between ml-4">
               @if ($vista=='MASAS' || $vista=='FOB')
                 <div class="grid grid-cols-1">
@@ -1010,6 +1011,7 @@
                   
               </select>
             </div>
+            
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
 
@@ -2276,7 +2278,16 @@
                     </table>
                   @endif
                 @endif
+                @if ($vista=='Recepcion') 
+                    
+                    @livewire('production-search',['temporada_id'=>$temporada->id])
 
+                @endif
+                @if ($vista=='Procesos') 
+                        
+                    @livewire('proceso-search',['temporada_id'=>$temporada->id])
+
+                @endif
               
               </div>
             </div>

@@ -15,7 +15,9 @@ use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Gasto;
 use App\Models\Material;
+use App\Models\Proceso;
 use App\Models\Razonsocial;
+use App\Models\Recepcion;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use App\Models\Variedad;
@@ -67,6 +69,14 @@ class TemporadaShow extends Component
     {   $resumes=Resumen::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $anticipos=Anticipo::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        
+        $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
+
+        $procesos=Proceso::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        
+        $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
+
+        $recepcion=Recepcion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
         
@@ -123,7 +133,7 @@ class TemporadaShow extends Component
 
         $detalles=Detalle::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
-        return view('livewire.temporada-show',compact('detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('procesosall','procesos','recepcionall','recepcion','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function getUsersProperty(){
