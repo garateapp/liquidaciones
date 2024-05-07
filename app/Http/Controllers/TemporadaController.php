@@ -158,6 +158,20 @@ class TemporadaController extends Controller
         return view('temporadas.fob',compact('temporada','fob'));
     }
 
+    public function recepcion(Temporada $temporada)
+    {  
+        $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.balancemasa',compact('temporada','masitas'));
+    }
+
+    public function procesos(Temporada $temporada)
+    {  
+        $fob=Fob::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.fob',compact('temporada','fob'));
+    }
+
     public function otrosgastos(Temporada $temporada)
     {  
         $otrosgastos=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
