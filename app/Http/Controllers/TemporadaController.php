@@ -747,7 +747,6 @@ class TemporadaController extends Controller
         
         
             foreach($masascat1 as $masa){
-                $calibre=null;
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
                             $calibre=$masa->n_calibre;
@@ -820,44 +819,41 @@ class TemporadaController extends Controller
                     if($masa->id==71991){
                         $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
                     }*/
-                    if($calibre){
-                        foreach ($fobscat1 as $fob){
-                                if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
-                                
-                                    if($fob->fob_kilo_salida!='null'){
-                                        $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                                        $nro1+=1; 
-                                    }
+                    foreach ($fobscat1 as $fob){
+                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                            
+                                if($fob->fob_kilo_salida!='null'){
+                                    $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                                    $nro1+=1; 
                                 }
-                                /*
-                                else{
+                            }
+                            /*
+                            else{
 
-                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
-                                    if ($test) {
+                                $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                                if ($test) {
+                                
+                                } else {
+                                    Fob::create([ 
+                                        'temporada_id'=>$masa->temporada_id,
+                    
+                                        'n_variedad'=> $masa->n_variedad,
+                                        'semana'=> $masa->semana,
+                                        'etiqueta'=> $masa->n_etiqueta,
+                                        'n_calibre'=> $masa->n_calibre,
+                                        'color'=> $color,
+                                        'categoria'=> $masa->n_categoria,
+                                        'fob_kilo_salida'=> 'null'
                                     
-                                    } else {
-                                        Fob::create([ 
-                                            'temporada_id'=>$masa->temporada_id,
-                        
-                                            'n_variedad'=> $masa->n_variedad,
-                                            'semana'=> $masa->semana,
-                                            'etiqueta'=> $masa->n_etiqueta,
-                                            'n_calibre'=> $masa->n_calibre,
-                                            'color'=> $color,
-                                            'categoria'=> $masa->n_categoria,
-                                            'fob_kilo_salida'=> 'null'
-                                        
-                                        ]);
-                                        $nro3+=1;
-                                    }
+                                    ]);
+                                    $nro3+=1;
+                                }
 
-                                }*/
-                        }
+                            }*/
                     }
             }
         
             foreach($masascati as $masa){
-                $calibre=null;
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
                             $calibre=$masa->n_calibre;
@@ -930,35 +926,34 @@ class TemporadaController extends Controller
                     if($masa->id==71991){
                         $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
                     }*/
-                    if($calibre){
-                        foreach ($fobscati as $fob){
-                                if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
-                                    if($fob->fob_kilo_salida!='null'){
-                                        $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
-                                        $nro1+=1; 
-                                    }
+
+                    foreach ($fobscati as $fob){
+                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
+                                if($fob->fob_kilo_salida!='null'){
+                                    $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
+                                    $nro1+=1; 
                                 }
-                                /*else{
-                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
-                                    if ($test) {
+                            }
+                            /*else{
+                                $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
+                                if ($test) {
+                                
+                                } else {
+                                    Fob::create([ 
+                                        'temporada_id'=>$masa->temporada_id,
+                    
+                                        'n_variedad'=> $masa->n_variedad,
+                                        'semana'=> $masa->semana,
+                                        'etiqueta'=> $masa->n_etiqueta,
+                                        'n_calibre'=> $masa->n_calibre,
+                                        'color'=> $color,
+                                        'categoria'=> $masa->n_categoria,
+                                        'fob_kilo_salida'=> 'null'
                                     
-                                    } else {
-                                        Fob::create([ 
-                                            'temporada_id'=>$masa->temporada_id,
-                        
-                                            'n_variedad'=> $masa->n_variedad,
-                                            'semana'=> $masa->semana,
-                                            'etiqueta'=> $masa->n_etiqueta,
-                                            'n_calibre'=> $masa->n_calibre,
-                                            'color'=> $color,
-                                            'categoria'=> $masa->n_categoria,
-                                            'fob_kilo_salida'=> 'null'
-                                        
-                                        ]);
-                                        $nro3+=1;
-                                    }
-                                }*/
-                        }
+                                    ]);
+                                    $nro3+=1;
+                                }
+                            }*/
                     }
             }
         
