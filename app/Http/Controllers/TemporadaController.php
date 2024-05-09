@@ -1059,7 +1059,7 @@ class TemporadaController extends Controller
                                 
                                 }else{
 
-                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria','CAT1')->first();
+                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
                                     if ($test) {
                                     
                                     } else {
@@ -1071,7 +1071,7 @@ class TemporadaController extends Controller
                                             'etiqueta'=> $masa->n_etiqueta,
                                             'n_calibre'=> $masa->n_calibre,
                                             'color'=> $color,
-                                            'categoria'=> 'CAT1',
+                                            'categoria'=> $masa->n_categoria,
                                             'fob_kilo_salida'=> 'null'
                                         
                                         ]);
@@ -1162,7 +1162,7 @@ class TemporadaController extends Controller
                         foreach ($fobscati as $fob){
                                 if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
                                 }else{
-                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria','CAT I')->first();
+                                    $test=Fob::where('temporada_id',$masa->temporada_id)->where('n_variedad',$masa->n_variedad)->where('semana',$masa->semana)->where('etiqueta',$masa->n_etiqueta)->where('n_calibre',$masa->n_calibre)->where('color',$color)->where('categoria',$masa->n_categoria)->first();
                                     if ($test) {
                                     
                                     } else {
@@ -1174,7 +1174,7 @@ class TemporadaController extends Controller
                                             'etiqueta'=> $masa->n_etiqueta,
                                             'n_calibre'=> $masa->n_calibre,
                                             'color'=> $color,
-                                            'categoria'=> 'CAT I',
+                                            'categoria'=> $masa->n_categoria,
                                             'fob_kilo_salida'=> 'null'
                                         
                                         ]);
