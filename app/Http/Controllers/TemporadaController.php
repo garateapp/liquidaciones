@@ -978,6 +978,8 @@ class TemporadaController extends Controller
         
         
             foreach($masascat1 as $masa){
+                $color=null;
+
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
                             $calibre=$masa->n_calibre;
@@ -990,7 +992,7 @@ class TemporadaController extends Controller
                         if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                             $color='Dark';
                         }else{
-                        $color='Light';
+                            $color='Light';
                         }
                     }
                     if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
