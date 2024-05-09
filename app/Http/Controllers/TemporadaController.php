@@ -1044,6 +1044,7 @@ class TemporadaController extends Controller
                                         
                                         ]);
                                         $nro3+=1;
+                                        break;
                                     }
 
                                 }
@@ -1148,6 +1149,7 @@ class TemporadaController extends Controller
                                         
                                         ]);
                                         $nro3+=1;
+                                        break;
                                     }
                                 }
                         }
