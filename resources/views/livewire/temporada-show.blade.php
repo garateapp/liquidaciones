@@ -757,7 +757,7 @@
               </div>
               
               <div class="mb-4 flex">
-                @if ($vista=='MASAS' || $vista=='FOB')
+                @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
                   <div class="">
                     Categoria:<br>
                     <div>
@@ -1102,33 +1102,34 @@
                     </div>
                   </div>
                 @endif
+
                 @if ($vista=='PACKING')
-                <div>
-                  <h1 class="text-xl font-semibold mb-4 text-center">
-                      Por favor selecione el archivo de "Costos de packing" que desea importar
-                  </h1>
-                  <div class="flex justify-center ">
-                      
-                      <form action="{{route('temporada.importCostosPacking')}}"
-                          method="POST"
-                          class="bg-white rounded p-8 shadow"
-                          enctype="multipart/form-data">
-                          
-                          @csrf
+                  <div>
+                    <h1 class="text-xl font-semibold mb-4 text-center">
+                        Por favor selecione el archivo de "Costos de packing" que desea importar
+                    </h1>
+                    <div class="flex justify-center ">
+                        
+                        <form action="{{route('temporada.importCostosPacking')}}"
+                            method="POST"
+                            class="bg-white rounded p-8 shadow"
+                            enctype="multipart/form-data">
+                            
+                            @csrf
 
-                          <input type="hidden" name="temporada" value={{$temporada->id}}>
+                            <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                          <x-validation-errors class="errors">
+                            <x-validation-errors class="errors">
 
-                          </x-validation-errors>
+                            </x-validation-errors>
 
-                          <input type="file" name="file" accept=".csv,.xlsx">
+                            <input type="file" name="file" accept=".csv,.xlsx">
 
-                          <x-button class="ml-4">
-                              Importar
-                          </x-button>
-                      </form>
-                  </div>
+                            <x-button class="ml-4">
+                                Importar
+                            </x-button>
+                        </form>
+                    </div>
                   </div>
                     <table class="min-w-full leading-normal">
                       <thead>
@@ -1227,6 +1228,7 @@
                       </tbody>
                     </table>
                 @endif
+
                 @if ($vista=='MATERIALES') 
 
                   <div>
@@ -1332,6 +1334,7 @@
                       </tbody>
                     </table>
                 @endif
+
                 @if ($vista=='EXPORTACION') 
                   <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
 
@@ -1426,6 +1429,7 @@
                   
 
                 @endif
+
                 @if ($vista=='COMISION') 
                   <table class="min-w-full leading-normal">
                     <thead>
@@ -1482,6 +1486,7 @@
                     </tbody>
                   </table>
                 @endif
+
                 @if ($vista=='FLETES')
              
                   <h1 class="text-xl font-semibold mb-4 ml-4">
@@ -2150,6 +2155,7 @@
                 
 
                 @endif
+
                 @if ($vista=='OTROSGASTOS') 
                     <h1 class="text-xl text-center font-semibold mb-4 ">
                       Por favor selecione el archivo de "Gastos" que desea importar
@@ -2278,11 +2284,13 @@
                     </table>
                   @endif
                 @endif
+
                 @if ($vista=='Recepcion') 
                     
                     @livewire('production-search',['temporada_id'=>$temporada->id])
 
                 @endif
+
                 @if ($vista=='Procesos') 
                         
                     @livewire('proceso-search',['temporada_id'=>$temporada->id])
