@@ -1069,7 +1069,7 @@ class TemporadaController extends Controller
                                             'n_variedad'=> $masa->n_variedad,
                                             'semana'=> $masa->semana,
                                             'etiqueta'=> $masa->n_etiqueta,
-                                            'n_calibre'=> $masa->n_calibre,
+                                            'n_calibre'=> $calibre,
                                             'color'=> $color,
                                             'categoria'=> $masa->n_categoria,
                                             'fob_kilo_salida'=> 'null'
@@ -1172,7 +1172,7 @@ class TemporadaController extends Controller
                                             'n_variedad'=> $masa->n_variedad,
                                             'semana'=> $masa->semana,
                                             'etiqueta'=> $masa->n_etiqueta,
-                                            'n_calibre'=> $masa->n_calibre,
+                                            'n_calibre'=> $calibre,
                                             'color'=> $color,
                                             'categoria'=> $masa->n_categoria,
                                             'fob_kilo_salida'=> 'null'
