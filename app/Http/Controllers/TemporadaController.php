@@ -962,8 +962,8 @@ class TemporadaController extends Controller
     }
 
     public function fobcreate(Temporada $temporada)
-    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
-        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->get();
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->get();
         $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat 1')->get();
         $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat I')->get();
         $nro1=0;
