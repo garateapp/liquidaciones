@@ -94,7 +94,7 @@ class TemporadaShow extends Component
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
         $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-        $fobsall=Fob::where('temporada_id',$this->temporada->id)->get();
+        $fobsall=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
         $masasbalances=Balancemasa::filter($this->filters)
             ->where('temporada_id', $this->temporada->id)
