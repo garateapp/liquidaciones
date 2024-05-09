@@ -656,7 +656,7 @@
                   {{$vista}} 
                 @endif
                 @if ($vista=='FOB' && $fobs)
-                  ({{$fobs->count()}} Resultados)
+                  ({{$fobsall->count()}} Resultados)
                 @endif
                 @if ($vista=='MASAS')
                   @php
