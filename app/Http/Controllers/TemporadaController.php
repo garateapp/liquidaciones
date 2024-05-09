@@ -1038,10 +1038,10 @@ class TemporadaController extends Controller
                         } else {
                             $calibre='XL';
                         }
-                    if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                        if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                             $color='Dark';
                         }else{
-                        $color='Light';
+                            $color='Light';
                         }
                     }
                     $nro2+=1; 
@@ -1077,6 +1077,8 @@ class TemporadaController extends Controller
                             }
                     }
             }
+            
+            /*
         $masascati=Balancemasa::where('temporada_id',$temporada->id)->whereNull('precio_fob')->get();
             foreach($masascati as $masa){
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
@@ -1139,7 +1141,7 @@ class TemporadaController extends Controller
                         } else {
                             $calibre='XL';
                         }
-                    if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
+                        if ($masa->n_calibre=='XLD' || $masa->n_calibre=='XLDD'){
                             $color='Dark';
                         }else{
                         $color='Light';
@@ -1150,7 +1152,7 @@ class TemporadaController extends Controller
                     /*
                     if($masa->id==71991){
                         $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
-                    }*/
+                    }
 
                     foreach ($fobscati as $fob){
                             if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
@@ -1177,7 +1179,7 @@ class TemporadaController extends Controller
                     }
             }
         
-       // dd($etiq);
+       // dd($etiq);*/
         return redirect()->back()->with('info',$nro3.' fobs creados con Éxito.');
     }
 
