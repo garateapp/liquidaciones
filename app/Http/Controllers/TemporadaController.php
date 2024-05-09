@@ -962,7 +962,7 @@ class TemporadaController extends Controller
     }
 
     public function fobcreate(Temporada $temporada)
-    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->whereNull('precio_fob')->get();
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->get();
       
         $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat 1')->get();
         $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat I')->get();
@@ -1082,8 +1082,8 @@ class TemporadaController extends Controller
                     }
             }
 
-            /*
-        $masascati=Balancemasa::where('temporada_id',$temporada->id)->whereNull('precio_fob')->get();
+            
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->get();
             foreach($masascati as $masa){
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
@@ -1156,7 +1156,7 @@ class TemporadaController extends Controller
                     /*
                     if($masa->id==71991){
                         $etiq[]=$masa->n_calibre.'-'.$color.'-'.$masa->semana.'-E.MASA'.$masa->n_etiqueta;
-                    }
+                    }*/
 
                     foreach ($fobscati as $fob){
                             if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->categoria))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_categoria)))){
@@ -1183,7 +1183,7 @@ class TemporadaController extends Controller
                     }
             }
         
-       // dd($etiq);*/
+       // dd($etiq);
         return redirect()->back()->with('info',$nro3.' fobs creados con Éxito.');
     }
 
