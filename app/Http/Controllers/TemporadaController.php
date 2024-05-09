@@ -1071,7 +1071,7 @@ class TemporadaController extends Controller
                                             'etiqueta'=> $masa->n_etiqueta,
                                             'n_calibre'=> $masa->n_calibre,
                                             'color'=> $color,
-                                            'categoria'=> $masa->n_categoria,
+                                            'categoria'=> 'CAT1',
                                             'fob_kilo_salida'=> 'null'
                                         
                                         ]);
@@ -1174,7 +1174,7 @@ class TemporadaController extends Controller
                                             'etiqueta'=> $masa->n_etiqueta,
                                             'n_calibre'=> $masa->n_calibre,
                                             'color'=> $color,
-                                            'categoria'=> $masa->n_categoria,
+                                            'categoria'=> 'CAT I',
                                             'fob_kilo_salida'=> 'null'
                                         
                                         ]);
