@@ -733,8 +733,8 @@ class TemporadaController extends Controller
     public function fobupdate(Temporada $temporada)
     {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
         $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
-        $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat 1')->get();
-        $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','Cat I')->get();
+        $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','CAT1')->get();
+        $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','CAT I')->get();
         $nro1=0;
         $nro2=0;
         $nro3=0;
