@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FamiliaController;
 use App\Http\Controllers\GastoController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RazonController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\UserController;
@@ -134,3 +135,5 @@ Route::get('createfob/{temporada}',[TemporadaController::class,'fobcreate'])->na
 Route::get('download/razonsocial/{razonsocial}.pdf', [RazonController::class,'downloadpdf'])->name('informe.download');
 
 Route::get('/fobsexport/{temporada}', [TemporadaController::class,'fobexport'])->name('fob.export');
+
+Route::get('/docs', [HomeController::class,'documentacion'])->name('documentacion');
