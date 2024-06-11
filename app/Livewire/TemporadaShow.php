@@ -105,12 +105,12 @@ class TemporadaShow extends Component
             
         $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
 
-        $masastotalnacional=Balancemasa::filter2($this->filters)->where('temporada_id',$this->temporada->id)->get();
+        $masastotalnacional=Balancemasa::filter2($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
         
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
         
-        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->get();
+        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
 
         $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();
         
