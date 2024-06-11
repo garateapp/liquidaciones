@@ -1146,8 +1146,8 @@
                                 
                                               <td>4J</td>
                                               <td>{{number_format($cantidad4j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-                                              <td>{{$cantidad4j}}</td>
-                                              <td>{{$pesoneto4j}} KGS</td>
+                                              <td>{{number_format($cantidad4j,0,',','.')}}</td>
+                                              <td>{{number_format($pesoneto4j,0,',','.')}} KGS</td>
                                               <td>{{number_format($retorno4j,2,',','.')}} USD</td>
                                               <td>{{number_format($retorno4j*0.08,2,',','.')}} USD</td>
                                               <td>{{number_format(($costopacking*($pesoneto4j))/$kgstotmas,2,',','.')}} USD</td>
@@ -1198,8 +1198,8 @@
                                             <td>3J</td>
                                             <td>{{number_format($cantidad3j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
                                             
-                                            <td>{{$cantidad3j}}</td>
-                                            <td>{{$pesoneto3j}} KGS</td>
+                                            <td>{{number_format($cantidad3j,0,',','.')}}</td>
+                                            <td>{{number_format($pesoneto3j,0,',','.')}} KGS</td>
                                             <td>{{number_format($retorno3j,2,',','.')}} USD</td>
                                             <td>{{number_format($retorno3j*0.08,2,',','.')}} USD</td>
                                             <td>{{number_format(($costopacking*($pesoneto3j))/$kgstotmas,2,',','.')}} USD</td>
@@ -1248,8 +1248,8 @@
                                               <td>2J</td>
                                               <td>{{number_format($cantidad2j*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
                                               
-                                              <td>{{$cantidad2j}}</td>
-                                              <td>{{$pesoneto2j}} KGS</td>
+                                              <td>{{number_format($cantidad2j,0,',','.')}}</td>
+                                              <td>{{number_format($pesoneto2j,0,',','.')}} KGS</td>
                                               <td>{{number_format($retorno2j,2,',','.')}} USD</td>
                                               <td>{{number_format($retorno2j*0.08,2,',','.')}} USD</td>
                                               <td>{{number_format(($costopacking*($pesoneto2j))/$kgstotmas,2,',','.')}} USD</td>
@@ -1298,8 +1298,8 @@
                                               
                                               <td>J</td>
                                               <td>{{number_format($cantidadj*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-                                              <td>{{$cantidadj}}</td>
-                                              <td>{{$pesonetoj}} KGS</td>
+                                              <td>{{number_format($cantidadj,0,',','.')}}</td>
+                                              <td>{{number_format($pesonetoj,0,',','.')}} KGS</td>
                                               <td>{{number_format($retornoj,2,',','.')}} USD</td>
                                               <td>{{number_format($retornoj*0.08,2,',','.')}} USD</td>
                                               <td>{{number_format(($costopacking*($pesonetoj))/$kgstotmas,2,',','.')}} USD</td>
@@ -1349,8 +1349,8 @@
                                               
                                               <td>XL</td>
                                               <td>{{number_format($cantidadxl*100/($cantidad4j+$cantidad3j+$cantidad2j+$cantidadj+$cantidadxl),2)}}%</td>
-                                              <td>{{$cantidadxl}}</td>
-                                              <td>{{$pesonetoxl}} KGS</td>
+                                              <td>{{numer_format($cantidadxl,0,',','.')}}</td>
+                                              <td>{{numer_format($pesonetoxl,0,',','.')}} KGS</td>
                                               <td>{{number_format($retornoxl,2,',','.')}} USD</td>
                                               <td>{{number_format($retornoxl*0.08,2,',','.')}} USD</td>
                                               <td>{{number_format(($costopacking*($pesonetoxl))/$kgstotmas,2,',','.')}} USD</td>
