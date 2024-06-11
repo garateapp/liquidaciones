@@ -42,7 +42,7 @@
       @endif
 
     </div>
-   {{-- comment
+   
     @if ($vista=="resumes")
     
         <div class="flex flex-col mb-2">
@@ -562,9 +562,8 @@
             </a>
           </div>
     @endif
- --}}
 
- <section id="informacion">
+  <section id="informacion">
     <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
         
         @livewire('menu-aside',['temporada'=>$temporada->id])
