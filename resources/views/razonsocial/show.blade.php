@@ -251,7 +251,7 @@
                                         @endphp
 
                                         @foreach ($masas as $masa)
-                                          @if ($masa->n_etiqueta!='Loica' || $masa->n_categoria=='Cat 1')
+                                          @if ($masa->n_etiqueta!='Loica' && $masa->n_categoria=='Cat 1')
                                             @if (($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD') && $masa->n_variedad==$variedad)
                                                 @php
                                                   $cantidad4j+=$masa->cantidad;
