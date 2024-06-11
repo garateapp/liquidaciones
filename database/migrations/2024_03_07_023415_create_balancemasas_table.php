@@ -40,6 +40,8 @@ return new class extends Migration
             $table->text('peso_neto')->nullable();
             $table->text('tipo_transporte')->nullable();
             $table->text('precio_fob')->nullable();
+            $table->text('exportadora')->nullable();
+            $table->text('exportadora_embarque')->nullable();
 
             $table->timestamps();
         });
