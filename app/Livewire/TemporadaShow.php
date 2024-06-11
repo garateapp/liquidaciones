@@ -98,11 +98,12 @@ class TemporadaShow extends Component
 
         $masasbalances=Balancemasa::filter($this->filters)
             ->where('temporada_id', $this->temporada->id)
+            ->where('exportadora','Greenex SpA')
             ->orderByDesc('updated_at') // Ordenar por precio_fob descendente
             ->paginate($this->ctd);
 
             
-        $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->get();
+        $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
 
         $masastotalnacional=Balancemasa::filter2($this->filters)->where('temporada_id',$this->temporada->id)->get();
         
