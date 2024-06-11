@@ -46,8 +46,8 @@ class BalanceImport implements ToCollection, WithStartRow
                     'n_categoria_st' => $row[13],
                     'n_calibre' => $row[14],
                     'n_etiqueta' => $row[15],
-                    'cantidad' => $row[16],
-                    'peso_neto' => $row[17],
+                    'cantidad' => floatval($row[16]),
+                    'peso_neto' => floatval($row[17]),
                     'tipo_transporte'=> $row[18],
                     'semana'=> $row[19]
                                       
