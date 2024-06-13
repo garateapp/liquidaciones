@@ -731,8 +731,8 @@ class TemporadaController extends Controller
     }
 
     public function fobupdate(Temporada $temporada)
-    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->whereNull('precio_fob')->paginate(5000);
-        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->whereNull('precio_fob')->paginate(5000);
+    {   $masascat1=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat 1')->where('exportadora','Greenex SpA')->whereNull('precio_fob')->paginate(5000);
+        $masascati=Balancemasa::where('temporada_id',$temporada->id)->where('n_categoria','Cat I')->where('exportadora','Greenex SpA')->whereNull('precio_fob')->paginate(5000);
         $fobscat1=Fob::where('temporada_id',$temporada->id)->where('categoria','CAT1')->get();
         $fobscati=Fob::where('temporada_id',$temporada->id)->where('categoria','CAT I')->get();
         $nro1=0;
@@ -842,7 +842,7 @@ class TemporadaController extends Controller
                         if ($masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                             $color='Dark';
                         }else{
-                        $color='Light';
+                            $color='Light';
                         }
                     }
                     if ($masa->n_calibre=='3J' || $masa->n_calibre=='3JD' || $masa->n_calibre=='3JDD'){
