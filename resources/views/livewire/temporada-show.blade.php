@@ -668,11 +668,11 @@
                     @endphp
                   @endforeach
                   @if ($masastotal && $masastotalnacional)
-                    ({{($masastotal->count()+$masastotalnacional->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                    ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @elseif($masastotal)
-                    ({{($masastotal->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                    ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @elseif($masastotalnacional)
-                    ({{($masastotalnacional->count())}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                    ({{(number_format($masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @endif
                 @endif
               </h2>
