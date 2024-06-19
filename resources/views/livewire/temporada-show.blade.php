@@ -667,6 +667,12 @@
                         $kgstotmas+=$masa->peso_neto;
                     @endphp
                   @endforeach
+                  @foreach ($masastotalnacional as $masa)
+                    @php
+                        $kgstotmas+=$masa->peso_neto;
+                    @endphp
+                  @endforeach
+                
                   @if ($masastotal && $masastotalnacional)
                     ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                   @elseif($masastotal)
