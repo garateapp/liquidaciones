@@ -29,6 +29,22 @@ class Balancemasa extends Model
             if ($precioFob == 'null') {
                 $query->whereNull('precio_fob');
             }
+        })->when($filters['norma'] ?? null, function ($query, $norma) {
+            if ($norma === 'dentro') {
+                $query->where('n_categoria', 'Cat 1')
+                      ->whereNotIn('n_calibre', ['L', 'LD'])
+                      ->where('n_etiqueta', '!=', 'Loica');
+            }
+            if ($norma === 'fuera') {
+                $query->where(function ($subQuery) {
+                    $subQuery->whereNull('precio_fob')
+                             ->orWhere(function ($innerQuery) {
+                                 $innerQuery->where('n_calibre', 'L')
+                                            ->where('n_categoria', 'Cat 1')
+                                            ->where('n_etiqueta', 'Loica');
+                             });
+                });
+            }
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
@@ -132,6 +148,22 @@ class Balancemasa extends Model
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
             }
+        })->when($filters['norma'] ?? null, function ($query, $norma) {
+            if ($norma === 'dentro') {
+                $query->where('n_categoria', 'Cat 1')
+                      ->whereNotIn('n_calibre', ['L', 'LD'])
+                      ->where('n_etiqueta', '!=', 'Loica');
+            }
+            if ($norma === 'fuera') {
+                $query->where(function ($subQuery) {
+                    $subQuery->whereNull('precio_fob')
+                             ->orWhere(function ($innerQuery) {
+                                 $innerQuery->where('n_calibre', 'L')
+                                            ->where('n_categoria', 'Cat 1')
+                                            ->where('n_etiqueta', 'Loica');
+                             });
+                });
+            }
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
@@ -234,6 +266,22 @@ class Balancemasa extends Model
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob === 'null') {
                 $query->whereNull('precio_fob');
+            }
+        })->when($filters['norma'] ?? null, function ($query, $norma) {
+            if ($norma === 'dentro') {
+                $query->where('n_categoria', 'Cat 1')
+                      ->whereNotIn('n_calibre', ['L', 'LD'])
+                      ->where('n_etiqueta', '!=', 'Loica');
+            }
+            if ($norma === 'fuera') {
+                $query->where(function ($subQuery) {
+                    $subQuery->whereNull('precio_fob')
+                             ->orWhere(function ($innerQuery) {
+                                 $innerQuery->where('n_calibre', 'L')
+                                            ->where('n_categoria', 'Cat 1')
+                                            ->where('n_etiqueta', 'Loica');
+                             });
+                });
             }
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);

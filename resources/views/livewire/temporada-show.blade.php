@@ -784,7 +784,17 @@
                   
                   </div>
                
-               
+                  <div class="ml-4">
+                    Norma:<br>
+                    <select wire:model.live="filters.norma" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      
+                        <option value="dentro"> Dentro de norma</option>
+                        <option value="fuera"> Fuera de norma</option>
+                      
+                    
+                    </select>
+                  </div>
                   <div class="ml-4">
                     Precio_fob:<br>
                     <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
