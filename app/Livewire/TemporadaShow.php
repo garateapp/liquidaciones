@@ -29,7 +29,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
 
 
     #[Url]
@@ -166,6 +166,25 @@ class TemporadaShow extends Component
         $detalle->update(['cantidad'=>$this->gastocant]);    
         $this->reset(['gastocant','gastoid']);
         
+    }
+
+    public function redcolor_add(){
+        $rules = [
+            'variedadpacking'=>'required',
+            ];
+        $this->validate ($rules);
+
+        $variedad=Variedad::find($this->variedadpacking);
+        $variedad->red_color='True';
+        $variedad->save();
+        $this->reset('variedadpacking');
+    }
+
+    public function redcolor_destroy($id){
+       
+        $variedad=Variedad::find($id);
+        $variedad->red_color=Null;
+        $variedad->save();
     }
 
     public function set_view($vista){

@@ -13,555 +13,7 @@
     <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
     <hr class="mt-2 mb-6">
 
-    <div class="flex mb-4">
-      @if($vista=="resumes")
-        <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
-          <button class="inline-flex items-center px-4 mr-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            EXPORTACIÓN
-          </button>
-        </a>
-      @elseif($vista=="resumesnacional")
-        <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
-          <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            EXPORTACIÓN
-          </button>
-        </a>
-      @endif
-      @if($vista=="resumesnacional")
-        <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
-          <button class="inline-flex items-center px-4 ml-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            NACIONAL
-          </button>
-        </a>
-      @elseif($vista=="resumes")
-        <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
-          <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            NACIONAL
-          </button>
-        </a>
-      @endif
 
-    </div>
-   
-    @if ($vista=="resumes")
-    
-        <div class="flex flex-col mb-2">
-          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-yellow-400">
-                          <tr>
-                              <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                              Grupo variedad
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Caja Bulto
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Kilos Netos
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Cajas Base
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Fob Liquidacion
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Comision
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Frio Packing
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Gastos de Exportacion
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Total Flete a huerto
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Materiales
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Retorno Productor
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Retorno por kg
-                              </th>
-                              <th class="relative px-6 py-0">
-                              <span class="sr-only"></span>
-                              </th>
-                          </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                          @php
-                              $globalcajasbulto=0;
-                              $globalpesoneto=0;
-                              $globaltotalmateriales=0;
-                              $globalfletehuerto=0;
-                              $globalgastoexportacion=0;
-                              $globalventafob=0;
-                              $globalkgsp=0;
-                              $globalcostopacking=0;
-                          @endphp
-                                @foreach ($unique_variedades as $item)
-                                @php
-                                    $cajasbulto=0;
-                                    $pesoneto=0;
-                                    $totalmateriales=0;
-                                    $fletehuerto=0;
-                                    $gastoexportacion=0;
-                                    $ventafob=0;
-                                    $kgsp=0;
-                                    $costopacking=0;
-                                @endphp
-                                @foreach ($masastotal as $masa)
-                                  @php
-                                    if ($masa->n_variedad==$item->name) {
-                                      $cajasbulto+=$masa->cantidad;
-                                      $pesoneto+=$masa->peso_neto;
-                                      $globalcajasbulto+=$masa->cantidad;
-                                      $globalpesoneto+=$masa->peso_neto;
-                                      
-                                      if (!IS_NULL($masa->precio_fob)) {
-                                        $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                        $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                      } else {
-                                        $kgsp+=intval($masa->peso_neto);
-                                        $globalkgsp+=intval($masa->peso_neto);
-                                      }
-                                      
-                                      
-                                      
-                                      if ($masa->tipo_transporte=='AEREO') {
-                                            if ($exportacions->where('type','aereo')->count()>0) {
-                                              $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                              $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                            }
-                                        }
-                                      if ($masa->tipo_transporte=='MARITIMO') {
-                                        if ($exportacions->where('type','maritimo')->count()>0) {
-                                            $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                            $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                          }
-                                        }
-
-                                      foreach ($materialestotal as $material) {
-                                        if ($material->c_embalaje==$masa->c_embalaje) {
-                                          $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                          $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                        }  
-                                      }
-
-                                      foreach ($fletestotal as $flete) {
-                                        if ($flete->rut==$masa->r_productor) {
-                                          $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                          $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                        }  
-                                      }
-                                    }
-                                    
-                                  @endphp
-                                @endforeach
-                                @php
-                                        
-                                    foreach ($CostosPackingsall as $costo) {
-                                      if ($costo->variedad==$item->name) {
-                                        $costopacking+=$costo->total_usd;
-                                        $globalcostopacking+=$costo->total_usd;
-                                      }  
-                                    }
-
-                                @endphp
-                                  @if ($pesoneto>0)
-                                    <tr>
-                                      <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{$item->name}}</div>    
-                                      </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                {{number_format($cajasbulto)}}
-                                            </div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">
-                                            @if ($pesoneto==0)
-                                              0      
-                                            @else
-                                             {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
-                                                
-                                            @endif
-                                          </div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                        </td>
-                                    </tr>
-                                  @endif
-                                @endforeach
-
-                                <tr class="bg-yellow-400">
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">Total</div>    
-                                  </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                        <div class="text-sm text-gray-900">
-                                            {{number_format($globalcajasbulto)}}
-                                        </div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                        <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">
-                                        @if ($globalpesoneto==0)
-                                            0
-                                        @else
-                                          {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
-                                            
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
-                                        <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
-                                    </td>
-                                </tr>
-                        </tbody>
-                    </table>
-                </div>
-              </div>
-          </div>
-        </div>
-    
-        <div class="flex ">
-            <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
-              <x-button>
-                Actualizar Variedades
-              </x-button>
-            </a>
-            <a href="{{Route('preciofob.refresh',$temporada)}}"  class="mr-2">
-              <x-button>
-                Actualizar PRECIO FOB
-              </x-button>
-            </a>
-            <a href="{{Route('preciofob.create',$temporada)}}">
-              <x-button>
-                Crear PRECIOS FOB Pendientes
-              </x-button>
-            </a>
-          </div>
-    @endif
-    @if ($vista=="resumesnacional")
-    
-        <div class="flex flex-col mb-2">
-          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-yellow-400">
-                          <tr>
-                              <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                              Grupo variedad NACIONAL
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Caja Bulto
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Kilos Netos
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Cajas Base
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Fob Liquidacion
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Comision
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Frio Packing
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Gastos de Exportacion
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Total Flete a huerto
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Total Materiales
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                              Retorno Productor
-                              </th>
-                              <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                Retorno por kg
-                              </th>
-                              <th class="relative px-6 py-0">
-                              <span class="sr-only"></span>
-                              </th>
-                          </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                          @php
-                              $globalcajasbulto=0;
-                              $globalpesoneto=0;
-                              $globaltotalmateriales=0;
-                              $globalfletehuerto=0;
-                              $globalgastoexportacion=0;
-                              $globalventafob=0;
-                              $globalkgsp=0;
-                              $globalcostopacking=0;
-                          @endphp
-                                @foreach ($unique_variedades as $item)
-                                @php
-                                  $cajasbulto=0;
-                                  $pesoneto=0;
-                                  $totalmateriales=0;
-                                  $fletehuerto=0;
-                                  $gastoexportacion=0;
-                                  $ventafob=0;
-                                  $kgsp=0;
-                                  $costopacking=0;
-                              @endphp
-                              @foreach ($masastotalnacional as $masa)
-                                @php
-                                    if ($masa->n_variedad==$item->name) {
-                                      $cajasbulto+=$masa->cantidad;
-                                      $pesoneto+=$masa->peso_neto;
-                                      $globalcajasbulto+=$masa->cantidad;
-                                      $globalpesoneto+=$masa->peso_neto;
-                                      
-                                      if (!IS_NULL($masa->precio_fob)) {
-                                        $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                        $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
-                                      } else {
-                                        $kgsp+=intval($masa->peso_neto);
-                                        $globalkgsp+=intval($masa->peso_neto);
-                                      }
-                                      
-                                      
-                                      
-                                      if ($masa->tipo_transporte=='AEREO') {
-                                            if ($exportacions->where('type','aereo')->count()>0) {
-                                              $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                              $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                            }
-                                        }
-                                      if ($masa->tipo_transporte=='MARITIMO') {
-                                        if ($exportacions->where('type','maritimo')->count()>0) {
-                                            $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                            $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                          }
-                                        }
-
-                                      foreach ($materialestotal as $material) {
-                                        if ($material->c_embalaje==$masa->c_embalaje) {
-                                          $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                          $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                        }  
-                                      }
-
-                                      foreach ($fletestotal as $flete) {
-                                        if ($flete->rut==$masa->r_productor) {
-                                          $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                          $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                        }  
-                                      }
-                                    }
-                                    
-                                  @endphp
-                              @endforeach
-                                @php
-                                        
-                                  foreach ($CostosPackingsall as $costo) {
-                                    if ($costo->variedad==$item->name) {
-                                      $costopacking+=$costo->total_usd;
-                                      $globalcostopacking+=$costo->total_usd;
-                                    }  
-                                  }
-
-                                @endphp
-                                
-                                  @if ($pesoneto>0)
-                                    <tr>
-                                      <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{$item->name}}</div>    
-                                      </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                       
-
-                                            <div class="text-sm text-gray-900">
-                                                {{number_format($cajasbulto)}}
-                                            </div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap">
-                                          <div class="text-sm text-gray-900">
-                                            @if ($pesoneto==0)
-                                              0      
-                                            @else
-                                             {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
-                                                
-                                            @endif
-                                          </div>    
-                                        </td>
-                                        <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                        </td>
-                                    </tr>
-                                  @endif
-                                @endforeach
-
-                                <tr class="bg-yellow-400">
-                                  <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">Total</div>    
-                                  </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                        <div class="text-sm text-gray-900">
-                                            {{number_format($globalcajasbulto)}}
-                                        </div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                        <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                      <div class="text-sm text-gray-900">
-                                        @if ($globalpesoneto==0)
-                                            0
-                                        @else
-                                          {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
-                                            
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
-                                        <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
-                                    </td>
-                                </tr>
-                        </tbody>
-                    </table>
-                </div>
-              </div>
-          </div>
-        </div>
-    
-        <div class="flex ">
-            <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
-              <x-button>
-                Actualizar Variedades
-              </x-button>
-            </a>
-            <a href="{{Route('preciofob.refresh',$temporada)}}">
-              <x-button>
-                Actualizar PRECIO FOB
-              </x-button>
-            </a>
-            <a href="{{Route('preciofob.create',$temporada)}}">
-              <x-button>
-                Crear PRECIOS FOB Pendientes
-              </x-button>
-            </a>
-          </div>
-    @endif
 
   <section id="informacion">
     <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 1}" @else x-data="{openMenu: 1}" @endif >
@@ -654,6 +106,9 @@
 
                 @if ($vista=='MASAS')
                     Balance de Masa
+
+                @elseif ($vista=='resumes')
+                Resumen
                 @else
                   {{$vista}} 
                 @endif
@@ -879,7 +334,555 @@
               </div>
 
              
+              <div class="flex mb-4">
+                @if($vista=="resumes")
+                  <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
+                    <button class="inline-flex items-center px-4 mr-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                      EXPORTACIÓN
+                    </button>
+                  </a>
+                @elseif($vista=="resumesnacional")
+                  <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
+                    <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                      EXPORTACIÓN
+                    </button>
+                  </a>
+                @endif
+                @if($vista=="resumesnacional")
+                  <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
+                    <button class="inline-flex items-center px-4 ml-2 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                      NACIONAL
+                    </button>
+                  </a>
+                @elseif($vista=="resumes")
+                  <a href="{{Route('temporada.nacional',$temporada)}}" wire:navigate>
+                    <button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                      NACIONAL
+                    </button>
+                  </a>
+                @endif
+          
+              </div>
+             
+              @if ($vista=="resumes")
               
+                  <div class="flex flex-col mb-2">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Liquidacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                              $cajasbulto=0;
+                                              $pesoneto=0;
+                                              $totalmateriales=0;
+                                              $fletehuerto=0;
+                                              $gastoexportacion=0;
+                                              $ventafob=0;
+                                              $kgsp=0;
+                                              $costopacking=0;
+                                          @endphp
+                                          @foreach ($masastotal as $masa)
+                                            @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                if (!IS_NULL($masa->precio_fob)) {
+                                                  $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                  $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                          @endforeach
+                                          @php
+                                                  
+                                              foreach ($CostosPackingsall as $costo) {
+                                                if ($costo->variedad==$item->name) {
+                                                  $costopacking+=$costo->total_usd;
+                                                  $globalcostopacking+=$costo->total_usd;
+                                                }  
+                                              }
+          
+                                          @endphp
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                       {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+              
+                  <div class="flex ">
+                      <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
+                        <x-button>
+                          Actualizar Variedades
+                        </x-button>
+                      </a>
+                      <a href="{{Route('preciofob.refresh',$temporada)}}"  class="mr-2">
+                        <x-button>
+                          Actualizar PRECIO FOB
+                        </x-button>
+                      </a>
+                      <a href="{{Route('preciofob.create',$temporada)}}">
+                        <x-button>
+                          Crear PRECIOS FOB Pendientes
+                        </x-button>
+                      </a>
+                    </div>
+              @endif
+              @if ($vista=="resumesnacional")
+              
+                  <div class="flex flex-col mb-2">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad NACIONAL
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Liquidacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                            $cajasbulto=0;
+                                            $pesoneto=0;
+                                            $totalmateriales=0;
+                                            $fletehuerto=0;
+                                            $gastoexportacion=0;
+                                            $ventafob=0;
+                                            $kgsp=0;
+                                            $costopacking=0;
+                                        @endphp
+                                        @foreach ($masastotalnacional as $masa)
+                                          @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                if (!IS_NULL($masa->precio_fob)) {
+                                                  $ventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                  $globalventafob+=intval($masa->peso_neto)*floatval($masa->precio_fob);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                        @endforeach
+                                          @php
+                                                  
+                                            foreach ($CostosPackingsall as $costo) {
+                                              if ($costo->variedad==$item->name) {
+                                                $costopacking+=$costo->total_usd;
+                                                $globalcostopacking+=$costo->total_usd;
+                                              }  
+                                            }
+          
+                                          @endphp
+                                          
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                 
+          
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                       {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+              
+                  <div class="flex ">
+                      <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2">
+                        <x-button>
+                          Actualizar Variedades
+                        </x-button>
+                      </a>
+                      <a href="{{Route('preciofob.refresh',$temporada)}}">
+                        <x-button>
+                          Actualizar PRECIO FOB
+                        </x-button>
+                      </a>
+                      <a href="{{Route('preciofob.create',$temporada)}}">
+                        <x-button>
+                          Crear PRECIOS FOB Pendientes
+                        </x-button>
+                      </a>
+                    </div>
+              @endif
               
 
             </div>
@@ -1137,48 +1140,161 @@
                 @endif
 
                 @if ($vista=='PACKING')
-                <table class="min-w-full leading-normal">
-                  <thead>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Categorias</th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Exportación
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        @foreach ($unique_categoriasexp as $item)
-                            {{$item}}<br>
+                  @php
+                      $kgredcolor=0;
+                      $kgbicolor=0;
+                  @endphp
+                @foreach ($unique_variedades as $variedad)
+                  @foreach ($masastotal as $masa)
+                      @if ($masa->n_variedad==$variedad->name)
+                          @if ($variedad->id=='True')
+                                @php
+                                    $kgbicolor+=$masa->peso_neto;
+                                @endphp
+                          @else
+                              @php
+                                  $kgredcolor+=$masa->peso_neto;
+                              @endphp
+                          @endif
+                      @endif
+                  @endforeach
+                  @foreach ($masastotalnacional as $masa2)
+                      @if ($masa2->n_variedad==$variedad->name)
+                          @if ($variedad->id=='True')
+                                @php
+                                    $kgbicolor+=$masa2->peso_neto;
+                                @endphp
+                          @else
+                              @php
+                                  $kgredcolor+=$masa2->peso_neto;
+                              @endphp
+                          @endif
+                      @endif
+                  @endforeach
+                @endforeach
+                  
+                <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                  <div>
+                    <h1 class="ml-4">Agregar Variedades Bicolor:</h1>
+                  </div>
+
+                  <select wire:model="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                      <option value="" class="text-center">Selecciona una variedad</option>
+                      @foreach ($unique_variedades as $item)
+                        <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
+                      @endforeach
+                  
+                      
+
+                  </select>
+
+                  
+                  <button wire:click="redcolor_add" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+
+                      <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                      Agregar
+                          
+                      </h1>
+                  </button>
+                </div>
+
+                  <table class="min-w-full leading-normal">
+                    <thead>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kilos</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Variedades Rojas
+                        </td>
+                      
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                           
+                          @foreach ($unique_variedades as $item)
+                            @if ($item->red_color==Null)
+                              {{$item->name}}<br>
+                            @endif
+                           
                         @endforeach
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Variedades
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        4 usd
-                      </td>
-                    </tr>
-                    <tr>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Nacional
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        @foreach ($unique_categorianac as $item)
-                            {{$item}}<br>
-                        @endforeach
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Variedades
-                      </td>
-                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        4 usd
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        {{number_format($kgredcolor)}} kgs
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          4 usd
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Variedades BICOLOR
+                        </td>
+                       
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
+                          <div class="grid grid-cols-1">
+                            @foreach ($unique_variedades as $item)
+                                @if ($item->red_color=='True')
+                                <div class="flex">
+                                  <p>{{$item->name}}</p> <p wire:click='redcolor_destroy({{$item->id}})' class="text-red-500 hover:text-red-700 ml-2 cursor-pointer">(Quitar)</p>
+                                </div>
+                                @endif
+                            @endforeach
+                          </div>
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgbicolor)}} kgs
+                         </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          4 usd
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table class="min-w-full leading-normal">
+                    <thead>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Categorias</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Variedades Rojas
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          @foreach ($unique_categoriasexp as $item)
+                              {{$item}}<br>
+                          @endforeach
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Variedades
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          4 usd
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Variedades BICOLOR
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          @foreach ($unique_categorianac as $item)
+                              {{$item}}<br>
+                          @endforeach
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Variedades
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          4 usd
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
          
                   <div>
                     <h1 class="text-xl font-semibold mb-4 text-center">
