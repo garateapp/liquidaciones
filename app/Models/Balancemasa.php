@@ -36,11 +36,12 @@ class Balancemasa extends Model
                       ->where('n_etiqueta', '!=', 'Loica');
             }
             if ($norma === 'fuera') {
-                $query->orwhere('n_calibre', 'L')
-                        ->orwhere('n_categoria', 'Cat 1')
-                        ->orwhere('n_etiqueta', 'Loica');
-                        
-                }
+                $query->where(function ($query) {
+                    $query->orWhere('n_calibre', 'L')
+                          ->orWhere('n_categoria', 'Cat I')
+                          ->orWhere('n_etiqueta', 'Loica');
+                });
+            }
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
@@ -151,11 +152,12 @@ class Balancemasa extends Model
                       ->where('n_etiqueta', '!=', 'Loica');
             }
             if ($norma === 'fuera') {
-                $query->where('n_calibre', 'L')
-                        ->where('n_categoria', 'Cat 1')
-                        ->where('n_etiqueta', 'Loica');
-                        
-                }
+                $query->where(function ($query) {
+                    $query->orWhere('n_calibre', 'L')
+                          ->orWhere('n_categoria', 'Cat I')
+                          ->orWhere('n_etiqueta', 'Loica');
+                });
+            }
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
@@ -266,12 +268,12 @@ class Balancemasa extends Model
                       ->where('n_etiqueta', '!=', 'Loica');
             }
             if ($norma === 'fuera') {
-                $query->where('n_calibre', 'L')
-                        ->where('n_categoria', 'Cat 1')
-                        ->where('n_etiqueta', 'Loica');
-                        
-                }
-            
+                $query->where(function ($query) {
+                    $query->orWhere('n_calibre', 'L')
+                          ->orWhere('n_categoria', 'Cat I')
+                          ->orWhere('n_etiqueta', 'Loica');
+                });
+            }
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
