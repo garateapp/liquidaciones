@@ -36,9 +36,9 @@ class Balancemasa extends Model
                       ->where('n_etiqueta', '!=', 'Loica');
             }
             if ($norma === 'fuera') {
-                $query->where('n_calibre', 'L')
-                        ->where('n_categoria', 'Cat 1')
-                        ->where('n_etiqueta', 'Loica');
+                $query->orwhere('n_calibre', 'L')
+                        ->orwhere('n_categoria', 'Cat 1')
+                        ->orwhere('n_etiqueta', 'Loica');
                         
                 }
         })->when($filters['calibre'] ?? null,function($query,$calibre){
