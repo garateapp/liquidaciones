@@ -106,8 +106,14 @@ class TemporadaShow extends Component
             
         $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
 
+        $unique_categoriasexp = $masastotal->pluck('n_categoria')->unique()->sort();
+
+     
+
         $masastotalnacional=Balancemasa::filter2($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
         
+        $unique_categorianac = $masastotalnacional->pluck('n_categoria')->unique()->sort();
+
         $unique_productores = $masastotal->pluck('c_productor')->unique();
 
         
@@ -135,7 +141,9 @@ class TemporadaShow extends Component
 
         $detalles=Detalle::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
-        return view('livewire.temporada-show',compact('procesosall','procesos','recepcionall','recepcion','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+       
+
+        return view('livewire.temporada-show',compact('unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcion','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function getUsersProperty(){

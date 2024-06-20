@@ -564,7 +564,7 @@
     @endif
 
   <section id="informacion">
-    <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 2}" @else x-data="{openMenu: 1}" @endif >
+    <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 1}" @else x-data="{openMenu: 1}" @endif >
         
         @livewire('menu-aside',['temporada'=>$temporada->id])
         <!-- End Sidebar -->
@@ -646,15 +646,39 @@
           </div>
 
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
-              <h2 @click.on="openMenu = 1"  class="cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
+              <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
 
 
               <h2 class="text-2xl font-semibold my-4">Filtros 
+
+
                 @if ($vista=='MASAS')
                     Balance de Masa
                 @else
                   {{$vista}} 
                 @endif
+
+             
+                <div wire:loading wire:target="filters">
+                  <div class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10" >
+                    
+                    <div class="max-h-full w-full max-w-xl overflow-y-auto mx-auto sm:rounded-2xl bg-white">
+                      <div class="w-full">
+                        <div class="px-8 my-20 mx-auto">
+                          <div class="mb-8">
+                            <div class="flex justify-between items-center">
+                              <h1 class="text-3xl font-extrabold mr-4">Cargando filtros...</h1>
+                              <div><img class="h-14" src="{{asset('image/cargando.gif')}}" alt=""></div>
+                            </div>
+                          
+                          </div>
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 @if ($vista=='FOB' && $fobs)
                   ({{$fobsall->count()}} Resultados)
                 @endif
@@ -1115,6 +1139,49 @@
                 @endif
 
                 @if ($vista=='PACKING')
+                <table class="min-w-full leading-normal">
+                  <thead>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Categorias</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Exportación
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        @foreach ($unique_categoriasexp as $item)
+                            {{$item}}<br>
+                        @endforeach
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Variedades
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        4 usd
+                      </td>
+                    </tr>
+                    <tr>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Nacional
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        @foreach ($unique_categorianac as $item)
+                            {{$item}}<br>
+                        @endforeach
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        Variedades
+                      </td>
+                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                        4 usd
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+         
                   <div>
                     <h1 class="text-xl font-semibold mb-4 text-center">
                         Por favor selecione el archivo de "Costos de packing" que desea importar
