@@ -1145,7 +1145,7 @@
                       $kgbicolor=0;
                   @endphp
                 @foreach ($unique_variedades as $variedad)
-                  
+               
                   @foreach ($masastotalnacional as $masa2)
                       @if ($masa2->n_variedad==$variedad->name)
                           @if ($variedad->red_color=='True')
@@ -1159,6 +1159,18 @@
                           @endif
                       @endif
                   @endforeach
+                @endforeach
+
+                @php
+                    $kgsexportacion=0;
+                @endphp
+                
+                @foreach ($masastotal as $masa)
+                  
+                              @php
+                                  $kgsexportacion+=$masa->peso_neto;
+                              @endphp
+                       
                 @endforeach
                   
                 <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
@@ -1266,46 +1278,46 @@
                       </tr>
                     </tbody>
                   </table>
+                  @php
+                      $montoservicio=$kgbicolor*1.352+$kgredcolor*1.092;
+                  @endphp
+                  
 
                   <table class="min-w-full leading-normal">
                     <thead>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Categorias</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Facturado</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Monto del Servicio</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kks Exportacion</th>
                     </thead>
                     <tbody>
                       <tr>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          Variedades Rojas
+                         Tarifa Comercial
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          @foreach ($unique_categoriasexp as $item)
-                              {{$item}}<br>
-                          @endforeach
+                        {{$totalfriopacking}}
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          Variedades
+                          {{$montoservicio}}
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          4 usd
+                          {{$kgsexportacion}}
                         </td>
                       </tr>
                       <tr>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Variedades BICOLOR
+                       Tarifa no comercial
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          @foreach ($unique_categorianac as $item)
-                              {{$item}}<br>
-                          @endforeach
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          Variedades
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          4 usd
-                        </td>
+                          {{$totalfriopacking}}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{$montoservicio}}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{$kgsexportacion}}
+                          </td>
                       </tr>
                     </tbody>
                   </table>
