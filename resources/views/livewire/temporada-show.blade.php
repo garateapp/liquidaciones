@@ -13,25 +13,6 @@
     <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
     <hr class="mt-2 mb-6">
 
-    
-    <div wire:loading wire:target="filters">
-                      
-        <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
-          <div class="w-full">
-            <div class="px-6 my-6 mx-auto">
-              <div class="mb-8">
-                <div class="flex justify-between items-center">
-                  <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
-                  <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
-                </div>
-              
-              </div>
-            
-            </div>
-          </div>
-        </div>
-    </div>
-
     <div class="flex mb-4">
       @if($vista=="resumes")
         <a href="{{Route('temporadas.show',$temporada)}}" wire:navigate>
@@ -678,6 +659,23 @@
                 @endif
 
              
+                <div wire:loading wire:target="filters">
+                    
+                    <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
+                      <div class="w-full">
+                        <div class="px-6 my-6 mx-auto">
+                          <div class="mb-8">
+                            <div class="flex justify-between items-center">
+                              <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                              <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
+                            </div>
+                          
+                          </div>
+                        
+                        </div>
+                      </div>
+                    </div>
+                </div>
 
                 @if ($vista=='FOB' && $fobs)
                   ({{$fobsall->count()}} Resultados)
