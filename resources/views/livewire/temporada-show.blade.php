@@ -1246,6 +1246,24 @@
                           {{number_format($kgbicolor*1.352,2)}}  usd
                         </td>
                       </tr>
+                      <tr>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm font-bold">
+                       Total
+                        </td>
+                       
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
+                        
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgbicolor+$kgredcolor)}} kgs
+                         </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                         
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgbicolor*1.352+$kgredcolor*1.092,2)}}  usd
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
 
