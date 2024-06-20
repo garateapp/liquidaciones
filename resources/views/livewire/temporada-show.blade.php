@@ -1296,13 +1296,13 @@
                          Tarifa Comercial
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        {{$totalfriopacking}}
+                        {{number_format($totalfriopacking)}}
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{$montoservicio}}
+                          {{number_format($montoservicio)}}
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{$kgsexportacion}}
+                          {{number_format($kgsexportacion)}}
                         </td>
                       </tr>
                       <tr>
@@ -1310,13 +1310,13 @@
                        Tarifa no comercial
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{$totalfriopacking}}
+                          {{number_format($totalfriopacking)}}
                           </td>
                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            {{$montoservicio}}
+                            {{number_format($montoservicio)}}
                           </td>
                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            {{$kgsexportacion}}
+                            {{number_format($kgsexportacion)}}
                           </td>
                       </tr>
                     </tbody>
