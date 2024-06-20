@@ -664,7 +664,7 @@
                     
                     <div class="max-h-full w-full max-w-xl overflow-y-auto mx-auto sm:rounded-2xl bg-white">
                       <div class="w-full">
-                        <div class="px-8 my-20 mx-auto">
+                        <div class="px-8 my-10 mx-auto">
                           <div class="mb-8">
                             <div class="flex justify-between items-center">
                               <h1 class="text-3xl font-extrabold mr-4">Cargando filtros...</h1>
