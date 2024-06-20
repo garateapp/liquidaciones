@@ -134,10 +134,7 @@ class Balancemasa extends Model
     }
 
     public function scopeFilter1($query,$filters){
-        $query->where(function ($query) {
-            $query->where('n_categoria', 'Cat 1')
-                ->orWhere('n_categoria', 'Cat I');
-        })->when($filters['razonsocial'] ?? null, function ($query, $serie) {
+        $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
             $query->where('n_productor', 'like', '%' . $serie . '%');
         })->when($filters['variedad'] ?? null, function ($query, $variedad) {
             $query->where('n_variedad', $variedad);
