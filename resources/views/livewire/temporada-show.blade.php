@@ -1289,6 +1289,7 @@
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Facturado</th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Monto del Servicio</th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kks Exportacion</th>
+                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
                     </thead>
                     <tbody>
                       <tr>
@@ -1304,6 +1305,9 @@
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                           {{number_format($kgsexportacion)}}
                         </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format(($totalfriopacking-$montoservicio)/$kgsexportacion,3)}}
+                        </td>
                       </tr>
                       <tr>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
@@ -1317,6 +1321,9 @@
                           </td>
                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                             {{number_format($kgsexportacion)}}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format(($totalfriopacking-$montoservicio)/$kgsexportacion,3)}}
                           </td>
                       </tr>
                     </tbody>
