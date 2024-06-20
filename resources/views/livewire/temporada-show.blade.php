@@ -1294,7 +1294,7 @@
                     <tbody>
                       <tr>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                         Tarifa Comercial
+                         Tarifa Frio Packing Exportacion
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                         {{number_format($totalfriopacking)}}
