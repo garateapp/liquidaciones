@@ -1309,23 +1309,7 @@
                           {{number_format(($totalfriopacking-$montoservicio)/$kgsexportacion,3)}}
                         </td>
                       </tr>
-                      <tr>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                       Tarifa no comercial
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($totalfriopacking)}}
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            {{number_format($montoservicio)}}
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            {{number_format($kgsexportacion)}}
-                          </td>
-                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                            {{number_format(($totalfriopacking-$montoservicio)/$kgsexportacion,3)}}
-                          </td>
-                      </tr>
+                    
                     </tbody>
                   </table>
          
