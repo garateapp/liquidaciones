@@ -1145,19 +1145,7 @@
                       $kgbicolor=0;
                   @endphp
                 @foreach ($unique_variedades as $variedad)
-                  @foreach ($masastotal as $masa)
-                      @if ($masa->n_variedad==$variedad->name)
-                          @if ($variedad->red_color=='True')
-                                @php
-                                    $kgbicolor+=$masa->peso_neto;
-                                @endphp
-                          @else
-                              @php
-                                  $kgredcolor+=$masa->peso_neto;
-                              @endphp
-                          @endif
-                      @endif
-                  @endforeach
+                  
                   @foreach ($masastotalnacional as $masa2)
                       @if ($masa2->n_variedad==$variedad->name)
                           @if ($variedad->red_color=='True')
