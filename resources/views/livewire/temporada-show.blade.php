@@ -1212,7 +1212,10 @@
                         {{number_format($kgredcolor)}} kgs
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          4 usd
+                          1.092 usd
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgredcolor*1.092,2)}} usd
                         </td>
                       </tr>
                       <tr>
@@ -1235,7 +1238,10 @@
                           {{number_format($kgbicolor)}} kgs
                          </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          4 usd
+                          1.352 usd
+                        </td>
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgbicolor*1.352,2)}}  usd
                         </td>
                       </tr>
                     </tbody>
