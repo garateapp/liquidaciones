@@ -50,6 +50,7 @@ class TemporadaShow extends Component
         'desc'=>'',
         'calibre'=>'',
         'etiqueta'=>'',
+        'etiquetas'=>[],
         'material'=>'',
         'mer'=>'',
         'mi'=>'',

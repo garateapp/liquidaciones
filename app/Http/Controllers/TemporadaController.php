@@ -617,7 +617,7 @@ class TemporadaController extends Controller
     {
         $temporada->update($request->all());
 
-        return redirect()->route('dashboard')->with('info','Temporada actualizada con éxito.');;
+        return redirect()->back()->with('info','Temporada actualizada con éxito.');
     }
 
     /**

@@ -227,7 +227,20 @@
                   </select>
                 </div>
                 <div class="ml-4">
-                  Etiqueta:<br>
+                  Etiqueta: <br>
+                  @foreach ($filters['etiquetas'] as $item)
+                      {{$item}}
+                  @endforeach
+                  <br>
+                  @foreach ($unique_etiquetas as $etiqueta)
+                    @if ($etiqueta)
+                      <label>
+                        <input type="checkbox" wire:model="filters.etiquetas" value="{{ $etiqueta }}">
+                        {{ $etiqueta }}
+                      </label><br>
+                    @endif
+                  @endforeach
+                  <br>
                   <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
                     @foreach ($unique_etiquetas as $etiqueta)
@@ -484,16 +497,28 @@
                                               
                                             @endphp
                                           @endforeach
-                                          @php
-                                                  
-                                              foreach ($CostosPackingsall as $costo) {
-                                                if ($costo->variedad==$item->name) {
-                                                  $costopacking+=$costo->total_usd;
-                                                  $globalcostopacking+=$costo->total_usd;
-                                                }  
-                                              }
-          
-                                          @endphp
+                                          {{-- comment
+                                            @php
+                                                foreach ($CostosPackingsall as $costo) {
+                                                  if ($costo->variedad==$item->name) {
+                                                    $costopacking+=$costo->total_usd;
+                                                    $globalcostopacking+=$costo->total_usd;
+                                                  }  
+                                                }
+                                            @endphp
+                                          --}}
+                                           @if ($item->red_color=='True')
+                                                @php
+                                                    $costopacking+=$pesoneto*$temporada->variedadbicolor;
+                                                    $globalcostopacking+=$pesoneto*$temporada->variedadbicolor;
+                                                @endphp
+                                          @else
+                                              @php
+                                                  $costopacking+=$pesoneto*$temporada->variedadroja;
+                                                  $globalcostopacking+=$pesoneto*$temporada->variedadroja;
+                                              @endphp
+                                          @endif
+
                                             @if ($pesoneto>0)
                                               <tr>
                                                 <td class="px-6 py-0 whitespace-nowrap">
@@ -1225,11 +1250,20 @@
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                         {{number_format($kgredcolor)}} kgs
                         </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          1.092 usd
+                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm ">
+                          <div class="flex items-center my-auto">
+                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                              {!! Form::label('variedadroja', 'Variedad Roja', ['class' => 'hidden']) !!}
+                              {!! Form::number('variedadroja', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
+                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                            {!! Form::close() !!}
+                          </div>
                         </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgredcolor*1.092,2)}} usd
+                          @if ($temporada->variedadroja)
+                            {{number_format($kgredcolor*floatval($temporada->variedadroja),2)}} usd
+                          @endif
+                        
                         </td>
                       </tr>
                       <tr>
@@ -1252,10 +1286,19 @@
                           {{number_format($kgbicolor)}} kgs
                          </td>
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          1.352 usd
+                          <div class="flex items-center my-auto">
+                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                              {!! Form::label('variedadbicolor', 'Variedad Roja', ['class' => 'hidden']) !!}
+                              {!! Form::number('variedadbicolor', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
+                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                            {!! Form::close() !!}
+                          </div>
                         </td>
+
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgbicolor*1.352,2)}}  usd
+                          @if ($temporada->variedadbicolor)
+                            {{number_format($kgbicolor*floatval($temporada->variedadbicolor),2)}} usd
+                          @endif
                         </td>
                       </tr>
                       <tr>
