@@ -1193,7 +1193,11 @@
                 @foreach ($masastotal as $masa)
                   
                               @php
-                                  $kgsexportacion+=$masa->peso_neto;
+                                  if ($masa->n_categoria=="Cat 1" || $masa->n_categoria=="Cat I") {
+                                  
+                                    $kgsexportacion+=$masa->peso_neto;
+                                  }
+
                               @endphp
                        
                 @endforeach
