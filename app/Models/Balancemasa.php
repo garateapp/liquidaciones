@@ -46,6 +46,10 @@ class Balancemasa extends Model
             $query->where('n_calibre',$calibre);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
             $query->where('n_etiqueta',$etiqueta);
+        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
+            if (!empty($etiquetas)) {
+                $query->whereIn('n_etiqueta', $etiquetas);
+            }
         })->when($filters['material'] ?? null,function($query,$material){
             $query->where('c_embalaje',$material);
         })->when($filters['semana'] ?? null,function($query,$semana){
@@ -157,6 +161,10 @@ class Balancemasa extends Model
             }
         })->when($filters['calibre'] ?? null, function ($query, $calibre) {
             $query->where('n_calibre', $calibre);
+        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
+            if (!empty($etiquetas)) {
+                $query->whereIn('n_etiqueta', $etiquetas);
+            }
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
@@ -275,6 +283,10 @@ class Balancemasa extends Model
             $query->where('n_calibre', $calibre);
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
+        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
+            if (!empty($etiquetas)) {
+                $query->whereIn('n_etiqueta', $etiquetas);
+            }
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null,function($query,$semana){

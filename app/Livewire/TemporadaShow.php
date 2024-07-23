@@ -50,7 +50,7 @@ class TemporadaShow extends Component
         'desc'=>'',
         'calibre'=>'',
         'etiqueta'=>'',
-        'etiquetas'=>[],
+        'etiquetas'=>'[]',
         'material'=>'',
         'mer'=>'',
         'mi'=>'',
@@ -65,6 +65,21 @@ class TemporadaShow extends Component
     public function mount(Temporada $temporada, $vista){
         $this->temporada=$temporada;
         $this->vista=$vista;
+        
+        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
+        $this->filters['etiquetas'] = $masastotal2->pluck('n_etiqueta')->unique()->sort()->values()->all();
+        
+    }
+
+    public function checkEtiqueta($etiqueta)
+    {
+        if (($key = array_search($etiqueta, $this->filters['etiquetas'])) !== false) {
+            unset($this->filters['etiquetas'][$key]);
+        } else {
+            $this->filters['etiquetas'][] = $etiqueta;
+        }
+
+        $this->filters['etiquetas'] = array_values($this->filters['etiquetas']); // reindexar el array
     }
 
     public function render()
@@ -119,10 +134,9 @@ class TemporadaShow extends Component
 
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
-
-        $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();
-        
         $unique_etiquetas = $masastotal2->pluck('n_etiqueta')->unique()->sort();
+
+        $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();       
         
         $unique_materiales = $masastotal2->pluck('c_embalaje')->unique()->sort();
 

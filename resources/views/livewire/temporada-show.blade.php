@@ -114,7 +114,7 @@
                 @endif
 
              
-                <div wire:loading wire:target="filters">
+                <div wire:loading wire:target="filters, checkEtiqueta">
                     
                     <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -226,30 +226,34 @@
                     @endforeach
                   </select>
                 </div>
+               
                 <div class="ml-4">
-                  Etiqueta: <br>
-                  @foreach ($filters['etiquetas'] as $item)
-                      {{$item}}
-                  @endforeach
-                  <br>
-                  @foreach ($unique_etiquetas as $etiqueta)
-                    @if ($etiqueta)
-                      <label>
-                        <input type="checkbox" wire:model="filters.etiquetas" value="{{ $etiqueta }}">
-                        {{ $etiqueta }}
-                      </label><br>
-                    @endif
-                  @endforeach
-                  <br>
-                  <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                  Norma:<br>
+                  <select wire:model.live="filters.norma" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                     <option value="">Todos</option>
-                    @foreach ($unique_etiquetas as $etiqueta)
-                      @if ($etiqueta)
-                        <option value="{{$etiqueta}}">{{$etiqueta}}</option>
-                      @endif
-                    @endforeach
+                    
+                      <option value="dentro"> Dentro de norma</option>
+                      <option value="fuera"> Fuera de norma</option>
+                    
+                  
                   </select>
                 </div>
+
+                <div class="ml-4">
+                  Semana:<br>
+                  <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    <option value="">Todos</option>
+                    
+                    @foreach ($unique_semanas as $semana)
+                    @if ($semana)
+                      <option value="{{$semana}}">{{$semana}}</option>
+                    @endif
+                  @endforeach
+                    
+                  
+                  </select>
+                </div>
+              
               </div>
               
               <div class="mb-4 flex">
@@ -279,18 +283,47 @@
 
                   
                   </div>
+
+                  <div class="ml-4">
+                    Etiquetas:
+                    {{-- comment 
+                    @foreach ($filters['etiquetas'] as $item)
+                        {{ $item }}
+                    @endforeach
+                    --}}
+                    <br>
+                    @foreach ($unique_etiquetas as $etiqueta)
+                        @if ($etiqueta)
+                            <label>
+                                <input type="checkbox"
+                                      @if(in_array($etiqueta, $filters['etiquetas'])) checked @endif
+                                      wire:click="checkEtiqueta('{{ $etiqueta }}')"
+                                      value="{{ $etiqueta }}">
+                                {{ $etiqueta }}
+                            </label><br>
+                        @endif
+                    @endforeach
+                  
+                  </div>
                
                   <div class="ml-4">
-                    Norma:<br>
-                    <select wire:model.live="filters.norma" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    Etiqueta:
+                    {{-- comment 
+                    @foreach ($filters['etiquetas'] as $item)
+                        {{ $item }}
+                    @endforeach
+                    --}}
+                    <br>
+                    <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                       <option value="">Todos</option>
-                      
-                        <option value="dentro"> Dentro de norma</option>
-                        <option value="fuera"> Fuera de norma</option>
-                      
-                    
+                      @foreach ($unique_etiquetas as $etiqueta)
+                        @if ($etiqueta)
+                          <option value="{{$etiqueta}}">{{$etiqueta}}</option>
+                        @endif
+                      @endforeach
                     </select>
                   </div>
+                  
                   <div class="ml-4">
                     Precio_fob:<br>
                     <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
@@ -301,20 +334,7 @@
                     
                     </select>
                   </div>
-                  <div class="ml-4">
-                    Semana:<br>
-                    <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                      <option value="">Todos</option>
-                      
-                      @foreach ($unique_semanas as $semana)
-                      @if ($semana)
-                        <option value="{{$semana}}">{{$semana}}</option>
-                      @endif
-                    @endforeach
-                      
-                    
-                    </select>
-                  </div>
+                 
                 @endif
 
                 @if ($vista=='PACKING')
@@ -1357,6 +1377,7 @@
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                           {{number_format($kgsexportacion)}}
                         </td>
+                        
                         <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                           {{number_format(($totalfriopacking-$montoservicio)/$kgsexportacion,3)}}
                         </td>
