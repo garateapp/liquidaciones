@@ -23,7 +23,7 @@
             </small>
     @enderror
 
-    @foreach($especies as $permission)
+    @foreach($permissions as $permission)
         <div class="">
             <label class="">
                 {!! Form::checkbox('permissions[]', $permission->id ,null, ['class' => 'mr-1']) !!}
