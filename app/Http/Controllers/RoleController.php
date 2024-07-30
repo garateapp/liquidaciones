@@ -22,7 +22,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+
+        return view('admin.roles.create',compact('permissions'));
     }
 
     /**
@@ -30,15 +32,29 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'permissions' =>'required'
+        ]);
+
+        $role = Role::Create([
+            'name'=>$request->name
+        ]);
+
+        $role->permissions()->attach($request->permissions);
+
+        return redirect()->route('admin.roles.index')->with('info','El rol se creo satisfactoriamente');
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function show(string $id)
+    public function show(Role $role)
     {
-        //
+        return view('admin.roles.show',compact('role'));
     }
 
     /**
