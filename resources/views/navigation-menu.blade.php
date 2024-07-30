@@ -109,6 +109,12 @@
                             <x-dropdown-link href="{{ route('documentacion') }}">
                                 {{ __('Documentación') }}
                             </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('admin.roles.index') }}">
+                                {{ __('Roles') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('admin.costos.index') }}">
+                                {{ __('Configuración de Costos') }}
+                            </x-dropdown-link>
 
 
                             <!-- Account Management -->

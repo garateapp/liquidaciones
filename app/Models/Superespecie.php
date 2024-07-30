@@ -5,15 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Costo extends Model
+class Superespecie extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
-
-    public function superespecies()
+    public function costos()
     {
-        return $this->belongsToMany(Superespecie::class);
+        return $this->belongsToMany(Costo::class);
     }
-
 }

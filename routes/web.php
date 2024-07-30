@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CostoController;
 use App\Http\Controllers\FamiliaController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RazonController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\UserController;
 use App\Livewire\TemporadaShow;
@@ -137,3 +139,9 @@ Route::get('download/razonsocial/{razonsocial}.pdf', [RazonController::class,'do
 Route::get('/fobsexport/{temporada}', [TemporadaController::class,'fobexport'])->name('fob.export');
 
 Route::get('/docs', [HomeController::class,'documentacion'])->name('documentacion');
+
+Route::resource('role', RoleController::class)->names('admin.roles');
+
+Route::resource('costos', CostoController::class)->names('admin.costos');
+
+Route::resource('users', UserController::class)->only(['index','edit','update','destroy'])->names('users');

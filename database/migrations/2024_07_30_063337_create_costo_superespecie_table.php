@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('costos', function (Blueprint $table) {
+        Schema::create('costo_superespecie', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
-
-            $table->string('estado')->nullable();
-
+            $table->foreignId('costo_id')->constrained()->onDelete('cascade');
+            $table->foreignId('superespecie_id')->constrained()->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('costos');
+        Schema::dropIfExists('costo_superespecie');
     }
 };
