@@ -137,7 +137,7 @@
                      <p class="text-base font-medium leading-none text-gray-700 mr-2">
 
                      
-                       No hay ningun roll registrado
+                       No hay ningun costo registrado
                      
                            
                      </p>
