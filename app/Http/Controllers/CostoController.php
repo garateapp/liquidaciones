@@ -89,8 +89,9 @@ class CostoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Costo $costo)
     {
-        //
+        $costo->delete();
+        return redirect()->back();
     }
 }

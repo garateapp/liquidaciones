@@ -261,12 +261,13 @@
                   </a>
                </td>
                <td width='120px'>
-                  <form action="{{route('admin.costos.destroy', $costo)}}" method="POST">
-                      @method('delete')
-                      @csrf
-
-                      <button class="btn btn-danger" type='submit'>Eliminar</button>
-                  </form>
+                  <form id="delete-form-{{$costo->id}}" action="{{route('admin.costos.destroy', $costo)}}" method="POST">
+                     @method('delete')
+                     @csrf
+                     <button type="button" class="text-white ml-auto items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-6 py-3 bg-red-500 hover:bg-red-500 focus:outline-none rounded" onclick="confirmDelete({{$costo->id}})">Eliminar</button>
+                 </form>
+                 
+                
                </td>
                 
               
@@ -317,6 +318,23 @@
 
     </div>
                
-             
+    <script>
+      function confirmDelete(id) {
+          Swal.fire({
+              title: '¿Estás seguro?',
+              text: "¡No podrás revertir esto!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Sí, eliminarlo!',
+              cancelButtonText: 'Cancelar'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  document.getElementById('delete-form-' + id).submit();
+              }
+          })
+      }
+  </script> 
             
 </x-app-layout>
