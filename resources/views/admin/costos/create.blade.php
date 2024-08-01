@@ -48,18 +48,21 @@
                     <div>
                         <!-- Checkboxes -->
                         <div>
-                            {!! Form::checkbox('exp', 1, $costo->exp, ['id' => 'exp']) !!}
-                            {!! Form::label('exp', 'Exportación') !!}
+                            <input type="checkbox" id="exp" name="exp" value="1">
+                            <label for="exp">Exportación</label>
+                        
                         </div>
-        
+                    
                         <div>
-                            {!! Form::checkbox('mi', 1, $costo->mi, ['id' => 'mi']) !!}
-                            {!! Form::label('mi', 'Mercado Interno') !!}
+                            <input type="checkbox" id="mi" name="mi" value="1">
+                            <label for="mi">Mercado Interno:</label>
+                        
                         </div>
-        
+                    
                         <div>
-                            {!! Form::checkbox('com', 1, $costo->com, ['id' => 'com']) !!}
-                            {!! Form::label('com', 'Comercial') !!}
+                            <input type="checkbox" id="com" name="com" value="1">
+                            <label for="com">Comercial:</label>
+                        
                         </div>
                     </div>
                     </div>
