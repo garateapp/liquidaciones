@@ -72,7 +72,10 @@ class CostoController extends Controller
         ]);
 
         $costo->update([
-            'name'=>$request->name
+            'name'=>$request->name,
+            'exp'=>$request->exp,
+            'mi'=>$request->mi,
+            'com'=>$request->com
         ]);
         
         $costo->superespecies()->sync($request->superespecies);

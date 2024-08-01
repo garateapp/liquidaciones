@@ -52,11 +52,8 @@
                   
 
                  
-               @forelse ($costos as $costo)
+            @forelse ($costos as $costo)
                        
-                  
-                   
-               {{-- comment  --}}    
                <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
                  <td class="text-center">
                     <p class="text-base font-medium leading-none text-gray-700 mr-2">
@@ -118,7 +115,7 @@
                </tr>
               
          
-           @empty
+            @empty
 
        
                {{-- comment  --}}    
@@ -147,7 +144,7 @@
                </tr>
            
              
-           @endforelse ($roles as $role)
+            @endforelse
                      
                
               
@@ -159,7 +156,166 @@
            </table>
         </x-table-responsive>
 
-      
+
+        <x-table-responsive>   
+         <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
+  
+            <thead class="bg-gray-50 rounded-full">
+                <th>ID</th>
+                <th>Costo</th>
+                @if ($superespecies->count()>0)
+                   @foreach ($superespecies as $item)
+                      <th>{{$item->name}}</th>
+                   @endforeach
+                @endif
+              
+              
+               <th>Estado</th>
+               <th>Edit</th>
+            
+             
+              
+            </thead>
+            <tbody>
+           
+  
+                
+
+               
+          @forelse ($costos as $costo)
+                     
+             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+               <td class="text-center">
+                  <p class="text-base font-medium leading-none text-gray-700 mr-2">
+
+                  
+                                                {{$costo->id}}
+                  
+                        
+                  </p>
+               
+               </td>
+                <td class="text-center">
+                   <p class="text-base font-medium leading-none text-gray-700 mr-2">
+
+                   
+                                                 {{$costo->name}}
+                   
+                         
+                   </p>
+                
+                </td>
+
+                      @if ($costo->exp)
+                         <td class="text-center">
+                            <label class="">
+                               <input type="checkbox" checked disabled readonly>
+                              Exportación
+                            </label>
+                         </td>
+                      @else
+                         <td class="text-center">
+                            <label class="">
+                               <input type="checkbox" disabled readonly>
+                               Exportación
+                            </label>
+                         </td>
+                      @endif
+
+                     @if ($costo->mi)
+                        <td class="text-center">
+                           <label class="">
+                              <input type="checkbox" checked disabled readonly>
+                              Mercado Interno
+                           </label>
+                        </td>
+                     @else
+                        <td class="text-center">
+                           <label class="">
+                              <input type="checkbox" disabled readonly>
+                              Mercado Interno
+                           </label>
+                        </td>
+                     @endif
+
+                     @if ($costo->com)
+                        <td class="text-center">
+                           <label class="">
+                              <input type="checkbox" checked disabled readonly>
+                              Comercial
+                           </label>
+                        </td>
+                     @else
+                        <td class="text-center">
+                           <label class="">
+                              <input type="checkbox" disabled readonly>
+                              Comercial
+                           </label>
+                        </td>
+                     @endif
+                
+
+               <td width='120px'> 
+                  <a href="{{route('admin.costos.edit', $costo)}}">
+                     <button class="ml-auto items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                        <p class="text-sm font-medium leading-none text-white">EDIT</p>
+                    </button>
+                  </a>
+               </td>
+               <td width='120px'>
+                  <form action="{{route('admin.costos.destroy', $costo)}}" method="POST">
+                      @method('delete')
+                      @csrf
+
+                      <button class="btn btn-danger" type='submit'>Eliminar</button>
+                  </form>
+               </td>
+                
+              
+             </tr>
+            
+       
+          @empty
+
+     
+             {{-- comment  --}}    
+             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+               <td class="text-center">
+                  <p class="text-base font-medium leading-none text-gray-700 mr-2">
+
+                  
+                    -
+                  
+                        
+                  </p>
+               
+               </td>
+                <td class="text-center">
+                   <p class="text-base font-medium leading-none text-gray-700 mr-2">
+
+                   
+                     No hay ningun costo registrado
+                   
+                         
+                   </p>
+                
+                </td>
+              
+             </tr>
+         
+           
+          @endforelse
+                   
+             
+            
+              
+             
+            
+            
+            </tbody>
+         </table>
+      </x-table-responsive>
+    
 
     </div>
                

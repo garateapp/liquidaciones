@@ -10,6 +10,8 @@ class Temporada extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected $table = 'liquidacions';
     
 
     // relacion uno a muchos inversa
