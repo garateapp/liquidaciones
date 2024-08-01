@@ -35,7 +35,10 @@ class CostoController extends Controller
     public function store(Request $request)
     {
         $costo = Costo::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'exp'=>$request->exp,
+            'mi'=>$request->mi,
+            'com'=>$request->com
             // otros campos
         ]);
         

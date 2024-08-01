@@ -25,21 +25,44 @@
                 <div>
                 <strong class="flex justify-center">Aplica para:</strong>
                 <br>
-                @error('permissions')
-                        <small class="text-danger">
-                            <strong>{{$message}}</strong>
-            
-                        </small>
-                @enderror
-            
-                @foreach($especies as $permission)
-                    <div class="">
-                        <label class="">
-                            {!! Form::checkbox('superespecieIds[]', $permission->id ,null, ['class' => 'mr-1']) !!}
-                            {{$permission->name}}
-                        </label>
+
+                    <div class="grid grid-cols-2">
+
+                        <div>
+                        @error('permissions')
+                                <small class="text-danger">
+                                    <strong>{{$message}}</strong>
+                    
+                                </small>
+                        @enderror
+                
+                        @foreach($especies as $permission)
+                            <div class="">
+                                <label class="">
+                                    {!! Form::checkbox('superespecies[]', $permission->id ,null, ['class' => 'mr-1']) !!}
+                                    {{$permission->name}}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                    <div>
+                        <!-- Checkboxes -->
+                        <div>
+                            {!! Form::checkbox('exp', 1, $costo->exp, ['id' => 'exp']) !!}
+                            {!! Form::label('exp', 'Exportación') !!}
+                        </div>
+        
+                        <div>
+                            {!! Form::checkbox('mi', 1, $costo->mi, ['id' => 'mi']) !!}
+                            {!! Form::label('mi', 'Mercado Interno') !!}
+                        </div>
+        
+                        <div>
+                            {!! Form::checkbox('com', 1, $costo->com, ['id' => 'com']) !!}
+                            {!! Form::label('com', 'Comercial') !!}
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
