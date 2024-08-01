@@ -163,14 +163,12 @@
             <thead class="bg-gray-50 rounded-full">
                 <th>ID</th>
                 <th>Costo</th>
-                @if ($superespecies->count()>0)
-                   @foreach ($superespecies as $item)
-                      <th>{{$item->name}}</th>
-                   @endforeach
-                @endif
+               
+               <th>Exportación</th>
+               <th>Mercado Interno</th>
+               <th>Comercial</th>
               
-              
-               <th>Estado</th>
+             
                <th>Edit</th>
             
              
