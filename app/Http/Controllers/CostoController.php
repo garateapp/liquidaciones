@@ -42,7 +42,7 @@ class CostoController extends Controller
             // otros campos
         ]);
         
-        $costo->superespecies()->sync($request->superespecieIds);
+        $costo->superespecies()->sync($request->superespecies);
 
         return redirect()->route('admin.costos.index');
     }
