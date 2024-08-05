@@ -64,7 +64,7 @@
             </div> --}}
           <div class="lg:ml-40 ml-10 space-x-8">
             <a href="{{route('temporadas.create')}}">
-              <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Agregar Temporada</button>
+              <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Agregar Liquidación</button>
             </a>
             <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer hidden">Agregar</button>
           </div>
