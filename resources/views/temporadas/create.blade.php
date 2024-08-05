@@ -5,7 +5,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h1 class="text-2xl font-bold">Crear nueva temporada</h1>
+                <h1 class="text-2xl font-bold">Crear nueva liquidación</h1>
                 <hr class="mt-2 mb-6">
 
                 {!! Form::open(['route'=>'temporadas.store','files'=>true , 'autocomplete'=>'off']) !!}
@@ -34,7 +34,7 @@
                   
 
                     <div class="flex justify-end">
-                        {!! Form::submit('Crear nueva temporada', ['class'=>'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                        {!! Form::submit('Crear nueva liquidación', ['class'=>'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
                     </div>
 
                 {!! Form::close() !!}
