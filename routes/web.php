@@ -78,6 +78,10 @@ Route::get('balance/{temporada}/recepcion',[TemporadaController::class,'recepcio
 
 Route::get('balance/{temporada}/procesos',[TemporadaController::class,'procesos'])->name('temporada.procesos');
 
+Route::get('balance/{temporada}/despachos',[TemporadaController::class,'despachos'])->name('temporada.despachos');
+
+Route::get('balance/{temporada}/embarques',[TemporadaController::class,'embarques'])->name('temporada.embarques');
+
 Route::get('temporada/{temporada}/otrosgastos',[TemporadaController::class,'otrosgastos'])->name('temporada.otrosgastos');
 
 Route::get('temporada/{temporada}/finanzas',[TemporadaController::class,'finanzas'])->name('temporada.finanzas');

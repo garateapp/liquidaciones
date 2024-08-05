@@ -2582,6 +2582,93 @@
                     @livewire('proceso-search',['temporada_id'=>$temporada->id])
 
                 @endif
+
+                @if ($vista=='Embarques') 
+                        
+                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
+                          <div class="flex flex-col md:flex-row">
+                            <div class="">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>Round-trip</option>
+                                    <option>Missouri</option>
+                                    <option>Texas</option>
+                                </select>
+                            </div>
+                            <div class="pt-6 md:pt-0 md:pl-6">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>4 Passengers</option>
+                                    <option>3 Passengers</option>
+                                    <option>2 Passengers</option>
+                                </select>
+                            </div>
+                            <div class="pt-6 md:pt-0 md:pl-6">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>Economy</option>
+                                </select>
+                            </div>
+                          </div>
+                        
+                          <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                            <div class="grid grid-cols-1 gap-2 border border-gray-200 p-2 rounded">
+                                <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                    <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path class="heroicon-ui"
+                                              d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                    </svg>
+                                    <input type="text" placeholder="https://api.greenexweb.cl/api/shipments"
+                                          class="bg-gray-300 max-w-full focus:outline-none text-gray-700"/>
+                                </div>
+                          
+                            </div>
+                          
+                        </div>
+                            <div class="flex justify-center"><button class="p-2 border w-1/4 rounded-md bg-gray-800 text-white">Search</button></div>
+                        </div>
+                  
+                @endif
+                @if ($vista=='Despachos') 
+                        
+                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
+                          <div class="flex flex-col md:flex-row">
+                            <div class="">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>Round-trip</option>
+                                    <option>Missouri</option>
+                                    <option>Texas</option>
+                                </select>
+                            </div>
+                            <div class="pt-6 md:pt-0 md:pl-6">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>4 Passengers</option>
+                                    <option>3 Passengers</option>
+                                    <option>2 Passengers</option>
+                                </select>
+                            </div>
+                            <div class="pt-6 md:pt-0 md:pl-6">
+                                <select class="border p-2 pr-8 rounded">
+                                    <option>Economy</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 p-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                        <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path class="heroicon-ui"
+                                                  d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                        </svg>
+                                        <input type="text" placeholder="https://api.greenexweb.cl/api/dispatches"
+                                              class="bg-gray-300 max-w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                              
+                                </div>
+                              
+                            </div>
+                            <div class="flex justify-center"><button class="p-2 border w-1/4 rounded-md bg-gray-800 text-white">Search</button></div>
+                        </div>
+               
+                @endif
               
               </div>
             </div>

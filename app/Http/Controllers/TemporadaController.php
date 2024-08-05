@@ -572,6 +572,16 @@ class TemporadaController extends Controller
         return view('temporadas.procesos',compact('temporada'));
     }
 
+    public function despachos(Temporada $temporada)
+    {  
+        return view('temporadas.despachos',compact('temporada'));
+    }
+
+    public function embarques(Temporada $temporada)
+    {  
+        return view('temporadas.embarques',compact('temporada'));
+    }
+
     public function otrosgastos(Temporada $temporada)
     {  
         $otrosgastos=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
