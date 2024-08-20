@@ -138,6 +138,13 @@ class RazonController extends Controller
     /**
      * Display the specified resource.
      */
+
+     public function show2(Razonsocial $razonsocial)
+    {       
+
+        return view('razonsocial.show',compact('razonsocial'));
+    }
+
     public function show(Razonsocial $razonsocial,Temporada $temporada)
     {       
         $temporada=Temporada::find($temporada->id);
@@ -162,7 +169,7 @@ class RazonController extends Controller
 
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
 
-        return view('razonsocial.show',compact('unique_categorias','materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        return view('razonsocial.showtemporada',compact('unique_categorias','materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**

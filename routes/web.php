@@ -40,9 +40,11 @@ Route::get('production/refresh/{temporada}', [TemporadaController::class,'produc
 
 Route::get('proceso/refresh/{temporada}', [TemporadaController::class,'proceso_refresh'])->middleware('auth')->name('proceso.refresh');
 
-Route::get('lista/filtros',[RazonController::class,'index'])->name('razonsocial.index');
+Route::get('listado/productores',[RazonController::class,'index'])->name('razonsocial.index');
 
-Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show'])->middleware('auth')->name('razonsocial.show');
+Route::get('ficha/productor/{razonsocial}',[RazonController::class,'show2'])->name('razonsocial.show');
+
+Route::get('productor/{razonsocial}/{temporada}',[RazonController::class,'show'])->middleware('auth')->name('razonsocial.temporada.show');
 
 Route::get('razon/sync',[RazonController::class,'razonsync'])->name('razonsync');
 

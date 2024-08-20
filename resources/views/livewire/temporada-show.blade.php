@@ -99,81 +99,84 @@
 
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
-
-
-              <h2 class="text-2xl font-semibold my-4">Filtros 
-
-
-                @if ($vista=='MASAS')
-                    Balance de Masa
-
-                @elseif ($vista=='resumes')
-                Resumen
-                @else
-                  {{$vista}} 
-                @endif
-
-             
                 <div wire:loading wire:target="filters, checkEtiqueta">
                     
-                    <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
-                      <div class="w-full">
-                        <div class="px-6 my-6 mx-auto">
-                          <div class="mb-8">
-                            <div class="flex justify-between items-center">
-                              <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
-                              <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
-                            </div>
-                          
+                  <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
+                    <div class="w-full">
+                      <div class="px-6 my-6 mx-auto">
+                        <div class="mb-8">
+                          <div class="flex justify-between items-center">
+                            <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                            <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
                           </div>
                         
                         </div>
+                      
                       </div>
                     </div>
+                  </div>
                 </div>
+                @if ($vista!="show" && $vista!="Despachos")
+                      
+                      <h2 class="text-2xl font-semibold my-4">Filtros 
 
-                @if ($vista=='FOB' && $fobs)
-                  ({{$fobsall->count()}} Resultados)
-                @endif
-                @if ($vista=='MASAS')
-                  @php
-                      $kgstotmas=0;
-                  @endphp
-                  @foreach ($masastotal as $masa)
-                    @php
-                        $kgstotmas+=$masa->peso_neto;
-                    @endphp
-                  @endforeach
-                  @foreach ($masastotalnacional as $masa)
-                    @php
-                        $kgstotmas+=$masa->peso_neto;
-                    @endphp
-                  @endforeach
+
+                      @if ($vista=='MASAS')
+                          Balance de Masa
+
+                      @elseif ($vista=='resumes')
+                      Resumen
+                      @else
+                        {{$vista}} 
+                      @endif
+
+                    
                 
-                  @if ($masastotal && $masastotalnacional)
-                    ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                  @elseif($masastotal)
-                    ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                  @elseif($masastotalnacional)
-                    ({{(number_format($masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                  @endif
-                @endif
-              </h2>
-              <div class="mb-4">
-                Productor/Csg
-                <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
-                @if ($filters['razonsocial'])
-                  <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
-                    @forelse ($this->users as $objet)
-                        <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                            <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
-                        </li>
-                        @empty
-                    @endforelse
-                  </ul>
-                @endif
-              </div>
+                    
 
+                    @if ($vista=='FOB' && $fobs)
+                      ({{$fobsall->count()}} Resultados)
+                    @endif
+                    @if ($vista=='MASAS')
+                      @php
+                          $kgstotmas=0;
+                      @endphp
+                      @foreach ($masastotal as $masa)
+                        @php
+                            $kgstotmas+=$masa->peso_neto;
+                        @endphp
+                      @endforeach
+                      @foreach ($masastotalnacional as $masa)
+                        @php
+                            $kgstotmas+=$masa->peso_neto;
+                        @endphp
+                      @endforeach
+                    
+                      @if ($masastotal && $masastotalnacional)
+                        ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                      @elseif($masastotal)
+                        ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                      @elseif($masastotalnacional)
+                        ({{(number_format($masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                      @endif
+                    @endif
+                  </h2>
+
+                  <div class="mb-4">
+                    Productor/Csg
+                    <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
+                    @if ($filters['razonsocial'])
+                      <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
+                        @forelse ($this->users as $objet)
+                            <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
+                                <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
+                            </li>
+                            @empty
+                        @endforelse
+                      </ul>
+                    @endif
+                  </div>
+                
               <div class="mb-4 flex">
                 <div>
                   Exportadora:<br>
@@ -255,6 +258,9 @@
                 </div>
               
               </div>
+
+             
+                
               
               <div class="mb-4 flex">
                 @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
@@ -344,7 +350,23 @@
                   </div>
                 @endif
               </div>
-
+              @else
+                <h2 class="text-2xl font-semibold my-4">Listado de Productores<h2>  
+                  <div class="mb-4">
+                    Productor/Csg
+                    <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
+                    @if ($filters['razonsocial'])
+                      <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
+                        @forelse ($this->users as $objet)
+                            <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
+                                <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
+                            </li>
+                            @empty
+                        @endforelse
+                      </ul>
+                    @endif
+                  </div>
+              @endif
               <div class="flex mb-4 hidden">
                 <div class="mr-4">
                   Desde:
@@ -1096,7 +1118,7 @@
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
 
-                @if ($vista=='resumes' || $vista=='resumesnacional')
+                @if ($vista=='resumes' || $vista=='resumesnacional' || $vista=="show")
                   <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -1137,7 +1159,7 @@
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                 @if ($razon && $temporada)
                                                     
-                                                <a href="{{route('razonsocial.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> {{$razon->name}}
+                                                <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> {{$razon->name}}
                                                 </a>
                                                 
                                                 @endif
@@ -1475,7 +1497,7 @@
                                       <p class="text-gray-900 whitespace-no-wrap">
                                         @foreach ($razonsall as $razon)
                                             @if ($razon->csg==$packing->csg)
-                                              <a href="{{route('razonsocial.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
+                                              <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
                                                 {{$packing->n_productor}}
                                               </a>
                                             @endif
@@ -2648,7 +2670,7 @@
                                     <option>Economy</option>
                                 </select>
                             </div>
-                        </div>
+                          </div>
                         
                             <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
                                 <div class="grid grid-cols-1 gap-2 border border-gray-200 p-2 rounded">

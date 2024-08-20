@@ -11,7 +11,7 @@
                     <div class="flex flex-col flex-1 w-full overflow-y-auto">
                         <!--Start Topbar -->
                         <!--End Topbar -->
-                        @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'resumes'], key($temporada->id))
+                        @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'show'], key($temporada->id))
                     
 
                     </div>

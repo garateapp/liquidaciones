@@ -46,7 +46,7 @@
 
     <div class=" flex items-center justify-between pb-6">
       <div>
-        <h2 class="text-gray-600 font-semibold">Listado de Temporadas</h2>
+        <h2 class="text-gray-600 font-semibold">Listado de Liquidaciones</h2>
         <span class="text-xs">Ordenadas por ultima fecha de modificación</span>
       </div>
       

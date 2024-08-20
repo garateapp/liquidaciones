@@ -31,7 +31,9 @@
             </div>
 
         @else
+
             @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'resumes'], key($temporada->id))
+            
         @endif
            
 
