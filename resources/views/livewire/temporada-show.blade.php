@@ -1155,7 +1155,7 @@
                                       @foreach ($razons as $razon)
                                        
                                           <tr class="bg-gray-100 border-b">
-                                              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{$n}}) {{$razon->id}}</td>
+                                              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{$razon->id}}</td>
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                 @if ($razon && $temporada)
                                                     
@@ -1196,10 +1196,12 @@
                                             $n+=1;
                                         @endphp
                                       @endforeach
-                                  
+                                          
+                                      
                                     
                                   </tbody>
                             </table>
+                            {{$razons->links()}}
                           </div>
                         </div>
                     </div>

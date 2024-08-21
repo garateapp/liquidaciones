@@ -23,17 +23,17 @@
                  <span class="text-gray-600 text-lg font-semibold">Configurador de Costos</span>
                </a>
                  <h2 class="mt-4 text-2xl text-gray-900 font-bold md:text-4xl">Las configuración que sean modificadas a continuación afectara a todas las nuevas liquidaciones que sean creadas en el futuro.</h2>
-             
-         
+             </div>
+         </div>
+      </div>
   
-               <div class="flex justify-end mb-6 -mt-4">
-                  <a href="{{route('admin.costos.create')}}">
-                     <button  class="ml-auto items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
-                        <p class="text-sm font-medium leading-none text-white">Crear Nuevo Costo</p>
-                     </button>
-                  </a>
-               </div>
-            </div>
+      <div class="flex justify-end mb-6">
+         <a href="{{route('admin.costos.create')}}">
+            <button  class="ml-auto items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+               <p class="text-sm font-medium leading-none text-white">Crear Nuevo Costo</p>
+            </button>
+         </a>
+      </div>
 
         <x-table-responsive>   
            <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
@@ -322,9 +322,8 @@
             </tbody>
          </table>
       </x-table-responsive>
-      
-      </div>
-   </div>
+    
+
     </div>
                
     <script>

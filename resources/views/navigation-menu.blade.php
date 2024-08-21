@@ -15,6 +15,13 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" wire:navigate >
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('razonsocial.index') }}" :active="request()->routeIs('razonsocial.index')" wire:navigate >
+                        {{ __('Productores') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('configuracion') }}" :active="request()->routeIs('configuracion')" wire:navigate >
+                        {{ __('Configuración') }}
+                    </x-nav-link>
+                    
                 </div>
             </div>
 
@@ -112,8 +119,8 @@
                             <x-dropdown-link href="{{ route('admin.roles.index') }}">
                                 {{ __('Roles') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('admin.costos.index') }}">
-                                {{ __('Configuración de Costos') }}
+                            <x-dropdown-link href="{{ route('configuracion') }}">
+                                {{ __('Configuración') }}
                             </x-dropdown-link>
 
 
@@ -167,6 +174,7 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+           
         </div>
 
         <!-- Responsive Settings Options -->
