@@ -1132,19 +1132,25 @@
 
               @if ($vista=="show")
                   <div class="flex">
+                    <div>
+                      <p class="text-center">Ordenar por:</p>
                        <!-- Select para columna de orden -->
-                       <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                      <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
                         <option value="sub.csg_count">Cantidad de CSG</option>
                         <option value="razonsocials.name">Nombre</option>
                         <option value="razonsocials.rut">RUT</option>
                         <!-- Agrega más opciones según tus columnas disponibles -->
                     </select>
+                  </div>
 
                     <!-- Select para dirección de orden -->
-                    <select wire:model.live="sortDirection" class="max-w-xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="asc">Ascendente</option>
-                        <option value="desc">Descendente</option>
-                    </select>
+                    <div>
+                      <p class="text-center">Orden:</p>
+                      <select wire:model.live="sortDirection" class="max-w-xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                          <option value="asc">Ascendente</option>
+                          <option value="desc">Descendente</option>
+                      </select>
+                    </div>
                   </div>
               @endif
             </div>
