@@ -61,12 +61,8 @@ class OpcioncondicionController extends Controller
      */
     public function destroy(string $id)
     {   $opcion = Opcion_condicion::findOrFail($id);
-        $condicion=Condicionproductor::findOrFail($opcion->condicionproductor_id);
-    
-        // Eliminar la condición
         $opcion->delete();
     
-        return redirect()->route('admin.condicionproductors.edit',$condicion)->with('success', 'Condición y opciones eliminadas con éxito.');
-   
+        return response()->json(['message' => 'Opción eliminada correctamente']);
     }
 }

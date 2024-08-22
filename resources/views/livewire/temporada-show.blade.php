@@ -116,7 +116,7 @@
                     </div>
                   </div>
                 </div>
-                @if ($vista!="show" && $vista!="Despachos")
+              @if ( $vista!="Despachos")
                       
                       <h2 class="text-2xl font-semibold my-4">Filtros 
 
@@ -125,7 +125,9 @@
                           Balance de Masa
 
                       @elseif ($vista=='resumes')
-                      Resumen
+                        Resumen
+                      @elseif ($vista=='show')
+                        del Listado de Productores
                       @else
                         {{$vista}} 
                       @endif
@@ -162,6 +164,20 @@
                     @endif
                   </h2>
 
+                  <div class="flex w-full px-2">
+                    
+                
+                    <div class="my-2 flex w-full">
+                    
+                    
+                        <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
+                            Cantidad total: {{$razonsall->count()}} @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
+                        </div>
+    
+                    </div>
+                   
+                </div>
+
                   <div class="mb-4">
                     Productor/Csg
                     <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
@@ -177,179 +193,179 @@
                     @endif
                   </div>
                 
-              <div class="mb-4 flex">
-                <div>
-                  Exportadora:<br>
-                  <select wire:model.live="filters.exportadora" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
-                    <option value="">Todos</option>
-                    <option value="greenex">Greenex</option>
-                  </select>
-                </div>
-                <div class="ml-4">
-                  Especie:<br>
-                  <select wire:model.live="filters.especie" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    @foreach ($unique_especies as $item)
-                      <option value="{{$item}}">{{$item}}</option>
-                    @endforeach
-                   
-                  </select>
-                </div>
-                <div class="ml-4">
-                  Variedades:<br>
-                  <select wire:model.live="filters.variedad" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    @foreach ($unique_variedades as $item)
-                      <option value="{{$item->name}}">{{$item->name}}</option>
-                    @endforeach
-                   
-                  </select>
-                </div>
-                <div class="ml-4">
-                  Materiales:<br>
-                  <select wire:model.live="filters.material" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    @foreach ($unique_materiales as $item)
-                      @if ($item)
-                        <option value="{{$item}}">{{$item}}</option>
-                      @endif
-                    @endforeach
-                   
-                  </select>
-                </div>
-                <div class="ml-4">
-                  Calibre:<br>
-                  <select wire:model.live="filters.calibre" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    @foreach ($unique_calibres as $calibre)
-                      @if ($calibre)
-                        <option value="{{$calibre}}">{{$calibre}}</option>
-                      @endif
-
-                    @endforeach
-                  </select>
-                </div>
-               
-                <div class="ml-4">
-                  Norma:<br>
-                  <select wire:model.live="filters.norma" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    
-                      <option value="dentro"> Dentro de norma</option>
-                      <option value="fuera"> Fuera de norma</option>
-                    
-                  
-                  </select>
-                </div>
-
-                <div class="ml-4">
-                  Semana:<br>
-                  <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
-                    <option value="">Todos</option>
-                    
-                    @foreach ($unique_semanas as $semana)
-                    @if ($semana)
-                      <option value="{{$semana}}">{{$semana}}</option>
-                    @endif
-                  @endforeach
-                    
-                  
-                  </select>
-                </div>
-              
-              </div>
-
-             
-                
-              
-              <div class="mb-4 flex">
-                @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
-                  <div class="">
-                    Categoria:<br>
-                    <div>
-                      <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="exp">Exportación</label>
-                    </div>
-                   
-                    <div>
-                      <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="mi">Mercado Interno</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="desc">Desecho</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                      <label for="mer">Merma</label>
-                    </div>
-                 
-                  
-
-
-                  
-                  </div>
-
-                  <div class="ml-4">
-                    Etiquetas:
-                    {{-- comment 
-                    @foreach ($filters['etiquetas'] as $item)
-                        {{ $item }}
-                    @endforeach
-                    --}}
-                    <br>
-                    @foreach ($unique_etiquetas as $etiqueta)
-                        @if ($etiqueta)
-                            <label>
-                                <input type="checkbox"
-                                      @if(in_array($etiqueta, $filters['etiquetas'])) checked @endif
-                                      wire:click="checkEtiqueta('{{ $etiqueta }}')"
-                                      value="{{ $etiqueta }}">
-                                {{ $etiqueta }}
-                            </label><br>
-                        @endif
-                    @endforeach
-                  
-                  </div>
-               
-                  <div class="ml-4">
-                    Etiqueta:
-                    {{-- comment 
-                    @foreach ($filters['etiquetas'] as $item)
-                        {{ $item }}
-                    @endforeach
-                    --}}
-                    <br>
-                    <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                <div class="mb-4 flex">
+                  <div>
+                    Exportadora:<br>
+                    <select wire:model.live="filters.exportadora" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
                       <option value="">Todos</option>
-                      @foreach ($unique_etiquetas as $etiqueta)
-                        @if ($etiqueta)
-                          <option value="{{$etiqueta}}">{{$etiqueta}}</option>
+                      <option value="greenex">Greenex</option>
+                    </select>
+                  </div>
+                  <div class="ml-4">
+                    Especie:<br>
+                    <select wire:model.live="filters.especie" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      @foreach ($unique_especies as $item)
+                        <option value="{{$item}}">{{$item}}</option>
+                      @endforeach
+                    
+                    </select>
+                  </div>
+                  <div class="ml-4">
+                    Variedades:<br>
+                    <select wire:model.live="filters.variedad" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      @foreach ($unique_variedades as $item)
+                        <option value="{{$item->name}}">{{$item->name}}</option>
+                      @endforeach
+                    
+                    </select>
+                  </div>
+                  <div class="ml-4">
+                    Materiales:<br>
+                    <select wire:model.live="filters.material" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      @foreach ($unique_materiales as $item)
+                        @if ($item)
+                          <option value="{{$item}}">{{$item}}</option>
                         @endif
+                      @endforeach
+                    
+                    </select>
+                  </div>
+                  <div class="ml-4">
+                    Calibre:<br>
+                    <select wire:model.live="filters.calibre" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      @foreach ($unique_calibres as $calibre)
+                        @if ($calibre)
+                          <option value="{{$calibre}}">{{$calibre}}</option>
+                        @endif
+
                       @endforeach
                     </select>
                   </div>
-                  
+                
                   <div class="ml-4">
-                    Precio_fob:<br>
-                    <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                    Norma:<br>
+                    <select wire:model.live="filters.norma" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                       <option value="">Todos</option>
                       
-                        <option value="null"> Sin Precio Fob</option>
+                        <option value="dentro"> Dentro de norma</option>
+                        <option value="fuera"> Fuera de norma</option>
                       
                     
                     </select>
                   </div>
-                 
-                @endif
 
-                @if ($vista=='PACKING')
-                  <div class="ml-auto p-3 shadow-lg rounded-lg bg-white">
-                    <h1 class="text-center font-bold text-xl">{{number_format($totalfriopacking,1)}} usd</h1>
-                    <h1 class="text-center font-semibold text-sm">TOTAL COSTOS PACKING</h1>
+                  <div class="ml-4">
+                    Semana:<br>
+                    <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <option value="">Todos</option>
+                      
+                      @foreach ($unique_semanas as $semana)
+                      @if ($semana)
+                        <option value="{{$semana}}">{{$semana}}</option>
+                      @endif
+                    @endforeach
+                      
+                    
+                    </select>
                   </div>
-                @endif
-              </div>
+                
+                </div>
+
+              
+                  
+                
+                <div class="mb-4 flex">
+                  @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
+                    <div class="">
+                      Categoria:<br>
+                      <div>
+                        <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="exp">Exportación</label>
+                      </div>
+                    
+                      <div>
+                        <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="mi">Mercado Interno</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="desc">Desecho</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="mer">Merma</label>
+                      </div>
+                  
+                    
+
+
+                    
+                    </div>
+
+                    <div class="ml-4">
+                      Etiquetas:
+                      {{-- comment 
+                      @foreach ($filters['etiquetas'] as $item)
+                          {{ $item }}
+                      @endforeach
+                      --}}
+                      <br>
+                      @foreach ($unique_etiquetas as $etiqueta)
+                          @if ($etiqueta)
+                              <label>
+                                  <input type="checkbox"
+                                        @if(in_array($etiqueta, $filters['etiquetas'])) checked @endif
+                                        wire:click="checkEtiqueta('{{ $etiqueta }}')"
+                                        value="{{ $etiqueta }}">
+                                  {{ $etiqueta }}
+                              </label><br>
+                          @endif
+                      @endforeach
+                    
+                    </div>
+                
+                    <div class="ml-4">
+                      Etiqueta:
+                      {{-- comment 
+                      @foreach ($filters['etiquetas'] as $item)
+                          {{ $item }}
+                      @endforeach
+                      --}}
+                      <br>
+                      <select wire:model.live="filters.etiqueta" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                        <option value="">Todos</option>
+                        @foreach ($unique_etiquetas as $etiqueta)
+                          @if ($etiqueta)
+                            <option value="{{$etiqueta}}">{{$etiqueta}}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                    </div>
+                    
+                    <div class="ml-4">
+                      Precio_fob:<br>
+                      <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                        <option value="">Todos</option>
+                        
+                          <option value="null"> Sin Precio Fob</option>
+                        
+                      
+                      </select>
+                    </div>
+                  
+                  @endif
+
+                  @if ($vista=='PACKING')
+                    <div class="ml-auto p-3 shadow-lg rounded-lg bg-white">
+                      <h1 class="text-center font-bold text-xl">{{number_format($totalfriopacking,1)}} usd</h1>
+                      <h1 class="text-center font-semibold text-sm">TOTAL COSTOS PACKING</h1>
+                    </div>
+                  @endif
+                </div>
               @else
                 <h2 class="text-2xl font-semibold my-4">Listado de Productores<h2>  
                   <div class="mb-4">
@@ -1113,6 +1129,24 @@
                   <option value="500" class="text-left px-10">500 </option>
                   
               </select>
+
+              @if ($vista=="show")
+                  <div class="flex">
+                       <!-- Select para columna de orden -->
+                       <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="sub.csg_count">Cantidad de CSG</option>
+                        <option value="razonsocials.name">Nombre</option>
+                        <option value="razonsocials.rut">RUT</option>
+                        <!-- Agrega más opciones según tus columnas disponibles -->
+                    </select>
+
+                    <!-- Select para dirección de orden -->
+                    <select wire:model.live="sortDirection" class="max-w-xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                  </div>
+              @endif
             </div>
             
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -1168,7 +1202,7 @@
                                               {{$razon->rut}}
                                               </td>
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                              {{$razon->csg}}
+                                              {{$razon->csg_count}}
                                               </td>
                                              
                                               <td class="text-sm text-gray-900 font-light px-2 py-4 whitespace-nowrap">

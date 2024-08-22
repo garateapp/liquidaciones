@@ -1,8 +1,22 @@
 <div>
     <div class="pb-12 pt-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          
+            <div class="flex w-full px-2">
+                    
+                
+                <div class="my-2 flex w-full">
+                
+                
+                    <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
+                        Cantidad total: {{$razonsall->count()}} @if ($search || $selectedSeason)  //  Resultados: {{$razonsallresult->count()}} @endif
+                    </div>
+
+                </div>
+               
+            </div>
+            
             <div class="flex justify-between mb-6">
+              
                 <div class="flex">
                     <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
                         <option value="25" class="text-left px-10">25 </option>
@@ -11,6 +25,17 @@
                         <option value="500" class="text-left px-10">500 </option>
                         
                     </select>
+
+                     <!-- Filtro de Temporada -->
+                     <select wire:model.live="selectedSeason" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="">Selecciona Temporada</option>
+                        @foreach($temporadas as $season)
+                            <option value="{{ $season->id }}">{{ $season->name }}</option>
+                        @endforeach
+                    </select>
+
+
+                       
                 
                     <div class="my-2 flex sm:flex-row flex-col">
                     
@@ -24,10 +49,30 @@
                             </span>
                             <input  wire:model.live="search"  placeholder="Search" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                         </div>
-                        <div class="p-2 ml-4">
-                            Cantidad: {{$razonsall->count()}} @if ($search)  //  Resultados: {{$razonsallresult->count()}} @endif
-                        </div>
+                       
                     </div>
+                         <!-- Select para columna de orden -->
+                         <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="sub.csg_count">Cantidad de CSG</option>
+                            <option value="razonsocials.name">Nombre</option>
+                            <option value="razonsocials.rut">RUT</option>
+                            <!-- Agrega más opciones según tus columnas disponibles -->
+                        </select>
+
+                        <!-- Select para dirección de orden -->
+                        <select wire:model.live="sortDirection" class="max-w-xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="asc">Ascendente</option>
+                            <option value="desc">Descendente</option>
+                        </select>
+                    @if ($selectedSeason)
+                    <div class="flex items-center">
+                        <a href="{{route('temporadas.show',$selectedSeason)}}" target="_blank">
+                            <button  class="ml-2 my-auto items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                                <p class="text-sm font-medium leading-none text-white">Ver temporada</p>
+                            </button>
+                        </a>
+                    </div>
+                    @endif
                    
                 </div>
 
@@ -83,13 +128,13 @@
                                   Name
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                  Condición
-                                </th>
-                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                   Rut
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                   Número de Csg's
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Acción
                                 </th>
                               </tr>
                             </thead>
@@ -100,20 +145,21 @@
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{$razon->name}}
                                         </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                          <a href="{{Route('razonsocial.show',$razon)}}">
-                                            <button  class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
-                                              <p class="text-sm font-medium leading-none text-white">Ver Ficha</p>
-                                            </button>
-                                          </a>
-                                       
-                                        </td>
+                                      
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{$razon->rut}}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{$razon->csg_count}}
                                         </td>
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            <a href="{{Route('razonsocial.show',$razon)}}">
+                                              <button  class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                                                <p class="text-sm font-medium leading-none text-white">Ver Ficha</p>
+                                              </button>
+                                            </a>
+                                         
+                                          </td>
                                     </tr>
                                 @endforeach
                             </tbody>

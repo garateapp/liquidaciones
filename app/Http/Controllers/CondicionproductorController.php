@@ -120,7 +120,7 @@ class CondicionproductorController extends Controller
             }
         }
     
-        return redirect()->route('admin.condicionproductors.edit',$condicion)->with('info', 'Condición actualizada con éxito.');
+        return redirect()->route('admin.condicionproductors.index')->with('info', 'Condición actualizada con éxito.');
     }
 
     /**

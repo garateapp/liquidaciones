@@ -22,9 +22,15 @@
                     </div>
                 </div>
                 <div class="col-span-2">
-                    <strong class="flex justify-center">Opciones:</strong>
+                    <div class="flex justify-between mt-4 w-full items-center">
+                        <strong class="flex justify-center items-center">Opciones:</strong>
+                        <button type="button" id="add-option" class="items-center text-white focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-3 py-2 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                            Añadir opción
+                        </button>
+                    </div>
+
                     <br>
-            
+
                     <div id="options-container">
                         <!-- Initial option -->
                         <div class="flex justify-between items-center mb-2">
@@ -38,52 +44,68 @@
                             @enderror
                         </div>
                     </div>
-                  
-            
-                    <div class="flex justify-center mt-4">
-                        <button type="button" id="add-option" class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded">
-                            Añadir opción
+
+                    <div class="flex justify-end mt-4">
+                        <button type="button" id="delete-lastoption" class="items-center text-white focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-2 bg-red-500 hover:bg-red-500 focus:outline-none rounded">
+                            Quitar opción
                         </button>
                     </div>
                 </div>
             </div>
-            
+
             <div class="flex justify-center mt-6">
-                <button class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                <button class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-6 py-3 bg-blue-500 hover:bg-blue-500 focus:outline-none rounded">
                     <p class="text-sm font-medium leading-none text-white">Crear Condición</p>
                 </button>
             </div>
-            
-            {!! Form::close() !!}
-            
-                              
-        </div>
 
+            {!! Form::close() !!}
+        </div>
     </div>
+
     <script>
-        document.getElementById('add-option').addEventListener('click', function () {
-            const container = document.getElementById('options-container');
-            const index = container.children.length;
+        document.addEventListener('DOMContentLoaded', function () {
+            let optionIndex = 1; // Iniciar en 1 porque ya tenemos una opción inicial
+
+            document.getElementById('add-option').addEventListener('click', function () {
+                const container = document.getElementById('options-container');
     
-            const optionDiv = document.createElement('div');
-            optionDiv.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+                optionDiv.setAttribute('data-index', optionIndex);
     
-            const textInput = document.createElement('input');
-            textInput.type = 'text';
-            textInput.name = `opcions[${index}][text]`;
-            textInput.placeholder = 'Texto';
-            textInput.classList.add('form-control', 'mr-2');
+                const textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.name = `opcions[${optionIndex}][text]`;
+                textInput.placeholder = 'Texto';
+                textInput.classList.add('form-control', 'mr-2');
     
-            const valueInput = document.createElement('input');
-            valueInput.type = 'text';
-            valueInput.name = `opcions[${index}][value]`;
-            valueInput.placeholder = 'Valor (opcional)';
-            valueInput.classList.add('form-control', 'ml-2');
+                const valueInput = document.createElement('input');
+                valueInput.type = 'text';
+                valueInput.name = `opcions[${optionIndex}][value]`;
+                valueInput.placeholder = 'Valor (opcional)';
+                valueInput.classList.add('form-control', 'ml-2');
     
-            optionDiv.appendChild(textInput);
-            optionDiv.appendChild(valueInput);
+                optionDiv.appendChild(textInput);
+                optionDiv.appendChild(valueInput);
     
-            container.appendChild(optionDiv);
+                container.appendChild(optionDiv);
+    
+                optionIndex++;
+            });
+
+            document.getElementById('delete-lastoption').addEventListener('click', function () {
+                if (optionIndex > 1) { // Solo eliminar si hay más de una opción
+                    optionIndex--;
+                    const container = document.getElementById('options-container');
+                    const lastOption = container.querySelector(`div[data-index="${optionIndex}"]`);
+                    if (lastOption) {
+                        lastOption.remove(); // Eliminar la última opción
+                    }
+                } else {
+                    alert('No hay opciones para eliminar.');
+                }
+            });
         });
     </script>
 

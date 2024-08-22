@@ -30,6 +30,8 @@ use Livewire\WithPagination;
 class TemporadaShow extends Component
 {   use WithPagination;
     public $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
+    public $sortDirection = 'desc'; // Dirección por defecto (descendente)
 
 
     #[Url]
@@ -145,10 +147,38 @@ class TemporadaShow extends Component
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
         $unique_variedades = Variedad::where('temporada_id',$this->temporada->id)->get();
-        
-        $razons= Razonsocial::filter($this->filters)->whereIn('csg', $unique_productores)->paginate($this->ctd);
 
-        $razonsall=Razonsocial::whereIn('csg', $unique_productores)->get();
+        $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
+            ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
+            ->groupBy('rut');
+            
+        $subQuery->whereIn('csg', $unique_productores);
+        
+        $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                        $join->on('razonsocials.id', '=', 'sub.id');
+                    })
+                    ->select('razonsocials.*', 'sub.csg_count')
+                    ->orderBy($this->sortBy, $this->sortDirection)
+                    ->paginate($this->ctd);
+                    
+        
+        $subQuery2 = Razonsocial::select('rut', \DB::raw('MAX(id) as id'))
+                    ->groupBy('rut');
+        
+        $subQuery2->whereIn('csg', $unique_productores);
+        
+        $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
+                        $join->on('razonsocials.id', '=', 'sub.id');
+                    })
+                    ->select('razonsocials.*')
+                    ->get();
+
+        $razonsallresult = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                        $join->on('razonsocials.id', '=', 'sub.id');
+                    })
+                    ->select('razonsocials.*')
+                    ->get();
+
 
         $comisions=Comision::all();
 
@@ -158,7 +188,7 @@ class TemporadaShow extends Component
 
        
 
-        return view('livewire.temporada-show',compact('unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcion','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcion','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function getUsersProperty(){
