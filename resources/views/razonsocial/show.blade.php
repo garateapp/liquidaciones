@@ -111,6 +111,48 @@
                   </div>
                 </div>
 
+                
+                <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                  <h1 class="text-xl">Especies</h1>
+
+                </div>
+              
+                <div class="grid gap-4 grid-cols-1 md:grid-cols-2 w-full">
+               
+                  <div class="grid grid-cols-12 gap-4  col-span-2">
+                    <div class="col-span-12 sm:col-span-2">
+                      <div class="p-4 relative  bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14  absolute bottom-4 right-3 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
+                          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
+                        </svg>
+                        <div class="flex justify-between items-center ">
+                          <img class="w-7 filter grayscale" src="https://v1.tailwindcss.com/_next/static/media/tailwindcss-mark.6ea76c3b72656960a6ae5ad8b85928d0.svg" alt="taiwind css">
+                        </div>
+                        <div class="text-2xl text-gray-100 font-medium leading-8 mt-5">20</div>
+                        <div class="text-sm text-gray-500">Components</div>
+                      </div>
+                    </div>
+                    <div class="col-span-12 sm:col-span-2">
+                      <div class="p-4 relative  bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14  absolute bottom-4 right-3 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
+                          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
+                        </svg>
+                        <div class="flex justify-between items-center ">
+                          <img class="w-7 filter grayscale" src="https://v1.tailwindcss.com/_next/static/media/tailwindcss-mark.6ea76c3b72656960a6ae5ad8b85928d0.svg" alt="taiwind css">
+                        </div>
+                        <div class="text-2xl text-gray-100 font-medium leading-8 mt-5">20</div>
+                        <div class="text-sm text-gray-500">Components</div>
+                      </div>
+                    </div>
+                 
+                    
+                  </div>
+                  
+
+                </div>
+
                 <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
                   <h1 class="text-xl">Csg</h1>
 
