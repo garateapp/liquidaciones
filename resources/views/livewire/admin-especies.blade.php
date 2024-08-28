@@ -41,13 +41,13 @@
                                         </svg>
                                     </div>
                                     <div class="flex items-center justify-center mt-2 mx-2">
-                                        <select wire:model='selectedsubespeciefam'>
+                                        <select wire:model.live='selectedsubespeciefam'>
                                             <option value="null">N/A</option>
                                             @foreach ($superespecies as $item)
                                                 <option value="{{$item->id}}">{{$item->name}}</option>
                                             @endforeach
                                         </select>
-                                        <button class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>
+                                        <button wire:click='updatesubespecietype()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>
                                     </div>
                                 </div>
                                

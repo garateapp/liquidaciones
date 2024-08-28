@@ -30,7 +30,7 @@ class AdminEspecies extends Component
         $this->selectedsubespeciefam=$item->superespecie_id;
     }
     
-    public function updatesubespecietype(Especie $item){
+    public function updatesubespecietype(){
         $this->selectedsubespecie->update(['superespecie_id'=>$this->selectedsubespeciefam]);
     }
 }
