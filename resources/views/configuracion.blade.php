@@ -29,7 +29,7 @@
                       
                       <div class="space-y-2">
                            <a href="{{Route('admin.especies.index')}}">
-                               <h5 class="text-xl text-gray-800 font-medium transition group-hover:text-yellow-600 cursor-pointer">Especies</h5>
+                               <h5 class="text-xl text-gray-800 font-medium transition group-hover:text-yellow-600 cursor-pointer">Especies y Variedades</h5>
                            </a>
                           <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                       </div>
