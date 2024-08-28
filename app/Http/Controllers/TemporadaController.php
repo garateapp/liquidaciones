@@ -502,7 +502,7 @@ class TemporadaController extends Controller
         if ($masitas->count()>0) {
             return view('temporadas.show',compact('temporada','resumes','CostosPackings'));
         } else {
-            return view('temporadas.balancemasa',compact('temporada','masitas'));
+            return redirect(route('temporada.recepcion',$temporada));
         }
     }
 
