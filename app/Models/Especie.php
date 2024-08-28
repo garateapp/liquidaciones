@@ -14,4 +14,8 @@ class Especie extends Model
     public function temporada(){
         return $this->belongsTo('App\Models\Temporada');
     }
+
+    public function superespecie(){
+        return $this->belongsTo('App\Models\Superespecie');
+    }
 }

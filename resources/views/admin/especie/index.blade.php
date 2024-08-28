@@ -26,8 +26,12 @@
              </div>
          </div>
       </div>
-  
-      Añadir aqui
+
+      
+        @livewire('admin-especies')
+       
+
+    
     
 
     </div>
