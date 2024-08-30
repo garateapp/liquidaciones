@@ -241,9 +241,14 @@
                                 <button onclick="confirmSync()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
                                     <p class="text-sm font-medium leading-none text-white">Sincronizar Recepciones</p>
                                 </button>
+                                @if ($recepcions->count())
+                                    
                                 <button onclick="confirmDeletion()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
-                                    <p class="text-sm font-medium leading-none text-white">Eliminar Todos Los Registros</p>
+                                    <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                    <p class="text-sm font-medium leading-none text-white mt-1">{{$recepcions->first()->created_at}}</p>
                                 </button>
+                                
+                                @endif
                               </div>
                           </div>
                         </div>

@@ -350,8 +350,8 @@ class TemporadaShow extends Component
     }
 
     public function recepcions_delete(){
-        $allrecepcions=Recepcion::all();
-        foreach($allrecepcions as $recepcion){
+        $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
+        foreach($recepcionall as $recepcion){
             $recepcion->delete();
         }
 
