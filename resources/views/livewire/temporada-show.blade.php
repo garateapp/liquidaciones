@@ -95,7 +95,7 @@
                     <span>FOB</span>
                 </button>
               </div>
-          </div>
+            </div>
 
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>

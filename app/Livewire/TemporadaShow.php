@@ -276,7 +276,7 @@ class TemporadaShow extends Component
 
                        
                     
-                        $cont=Recepcion::where('id_g_recepcion',$id_g_recepcion)->first();
+                        $cont=Recepcion::where('id_g_recepcion',$id_g_recepcion)->where('temporada_id',$this->temporada->id)->first();
                         
                         if($cont){
                             
