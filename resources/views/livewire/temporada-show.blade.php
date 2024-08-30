@@ -99,37 +99,41 @@
 
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
+                
                 <div wire:loading wire:target="filters, checkEtiqueta">
-                    
-                  <div class="fixed max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
-                    <div class="w-full">
-                      <div class="px-6 my-6 mx-auto">
-                        <div class="mb-8">
-                          <div class="flex justify-between items-center">
-                            <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
-                            <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
+                  <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+                    <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
+                      <div class="w-full">
+                        <div class="px-6 my-6 mx-auto">
+                          <div class="mb-8">
+                            <div class="flex justify-between items-center">
+                              <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                              <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
+                            </div>
                           </div>
-                        
                         </div>
-                      
                       </div>
                     </div>
                   </div>
                 </div>
+                
+                
               @if ( $vista!="Despachos")
                       
-                      <h2 class="text-2xl font-semibold my-4">Filtros 
+                      <h2 class="text-2xl font-semibold my-4"> 
 
 
                       @if ($vista=='MASAS')
-                          Balance de Masa
+                    Filtros      Balance de Masa
 
                       @elseif ($vista=='resumes')
-                        Resumen
+                     Filtros   Resumen
                       @elseif ($vista=='show')
-                        del Listado de Productores
+                     Filtros   del Listado de Productores
+                     @elseif ($vista=='Recepcion')
+                    
                       @else
-                        {{$vista}} 
+                     Filtros   {{$vista}} 
                       @endif
 
                     
@@ -167,16 +171,93 @@
                   <div class="flex w-full px-2">
                     
                 
-                    <div class="my-2 flex w-full">
+                    <div class="my-2 flex justify-between w-full">
                     
-                    
+                      @if ($vista=="Recepcion")
+
+                        <div class="w-6/12">
+                          <h2 class="text-2xl font-semibold my-4"> 
+                            Sincronización Recepciones
+                          </h2>
+                          @php
+                            $cant=0;
+                            $cant2=0;
+                              foreach($recepcionall as $recepcion){
+                                  $cant+=$recepcion->peso_neto;
+                              }
+                              foreach($recepcionall as $recepcion){
+                                  $cant2+=$recepcion->peso_neto;
+                              }
+                      
+                          @endphp
+                          <div class="flex">
+                            <div class="max-w-7xl bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2 ml-12">
+                               <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($recepcionall->count())}}</span>
+                                     <h3 class="text-base font-normal text-gray-500">Recepciones</h3>
+                                  </div>
+                                 
+                               </div>
+                            </div>
+                            <div class="max-w-7xl  bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                                @if ($filters['razonsocial'])
+                                    <div class="flex items-center justify-center content-center">
+                                                <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cant2)}}/</span>
+                                                <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
+                                           
+                                    
+                                    </div>
+                                @endif
+            
+                                <div class="flex items-center justify-center">
+                                    <div class="flex-shrink-0 text-center">
+                                       <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant)}}</span>
+                                       <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                    </div>
+                                   
+                                 </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <div class="text-xl font-bold  flex w-full">
+                          <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                        
+                              <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                                  <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                      <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                          <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                              <path class="heroicon-ui"
+                                                    d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                          </svg>
+                                          <input type="text" value="https://api.greenexweb.cl/api/ObtenerRecepcion" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                      </div>
+                                
+                                  </div>
+                                
+                              </div>
+                              <div class="grid grid-cols-2 gap-x-4">
+                                <button onclick="confirmSync()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Recepciones</p>
+                                </button>
+                                <button onclick="confirmDeletion()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Eliminar Todos Los Registros</p>
+                                </button>
+                              </div>
+                          </div>
+                        </div>
+
+                      @else
                         <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
                             Cantidad total: {{$razonsall->count()}} @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
                         </div>
+                      @endif
+                      
     
                     </div>
                    
-                </div>
+                  </div>
 
                   <div class="mb-4">
                     Productor/Csg
@@ -193,7 +274,7 @@
                     @endif
                   </div>
                 
-                <div class="mb-4 flex">
+                <div class="flex">
                   <div>
                     Exportadora:<br>
                     <select wire:model.live="filters.exportadora" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-32">
@@ -366,6 +447,7 @@
                     </div>
                   @endif
                 </div>
+
               @else
                 <h2 class="text-2xl font-semibold my-4">Listado de Productores<h2>  
                   <div class="mb-4">
@@ -383,6 +465,7 @@
                     @endif
                   </div>
               @endif
+
               <div class="flex mb-4 hidden">
                 <div class="mr-4">
                   Desde:
@@ -1121,7 +1204,7 @@
                   </a>
                 </div>
               @endif
-              
+              @if ($vista!='Recepcion' )
               <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
                   <option value="25" class="text-left px-10">25 </option>
                   <option value="50" class="text-left px-10">50 </option>
@@ -1129,6 +1212,7 @@
                   <option value="500" class="text-left px-10">500 </option>
                   
               </select>
+              @endif
 
               @if ($vista=="show")
                   <div class="flex">
@@ -2636,8 +2720,232 @@
                 @endif
 
                 @if ($vista=='Recepcion') 
+                
                     
-                    @livewire('production-search',['temporada_id'=>$temporada->id])
+                <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+                  @if ($recepcions->count())
+                      <div class="">
+                          {{$recepcions->links()}}
+                      </div>
+              
+                  @endif 
+                      <div class="flex flex-col">
+                          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                              <div class="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
+                                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                      
+                             
+                                  <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
+                          
+                                      <thead class="bg-gray-50 rounded-full">
+                                          <th>Lote</th>
+                                          <th>Agricola</th>
+                                          <th>Especie</th>
+                                          <th>Variedad</th>
+                                          <th class="text-center">Fecha</th>
+                                          
+                                          <th class="text-center">Guia</th>
+                                          <th class="text-center">Cantidad</th>
+                                          <th>Kilos</th>
+                                          <th class="text-center">Nota</th>
+                                          
+                                      </thead>
+                                      <tbody>
+                                          @php
+                                              $n=1;
+                                          @endphp
+                                          
+                                          @foreach ($recepcions as $recepcion)
+                                      {{-- comment        {{$n.') '.$recepcion}}<br>
+                                                              @php
+                                                                  $m=1;
+                                                                  $n+=1;
+                                                              @endphp
+                                                              
+                                                          @foreach ($recepcion as $item)
+                                                          {{$m}}) {{$item}}<br>
+                                                              
+                                                                  @php
+                                                                      $m+=1;
+                                                                  @endphp
+                                                          @endforeach
+                                                          --}}  
+                                              {{-- comment  --}}    
+                                              <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+                                                  <td class="pl-5 text-center">
+                                                      <p class="text-base flex font-medium leading-none text-gray-700">
+      
+                                                  
+      
+                                                              @if ($recepcion->numero_g_recepcion)
+                                                              {{$recepcion->numero_g_recepcion}}
+                                                              @endif
+                                                              
+                                                      </p>
+                                                      
+                                                  </td>
+                                                  <td class="text-center">
+                                                      <p class="text-base font-medium leading-none text-gray-700 mr-2">
+                          
+                                                      
+                          
+                                                          @if ($recepcion->n_emisor)
+                                                              {{$recepcion->n_emisor}}
+                                                              
+                                                          @endif
+                                                      
+                                                          
+                                                      </p>
+                                                  
+                                                  </td>
+                                                  <td class="">
+                                                      <div class="flex items-center pl-5">
+                                                          <p class="text-base font-medium leading-none text-gray-700 mr-2">
+                          
+                                                          
+                                                              @if ($recepcion->n_especie)
+                                                              {{$recepcion->n_especie}}
+                                                              
+                                                              @endif
+                                                          
+                                                              
+                                                          </p>
+                                                      
+                                                      </div>
+                                                  </td>
+                                                  <td class="pl-5">
+                                                      <div class="whitespace-nowrap flex items-center text-center">
+                                                          
+                                                          <p class="whitespace-nowrap text-sm leading-none text-gray-600 ml-2">
+                                                      
+                                                              @if ($recepcion->n_variedad)
+                                                                  {{$recepcion->n_variedad}}
+                                                                  
+                                                              @endif
+                                                          </p>
+                                                      </div>
+                                                  </td>
+                                                  <td class="pl-5 text-center whitespace-nowrap">
+                                                      <p class="whitespace-nowrap text-base text-center font-medium leading-none text-gray-700 mr-2">
+                          
+                                                  
+                                                      @if ($recepcion->fecha_g_recepcion)
+                                                              {{date('d M Y g:i a', strtotime($recepcion->fecha_g_recepcion))}}
+                                                              
+                                                              
+                                                          @endif
+                                                      
+                                                      </p>
+                                                  
+                                                  </td>
+                                                  
+                                                  <td class="pl-5 whitespace-nowrap">
+                                                      <p class="whitespace-nowrap  text-base flex font-medium leading-none text-gray-700 mr-2">
+      
+                                                  
+      
+                                                              @if ($recepcion->numero_documento_recepcion)
+                                                              {{$recepcion->numero_documento_recepcion}}
+                                                              @endif
+                                                              
+                                                      </p>
+                                                      
+                                                  </td>
+                                                      <td class="pl-5 whitespace-nowrap">
+                                                          <p class="whitespace-nowrap  text-base flex font-medium leading-none text-gray-700 mr-2">
+                          
+                                                          
+                          
+                                                          @if ($recepcion->cantidad)
+                                                              {{number_format($recepcion->cantidad)}}
+                                                          @endif
+                                                          
+                                                      </p>
+                                                      
+                                                  </td>
+                                                  
+                                                  <td class="pl-5">
+                                                  
+                          
+                                                      @if ($recepcion->peso_neto)
+                                                          {{number_format($recepcion->peso_neto)}}
+                                                      @endif
+                                                  
+                                                          
+                                                  
+                                              
+                                                  
+                                              
+                                                  </td>
+                                              
+                                                  <td class="pl-5 text-center">
+                                                      
+                                                      @if ($recepcion->nota_calidad==0)   
+                                                              S/N
+                                                      @elseif($recepcion->nota_calidad)
+                                                          {{number_format($recepcion->nota_calidad)}}
+                                                      @endif
+                                              
+                                                  
+                                                                                                  
+                                                  </td>
+                                                  
+                                                              
+                                              
+                                                  <td>
+                                                      @if ($recepcion->n_estado=='CERRADO')
+      
+                                                          <a href="{{route('informe.download',$recepcion)}}" target="_blank" >   
+                                                              <img class="w-10 my-2 mx-auto" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
+                                                          </a>
+      
+                                                          <button wire:click="reenviar_informe({{$recepcion->id}})" class="font-bold py-1 px-3 mt-2 rounded-full bg-green-500 text-white text-xs mb-2" type="submit" title="Reenviar Whatsapp">Reenviar Whatsapp</button>
+                              
+      
+                                                      @else
+                                                          <div class="relative px-5 pt-2">
+                                                              <button class="focus:ring-2 rounded-md focus:outline-none" onclick="dropdownFunction(this)" role="button" aria-label="option">
+                                                                  <svg class="dropbtn" onclick="dropdownFunction(this)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                                      <path d="M4.16667 10.8332C4.62691 10.8332 5 10.4601 5 9.99984C5 9.5396 4.62691 9.1665 4.16667 9.1665C3.70643 9.1665 3.33334 9.5396 3.33334 9.99984C3.33334 10.4601 3.70643 10.8332 4.16667 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                      <path d="M10 10.8332C10.4602 10.8332 10.8333 10.4601 10.8333 9.99984C10.8333 9.5396 10.4602 9.1665 10 9.1665C9.53976 9.1665 9.16666 9.5396 9.16666 9.99984C9.16666 10.4601 9.53976 10.8332 10 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                      <path d="M15.8333 10.8332C16.2936 10.8332 16.6667 10.4601 16.6667 9.99984C16.6667 9.5396 16.2936 9.1665 15.8333 9.1665C15.3731 9.1665 15 9.5396 15 9.99984C15 10.4601 15.3731 10.8332 15.8333 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                  </svg>
+                                                              </button>
+                                                              <div class="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 hidden">
+                                                                  <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                                                                      <p>Edit</p>
+                                                                  </div>
+                                                                  <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                                                                      <p>Delete</p>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      @endif
+                                                  </td>
+                                              
+                                              </tr>
+                                          
+                                      
+                                              
+                          
+                                          @endforeach
+                                      
+                                      
+                                      </tbody>
+                                  </table>
+                              
+                                  
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  @if ($recepcions->count())
+                      <div class="">
+                          {{$recepcions->links()}}
+                      </div>
+              
+                  @endif 
+              </div>
 
                 @endif
 
@@ -2741,4 +3049,92 @@
     </div>
   </section>
    
+<script>
+  function confirmDeletion() {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esta acción eliminará todos los registros.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'Por favor, espera mientras se eliminan los registros.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('recepcions_delete').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                  Swal.fire(
+                      '¡Eliminado!',
+                      'Todos los registros han sido eliminados.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error',
+                      'Hubo un problema al eliminar los registros.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+</script>
+
+<script>
+  
+  function confirmSync() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización?',
+          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Recepciones' hasta las ${formattedTime} del dia de hoy.`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, sincronizar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de recepciones.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('production_refresh').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                      '¡Sincronización completada!',
+                      'Los datos de recepciones han sido actualizados exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de recepciones. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+</script>
+
 </div>

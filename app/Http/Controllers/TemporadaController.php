@@ -255,7 +255,7 @@ class TemporadaController extends Controller
 
     public function production_refresh(Temporada $temporada)
     {
-        $productions=Http::post('https://apigarate.azurewebsites.net/api/v1.0/Recepcion/ObtenerRecepcion');
+        $productions=Http::post('https://api.greenexweb.cl/api/ObtenerRecepcion');
         $productions = $productions->json();
         $ri=Recepcion::all();
         $totali=$ri->count();
@@ -308,77 +308,34 @@ class TemporadaController extends Controller
                 if($m==9){
                     $n_emisor=$item;
                 }
-                if($m==10){
+                if($m==11){
                     $tipo_documento_recepcion=$item;
                 }
-                if($m==11){
+                if($m==12){
                     $numero_documento_recepcion=$item;
                 }
-                if($m==12){
+                if($m==13){
                     $n_especie=$item;
 
                 }
-                if($m==13){
+                if($m==14){
                     $n_variedad=$item;
                 }
-                if($m==14){
+                if($m==15){
                     $cantidad=$item;
                 }
-                if($m==15){
+                if($m==16){
                     $peso_neto=$item;
                 }
-                if($m==16){
+                if($m==17){
                     $nota_calidad=$item;
                 }
-               if($m==17){
+               if($m==18){
                     $n_estado=$item;
 
-                        $espec=Especie::where('name',$n_especie)->first();
-                        if($espec){
-                            $espec->forceFill([
-                                'name'=> $n_especie
-                            ]);
-
-                            
-                            $varie=Variedad::where('name',$n_variedad)->first();
-                            if($varie){
-                                $varie->forceFill([
-                                    'name'=> $n_variedad,
-                                    'especie_id='=> $espec->id
-                                ]);
-
-                            }else{
-                                $varie=Variedad::create([
-                                    'name'=> $n_variedad,
-                                    'especie_id'=>$espec->id
-                                ]);
-
-                            }
-
-                           
-
-                        }else{
-                            $especie=Especie::create([
-                            'name'=> $n_especie
-                            ]);
-                           
-                            $varie=Variedad::where('name',$n_variedad)->first();
-                            if($varie){
-                                $varie->forceFill([
-                                    'name'=> $n_variedad,
-                                    'especie_id='=> $especie->id
-                                ]);
-                            }else{
-                                $varie=Variedad::create([
-                                    'name'=> $n_variedad,
-                                    'especie_id'=>$especie->id
-                                ]);
-                            }
-
-                         
-                        }
+                       
                     
-                        $cont=Recepcion::where('id_g_recepcion',$id_g_recepcion)->where('temporada_id',$temporada->id)->first();
+                        $cont=Recepcion::where('id_g_recepcion',$id_g_recepcion)->first();
                         
                         if($cont){
                             
@@ -397,8 +354,7 @@ class TemporadaController extends Controller
                                 'n_variedad' => $n_variedad,
                                 'cantidad' => $cantidad,
                                 'peso_neto' => $peso_neto,
-                                'nota_calidad' => $nota_calidad,
-                                'temporada_id'=>$temporada->id
+                                'nota_calidad' => $nota_calidad
                                 
                             ])->save();
                           /*  if(IS_NULL($cont->calidad)){
@@ -425,11 +381,10 @@ class TemporadaController extends Controller
                                     'cantidad' => $cantidad,
                                     'peso_neto' => $peso_neto,
                                     'nota_calidad' => $nota_calidad,
-                                    'n_estado' => $n_estado,
-                                    'temporada_id'=>$temporada->id
+                                    'n_estado' => $n_estado
                                     
                                 ]);
-                             
+                            
                             
                         }
                     
