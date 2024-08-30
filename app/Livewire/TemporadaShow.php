@@ -137,7 +137,7 @@ class TemporadaShow extends Component
         
         $unique_categorianac = $masastotalnacional->pluck('n_categoria')->unique()->sort();
 
-        $unique_productores = $masastotal->pluck('c_productor')->unique();
+        $unique_productores = $masastotal->pluck('n_emisor')->unique();
 
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
