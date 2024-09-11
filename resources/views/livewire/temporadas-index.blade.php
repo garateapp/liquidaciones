@@ -87,7 +87,7 @@
                                   <h3 class="truncate text-sm font-medium text-gray-900">{{$temporada->name}}</h3>
                                   <span class="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">Activa</span>
                               </div>
-                              <p class="mt-1 truncate text-sm text-gray-500">Temporada cerezas</p>
+                              <p class="mt-1 truncate text-sm text-gray-500">Temporada {{$temporada->especie->name}}</p>
                             </div>
                           </a>
                             <img class="h-10 w-10 flex-shrink-0 bg-gray-300" src="https://img.freepik.com/vector-gratis/vector-aislado-cereza-roja-vibrante_1308-133424.jpg" alt="">
