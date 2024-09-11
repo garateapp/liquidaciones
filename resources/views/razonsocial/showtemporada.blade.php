@@ -92,7 +92,7 @@
                                           @else
                                           
                                           <input 
-                                          class="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none mb-2 rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 rounded-lg"
+                                          class="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none mb-2 rounded-l-none shadow-sm -ml-1 w-full rounded-lg"
                                           type="text" value="{{$item->text}}"  readonly/>
 
                                           @endif
