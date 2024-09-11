@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Comision;
+use App\Models\Condicionproductor;
 use App\Models\CostoPacking;
 use App\Models\Exportacion;
 use App\Models\Flete;
@@ -169,7 +170,9 @@ class RazonController extends Controller
 
         $unique_categorias = $masas->pluck('n_categoria')->unique()->sort();
 
-        return view('razonsocial.showtemporada',compact('unique_categorias','materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
+        $condicions=Condicionproductor::all();
+
+        return view('razonsocial.showtemporada',compact('condicions','unique_categorias','materialestotal','fletestotal','exportacions','variedades','unique_semanas','fobs','unique_variedades','unique_calibres','razonsocial','temporada','masas','masas2','packings','comisions','fletes'));
     }
 
     /**

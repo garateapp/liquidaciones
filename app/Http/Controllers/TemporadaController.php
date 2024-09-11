@@ -428,8 +428,9 @@ class TemporadaController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('temporadas.create');
+    {   
+        $especies=Especie::all()->pluck('name','id');
+        return view('temporadas.create',compact('especies'));
     }
 
     /**

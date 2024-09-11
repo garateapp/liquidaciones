@@ -19,6 +19,11 @@ class Temporada extends Model
         return $this->BelongsTo('App\Models\User');
     }
 
+     // relacion uno a muchos inversa
+     public function especie(){
+        return $this->BelongsTo('App\Models\Especie');
+    }
+
     // relacion uno a muchos inversa
     public function packings(){
         return $this->hasmany('App\Models\CostoPacking');
@@ -74,4 +79,6 @@ class Temporada extends Model
     public function detalles(){
         return $this->hasmany('App\Models\Detalle');
     }
+
+    
 }

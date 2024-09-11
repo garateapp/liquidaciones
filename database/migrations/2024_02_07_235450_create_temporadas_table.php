@@ -19,6 +19,11 @@ return new class extends Migration
             ->constrained()
             ->onDelete('set null');
 
+            $table->foreignId('especie_id')
+            ->nullable()
+            ->constrained()
+            ->onDelete('set null');
+
             $table->integer('status')->default(1);
 
             $table->string('name');
@@ -29,6 +34,21 @@ return new class extends Migration
             $table->string('comision')->nullable();
             $table->string('balance_de_masa')->nullable();
             $table->string('finanzas')->nullable();
+            
+            $table->string('seguro')->nullable();
+            $table->string('asoex_cc')->nullable();
+            $table->string('flete_a_huerto')->nullable();
+            $table->string('control_calidad_destino')->nullable();
+            $table->string('hidrocooler')->nullable();
+            $table->string('variedadroja')->nullable();
+            $table->string('variedadbicolor')->nullable();
+
+            $table->date('recepcion_start')->nullable();
+            $table->date('recepcion_end')->nullable();
+
+            $table->string('exportadora_id')->nullable();
+
+            $table->string('tc')->nullable();
             
             $table->timestamps();
         });

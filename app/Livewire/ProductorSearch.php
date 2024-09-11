@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Balancemasa;
 use App\Models\Razonsocial;
+use App\Models\Recepcion;
 use App\Models\Temporada;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -27,8 +28,7 @@ class ProductorSearch extends Component
         ->groupBy('rut');
     
         if ($this->selectedSeason) {
-            $masastotal = Balancemasa::where('temporada_id', $this->selectedSeason)
-                ->where('exportadora', 'Greenex SpA')
+            $masastotal = Recepcion::where('temporada_id', $this->selectedSeason)
                 ->get();
         
             $unique_productores = $masastotal->pluck('c_productor')->unique();

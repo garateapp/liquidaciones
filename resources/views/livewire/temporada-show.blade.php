@@ -190,17 +190,37 @@
                               }
                       
                           @endphp
-                          <div class="flex">
-                            <div class="max-w-7xl bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2 ml-12">
+                           <div class="flex">
+                            <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
                                <div class="flex items-center justify-center">
                                   <div class="flex-shrink-0 text-center">
-                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($recepcionall->count())}}</span>
+                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
+                                     <h3 class="text-base font-normal text-gray-500">Especie</h3>
+                                  </div>
+                                 
+                               </div>
+                            </div>
+                          </div>
+                          <div class="flex">
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                               <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($recepcionall->pluck('numero_g_recepcion')->unique()->sort()->count())}}</span>
                                      <h3 class="text-base font-normal text-gray-500">Recepciones</h3>
                                   </div>
                                  
                                </div>
                             </div>
-                            <div class="max-w-7xl  bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                 <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($recepcionall->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Folios</h3>
+                                 </div>
+                                
+                              </div>
+                           </div>
+                            <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
                                 @if ($filters['razonsocial'])
                                     <div class="flex items-center justify-center content-center">
                                                 <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cant2)}}/</span>
@@ -218,7 +238,7 @@
                                    
                                  </div>
                             </div>
-                        </div>
+                          </div>
                         </div>
                         
                         <div class="text-xl font-bold  flex w-full">
@@ -231,12 +251,27 @@
                                               <path class="heroicon-ui"
                                                     d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
                                           </svg>
-                                          <input type="text" value="https://api.greenexweb.cl/api/ObtenerRecepcion" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                          <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
                                       </div>
                                 
                                   </div>
                                 
                               </div>
+                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                       <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
+                                        <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
+                                        <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
                               <div class="grid grid-cols-2 gap-x-4">
                                 <button onclick="confirmSync()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
                                     <p class="text-sm font-medium leading-none text-white">Sincronizar Recepciones</p>
@@ -2740,204 +2775,78 @@
                                   <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                       
                              
-                                  <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
-                          
+                                    <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
                                       <thead class="bg-gray-50 rounded-full">
-                                          <th>Lote</th>
-                                          <th>Agricola</th>
-                                          <th>Especie</th>
-                                          <th>Variedad</th>
-                                          <th class="text-center">Fecha</th>
-                                          
-                                          <th class="text-center">Guia</th>
-                                          <th class="text-center">Cantidad</th>
-                                          <th>Kilos</th>
-                                          <th class="text-center">Nota</th>
-                                          
+                                          <tr>
+                                              <th class="text-center whitespace-nowrap">Empresa</th>
+                                              <th class="text-center whitespace-nowrap">Tipo Recepción</th>
+                                              <th class="text-center whitespace-nowrap">Número Recepción</th>
+                                              <th class="text-center whitespace-nowrap">Fecha Recepción</th>
+                                              <th class="text-center whitespace-nowrap">Transportista</th>
+                                              <th class="text-center whitespace-nowrap">Exportadora</th>
+                                              <th class="text-center whitespace-nowrap">Folio</th>
+                                              <th class="text-center whitespace-nowrap">Fecha Cosecha</th>
+                                              <th class="text-center whitespace-nowrap">Grupo</th>
+                                              <th class="text-center whitespace-nowrap">Productor</th>
+                                              <th class="text-center whitespace-nowrap">Código Productor</th>
+                                              <th class="text-center whitespace-nowrap">Especie</th>
+                                              <th class="text-center whitespace-nowrap">Variedad</th>
+                                              <th class="text-center whitespace-nowrap">Envase</th>
+                                              <th class="text-center whitespace-nowrap">Categoría</th>
+                                              <th class="text-center whitespace-nowrap">Subcategoría</th>
+                                              <th class="text-center whitespace-nowrap">Calibre</th>
+                                              <th class="text-center whitespace-nowrap">Serie</th>
+                                              <th class="text-center whitespace-nowrap">Cantidad</th>
+                                              <th class="text-center whitespace-nowrap">Peso Neto</th>
+                                              <th class="text-center whitespace-nowrap">Destrucción Tipo</th>
+                                              <th class="text-center whitespace-nowrap">Creación Tipo</th>
+                                              <th class="text-center whitespace-nowrap">Notas</th>
+                                              <th class="text-center whitespace-nowrap">Estado</th>
+                                              <th class="text-center whitespace-nowrap">Tratamiento</th>
+                                              <th class="text-center whitespace-nowrap">Tipo Cobro</th>
+                                              <th class="text-center whitespace-nowrap">Productor Rotulado</th>
+                                              <th class="text-center whitespace-nowrap">CSG Productor Rotulado</th>
+                                              <th class="text-center whitespace-nowrap">Destrucción ID</th>
+                                          </tr>
                                       </thead>
                                       <tbody>
-                                          @php
-                                              $n=1;
-                                          @endphp
-                                          
                                           @foreach ($recepcions as $recepcion)
-                                      {{-- comment        {{$n.') '.$recepcion}}<br>
-                                                              @php
-                                                                  $m=1;
-                                                                  $n+=1;
-                                                              @endphp
-                                                              
-                                                          @foreach ($recepcion as $item)
-                                                          {{$m}}) {{$item}}<br>
-                                                              
-                                                                  @php
-                                                                      $m+=1;
-                                                                  @endphp
-                                                          @endforeach
-                                                          --}}  
-                                              {{-- comment  --}}    
-                                              <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
-                                                  <td class="pl-5 text-center">
-                                                      <p class="text-base flex font-medium leading-none text-gray-700">
-      
-                                                  
-      
-                                                              @if ($recepcion->numero_g_recepcion)
-                                                              {{$recepcion->numero_g_recepcion}}
-                                                              @endif
-                                                              
-                                                      </p>
-                                                      
-                                                  </td>
-                                                  <td class="text-center">
-                                                      <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                          
-                                                      
-                          
-                                                          @if ($recepcion->n_emisor)
-                                                              {{$recepcion->n_emisor}}
-                                                              
-                                                          @endif
-                                                      
-                                                          
-                                                      </p>
-                                                  
-                                                  </td>
-                                                  <td class="">
-                                                      <div class="flex items-center pl-5">
-                                                          <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                          
-                                                          
-                                                              @if ($recepcion->n_especie)
-                                                              {{$recepcion->n_especie}}
-                                                              
-                                                              @endif
-                                                          
-                                                              
-                                                          </p>
-                                                      
-                                                      </div>
-                                                  </td>
-                                                  <td class="pl-5">
-                                                      <div class="whitespace-nowrap flex items-center text-center">
-                                                          
-                                                          <p class="whitespace-nowrap text-sm leading-none text-gray-600 ml-2">
-                                                      
-                                                              @if ($recepcion->n_variedad)
-                                                                  {{$recepcion->n_variedad}}
-                                                                  
-                                                              @endif
-                                                          </p>
-                                                      </div>
-                                                  </td>
-                                                  <td class="pl-5 text-center whitespace-nowrap">
-                                                      <p class="whitespace-nowrap text-base text-center font-medium leading-none text-gray-700 mr-2">
-                          
-                                                  
-                                                      @if ($recepcion->fecha_g_recepcion)
-                                                              {{date('d M Y g:i a', strtotime($recepcion->fecha_g_recepcion))}}
-                                                              
-                                                              
-                                                          @endif
-                                                      
-                                                      </p>
-                                                  
-                                                  </td>
-                                                  
-                                                  <td class="pl-5 whitespace-nowrap">
-                                                      <p class="whitespace-nowrap  text-base flex font-medium leading-none text-gray-700 mr-2">
-      
-                                                  
-      
-                                                              @if ($recepcion->numero_documento_recepcion)
-                                                              {{$recepcion->numero_documento_recepcion}}
-                                                              @endif
-                                                              
-                                                      </p>
-                                                      
-                                                  </td>
-                                                      <td class="pl-5 whitespace-nowrap">
-                                                          <p class="whitespace-nowrap  text-base flex font-medium leading-none text-gray-700 mr-2">
-                          
-                                                          
-                          
-                                                          @if ($recepcion->cantidad)
-                                                              {{number_format($recepcion->cantidad)}}
-                                                          @endif
-                                                          
-                                                      </p>
-                                                      
-                                                  </td>
-                                                  
-                                                  <td class="pl-5">
-                                                  
-                          
-                                                      @if ($recepcion->peso_neto)
-                                                          {{number_format($recepcion->peso_neto)}}
-                                                      @endif
-                                                  
-                                                          
-                                                  
-                                              
-                                                  
-                                              
-                                                  </td>
-                                              
-                                                  <td class="pl-5 text-center">
-                                                      
-                                                      @if ($recepcion->nota_calidad==0)   
-                                                              S/N
-                                                      @elseif($recepcion->nota_calidad)
-                                                          {{number_format($recepcion->nota_calidad)}}
-                                                      @endif
-                                              
-                                                  
-                                                                                                  
-                                                  </td>
-                                                  
-                                                              
-                                              
-                                                  <td>
-                                                      @if ($recepcion->n_estado=='CERRADO')
-      
-                                                          <a href="{{route('informe.download',$recepcion)}}" target="_blank" >   
-                                                              <img class="w-10 my-2 mx-auto" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
-                                                          </a>
-      
-                                                          <button wire:click="reenviar_informe({{$recepcion->id}})" class="font-bold py-1 px-3 mt-2 rounded-full bg-green-500 text-white text-xs mb-2" type="submit" title="Reenviar Whatsapp">Reenviar Whatsapp</button>
-                              
-      
-                                                      @else
-                                                          <div class="relative px-5 pt-2">
-                                                              <button class="focus:ring-2 rounded-md focus:outline-none" onclick="dropdownFunction(this)" role="button" aria-label="option">
-                                                                  <svg class="dropbtn" onclick="dropdownFunction(this)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                                      <path d="M4.16667 10.8332C4.62691 10.8332 5 10.4601 5 9.99984C5 9.5396 4.62691 9.1665 4.16667 9.1665C3.70643 9.1665 3.33334 9.5396 3.33334 9.99984C3.33334 10.4601 3.70643 10.8332 4.16667 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                      <path d="M10 10.8332C10.4602 10.8332 10.8333 10.4601 10.8333 9.99984C10.8333 9.5396 10.4602 9.1665 10 9.1665C9.53976 9.1665 9.16666 9.5396 9.16666 9.99984C9.16666 10.4601 9.53976 10.8332 10 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                      <path d="M15.8333 10.8332C16.2936 10.8332 16.6667 10.4601 16.6667 9.99984C16.6667 9.5396 16.2936 9.1665 15.8333 9.1665C15.3731 9.1665 15 9.5396 15 9.99984C15 10.4601 15.3731 10.8332 15.8333 10.8332Z" stroke="#9CA3AF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                  </svg>
-                                                              </button>
-                                                              <div class="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 hidden">
-                                                                  <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                                                      <p>Edit</p>
-                                                                  </div>
-                                                                  <div tabindex="0" class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                                                                      <p>Delete</p>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      @endif
-                                                  </td>
-                                              
-                                              </tr>
-                                          
-                                      
-                                              
-                          
+                                          <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_empresa ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->tipo_g_recepcion ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->numero_g_recepcion ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_g_recepcion ? date('d M Y g:i a', strtotime($recepcion->fecha_g_recepcion)) : 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_transportista ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->id_exportadora ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->folio ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_cosecha ? date('d M Y', strtotime($recepcion->fecha_cosecha)) : 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_grupo ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->r_productor ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_productor ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_especie ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->id_variedad ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_envase ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_categoria ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->t_categoria ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_calibre ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_serie ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->cantidad ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->peso_neto ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_tipo ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->creacion_tipo ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->Notas ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_estado ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->N_tratamiento ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_tipo_cobro ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->N_productor_rotulado ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->CSG_productor_rotulado ?? 'N/A' }}</td>
+                                              <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_id ?? 'N/A' }}</td>
+                                          </tr>
                                           @endforeach
-                                      
-                                      
                                       </tbody>
-                                  </table>
+                                    </table>
+                                  
+                                  
                               
                                   
                                   </div>

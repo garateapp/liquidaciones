@@ -24,6 +24,7 @@ use App\Models\Temporada;
 use App\Models\Variedad;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
@@ -32,7 +33,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
 
@@ -73,7 +74,19 @@ class TemporadaShow extends Component
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
         $this->filters['etiquetas'] = $masastotal2->pluck('n_etiqueta')->unique()->sort()->values()->all();
+
+        if ($temporada->recepcion_start) {
+            $this->fechai = $temporada->recepcion_start;
+        } else {
+            $this->fechai = Carbon::now()->startOfYear()->format('Y-m-d');
+        }
         
+           
+        if ($temporada->recepcion_start) {
+            $this->fechaf = $temporada->recepcion_end;
+        }else{
+            $this->fechaf = Carbon::now()->format('Y-m-d');
+        }
     }
 
     public function checkEtiqueta($etiqueta)
@@ -137,7 +150,7 @@ class TemporadaShow extends Component
         
         $unique_categorianac = $masastotalnacional->pluck('n_categoria')->unique()->sort();
 
-        $unique_productores = $masastotal->pluck('n_emisor')->unique();
+        $unique_productores = $masastotal->pluck('c_productor')->unique();
 
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
@@ -197,147 +210,149 @@ class TemporadaShow extends Component
     }
 
     public function production_refresh()
-    {
-        $productions=Http::post('https://api.greenexweb.cl/api/ObtenerRecepcion');
-        $productions = $productions->json();
-        $ri=Recepcion::all();
+    {    $ri=Recepcion::all();
         $totali=$ri->count();
 
-        foreach ($productions as $production){
-            $id_g_recepcion=Null;//1
-            $tipo_g_recepcion=Null;//2
-            $numero_g_recepcion=Null;//3
-            $fecha_g_recepcion=Null;//4
-            $id_emisor=Null;//5
-            $r_emisor=Null;//6
-            //7
-            $n_emisor=Null;//8
-            $Codigo_Sag_emisor=Null;//9
-            $tipo_documento_recepcion=Null;//10
-            $numero_documento_recepcion=Null;//11
-            $n_especie=Null;//12
-            $n_variedad=Null;//13
-            $cantidad=Null;//14
-            $peso_neto=Null;//15
-            $nota_calidad=Null;//16
-            $n_estado=Null;//17
-         
-            $m=1;
-            foreach ($production as $item){
+        $dateRanges = [];
+        $start = new DateTime($this->fechai);
+        $end = new DateTime($this->fechaf);
+        $intervalDays=10;
+        
+    while ($start <= $end) {
+        $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+        if ($rangeEnd > $end) {
+            $rangeEnd = $end;
+        }
+        $dateRanges[] = [
+            'start' => $start->format('Y-m-d'),
+            'end' => $rangeEnd->format('Y-m-d')
+        ];
+        $start = (clone $rangeEnd)->modify("+1 day");
+    }
+
+        foreach($dateRanges as $date){
+
+            if ($this->temporada->exportadora_id) {
+                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,n_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=".$this->temporada->exportadora_id);
+            } else {
+                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,n_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=22");
+            }
+            
+           
+            $productions = $productions->json(); 
+
+            if(!IS_NULL($productions)){
+                foreach ($productions as $production) {
+                    $c_empresa = $production['c_empresa'] ?? null;
+                    $tipo_g_recepcion = $production['tipo_g_recepcion'] ?? null;
+                    $numero_g_recepcion = $production['numero_g_recepcion'] ?? null;
+                    $fecha_g_recepcion = $production['fecha_g_recepcion'] ?? null;
+                    $n_transportista = $production['n_transportista'] ?? null;
+                    $id_exportadora = $production['id_exportadora'] ?? null;
+                    $folio = $production['folio'] ?? null;
+                    $fecha_cosecha = $production['fecha_cosecha'] ?? null;
+                    $n_grupo = $production['n_grupo'] ?? null;
+                    $r_productor = $production['r_productor'] ?? null;
+                    $c_productor = $production['c_productor'] ?? null;
+                    $id_especie = $production['id_especie'] ?? null;
+                    $n_especie = $production['n_especie'] ?? null;
+                    $id_variedad = $production['id_variedad'] ?? null;
+                    $c_envase = $production['c_envase'] ?? null;
+                    $c_categoria = $production['c_categoria'] ?? null;
+                    $t_categoria = $production['t_categoria'] ?? null;
+                    $c_calibre = $production['c_calibre'] ?? null;
+                    $c_serie = $production['c_serie'] ?? null;
+                    $cantidad = $production['cantidad'] ?? null;
+                    $peso_neto = $production['peso_neto'] ?? null;
+                    $destruccion_tipo = $production['destruccion_tipo'] ?? null;
+                    $creacion_tipo = $production['creacion_tipo'] ?? null;
+                    $Notas = $production['Notas'] ?? null;
+                    $n_estado = $production['n_estado'] ?? null;
+                    $N_tratamiento = $production['N_tratamiento'] ?? null;
+                    $n_tipo_cobro = $production['n_tipo_cobro'] ?? null;
+                    $N_productor_rotulado = $production['N_productor_rotulado'] ?? null;
+                    $CSG_productor_rotulado = $production['CSG_productor_rotulado'] ?? null;
+                    $destruccion_id = $production['destruccion_id'] ?? null;
                 
-               
-
-                if($m==2){
-                    $id_g_recepcion=$item;
-                }
-                if($m==3){
-                    $tipo_g_recepcion=$item;
-                }
-                if($m==4){
-                    $numero_g_recepcion=$item;
-                }
-                if($m==5){
-                    $fecha_g_recepcion=$item;
-                }
-                if($m==6){
-                    $id_emisor=$item;
-                }
-                if($m==7){
-                    $r_emisor=$item;
-                }
-                if($m==8){
-                    $Codigo_Sag_emisor=$item;
-                }
-                if($m==9){
-                    $n_emisor=$item;
-                }
-                if($m==11){
-                    $tipo_documento_recepcion=$item;
-                }
-                if($m==12){
-                    $numero_documento_recepcion=$item;
-                }
-                if($m==13){
-                    $n_especie=$item;
-
-                }
-                if($m==14){
-                    $n_variedad=$item;
-                }
-                if($m==15){
-                    $cantidad=$item;
-                }
-                if($m==16){
-                    $peso_neto=$item;
-                }
-                if($m==17){
-                    $nota_calidad=$item;
-                }
-               if($m==18){
-                    $n_estado=$item;
-
-                       
-                    
-                        $cont=Recepcion::where('id_g_recepcion',$id_g_recepcion)->where('temporada_id',$this->temporada->id)->first();
-                        
-                        if($cont){
-                            
-                            $cont->forceFill([
-                                'id_g_recepcion' => $id_g_recepcion,//1
-                                'tipo_g_recepcion' => $tipo_g_recepcion,//2
-                                'numero_g_recepcion' => $numero_g_recepcion,//3
-                                'fecha_g_recepcion' => $fecha_g_recepcion,//4
-                                'id_emisor' => $id_emisor,//5
-                                'r_emisor' => $r_emisor,//6
-                                'n_emisor' => $n_emisor,//8
-                                'Codigo_Sag_emisor' => $Codigo_Sag_emisor,//9
-                                'tipo_documento_recepcion' => $tipo_documento_recepcion,//10
-                                'numero_documento_recepcion' => $numero_documento_recepcion,//11
-                                'n_especie' => $n_especie,//12
-                                'n_variedad' => $n_variedad,
-                                'cantidad' => $cantidad,
-                                'peso_neto' => $peso_neto,
-                                'nota_calidad' => $nota_calidad
-                                
-                            ])->save();
-                          /*  if(IS_NULL($cont->calidad)){
-                                Calidad::create([
-                                    'recepcion_id'=>$cont->id
-                                ]);
-                            }*/
-                            }
-                        else{
-                            
-                                $rec=Recepcion::create([
-                                    'id_g_recepcion' => $id_g_recepcion,//1
-                                    'tipo_g_recepcion' => $tipo_g_recepcion,//2
-                                    'numero_g_recepcion' => $numero_g_recepcion,//3
-                                    'fecha_g_recepcion' => $fecha_g_recepcion,//4
-                                    'id_emisor' => $id_emisor,//5
-                                    'r_emisor' => $r_emisor,//6
-                                    'n_emisor' => $n_emisor,//8
-                                    'Codigo_Sag_emisor' => $Codigo_Sag_emisor,//9
-                                    'tipo_documento_recepcion' => $tipo_documento_recepcion,//10
-                                    'numero_documento_recepcion' => $numero_documento_recepcion,//11
-                                    'n_especie' => $n_especie,//12
-                                    'n_variedad' => $n_variedad,
-                                    'cantidad' => $cantidad,
-                                    'peso_neto' => $peso_neto,
-                                    'nota_calidad' => $nota_calidad,
-                                    'n_estado' => $n_estado,
-                                    'temporada_id'=> $this->temporada->id
-                                    
-                                ]);
-                            
-                            
-                        }
-                    
-                }
-                $m+=1;
+                    $cont = Recepcion::where('numero_g_recepcion', $numero_g_recepcion)
+                        ->where('temporada_id', $this->temporada->id)
+                        ->where('folio', $folio)
+                        ->first();
                 
-            } 
+                    if ($cont) {
+                        $cont->forceFill([
+                            'c_empresa' => $c_empresa,
+                            'tipo_g_recepcion' => $tipo_g_recepcion,
+                            'numero_g_recepcion' => $numero_g_recepcion,
+                            'fecha_g_recepcion' => $fecha_g_recepcion,
+                            'n_transportista' => $n_transportista,
+                            'id_exportadora' => $id_exportadora,
+                            'folio' => $folio,
+                            'fecha_cosecha' => $fecha_cosecha,
+                            'n_grupo' => $n_grupo,
+                            'r_productor' => $r_productor,
+                            'c_productor' => $c_productor,
+                            'id_especie' => $id_especie,
+                            'n_especie' => $n_especie,
+                            'id_variedad' => $id_variedad,
+                            'c_envase' => $c_envase,
+                            'c_categoria' => $c_categoria,
+                            't_categoria' => $t_categoria,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'creacion_tipo' => $creacion_tipo,
+                            'Notas' => $Notas,
+                            'n_estado' => $n_estado,
+                            'N_tratamiento' => $N_tratamiento,
+                            'n_tipo_cobro' => $n_tipo_cobro,
+                            'N_productor_rotulado' => $N_productor_rotulado,
+                            'CSG_productor_rotulado' => $CSG_productor_rotulado,
+                            'destruccion_id' => $destruccion_id,
+                        ])->save();
+                    } else {
+                        Recepcion::create([
+                            'c_empresa' => $c_empresa,
+                            'tipo_g_recepcion' => $tipo_g_recepcion,
+                            'numero_g_recepcion' => $numero_g_recepcion,
+                            'fecha_g_recepcion' => $fecha_g_recepcion,
+                            'n_transportista' => $n_transportista,
+                            'id_exportadora' => $id_exportadora,
+                            'folio' => $folio,
+                            'fecha_cosecha' => $fecha_cosecha,
+                            'n_grupo' => $n_grupo,
+                            'r_productor' => $r_productor,
+                            'c_productor' => $c_productor,
+                            'id_especie' => $id_especie,
+                            'n_especie' => $n_especie,
+                            'id_variedad' => $id_variedad,
+                            'c_envase' => $c_envase,
+                            'c_categoria' => $c_categoria,
+                            't_categoria' => $t_categoria,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'creacion_tipo' => $creacion_tipo,
+                            'Notas' => $Notas,
+                            'n_estado' => $n_estado,
+                            'N_tratamiento' => $N_tratamiento,
+                            'n_tipo_cobro' => $n_tipo_cobro,
+                            'N_productor_rotulado' => $N_productor_rotulado,
+                            'CSG_productor_rotulado' => $CSG_productor_rotulado,
+                            'destruccion_id' => $destruccion_id,
+                            'temporada_id' => $this->temporada->id,
+                        ]);
+                    }
+                }
+            }
         }
 
+        $this->temporada->update([  'recepcion_start'=>$this->fechai,
+                                    'recepcion_end'=>$this->fechaf]);
         
         $rf=Recepcion::all();
         $total=$rf->count()-$ri->count();

@@ -22,12 +22,17 @@
                                 <strong class="text-xs text-red-600">{{$message}}</strong>
                             @enderror
                         </div>
-                        @php
-                            $especies=['1'=>'Cherries','2'=>'Carozos','3'=>'Kiwis','4'=>'Pomáceas']
-                        @endphp
+                      
                         <div class="mb-4">
                             {!! Form::label('especie_id', 'Especie') !!}
                             {!! Form::select('especie_id', $especies, null , ['class'=>'form-input block w-full mt-1']) !!}
+                        </div>
+                        @php
+                            $exportadoras=['22'=>'Greenex']
+                        @endphp
+                        <div class="mb-4">
+                            {!! Form::label('exportadora_id', 'Exportadora') !!}
+                            {!! Form::select('exportadora_id', $exportadoras, null , ['class'=>'form-input block w-full mt-1']) !!}
                         </div>
                         
     
