@@ -90,7 +90,11 @@
                                               </svg>
                                             </a>
                                           @else
-                                              {!! Form::text($name, $value, [$options]) !!}
+                                          
+                                          <input 
+                                          class="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none  rounded-md rounded-l-none shadow-sm -ml-1 w-4/6"
+                                          type="text" value=""  readonly/>
+
                                           @endif
                                             
 
