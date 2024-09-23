@@ -370,7 +370,14 @@ class TemporadaShow extends Component
         $totali=$ri->count();
 
         $dateRanges = [];
-        $start = new DateTime($this->fechai);
+
+        if($totali>0){
+            $ultimo = Proceso::orderBy('fecha_g_produccion', 'desc')->first();
+            $start = new DateTime($ultimo->fecha_g_produccion); // Usa la fecha más reciente
+        }else{
+            $start = new DateTime($this->fechai);
+        }
+
         $end = new DateTime($this->fechaf);
         $intervalDays=10;
         
@@ -539,6 +546,9 @@ class TemporadaShow extends Component
                     }
                 }
             }
+
+
+            $this->temporada->update(['recepcion_end'=>$this->fechaf]);
             
         }
 
