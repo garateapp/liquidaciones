@@ -465,7 +465,7 @@ class TemporadaShow extends Component
             
                     if ($cont) {
                         // Si el registro existe, se actualiza
-                        $cont->forceFill([
+                      /*  $cont->forceFill([
                             'tipo_g_produccion' => $tipo_g_produccion,
                             'numero_g_produccion' => $numero_g_produccion,
                             'fecha_g_produccion' => $fecha_g_produccion,
@@ -498,7 +498,7 @@ class TemporadaShow extends Component
                             'notas' => $notas,
                             'estado' => $estado,
                             'destruccion_tipo' => $destruccion_tipo,
-                        ])->save();
+                        ])->save();*/
                     } else {
                         // Si no existe el registro, se crea uno nuevo
                         Proceso::create([
