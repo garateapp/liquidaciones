@@ -106,7 +106,7 @@ class TemporadaShow extends Component
         
         $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
 
-        $procesos=Proceso::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $procesos=Proceso::where('temporada_id',$this->temporada->id)->orderBy('fecha_g_produccion', 'asc')->paginate($this->ctd);
         
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
@@ -380,7 +380,7 @@ class TemporadaShow extends Component
 
         $end = new DateTime($this->fechaf);
         $intervalDays=10;
-        
+
     while ($start <= $end) {
         $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
         if ($rangeEnd > $end) {
@@ -393,7 +393,9 @@ class TemporadaShow extends Component
         $start = (clone $rangeEnd)->modify("+1 day");
     }
 
-        foreach($dateRanges as $date){
+    //dd($dateRanges);
+      
+    foreach($dateRanges as $date){
 
             if ($this->temporada->exportadora_id) {
                 $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
@@ -468,6 +470,7 @@ class TemporadaShow extends Component
                     $cont = Proceso::where('numero_g_produccion', $numero_g_produccion)
                         ->where('temporada_id', $this->temporada->id)
                         ->where('folio', $folio)
+                        ->where('c_productor', $c_productor)
                         ->first();
             
                     if ($cont) {
@@ -569,6 +572,15 @@ class TemporadaShow extends Component
 
     public function recepcions_delete(){
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
+        foreach($recepcionall as $recepcion){
+            $recepcion->delete();
+        }
+
+        $this->render();
+    }
+
+    public function procesos_delete(){
+        $recepcionall=Proceso::where('temporada_id',$this->temporada->id)->get();
         foreach($recepcionall as $recepcion){
             $recepcion->delete();
         }

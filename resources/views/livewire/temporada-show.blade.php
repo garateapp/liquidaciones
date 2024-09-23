@@ -391,7 +391,7 @@
                               </button>
                               @if ($procesos->count())
                                   
-                                <button onclick="confirmDeletion()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
                                     <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
                                     <p class="text-sm font-medium leading-none text-white mt-1">{{$procesos->first()->created_at}}</p>
                                 </button>
@@ -3203,6 +3203,47 @@
               });
               
               @this.call('recepcions_delete').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                  Swal.fire(
+                      '¡Eliminado!',
+                      'Todos los registros han sido eliminados.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error',
+                      'Hubo un problema al eliminar los registros.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+</script>
+<script>
+  function confirmDeletionProceso() {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esta acción eliminará todos los registros.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'Por favor, espera mientras se eliminan los registros.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('procesos_delete').then(() => {
                   Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
                   Swal.fire(
                       '¡Eliminado!',
