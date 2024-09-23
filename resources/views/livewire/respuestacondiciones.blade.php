@@ -1,7 +1,7 @@
 <div>
 <!-- Mostrar mensaje de confirmación -->
 @if (session()->has('message'))
-    <div id="message1" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-md">
+    <div id="message1" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-lg">
         <div>
             {{ session('message') }}
         </div>
@@ -14,7 +14,7 @@
 @endif
 
 @if (session()->has('message2'))
-    <div id="message2" class="fixed top-4 left-1/2 transform -translate-x-1/2 mt-12 bg-red-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-md">
+    <div id="message2" class="fixed top-4 left-1/2 transform -translate-x-1/2 mt-12 bg-red-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-lg">
         <div>
             {{ session('message2') }}
         </div>

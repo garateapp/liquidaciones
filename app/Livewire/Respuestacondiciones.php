@@ -31,7 +31,10 @@ class Respuestacondiciones extends Component
         ]);
 
         // Enviar un mensaje o actualizar visualmente que la respuesta fue guardada
-        session()->flash('message', 'Respuesta registrada correctamente');
+        $cant=$this->razonsocial->respuestas->count();
+        $condicions = Condicionproductor::with('opcions')->count();
+
+        session()->flash('message', 'Respuesta registrada correctamente '.$cant.'/'.$condicions.' registradas');
     }
 
     // Función para registrar la respuesta de una condición
@@ -47,7 +50,10 @@ class Respuestacondiciones extends Component
         // Enviar un mensaje o actualizar visualmente que la respuesta fue guardada
         $respuesta->delete();
 
-        session()->flash('message2', 'Respuesta eliminada correctamente');
+        $cant=$this->razonsocial->respuestas->count();
+        $condicions = Condicionproductor::with('opcions')->count();
+
+        session()->flash('message2', 'Respuesta eliminada correctamente '.$cant.'/'.$condicions.' registradas');
     }
     
 
