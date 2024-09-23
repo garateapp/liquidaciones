@@ -1,15 +1,31 @@
 <div>
-     <!-- Mostrar mensaje de confirmación -->
-     @if (session()->has('message'))
-        <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
+<!-- Mostrar mensaje de confirmación -->
+@if (session()->has('message'))
+    <div id="message1" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-md">
+        <div>
             {{ session('message') }}
         </div>
-    @endif
-    @if (session()->has('message2'))
-        <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+        <button onclick="document.getElementById('message1').style.display='none';" class="ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+@endif
+
+@if (session()->has('message2'))
+    <div id="message2" class="fixed top-4 left-1/2 transform -translate-x-1/2 mt-12 bg-red-500 text-white p-4 rounded-lg shadow-lg flex items-start justify-between w-full max-w-md">
+        <div>
             {{ session('message2') }}
         </div>
-    @endif
+        <button onclick="document.getElementById('message2').style.display='none';" class="ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+@endif
+
 
     <h1 class="text-center mt-4 mb-2 font-bold text-2xl">Condiciones del Productor</h1>
                             
