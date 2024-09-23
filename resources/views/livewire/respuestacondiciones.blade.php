@@ -80,7 +80,7 @@
                                             $respuestaSelected = $razonsocial->respuestas->where('opcion_condicion_id',$primerObjeto)->first();
                                         @endphp
                                         
-                                        @if ($item->value)
+                                        @if (!IS_NULL($item->value))
                                             {{ $item->text }}
                                         @else
                                             {{$respuestaSelected->value}}
