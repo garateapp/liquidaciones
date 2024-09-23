@@ -76,7 +76,17 @@
                                 
                                     <a href="#" wire:click.prevent="eliminarRespuesta({{ $item->id }})"
                                         class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-green-600 hover:bg-red-500 text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
-                                        {{ $item->text }}
+                                        @php
+                                            $respuestaSelected = $razonsocial->respuestas->where('opcion_condicion_id',$primerObjeto)->first();
+                                        @endphp
+                                        
+                                        @if ($item->value)
+                                            {{ $item->text }}
+                                        @else
+                                            {{$respuestaSelected->value}}
+                                        @endif
+                                           
+
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
                                             <path fill="currentColor"
                                                 d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
@@ -96,16 +106,36 @@
 
                         @else
                              {{-- Mostrar todas las opciones si no se ha registrado una respuesta --}}
-                            @foreach ($condicion->opcions as $item)
-                                <a href="#" wire:click.prevent="registrarRespuesta({{ $item->id }})"
-                                    class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-green-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
-                                    {{ $item->text }}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
-                                        <path fill="currentColor"
-                                            d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                    </svg>
-                                </a>
+                             @foreach ($condicion->opcions as $item)
+                                @if ($item->value)
+                                    <a href="#" wire:click.prevent="registrarRespuesta({{ $item->id }})"
+                                        class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-green-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
+                                        {{ $item->text }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
+                                            <path fill="currentColor"
+                                                d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                                        </svg>
+                                    </a>
+                                @else
+                                    <div class="flex">
+                                        <!-- Input para capturar el valor numérico -->
+                                        <input type="number" step="0.01" wire:model.defer="valores.{{ $item->id }}"
+                                                class="py-3 mr-2 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
+                            
+                                        <!-- Botón para guardar el valor y la opción -->
+                                        <a href="#" wire:click.prevent="registrarRespuestaConValor({{ $item->id }})"
+                                            class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-green-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
+                                            Guardar
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
+                                                <path fill="currentColor"
+                                                      d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                                            </svg>
+                                         </a>
+                                    </div>
+                                @endif
                             @endforeach
+                         
+
                         @endif
                    
             </div>

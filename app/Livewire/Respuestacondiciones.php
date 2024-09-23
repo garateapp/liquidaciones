@@ -12,6 +12,8 @@ class Respuestacondiciones extends Component
 {   public $razonsocial;
     public $temporada;
 
+    public $valores = [];
+
     public function mount(Razonsocial $razonsocial,Temporada $temporada)
     {
         $this->razonsocial = $razonsocial;
@@ -37,6 +39,27 @@ class Respuestacondiciones extends Component
         session()->flash('message', 'Respuesta registrada correctamente '.$cant.'/'.$condicions.' registradas');
     }
 
+    public function registrarRespuestaConValor($opcionId)
+    {
+        // Accede al valor dentro de la propiedad 'valores' usando el 'opcionId' como clave
+        $valor = $this->valores[$opcionId] ?? null;
+    
+        // Asegúrate de que el valor esté presente y sea válido
+        if ($valor !== null && is_numeric($valor)) {
+            Respuestacondicion::create([
+                'razonsocial_id' => $this->razonsocial->id,
+                'opcion_condicion_id' => $opcionId,
+                'temporada_id' => $this->temporada->id,
+                'value' => $valor,
+            ]);
+    
+            session()->flash('message', 'Respuesta registrada correctamente con el valor: ' . $valor);
+        } else {
+            session()->flash('error', 'Por favor ingresa un valor numérico válido.');
+        }
+    }
+    
+
     // Función para registrar la respuesta de una condición
     public function eliminarRespuesta($opcionId)
     {
@@ -55,6 +78,7 @@ class Respuestacondiciones extends Component
 
         session()->flash('message2', 'Respuesta eliminada correctamente '.$cant.'/'.$condicions.' registradas');
     }
+    
     
 
     public function render()
