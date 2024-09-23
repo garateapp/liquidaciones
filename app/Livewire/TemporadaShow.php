@@ -106,7 +106,7 @@ class TemporadaShow extends Component
         
         $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
 
-        $procesos=Proceso::where('temporada_id',$this->temporada->id)->orderBy('fecha_g_produccion', 'asc')->paginate($this->ctd);
+        $procesos=Proceso::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
@@ -393,7 +393,7 @@ class TemporadaShow extends Component
         $start = (clone $rangeEnd)->modify("+1 day");
     }
 
-    //dd($dateRanges);
+   
       
     foreach($dateRanges as $date){
 
@@ -431,6 +431,8 @@ class TemporadaShow extends Component
            
             $productions = $productions->json(); 
 
+        //    dd($productions);
+
             if (!IS_NULL($productions)) {
                 foreach ($productions as $production) {
                     $tipo_g_produccion = $production['tipo_g_produccion'] ?? null;
@@ -450,7 +452,7 @@ class TemporadaShow extends Component
                     $cantidad = $production['cantidad'] ?? null;
                     $peso_neto = $production['peso_neto'] ?? null;
                     $id_empresa = $production['id_empresa'] ?? null;
-                    $fecha_recepcion = $production['fecha_recepcion'] ?? null;
+                    $fecha_cosecha = $production['fecha_cosecha'] ?? null;
                     $folio = $production['folio'] ?? null;
                     $id_exportadora = $production['id_exportadora'] ?? null;
                     $id_especie = $production['id_especie'] ?? null;
@@ -462,15 +464,23 @@ class TemporadaShow extends Component
                     $n_variedad_rotulacion = $production['n_variedad_rotulacion'] ?? null;
                     $peso_std_embalaje = $production['peso_std_embalaje'] ?? null;
                     $creacion_tipo = $production['creacion_tipo'] ?? null;
-                    $notas = $production['notas'] ?? null;
-                    $estado = $production['estado'] ?? null;
+                    $notas = $production['Nota_Calidad'] ?? null;
+                    $estado = $production['Estado'] ?? null;
                     $destruccion_tipo = $production['destruccion_tipo'] ?? null;
             
                     // Busca si ya existe el registro en la tabla `proceso` basado en `numero_g_produccion`, `temporada_id` y `folio`
                     $cont = Proceso::where('numero_g_produccion', $numero_g_produccion)
                         ->where('temporada_id', $this->temporada->id)
                         ->where('folio', $folio)
+                        ->where('tipo_g_produccion', $tipo_g_produccion)
+                        ->where('fecha_g_produccion', $fecha_g_produccion)
+                        ->where('fecha_recepcion', $fecha_cosecha)
+                        ->where('cantidad', $cantidad)
+                        ->where('peso_neto', $peso_neto)
+                        ->where('creacion_tipo', $creacion_tipo)
                         ->where('c_productor', $c_productor)
+                        ->where('id_embalaje',$id_embalaje)
+                        ->where('Estado',$estado)
                         ->first();
             
                     if ($cont) {
@@ -529,7 +539,7 @@ class TemporadaShow extends Component
                             'cantidad' => $cantidad,
                             'peso_neto' => $peso_neto,
                             'id_empresa' => $id_empresa,
-                            'fecha_recepcion' => $fecha_recepcion,
+                            'fecha_recepcion' => $fecha_cosecha,
                             'folio' => $folio,
                             'id_exportadora' => $id_exportadora,
                             'id_especie' => $id_especie,
@@ -542,7 +552,7 @@ class TemporadaShow extends Component
                             'peso_std_embalaje' => $peso_std_embalaje,
                             'creacion_tipo' => $creacion_tipo,
                             'notas' => $notas,
-                            'estado' => $estado,
+                            'Estado' => $estado,
                             'destruccion_tipo' => $destruccion_tipo,
                             'temporada_id' => $this->temporada->id,
                         ]);
@@ -551,7 +561,6 @@ class TemporadaShow extends Component
             }
 
 
-            $this->temporada->update(['recepcion_end'=>$this->fechaf]);
             
         }
 

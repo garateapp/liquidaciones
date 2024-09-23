@@ -1366,19 +1366,20 @@
               </select>
               @endif
 
-              @if ($vista=="show")
+              @if ($vista=="show" || $vista=="Procesos")
                   <div class="flex">
-                    <div>
-                      <p class="text-center">Ordenar por:</p>
-                       <!-- Select para columna de orden -->
-                      <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="sub.csg_count">Cantidad de CSG</option>
-                        <option value="razonsocials.name">Nombre</option>
-                        <option value="razonsocials.rut">RUT</option>
-                        <!-- Agrega más opciones según tus columnas disponibles -->
-                    </select>
-                  </div>
-
+                    @if ($vista=="show")
+                      <div>
+                        <p class="text-center">Ordenar por:</p>
+                          <!-- Select para columna de orden -->
+                          <select wire:model.live="sortBy" class="max-w-5xl mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-8 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="sub.csg_count">Cantidad de CSG</option>
+                            <option value="razonsocials.name">Nombre</option>
+                            <option value="razonsocials.rut">RUT</option>
+                            <!-- Agrega más opciones según tus columnas disponibles -->
+                        </select>
+                      </div>
+                    @endif
                     <!-- Select para dirección de orden -->
                     <div>
                       <p class="text-center">Orden:</p>
