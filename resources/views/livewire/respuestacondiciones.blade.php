@@ -80,7 +80,7 @@
                                             $respuestaSelected = $razonsocial->respuestas->where('opcion_condicion_id',$primerObjeto)->first();
                                         @endphp
                                         
-                                        @if ($item->value)
+                                        @if (!IS_NULL($item->value))
                                             {{ $item->text }}
                                         @else
                                             {{$respuestaSelected->value}}
@@ -107,7 +107,7 @@
                         @else
                              {{-- Mostrar todas las opciones si no se ha registrado una respuesta --}}
                              @foreach ($condicion->opcions as $item)
-                                @if ($item->value)
+                                @if (!IS_NULL($item->value))
                                     <a href="#" wire:click.prevent="registrarRespuesta({{ $item->id }})"
                                         class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-green-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
                                         {{ $item->text }}
