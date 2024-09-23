@@ -59,7 +59,7 @@
                                 @if ($item->id==$primerObjeto)
                                 
                                     <a href="#" wire:click.prevent="eliminarRespuesta({{ $item->id }})"
-                                        class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-red-600 hover:bg-red-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
+                                        class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-green-600 hover:bg-green-500 text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
                                         {{ $item->text }}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
                                             <path fill="currentColor"
@@ -82,7 +82,7 @@
                              {{-- Mostrar todas las opciones si no se ha registrado una respuesta --}}
                             @foreach ($condicion->opcions as $item)
                                 <a href="#" wire:click.prevent="registrarRespuesta({{ $item->id }})"
-                                    class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
+                                    class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-green-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white">
                                     {{ $item->text }}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-5 w-5 ms-3">
                                         <path fill="currentColor"
