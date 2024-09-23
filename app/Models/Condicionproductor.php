@@ -14,4 +14,6 @@ class Condicionproductor extends Model
     public function opcions(){
         return $this->hasmany('App\Models\Opcion_condicion');
     }
+
+
 }

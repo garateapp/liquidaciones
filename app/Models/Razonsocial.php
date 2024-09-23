@@ -16,4 +16,9 @@ class Razonsocial extends Model
             $query->where('name','like','%'.$serie.'%')->orwhere('csg','like','%'.$serie.'%');
         });
     }
+
+    public function respuestas(){
+        return $this->hasmany('App\Models\Respuestacondicion');
+    }
+    
 }

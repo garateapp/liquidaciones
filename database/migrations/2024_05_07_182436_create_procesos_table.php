@@ -18,19 +18,39 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
-            $table->string('agricola');
-            $table->integer('n_proceso');
-            $table->string('especie');
-            $table->string('variedad');
-            $table->string('fecha');
-            $table->integer('kilos_netos');
-            $table->integer('id_empresa');
-            $table->string('informe')->nullable();
-            $table->integer('exp');
-            $table->integer('comercial');
-            $table->integer('desecho');
-            $table->integer('merma');
+
+            $table->string('tipo_g_produccion')->nullable();
+            $table->string('numero_g_produccion')->nullable();
+            $table->string('fecha_g_produccion')->nullable();
+            $table->string('tipo')->nullable();
+            $table->string('id_productor_proceso')->nullable();
+            $table->string('n_productor_proceso')->nullable();
             $table->string('c_productor')->nullable();
+            $table->string('n_productor')->nullable();
+            $table->string('t_categoria')->nullable();
+            $table->string('c_categoria')->nullable();
+            $table->string('c_embalaje')->nullable();
+            $table->string('c_calibre')->nullable();
+            $table->string('c_serie')->nullable();
+            $table->string('c_etiqueta')->nullable();
+            $table->string('cantidad')->nullable();
+            $table->string('peso_neto')->nullable();
+            $table->string('id_empresa')->nullable();
+            $table->string('fecha_recepcion')->nullable();
+            $table->string('folio')->nullable();
+            $table->string('id_exportadora')->nullable();
+            $table->string('id_especie')->nullable();
+            $table->string('id_variedad')->nullable();
+            $table->string('id_linea_proceso')->nullable();
+            $table->string('numero_guia_recepcion')->nullable();
+            $table->string('id_embalaje')->nullable();
+            $table->string('n_tipo_proceso')->nullable();
+            $table->string('n_variedad_rotulacion')->nullable();
+            $table->string('peso_std_embalaje')->nullable();
+            $table->string('creacion_tipo')->nullable();
+            $table->string('notas')->nullable(); // Usamos 'text' en lugar de 'string' para notas más largas
+            $table->string('Estado')->nullable();
+            $table->string('destruccion_tipo')->nullable();
 
             $table->timestamps();
         });

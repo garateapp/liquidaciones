@@ -74,15 +74,17 @@
                                          
                                  </div>
                             </div>
-                            <h1 class="text-center mt-4 mb-2 font-bold text-2xl">Condiciones del Productor</h1>
-                            <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mt-2 mx-2 mb-2">
+                            
+                            @livewire('respuestacondiciones', ['temporada' => $temporada,'razonsocial' => $razonsocial])
+
+                            <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mt-2 mx-2 mb-2 hidden">
                               @foreach ($condicions as $condicion)
                                 <div>
                                     <div class="p-7 rounded-xl bg-amber-100 dark:bg-neutral-700/70">
                                         <h3 class="text-xl font-semibold mb-7">{{$condicion->name}}</h3>
                                         <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">Selecciona una alternativa.</p>
                                         @foreach ($condicion->opcions as $item)
-                                          @if ($item->value)
+                                          @if (!IS_NULL($item->value))
                                             <a href="#" class="py-3 flex items-center mb-2 justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">
                                               {{$item->text}}
                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
@@ -91,9 +93,7 @@
                                             </a>
                                           @else
                                           
-                                          <input 
-                                          class="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none mb-2 rounded-l-none shadow-sm -ml-1 w-full rounded-lg"
-                                          type="text" value="" placeholder="{{$item->text}}" readonly/>
+                                          <input class="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none mb-2 rounded-l-none shadow-sm -ml-1 w-full rounded-lg" type="text" value="" placeholder="{{$item->text}}"/>
 
                                           @endif
                                             
@@ -103,68 +103,8 @@
                                     </div>
                                 </div>
                               @endforeach
-                                {{-- comment
-                                <div>
-                                    <div class="p-7 rounded-xl bg-emerald-100 dark:bg-neutral-700/70">
-                                        <h3 class="text-xl font-semibold mb-7">Finance and Banking</h3>
-                                        <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">The ability to independentiy value an enterprise is an essential tool for marking business and strategic decisions.</p>
-                                        <a href="#" class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">Get Started
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
-                                                <path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                
-                                <div>
-                                    <div class="p-7 rounded-xl bg-red-100 dark:bg-neutral-700/70">
-                                        <h3 class="text-xl font-semibold mb-7">Strategic Business Leader</h3>
-                                        <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">Strategic Business Leader is a trainig course from the Strategic Professional level.</p>
-                                        <a href="#" class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">Get Started
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
-                                                <path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                
-                                <div>
-                                    <div class="p-7 rounded-xl bg-red-100 dark:bg-neutral-700/70">
-                                        <h3 class="text-xl font-semibold mb-7">Preparatory Course</h3>
-                                        <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">The ability to independently value an enterprise is an essential tool for making business and strategic decisions.</p>
-                                        <a href="#" class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">Get Started
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
-                                                <path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                
-                                <div>
-                                    <div class="p-7 rounded-xl bg-amber-100 dark:bg-neutral-700/70">
-                                        <h3 class="text-xl font-semibold mb-7">Business English Writing Skills</h3>
-                                        <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">A unique opportunity to gain guidance and feedback from our expert.</p>
-                                        <a href="#" class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">Get Started
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
-                                                <path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                
-                                <div>
-                                    <div class="p-7 rounded-xl bg-emerald-100 dark:bg-neutral-700/70">
-                                        <h3 class="text-xl font-semibold mb-7">Strategic Business Reporting</h3>
-                                        <p class="font-medium leading-7 text-gray-500 mb-6 dark:text-gray-400">Strategic Business Reporting is a Professional level training course. It covers topics related to advanced financial reporting, inccluding leasing.</p>
-                                        <a href="#" class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-white hover:bg-purple-500 hover:text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">Get Started
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
-                                                <path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                               --}}
-                          </div>
+                            </div>
+
                          </div>
 
                           <div class="flex flex-col hidden">

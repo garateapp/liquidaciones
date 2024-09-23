@@ -130,7 +130,7 @@
                      Filtros   Resumen
                       @elseif ($vista=='show')
                      Filtros   del Listado de Productores
-                     @elseif ($vista=='Recepcion')
+                     @elseif ($vista=='Recepcion' || $vista=='Procesos')
                     
                       @else
                      Filtros   {{$vista}} 
@@ -287,7 +287,119 @@
                               </div>
                           </div>
                         </div>
-
+                      @elseif($vista=="Procesos")
+                      <div class="w-6/12">
+                        <h2 class="text-2xl font-semibold my-4"> 
+                          Sincronización Procesos
+                        </h2>
+                        @php
+                          $cant=0;
+                          $cantprocesos=0;
+                            foreach($procesosall as $recepcion){
+                                $cant+=$recepcion->peso_neto;
+                            }
+                            foreach($procesosall as $recepcion){
+                                $cantprocesos+=$recepcion->peso_neto;
+                            }
+                    
+                        @endphp
+                         <div class="flex">
+                          <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                             <div class="flex items-center justify-center">
+                                <div class="flex-shrink-0 text-center">
+                                   <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
+                                   <h3 class="text-base font-normal text-gray-500">Especie</h3>
+                                </div>
+                               
+                             </div>
+                          </div>
+                        </div>
+                        <div class="flex">
+                          <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                             <div class="flex items-center justify-center">
+                                <div class="flex-shrink-0 text-center">
+                                   <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->pluck('numero_g_recepcion')->unique()->sort()->count())}}</span>
+                                   <h3 class="text-base font-normal text-gray-500">Procesos</h3>
+                                </div>
+                               
+                             </div>
+                          </div>
+                          <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                            <div class="flex items-center justify-center">
+                               <div class="flex-shrink-0 text-center">
+                                  <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->count())}}</span>
+                                  <h3 class="text-base font-normal text-gray-500">Folios</h3>
+                               </div>
+                              
+                            </div>
+                         </div>
+                          <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                              @if ($filters['razonsocial'])
+                                  <div class="flex items-center justify-center content-center">
+                                              <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cantprocesos)}}/</span>
+                                              <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
+                                         
+                                  
+                                  </div>
+                              @endif
+          
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant)}}</span>
+                                     <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                  </div>
+                                 
+                               </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="text-xl font-bold  flex w-full">
+                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                      
+                            <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                        <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path class="heroicon-ui"
+                                                  d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                        </svg>
+                                        <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                              
+                                </div>
+                              
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
+                              <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                  <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                     <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
+                                      <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                  </div>
+                              </div>
+                              <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                  <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                    <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
+                                      <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                            <div class="grid grid-cols-2 gap-x-4">
+                              <button onclick="confirmSyncProceso()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                  <p class="text-sm font-medium leading-none text-white">Sincronizar Procesos</p>
+                              </button>
+                              @if ($procesos->count())
+                                  
+                                <button onclick="confirmDeletion()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                    <p class="text-sm font-medium leading-none text-white mt-1">{{$procesos->first()->created_at}}</p>
+                                </button>
+                              
+                              @endif
+                            </div>
+                        </div>
+                      </div>
                       @else
                         <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
                             Cantidad total: {{$razonsall->count()}} @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
@@ -2762,110 +2874,215 @@
                 @if ($vista=='Recepcion') 
                 
                     
-                <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                  @if ($recepcions->count())
-                      <div class="">
-                          {{$recepcions->links()}}
-                      </div>
-              
-                  @endif 
-                      <div class="flex flex-col">
-                          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                              <div class="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
-                                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                      
-                             
-                                    <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
-                                      <thead class="bg-gray-50 rounded-full">
-                                          <tr>
-                                              <th class="text-center whitespace-nowrap">Empresa</th>
-                                              <th class="text-center whitespace-nowrap">Tipo Recepción</th>
-                                              <th class="text-center whitespace-nowrap">Número Recepción</th>
-                                              <th class="text-center whitespace-nowrap">Fecha Recepción</th>
-                                              <th class="text-center whitespace-nowrap">Transportista</th>
-                                              <th class="text-center whitespace-nowrap">Exportadora</th>
-                                              <th class="text-center whitespace-nowrap">Folio</th>
-                                              <th class="text-center whitespace-nowrap">Fecha Cosecha</th>
-                                              <th class="text-center whitespace-nowrap">Grupo</th>
-                                              <th class="text-center whitespace-nowrap">Productor</th>
-                                              <th class="text-center whitespace-nowrap">Código Productor</th>
-                                              <th class="text-center whitespace-nowrap">Especie</th>
-                                              <th class="text-center whitespace-nowrap">Variedad</th>
-                                              <th class="text-center whitespace-nowrap">Envase</th>
-                                              <th class="text-center whitespace-nowrap">Categoría</th>
-                                              <th class="text-center whitespace-nowrap">Subcategoría</th>
-                                              <th class="text-center whitespace-nowrap">Calibre</th>
-                                              <th class="text-center whitespace-nowrap">Serie</th>
-                                              <th class="text-center whitespace-nowrap">Cantidad</th>
-                                              <th class="text-center whitespace-nowrap">Peso Neto</th>
-                                              <th class="text-center whitespace-nowrap">Destrucción Tipo</th>
-                                              <th class="text-center whitespace-nowrap">Creación Tipo</th>
-                                              <th class="text-center whitespace-nowrap">Notas</th>
-                                              <th class="text-center whitespace-nowrap">Estado</th>
-                                              <th class="text-center whitespace-nowrap">Tratamiento</th>
-                                              <th class="text-center whitespace-nowrap">Tipo Cobro</th>
-                                              <th class="text-center whitespace-nowrap">Productor Rotulado</th>
-                                              <th class="text-center whitespace-nowrap">CSG Productor Rotulado</th>
-                                              <th class="text-center whitespace-nowrap">Destrucción ID</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          @foreach ($recepcions as $recepcion)
-                                          <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_empresa ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->tipo_g_recepcion ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->numero_g_recepcion ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_g_recepcion ? date('d M Y g:i a', strtotime($recepcion->fecha_g_recepcion)) : 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_transportista ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->id_exportadora ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->folio ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_cosecha ? date('d M Y', strtotime($recepcion->fecha_cosecha)) : 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_grupo ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->r_productor ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_productor ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_especie ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->id_variedad ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_envase ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_categoria ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->t_categoria ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_calibre ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->c_serie ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->cantidad ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->peso_neto ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_tipo ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->creacion_tipo ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->Notas ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_estado ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->N_tratamiento ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->n_tipo_cobro ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->N_productor_rotulado ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->CSG_productor_rotulado ?? 'N/A' }}</td>
-                                              <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_id ?? 'N/A' }}</td>
-                                          </tr>
-                                          @endforeach
-                                      </tbody>
-                                    </table>
+                  <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+                      @if ($recepcions->count())
+                          <div class="">
+                              {{$recepcions->links()}}
+                          </div>
+                  
+                      @endif 
+                          <div class="flex flex-col">
+                              <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                  <div class="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
+                                      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                          
+                                
+                                        <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
+                                          <thead class="bg-gray-50 rounded-full">
+                                              <tr>
+                                                  <th class="text-center whitespace-nowrap">Empresa</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo Recepción</th>
+                                                  <th class="text-center whitespace-nowrap">Número Recepción</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha Recepción</th>
+                                                  <th class="text-center whitespace-nowrap">Transportista</th>
+                                                  <th class="text-center whitespace-nowrap">Exportadora</th>
+                                                  <th class="text-center whitespace-nowrap">Folio</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha Cosecha</th>
+                                                  <th class="text-center whitespace-nowrap">Grupo</th>
+                                                  <th class="text-center whitespace-nowrap">Productor</th>
+                                                  <th class="text-center whitespace-nowrap">Código Productor</th>
+                                                  <th class="text-center whitespace-nowrap">Especie</th>
+                                                  <th class="text-center whitespace-nowrap">Variedad</th>
+                                                  <th class="text-center whitespace-nowrap">Envase</th>
+                                                  <th class="text-center whitespace-nowrap">Categoría</th>
+                                                  <th class="text-center whitespace-nowrap">Subcategoría</th>
+                                                  <th class="text-center whitespace-nowrap">Calibre</th>
+                                                  <th class="text-center whitespace-nowrap">Serie</th>
+                                                  <th class="text-center whitespace-nowrap">Cantidad</th>
+                                                  <th class="text-center whitespace-nowrap">Peso Neto</th>
+                                                  <th class="text-center whitespace-nowrap">Destrucción Tipo</th>
+                                                  <th class="text-center whitespace-nowrap">Creación Tipo</th>
+                                                  <th class="text-center whitespace-nowrap">Notas</th>
+                                                  <th class="text-center whitespace-nowrap">Estado</th>
+                                                  <th class="text-center whitespace-nowrap">Tratamiento</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo Cobro</th>
+                                                  <th class="text-center whitespace-nowrap">Productor Rotulado</th>
+                                                  <th class="text-center whitespace-nowrap">CSG Productor Rotulado</th>
+                                                  <th class="text-center whitespace-nowrap">Destrucción ID</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              @foreach ($recepcions as $recepcion)
+                                              <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_empresa ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->tipo_g_recepcion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->numero_g_recepcion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_g_recepcion ? date('d M Y g:i a', strtotime($recepcion->fecha_g_recepcion)) : 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->n_transportista ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->id_exportadora ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->folio ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->fecha_cosecha ? date('d M Y', strtotime($recepcion->fecha_cosecha)) : 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->n_grupo ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->r_productor ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_productor ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->n_especie ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->id_variedad ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_envase ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_categoria ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->t_categoria ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_calibre ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->c_serie ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->cantidad ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->peso_neto ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_tipo ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->creacion_tipo ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->Notas ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->n_estado ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->N_tratamiento ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->n_tipo_cobro ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->N_productor_rotulado ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->CSG_productor_rotulado ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $recepcion->destruccion_id ?? 'N/A' }}</td>
+                                              </tr>
+                                              @endforeach
+                                          </tbody>
+                                        </table>
+                                      
+                                      
                                   
-                                  
-                              
-                                  
+                                      
+                                      </div>
                                   </div>
                               </div>
                           </div>
-                      </div>
-                  @if ($recepcions->count())
-                      <div class="">
-                          {{$recepcions->links()}}
-                      </div>
-              
-                  @endif 
-              </div>
+                      @if ($recepcions->count())
+                          <div class="">
+                              {{$recepcions->links()}}
+                          </div>
+                  
+                      @endif 
+                  </div>
 
                 @endif
 
                 @if ($vista=='Procesos') 
                         
-                    @livewire('proceso-search',['temporada_id'=>$temporada->id])
+                  <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+                      @if ($procesos->count())
+                          <div class="">
+                              {{$procesos->links()}}
+                          </div>
+                  
+                      @endif 
+                          <div class="flex flex-col">
+                              <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                  <div class="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
+                                      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                          
+                                
+                                        <table class="min-w-full divide-y divide-gray-200 mb-20 pb-20">
+                                          <thead class="bg-gray-50 rounded-full">
+                                              <tr>
+                                                  <th class="text-center whitespace-nowrap">Empresa</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo Producción</th>
+                                                  <th class="text-center whitespace-nowrap">Número Producción</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha Producción</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo</th>
+                                                  <th class="text-center whitespace-nowrap">ID Productor Proceso</th>
+                                                  <th class="text-center whitespace-nowrap">Nombre Productor Proceso</th>
+                                                  <th class="text-center whitespace-nowrap">Código Productor</th>
+                                                  <th class="text-center whitespace-nowrap">Nombre Productor</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo Categoría</th>
+                                                  <th class="text-center whitespace-nowrap">Código Categoría</th>
+                                                  <th class="text-center whitespace-nowrap">Código Embalaje</th>
+                                                  <th class="text-center whitespace-nowrap">Calibre</th>
+                                                  <th class="text-center whitespace-nowrap">Serie</th>
+                                                  <th class="text-center whitespace-nowrap">Etiqueta</th>
+                                                  <th class="text-center whitespace-nowrap">Cantidad</th>
+                                                  <th class="text-center whitespace-nowrap">Peso Neto</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha Recepción</th>
+                                                  <th class="text-center whitespace-nowrap">Folio</th>
+                                                  <th class="text-center whitespace-nowrap">ID Exportadora</th>
+                                                  <th class="text-center whitespace-nowrap">ID Especie</th>
+                                                  <th class="text-center whitespace-nowrap">ID Variedad</th>
+                                                  <th class="text-center whitespace-nowrap">ID Línea Proceso</th>
+                                                  <th class="text-center whitespace-nowrap">Número Guía Recepción</th>
+                                                  <th class="text-center whitespace-nowrap">ID Embalaje</th>
+                                                  <th class="text-center whitespace-nowrap">Tipo Proceso</th>
+                                                  <th class="text-center whitespace-nowrap">Variedad Rotulación</th>
+                                                  <th class="text-center whitespace-nowrap">Peso Std Embalaje</th>
+                                                  <th class="text-center whitespace-nowrap">Creación Tipo</th>
+                                                  <th class="text-center whitespace-nowrap">Notas</th>
+                                                  <th class="text-center whitespace-nowrap">Estado</th>
+                                                  <th class="text-center whitespace-nowrap">Destrucción Tipo</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              @foreach ($procesos as $proceso)
+                                              <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_empresa ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->tipo_g_produccion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->numero_g_produccion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->fecha_g_produccion ? date('d M Y g:i a', strtotime($proceso->fecha_g_produccion)) : 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->tipo ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_productor_proceso ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->n_productor_proceso ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_productor ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->n_productor ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->t_categoria ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_categoria ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_embalaje ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_calibre ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_serie ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->c_etiqueta ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->cantidad ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->peso_neto ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->fecha_recepcion ? date('d M Y g:i a', strtotime($proceso->fecha_recepcion)) : 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->folio ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_exportadora ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_especie ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_variedad ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_linea_proceso ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->numero_guia_recepcion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->id_embalaje ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->n_tipo_proceso ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->n_variedad_rotulacion ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->peso_std_embalaje ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->creacion_tipo ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->notas ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->Estado ?? 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ $proceso->destruccion_tipo ?? 'N/A' }}</td>
+                                              </tr>
+                                              @endforeach
+                                          </tbody>
+                                      </table>
+                                      
+                                      
+                                      
+                                      
+                                  
+                                      
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      @if ($procesos->count())
+                          <div class="">
+                              {{$procesos->links()}}
+                          </div>
+                  
+                      @endif 
+                  </div>
 
                 @endif
 
@@ -3043,6 +3260,49 @@
                   Swal.fire(
                       'Error en la sincronización',
                       'Ocurrió un problema al conectar con el sistema de recepciones. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+
+  function confirmSyncProceso() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización?',
+          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Producción' hasta las ${formattedTime} del dia de hoy.`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, sincronizar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Procesos.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('procesos_refresh').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                      '¡Sincronización completada!',
+                      'Los datos de procesos han sido actualizados exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
                       'error'
                   );
               });

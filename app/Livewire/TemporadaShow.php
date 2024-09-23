@@ -80,8 +80,7 @@ class TemporadaShow extends Component
         } else {
             $this->fechai = Carbon::now()->startOfYear()->format('Y-m-d');
         }
-        
-           
+         
         if ($temporada->recepcion_start) {
             $this->fechaf = $temporada->recepcion_end;
         }else{
@@ -359,6 +358,173 @@ class TemporadaShow extends Component
         Sync::create([
             'tipo'=>'MANUAL',
             'entidad'=>'RECEPCIONES',
+            'fecha'=>Carbon::now(),
+            'cantidad'=>$total
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function procesos_refresh()
+    {    $ri=Proceso::all();
+        $totali=$ri->count();
+
+        $dateRanges = [];
+        $start = new DateTime($this->fechai);
+        $end = new DateTime($this->fechaf);
+        $intervalDays=10;
+        
+    while ($start <= $end) {
+        $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+        if ($rangeEnd > $end) {
+            $rangeEnd = $end;
+        }
+        $dateRanges[] = [
+            'start' => $start->format('Y-m-d'),
+            'end' => $rangeEnd->format('Y-m-d')
+        ];
+        $start = (clone $rangeEnd)->modify("+1 day");
+    }
+
+        foreach($dateRanges as $date){
+
+            if ($this->temporada->exportadora_id) {
+                $productions = Http::post("https://api.greenexweb.cl/api/productions?filter[fecha_g_produccion][gte]=".$date['start']."&filter[fecha_g_produccion][lte]=".$date['end']."&select=tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=".$this->temporada->exportadora_id);
+            } else {
+                $productions = Http::post("https://api.greenexweb.cl/api/productions?filter[fecha_g_produccion][gte]=".$date['start']."&filter[fecha_g_produccion][lte]=".$date['end']."&select=tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=22");
+            }
+            
+           
+            $productions = $productions->json(); 
+
+            if (!IS_NULL($productions)) {
+                foreach ($productions as $production) {
+                    $tipo_g_produccion = $production['tipo_g_produccion'] ?? null;
+                    $numero_g_produccion = $production['numero_g_produccion'] ?? null;
+                    $fecha_g_produccion = $production['fecha_g_produccion'] ?? null;
+                    $tipo = $production['tipo'] ?? null;
+                    $id_productor_proceso = $production['id_productor_proceso'] ?? null;
+                    $n_productor_proceso = $production['n_productor_proceso'] ?? null;
+                    $c_productor = $production['c_productor'] ?? null;
+                    $n_productor = $production['n_productor'] ?? null;
+                    $t_categoria = $production['t_categoria'] ?? null;
+                    $c_categoria = $production['c_categoria'] ?? null;
+                    $c_embalaje = $production['c_embalaje'] ?? null;
+                    $c_calibre = $production['c_calibre'] ?? null;
+                    $c_serie = $production['c_serie'] ?? null;
+                    $c_etiqueta = $production['c_etiqueta'] ?? null;
+                    $cantidad = $production['cantidad'] ?? null;
+                    $peso_neto = $production['peso_neto'] ?? null;
+                    $id_empresa = $production['id_empresa'] ?? null;
+                    $fecha_recepcion = $production['fecha_recepcion'] ?? null;
+                    $folio = $production['folio'] ?? null;
+                    $id_exportadora = $production['id_exportadora'] ?? null;
+                    $id_especie = $production['id_especie'] ?? null;
+                    $id_variedad = $production['id_variedad'] ?? null;
+                    $id_linea_proceso = $production['id_linea_proceso'] ?? null;
+                    $numero_guia_recepcion = $production['numero_guia_recepcion'] ?? null;
+                    $id_embalaje = $production['id_embalaje'] ?? null;
+                    $n_tipo_proceso = $production['n_tipo_proceso'] ?? null;
+                    $n_variedad_rotulacion = $production['n_variedad_rotulacion'] ?? null;
+                    $peso_std_embalaje = $production['peso_std_embalaje'] ?? null;
+                    $creacion_tipo = $production['creacion_tipo'] ?? null;
+                    $notas = $production['notas'] ?? null;
+                    $estado = $production['estado'] ?? null;
+                    $destruccion_tipo = $production['destruccion_tipo'] ?? null;
+            
+                    // Busca si ya existe el registro en la tabla `proceso` basado en `numero_g_produccion`, `temporada_id` y `folio`
+                    $cont = Proceso::where('numero_g_produccion', $numero_g_produccion)
+                        ->where('temporada_id', $this->temporada->id)
+                        ->where('folio', $folio)
+                        ->first();
+            
+                    if ($cont) {
+                        // Si el registro existe, se actualiza
+                        $cont->forceFill([
+                            'tipo_g_produccion' => $tipo_g_produccion,
+                            'numero_g_produccion' => $numero_g_produccion,
+                            'fecha_g_produccion' => $fecha_g_produccion,
+                            'tipo' => $tipo,
+                            'id_productor_proceso' => $id_productor_proceso,
+                            'n_productor_proceso' => $n_productor_proceso,
+                            'c_productor' => $c_productor,
+                            'n_productor' => $n_productor,
+                            't_categoria' => $t_categoria,
+                            'c_categoria' => $c_categoria,
+                            'c_embalaje' => $c_embalaje,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'id_empresa' => $id_empresa,
+                            'fecha_recepcion' => $fecha_recepcion,
+                            'folio' => $folio,
+                            'id_exportadora' => $id_exportadora,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_linea_proceso' => $id_linea_proceso,
+                            'numero_guia_recepcion' => $numero_guia_recepcion,
+                            'id_embalaje' => $id_embalaje,
+                            'n_tipo_proceso' => $n_tipo_proceso,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'creacion_tipo' => $creacion_tipo,
+                            'notas' => $notas,
+                            'estado' => $estado,
+                            'destruccion_tipo' => $destruccion_tipo,
+                        ])->save();
+                    } else {
+                        // Si no existe el registro, se crea uno nuevo
+                        Proceso::create([
+                            'tipo_g_produccion' => $tipo_g_produccion,
+                            'numero_g_produccion' => $numero_g_produccion,
+                            'fecha_g_produccion' => $fecha_g_produccion,
+                            'tipo' => $tipo,
+                            'id_productor_proceso' => $id_productor_proceso,
+                            'n_productor_proceso' => $n_productor_proceso,
+                            'c_productor' => $c_productor,
+                            'n_productor' => $n_productor,
+                            't_categoria' => $t_categoria,
+                            'c_categoria' => $c_categoria,
+                            'c_embalaje' => $c_embalaje,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'id_empresa' => $id_empresa,
+                            'fecha_recepcion' => $fecha_recepcion,
+                            'folio' => $folio,
+                            'id_exportadora' => $id_exportadora,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_linea_proceso' => $id_linea_proceso,
+                            'numero_guia_recepcion' => $numero_guia_recepcion,
+                            'id_embalaje' => $id_embalaje,
+                            'n_tipo_proceso' => $n_tipo_proceso,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'creacion_tipo' => $creacion_tipo,
+                            'notas' => $notas,
+                            'estado' => $estado,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'temporada_id' => $this->temporada->id,
+                        ]);
+                    }
+                }
+            }
+            
+        }
+
+        $this->temporada->update([  'recepcion_start'=>$this->fechai,
+                                    'recepcion_end'=>$this->fechaf]);
+        
+        $rf=Proceso::all();
+        $total=$rf->count()-$ri->count();
+        Sync::create([
+            'tipo'=>'MANUAL',
+            'entidad'=>'PROCESOS',
             'fecha'=>Carbon::now(),
             'cantidad'=>$total
         ]);
