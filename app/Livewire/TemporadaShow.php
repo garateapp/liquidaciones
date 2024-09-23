@@ -389,10 +389,35 @@ class TemporadaShow extends Component
         foreach($dateRanges as $date){
 
             if ($this->temporada->exportadora_id) {
-                $productions = Http::post("https://api.greenexweb.cl/api/productions?filter[fecha_g_produccion][gte]=".$date['start']."&filter[fecha_g_produccion][lte]=".$date['end']."&select=tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=".$this->temporada->exportadora_id);
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/productions", [
+                        'filter' => [
+                            'fecha_g_produccion' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ],
+                            'n_especie' => ['eq' => $this->temporada->especie->name],
+                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
+                        ],
+                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                    ]);
             } else {
-                $productions = Http::post("https://api.greenexweb.cl/api/productions?filter[fecha_g_produccion][gte]=".$date['start']."&filter[fecha_g_produccion][lte]=".$date['end']."&select=tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=22");
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/productions", [
+                        'filter' => [
+                            'fecha_g_produccion' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ],
+                            'n_especie' => ['eq' => $this->temporada->especie->name],
+                            'id_exportadora' => ['eq' => 22],
+                        ],
+                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                    ]);
             }
+            
             
            
             $productions = $productions->json(); 
