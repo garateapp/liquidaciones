@@ -62,6 +62,8 @@ class TemporadaShow extends Component
         'mi'=>'',
         'semana'=>'',
         'norma'=>'',
+        'p_unicos'=>true,
+        'p_repetidos'=>true
     ];
 
     #[Url]
@@ -104,9 +106,9 @@ class TemporadaShow extends Component
         $anticipos=Anticipo::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy('grupo', 'desc')->paginate($this->ctd);
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
-        $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
+        $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
-        $procesos=Proceso::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
@@ -409,7 +411,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
                         ],
-                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, fecha_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, peso_standard, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
                     ]);
             } else {
                 $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
@@ -423,7 +425,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => 22],
                         ],
-                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, fecha_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, peso_standard, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
                     ]);
             }
             
@@ -438,6 +440,7 @@ class TemporadaShow extends Component
                     $tipo_g_produccion = $production['tipo_g_produccion'] ?? null;
                     $numero_g_produccion = $production['numero_g_produccion'] ?? null;
                     $fecha_g_produccion = $production['fecha_g_produccion'] ?? null;
+                    $fecha_produccion = $production['fecha_produccion'] ?? null;
                     $tipo = $production['tipo'] ?? null;
                     $id_productor_proceso = $production['id_productor_proceso'] ?? null;
                     $n_productor_proceso = $production['n_productor_proceso'] ?? null;
@@ -463,68 +466,128 @@ class TemporadaShow extends Component
                     $n_tipo_proceso = $production['n_tipo_proceso'] ?? null;
                     $n_variedad_rotulacion = $production['n_variedad_rotulacion'] ?? null;
                     $peso_std_embalaje = $production['peso_std_embalaje'] ?? null;
+                    $peso_standard = $production['peso_standard'] ?? null;
                     $creacion_tipo = $production['creacion_tipo'] ?? null;
                     $notas = $production['Nota_Calidad'] ?? null;
                     $estado = $production['Estado'] ?? null;
                     $destruccion_tipo = $production['destruccion_tipo'] ?? null;
             
                     // Busca si ya existe el registro en la tabla `proceso` basado en `numero_g_produccion`, `temporada_id` y `folio`
-                    $cont = Proceso::where('numero_g_produccion', $numero_g_produccion)
-                        ->where('temporada_id', $this->temporada->id)
-                        ->where('folio', $folio)
-                        ->where('tipo_g_produccion', $tipo_g_produccion)
-                        ->where('fecha_g_produccion', $fecha_g_produccion)
-                        ->where('fecha_recepcion', $fecha_cosecha)
-                        ->where('cantidad', $cantidad)
-                        ->where('peso_neto', $peso_neto)
-                        ->where('creacion_tipo', $creacion_tipo)
-                        ->where('c_productor', $c_productor)
-                        ->where('id_embalaje',$id_embalaje)
-                        ->where('Estado',$estado)
-                        ->first();
+                    $cont = Proceso::query()
+                        ->when($numero_g_produccion, function ($query) use ($numero_g_produccion) {
+                            return $query->where('numero_g_produccion', $numero_g_produccion);
+                        })
+                        ->when($this->temporada->id, function ($query) {
+                            return $query->where('temporada_id', $this->temporada->id);
+                        })
+                        ->when($folio, function ($query) use ($folio) {
+                            return $query->where('folio', $folio);
+                        })
+                        ->when($tipo_g_produccion, function ($query) use ($tipo_g_produccion) {
+                            return $query->where('tipo_g_produccion', $tipo_g_produccion);
+                        })
+                        ->when($fecha_g_produccion, function ($query) use ($fecha_g_produccion) {
+                            return $query->where('fecha_g_produccion', $fecha_g_produccion);
+                        })
+                        ->when($fecha_produccion, function ($query) use ($fecha_produccion) {
+                            return $query->where('fecha_produccion', $fecha_produccion);
+                        })
+                        ->when($fecha_cosecha, function ($query) use ($fecha_cosecha) {
+                            return $query->where('fecha_recepcion', $fecha_cosecha);
+                        })
+                        ->when($cantidad, function ($query) use ($cantidad) {
+                            return $query->where('cantidad', $cantidad);
+                        })
+                        ->when($peso_neto, function ($query) use ($peso_neto) {
+                            return $query->where('peso_neto', $peso_neto);
+                        })
+                        ->when($creacion_tipo, function ($query) use ($creacion_tipo) {
+                            return $query->where('creacion_tipo', $creacion_tipo);
+                        })
+                        ->when($c_productor, function ($query) use ($c_productor) {
+                            return $query->where('c_productor', $c_productor);
+                        })
+                        ->when($id_embalaje, function ($query) use ($id_embalaje) {
+                            return $query->where('id_embalaje', $id_embalaje);
+                        })
+                        ->when($estado, function ($query) use ($estado) {
+                            return $query->where('Estado', $estado);
+                        })
+                        ->when($tipo, function ($query) use ($tipo) {
+                            return $query->where('tipo', $tipo);
+                        })
+                        ->when($id_productor_proceso, function ($query) use ($id_productor_proceso) {
+                            return $query->where('id_productor_proceso', $id_productor_proceso);
+                        })
+                        ->when($n_productor_proceso, function ($query) use ($n_productor_proceso) {
+                            return $query->where('n_productor_proceso', $n_productor_proceso);
+                        })
+                        ->when($n_productor, function ($query) use ($n_productor) {
+                            return $query->where('n_productor', $n_productor);
+                        })
+                        ->when($t_categoria, function ($query) use ($t_categoria) {
+                            return $query->where('t_categoria', $t_categoria);
+                        })
+                        ->when($c_categoria, function ($query) use ($c_categoria) {
+                            return $query->where('c_categoria', $c_categoria);
+                        })
+                        ->when($c_embalaje, function ($query) use ($c_embalaje) {
+                            return $query->where('c_embalaje', $c_embalaje);
+                        })
+                        ->when($c_calibre, function ($query) use ($c_calibre) {
+                            return $query->where('c_calibre', $c_calibre);
+                        })
+                        ->when($c_serie, function ($query) use ($c_serie) {
+                            return $query->where('c_serie', $c_serie);
+                        })
+                        ->when($c_etiqueta, function ($query) use ($c_etiqueta) {
+                            return $query->where('c_etiqueta', $c_etiqueta);
+                        })
+                        ->when($id_empresa, function ($query) use ($id_empresa) {
+                            return $query->where('id_empresa', $id_empresa);
+                        })
+                        ->when($id_exportadora, function ($query) use ($id_exportadora) {
+                            return $query->where('id_exportadora', $id_exportadora);
+                        })
+                        ->when($id_especie, function ($query) use ($id_especie) {
+                            return $query->where('id_especie', $id_especie);
+                        })
+                        ->when($id_variedad, function ($query) use ($id_variedad) {
+                            return $query->where('id_variedad', $id_variedad);
+                        })
+                        ->when($id_linea_proceso, function ($query) use ($id_linea_proceso) {
+                            return $query->where('id_linea_proceso', $id_linea_proceso);
+                        })
+                        ->when($numero_guia_recepcion, function ($query) use ($numero_guia_recepcion) {
+                            return $query->where('numero_guia_recepcion', $numero_guia_recepcion);
+                        })
+                        ->when($n_tipo_proceso, function ($query) use ($n_tipo_proceso) {
+                            return $query->where('n_tipo_proceso', $n_tipo_proceso);
+                        })
+                        ->when($n_variedad_rotulacion, function ($query) use ($n_variedad_rotulacion) {
+                            return $query->where('n_variedad_rotulacion', $n_variedad_rotulacion);
+                        })
+                        ->when($peso_std_embalaje, function ($query) use ($peso_std_embalaje) {
+                            return $query->where('peso_std_embalaje', $peso_std_embalaje);
+                        })
+                        ->when($peso_standard, function ($query) use ($peso_standard) {
+                            return $query->where('peso_standard', $peso_standard);
+                        })
+                        ->when($notas, function ($query) use ($notas) {
+                            return $query->where('notas', $notas);
+                        })
+                        ->when($destruccion_tipo, function ($query) use ($destruccion_tipo) {
+                            return $query->where('destruccion_tipo', $destruccion_tipo);
+                        })->first();
+                
             
                     if ($cont) {
-                        // Si el registro existe, se actualiza
-                      /*  $cont->forceFill([
-                            'tipo_g_produccion' => $tipo_g_produccion,
-                            'numero_g_produccion' => $numero_g_produccion,
-                            'fecha_g_produccion' => $fecha_g_produccion,
-                            'tipo' => $tipo,
-                            'id_productor_proceso' => $id_productor_proceso,
-                            'n_productor_proceso' => $n_productor_proceso,
-                            'c_productor' => $c_productor,
-                            'n_productor' => $n_productor,
-                            't_categoria' => $t_categoria,
-                            'c_categoria' => $c_categoria,
-                            'c_embalaje' => $c_embalaje,
-                            'c_calibre' => $c_calibre,
-                            'c_serie' => $c_serie,
-                            'c_etiqueta' => $c_etiqueta,
-                            'cantidad' => $cantidad,
-                            'peso_neto' => $peso_neto,
-                            'id_empresa' => $id_empresa,
-                            'fecha_recepcion' => $fecha_recepcion,
-                            'folio' => $folio,
-                            'id_exportadora' => $id_exportadora,
-                            'id_especie' => $id_especie,
-                            'id_variedad' => $id_variedad,
-                            'id_linea_proceso' => $id_linea_proceso,
-                            'numero_guia_recepcion' => $numero_guia_recepcion,
-                            'id_embalaje' => $id_embalaje,
-                            'n_tipo_proceso' => $n_tipo_proceso,
-                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
-                            'peso_std_embalaje' => $peso_std_embalaje,
-                            'creacion_tipo' => $creacion_tipo,
-                            'notas' => $notas,
-                            'estado' => $estado,
-                            'destruccion_tipo' => $destruccion_tipo,
-                        ])->save();*/
-                    } else {
-                        // Si no existe el registro, se crea uno nuevo
+                        
                         Proceso::create([
                             'tipo_g_produccion' => $tipo_g_produccion,
                             'numero_g_produccion' => $numero_g_produccion,
                             'fecha_g_produccion' => $fecha_g_produccion,
+                            'fecha_produccion' => $fecha_produccion,
                             'tipo' => $tipo,
                             'id_productor_proceso' => $id_productor_proceso,
                             'n_productor_proceso' => $n_productor_proceso,
@@ -550,11 +613,54 @@ class TemporadaShow extends Component
                             'n_tipo_proceso' => $n_tipo_proceso,
                             'n_variedad_rotulacion' => $n_variedad_rotulacion,
                             'peso_std_embalaje' => $peso_std_embalaje,
+                            'peso_standard' => $peso_standard,
                             'creacion_tipo' => $creacion_tipo,
                             'notas' => $notas,
                             'Estado' => $estado,
                             'destruccion_tipo' => $destruccion_tipo,
                             'temporada_id' => $this->temporada->id,
+                            'duplicado' => 'si',
+                        ]);
+
+                    } else {
+                        // Si no existe el registro, se crea uno nuevo
+                        Proceso::create([
+                            'tipo_g_produccion' => $tipo_g_produccion,
+                            'numero_g_produccion' => $numero_g_produccion,
+                            'fecha_g_produccion' => $fecha_g_produccion,
+                            'fecha_produccion' => $fecha_produccion,
+                            'tipo' => $tipo,
+                            'id_productor_proceso' => $id_productor_proceso,
+                            'n_productor_proceso' => $n_productor_proceso,
+                            'c_productor' => $c_productor,
+                            'n_productor' => $n_productor,
+                            't_categoria' => $t_categoria,
+                            'c_categoria' => $c_categoria,
+                            'c_embalaje' => $c_embalaje,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'id_empresa' => $id_empresa,
+                            'fecha_recepcion' => $fecha_cosecha,
+                            'folio' => $folio,
+                            'id_exportadora' => $id_exportadora,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_linea_proceso' => $id_linea_proceso,
+                            'numero_guia_recepcion' => $numero_guia_recepcion,
+                            'id_embalaje' => $id_embalaje,
+                            'n_tipo_proceso' => $n_tipo_proceso,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'peso_standard' => $peso_standard,
+                            'creacion_tipo' => $creacion_tipo,
+                            'notas' => $notas,
+                            'Estado' => $estado,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'temporada_id' => $this->temporada->id,
+                            'duplicado' => 'no',
                         ]);
                     }
                 }

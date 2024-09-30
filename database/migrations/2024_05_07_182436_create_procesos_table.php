@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tipo_g_produccion')->nullable();
             $table->string('numero_g_produccion')->nullable();
             $table->string('fecha_g_produccion')->nullable();
+            $table->string('fecha_produccion')->nullable();
             $table->string('tipo')->nullable();
             $table->string('id_productor_proceso')->nullable();
             $table->string('n_productor_proceso')->nullable();
@@ -47,10 +48,13 @@ return new class extends Migration
             $table->string('n_tipo_proceso')->nullable();
             $table->string('n_variedad_rotulacion')->nullable();
             $table->string('peso_std_embalaje')->nullable();
+            $table->string('peso_standard')->nullable();
             $table->string('creacion_tipo')->nullable();
             $table->string('notas')->nullable(); // Usamos 'text' en lugar de 'string' para notas más largas
             $table->string('Estado')->nullable();
             $table->string('destruccion_tipo')->nullable();
+
+            $table->string('duplicado')->nullable();
 
             $table->timestamps();
         });

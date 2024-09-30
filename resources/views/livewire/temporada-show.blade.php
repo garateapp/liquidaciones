@@ -512,6 +512,22 @@
                   
                 
                 <div class="mb-4 flex">
+                  @if ($vista=='Procesos')
+                    <div>
+                        Unicos/Repetidos:<br>
+                        <div>
+                            <input type="checkbox" wire:model.live="filters.p_unicos" id="unicos" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
+                            <label for="unicos">Únicos</label>
+                        </div>
+                    
+                        <div>
+                            <input type="checkbox" wire:model.live="filters.p_repetidos" id="repetidos" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
+                            <label for="repetidos">Repetidos</label>
+                        </div>
+                    </div>
+
+
+                  @endif
                   @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
                     <div class="">
                       Categoria:<br>
@@ -599,6 +615,7 @@
                     </div>
                   @endif
                 </div>
+
 
               @else
                 <h2 class="text-2xl font-semibold my-4">Listado de Productores<h2>  
@@ -1357,13 +1374,13 @@
                 </div>
               @endif
               @if ($vista!='Recepcion' )
-              <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option value="25" class="text-left px-10">25 </option>
-                  <option value="50" class="text-left px-10">50 </option>
-                  <option value="100" class="text-left px-10">100 </option>
-                  <option value="500" class="text-left px-10">500 </option>
-                  
-              </select>
+                <select wire:model.live="ctd" class="max-w-xl  mx-2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-6 rounded focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option value="25" class="text-left px-10">25 </option>
+                    <option value="50" class="text-left px-10">50 </option>
+                    <option value="100" class="text-left px-10">100 </option>
+                    <option value="500" class="text-left px-10">500 </option>
+                    
+                </select>
               @endif
 
               @if ($vista=="show" || $vista=="Procesos")
