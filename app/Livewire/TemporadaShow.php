@@ -7,6 +7,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Despacho;
 use App\Models\Detalle;
 use App\Models\Embarque;
 use App\Models\Exportacion;
@@ -35,6 +36,7 @@ class TemporadaShow extends Component
 {   use WithPagination;
     public $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
+    public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
 
 
@@ -108,8 +110,17 @@ class TemporadaShow extends Component
         
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
-        $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+
+        $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
+
+        $despachos=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
         
+        $embarquesall=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
+
+        $embarques=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+        
+
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
         $recepcions=Recepcion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
@@ -207,7 +218,7 @@ class TemporadaShow extends Component
 
        
 
-        return view('livewire.temporada-show',compact('razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function production_refresh()
@@ -219,17 +230,17 @@ class TemporadaShow extends Component
         $end = new DateTime($this->fechaf);
         $intervalDays=10;
         
-    while ($start <= $end) {
-        $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
-        if ($rangeEnd > $end) {
-            $rangeEnd = $end;
+        while ($start <= $end) {
+            $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+            if ($rangeEnd > $end) {
+                $rangeEnd = $end;
+            }
+            $dateRanges[] = [
+                'start' => $start->format('Y-m-d'),
+                'end' => $rangeEnd->format('Y-m-d')
+            ];
+            $start = (clone $rangeEnd)->modify("+1 day");
         }
-        $dateRanges[] = [
-            'start' => $start->format('Y-m-d'),
-            'end' => $rangeEnd->format('Y-m-d')
-        ];
-        $start = (clone $rangeEnd)->modify("+1 day");
-    }
 
         foreach($dateRanges as $date){
 
@@ -383,21 +394,21 @@ class TemporadaShow extends Component
         $end = new DateTime($this->fechaf);
         $intervalDays=10;
 
-    while ($start <= $end) {
-        $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
-        if ($rangeEnd > $end) {
-            $rangeEnd = $end;
+        while ($start <= $end) {
+            $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+            if ($rangeEnd > $end) {
+                $rangeEnd = $end;
+            }
+            $dateRanges[] = [
+                'start' => $start->format('Y-m-d'),
+                'end' => $rangeEnd->format('Y-m-d')
+            ];
+            $start = (clone $rangeEnd)->modify("+1 day");
         }
-        $dateRanges[] = [
-            'start' => $start->format('Y-m-d'),
-            'end' => $rangeEnd->format('Y-m-d')
-        ];
-        $start = (clone $rangeEnd)->modify("+1 day");
-    }
 
    
       
-    foreach($dateRanges as $date){
+        foreach($dateRanges as $date){
 
             if ($this->temporada->exportadora_id) {
                 $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
@@ -433,7 +444,7 @@ class TemporadaShow extends Component
            
             $productions = $productions->json(); 
 
-        //    dd($productions);
+            //    dd($productions);
 
             if (!IS_NULL($productions)) {
                 foreach ($productions as $production) {
@@ -685,6 +696,248 @@ class TemporadaShow extends Component
         return redirect()->back();
     }
 
+    public function despachos_refresh()
+    {    $ri=Despacho::all();
+        $totali=$ri->count();
+
+        $dateRanges = [];
+
+        if($totali>0){
+            $ultimo = Despacho::orderBy('fecha_g_despacho', 'desc')->first();
+            $start = new DateTime($ultimo->fecha_g_despacho); // Usa la fecha más reciente
+        }else{
+            $start = new DateTime($this->fechai);
+        }
+
+        $end = new DateTime($this->fechaf);
+        $intervalDays=10;
+
+        while ($start <= $end) {
+            $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+            if ($rangeEnd > $end) {
+                $rangeEnd = $end;
+            }
+            $dateRanges[] = [
+                'start' => $start->format('Y-m-d'),
+                'end' => $rangeEnd->format('Y-m-d')
+            ];
+            $start = (clone $rangeEnd)->modify("+1 day");
+        }
+        
+        //dd($dateRanges);
+
+        foreach($dateRanges as $date){
+
+            if ($this->temporada->exportadora_id) {
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/dispatches", [
+                        'filter' => [
+                            'fecha_g_despacho' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ],
+                            'n_especie' => ['eq' => $this->temporada->especie->name],
+                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
+                        ],
+                        'select' => 'tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                    ]);
+                $productions = $productions->json(); 
+            } else {
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/dispatches", [
+                        'filter' => [
+                            'fecha_g_despacho' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ],
+                            'n_especie' => ['eq' => $this->temporada->especie->name],
+                            'id_exportadora' => ['eq' => 22],
+                        ],
+                        'select' => 'tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                    ]);
+                    $productions = $productions->json(); 
+            }
+            
+            
+           
+           
+
+               
+
+            $previousDespacho = null;
+
+            if (!empty($productions)) {
+                foreach ($productions as $despacho) {
+                    $tipo_g_despacho = $despacho['tipo_g_despacho'] ?? null;
+                    $numero_g_despacho = $despacho['numero_g_despacho'] ?? null;
+                    $fecha_g_despacho = $despacho['fecha_g_despacho'] ?? null;
+                    $id_empresa = $despacho['id_empresa'] ?? null;
+                    $id_exportadora = $despacho['id_exportadora'] ?? null;
+                    $id_exportadora_embarque = $despacho['id_exportadora_embarque'] ?? null;
+                    $c_destinatario = $despacho['c_destinatario'] ?? null;
+                    $n_destinatario = $despacho['n_destinatario'] ?? null;
+                    $n_transportista = $despacho['n_transportista'] ?? null;
+                    $folio = $despacho['folio'] ?? null;
+                    $numero_guia_produccion = $despacho['numero_guia_produccion'] ?? null;
+                    $c_productor = $despacho['c_productor'] ?? null;
+                    $n_productor = $despacho['n_productor'] ?? null;
+                    $id_especie = $despacho['id_especie'] ?? null;
+                    $id_variedad = $despacho['id_variedad'] ?? null;
+                    $id_embalaje = $despacho['id_embalaje'] ?? null;
+                    $c_embalaje = $despacho['c_embalaje'] ?? null;
+                    $peso_std_embalaje = $despacho['peso_std_embalaje'] ?? null;
+                    $c_categoria = $despacho['c_categoria'] ?? null;
+                    $t_categoria = $despacho['t_categoria'] ?? null;
+                    $c_calibre = $despacho['c_calibre'] ?? null;
+                    $c_serie = $despacho['c_serie'] ?? null;
+                    $c_etiqueta = $despacho['c_etiqueta'] ?? null;
+                    $cantidad = $despacho['cantidad'] ?? null;
+                    $peso_neto = $despacho['peso_neto'] ?? null;
+                    $n_variedad_rotulacion = $despacho['n_variedad_rotulacion'] ?? null;
+                    $N_Pais_Destino = $despacho['N_Pais_Destino'] ?? null;
+                    $N_Puerto_Destino = $despacho['N_Puerto_Destino'] ?? null;
+                    $contenedor = $despacho['contenedor'] ?? null;
+                    $precio_unitario = $despacho['precio_unitario'] ?? null;
+                    $tipo_interno = $despacho['tipo_interno'] ?? null;
+                    $creacion_tipo = $despacho['creacion_tipo'] ?? null;
+                    $destruccion_tipo = $despacho['destruccion_tipo'] ?? null;
+                    $Transporte = $despacho['Transporte'] ?? null;
+                    $nota_calidad = $despacho['nota_calidad'] ?? null;
+                    $n_nave = $despacho['n_nave'] ?? null;
+                    $Numero_Embarque = $despacho['Numero_Embarque'] ?? null;
+                    $N_Proceso = $despacho['N_Proceso'] ?? null;
+                    $Estado = $despacho['Estado'] ?? null;
+            
+                    // Verificar si el despacho actual es igual al anterior
+                    $isDuplicate = $previousDespacho &&
+                                   $previousDespacho['numero_g_despacho'] === $numero_g_despacho &&
+                                   $previousDespacho['tipo_g_despacho'] === $tipo_g_despacho &&
+                                   $previousDespacho['folio'] === $folio &&
+                                   $previousDespacho['fecha_g_despacho'] === $fecha_g_despacho &&
+                                   $previousDespacho['peso_neto'] === $peso_neto &&
+                                   $previousDespacho['creacion_tipo'] === $creacion_tipo &&
+                                   $previousDespacho['c_productor'] === $c_productor &&
+                                   $previousDespacho['id_embalaje'] === $id_embalaje &&
+                                   $previousDespacho['Estado'] === $Estado;
+            
+                    // Si no es duplicado, guarda el nuevo registro
+                    if (!$isDuplicate) {
+                        Despacho::create([
+                            'temporada_id'=>$this->temporada->id,
+                            'tipo_g_despacho' => $tipo_g_despacho,
+                            'numero_g_despacho' => $numero_g_despacho,
+                            'fecha_g_despacho' => $fecha_g_despacho,
+                            'id_empresa' => $id_empresa,
+                            'id_exportadora' => $id_exportadora,
+                            'id_exportadora_embarque' => $id_exportadora_embarque,
+                            'c_destinatario' => $c_destinatario,
+                            'n_destinatario' => $n_destinatario,
+                            'n_transportista' => $n_transportista,
+                            'folio' => $folio,
+                            'numero_guia_produccion' => $numero_guia_produccion,
+                            'c_productor' => $c_productor,
+                            'n_productor' => $n_productor,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_embalaje' => $id_embalaje,
+                            'c_embalaje' => $c_embalaje,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'c_categoria' => $c_categoria,
+                            't_categoria' => $t_categoria,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'N_Pais_Destino' => $N_Pais_Destino,
+                            'N_Puerto_Destino' => $N_Puerto_Destino,
+                            'contenedor' => $contenedor,
+                            'precio_unitario' => $precio_unitario,
+                            'tipo_interno' => $tipo_interno,
+                            'creacion_tipo' => $creacion_tipo,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'Transporte' => $Transporte,
+                            'nota_calidad' => $nota_calidad,
+                            'n_nave' => $n_nave,
+                            'Numero_Embarque' => $Numero_Embarque,
+                            'N_Proceso' => $N_Proceso,
+                            'Estado' => $Estado,
+                            'duplicado' => 'no',
+                        ]);
+                    }else{
+                        Despacho::create([
+                            'temporada_id'=>$this->temporada->id,
+                            'tipo_g_despacho' => $tipo_g_despacho,
+                            'numero_g_despacho' => $numero_g_despacho,
+                            'fecha_g_despacho' => $fecha_g_despacho,
+                            'id_empresa' => $id_empresa,
+                            'id_exportadora' => $id_exportadora,
+                            'id_exportadora_embarque' => $id_exportadora_embarque,
+                            'c_destinatario' => $c_destinatario,
+                            'n_destinatario' => $n_destinatario,
+                            'n_transportista' => $n_transportista,
+                            'folio' => $folio,
+                            'numero_guia_produccion' => $numero_guia_produccion,
+                            'c_productor' => $c_productor,
+                            'n_productor' => $n_productor,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_embalaje' => $id_embalaje,
+                            'c_embalaje' => $c_embalaje,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'c_categoria' => $c_categoria,
+                            't_categoria' => $t_categoria,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'N_Pais_Destino' => $N_Pais_Destino,
+                            'N_Puerto_Destino' => $N_Puerto_Destino,
+                            'contenedor' => $contenedor,
+                            'precio_unitario' => $precio_unitario,
+                            'tipo_interno' => $tipo_interno,
+                            'creacion_tipo' => $creacion_tipo,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'Transporte' => $Transporte,
+                            'nota_calidad' => $nota_calidad,
+                            'n_nave' => $n_nave,
+                            'Numero_Embarque' => $Numero_Embarque,
+                            'N_Proceso' => $N_Proceso,
+                            'Estado' => $Estado,
+                            'duplicado' => 'si',
+                        ]);
+                    }
+            
+                    // Actualizar el despacho anterior
+                    $previousDespacho = $despacho;
+                }
+            }
+            
+
+
+            
+        }
+
+        $this->temporada->update([  'recepcion_start'=>$this->fechai,
+                                    'recepcion_end'=>$this->fechaf]);
+        
+        $rf=Proceso::all();
+        $total=$rf->count()-$ri->count();
+        Sync::create([
+            'tipo'=>'MANUAL',
+            'entidad'=>'PROCESOS',
+            'fecha'=>Carbon::now(),
+            'cantidad'=>$total
+        ]);
+
+        return redirect()->back();
+    }
+
     public function recepcions_delete(){
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
         foreach($recepcionall as $recepcion){
@@ -696,6 +949,24 @@ class TemporadaShow extends Component
 
     public function procesos_delete(){
         $recepcionall=Proceso::where('temporada_id',$this->temporada->id)->get();
+        foreach($recepcionall as $recepcion){
+            $recepcion->delete();
+        }
+
+        $this->render();
+    }
+
+    public function despachos_delete(){
+        $recepcionall=Despacho::where('temporada_id',$this->temporada->id)->get();
+        foreach($recepcionall as $recepcion){
+            $recepcion->delete();
+        }
+
+        $this->render();
+    }
+
+    public function embarques_delete(){
+        $recepcionall=Embarque::where('temporada_id',$this->temporada->id)->get();
         foreach($recepcionall as $recepcion){
             $recepcion->delete();
         }

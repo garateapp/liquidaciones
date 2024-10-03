@@ -15,29 +15,21 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('temporada_id')
-            ->nullable()
-            ->constrained()
-            ->onDelete('cascade');
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             
-            $table->string('t_contenedor')->nullable();
-            $table->string('n_destinatario')->nullable();
-            $table->string('etd')->nullable();
-            $table->string('eta')->nullable();
-            $table->string('semana_zarpe')->nullable();
-            $table->string('semana_arribo')->nullable();
-            $table->string('n_pais_destino')->nullable();
             $table->string('n_embarque')->nullable();
-            $table->string('folio')->nullable();
-            $table->string('r_productor')->nullable();
-            $table->string('c_proveedor')->nullable();
-            $table->string('n_productor')->nullable();
-            $table->string('booking')->nullable();
-            $table->string('n_puerto_origen')->nullable();
-            $table->string('n_puerto_destino')->nullable();
-            $table->string('n_nave')->nullable();
+            $table->string('fecha_embarque')->nullable();
+            $table->string('nave')->nullable();
             $table->string('transporte')->nullable();
             $table->string('fecha_despacho')->nullable();
-            $table->string('n_exportadora_embarque')->nullable();
+            $table->string('numero_g_despacho')->nullable();
+            $table->string('numero_guia_produccion')->nullable();
+            $table->string('etd')->nullable(); // Estimated Time of Departure
+            $table->string('eta')->nullable(); // Estimated Time of Arrival
+
+            $table->string('duplicado')->nullable();
 
             $table->timestamps();
         });

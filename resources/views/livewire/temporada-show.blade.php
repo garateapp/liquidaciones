@@ -118,9 +118,8 @@
                 </div>
                 
                 
-              @if ( $vista!="Despachos")
                       
-                      <h2 class="text-2xl font-semibold my-4"> 
+                  <h2 class="text-2xl font-semibold my-4"> 
 
 
                       @if ($vista=='MASAS')
@@ -130,7 +129,7 @@
                      Filtros   Resumen
                       @elseif ($vista=='show')
                      Filtros   del Listado de Productores
-                     @elseif ($vista=='Recepcion' || $vista=='Procesos')
+                     @elseif ($vista=='Recepcion' || $vista=='Procesos' || $vista=='Despachos' || $vista=='Embarques')
                     
                       @else
                      Filtros   {{$vista}} 
@@ -288,118 +287,344 @@
                           </div>
                         </div>
                       @elseif($vista=="Procesos")
-                      <div class="w-6/12">
-                        <h2 class="text-2xl font-semibold my-4"> 
-                          Sincronización Procesos
-                        </h2>
-                        @php
-                          $cant=0;
-                          $cantprocesos=0;
-                            foreach($procesosall as $recepcion){
-                                $cant+=$recepcion->peso_neto;
-                            }
-                            foreach($procesosall as $recepcion){
-                                $cantprocesos+=$recepcion->peso_neto;
-                            }
-                    
-                        @endphp
-                         <div class="flex">
-                          <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
-                             <div class="flex items-center justify-center">
-                                <div class="flex-shrink-0 text-center">
-                                   <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
-                                   <h3 class="text-base font-normal text-gray-500">Especie</h3>
-                                </div>
-                               
-                             </div>
-                          </div>
-                        </div>
-                        <div class="flex">
-                          <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
-                             <div class="flex items-center justify-center">
-                                <div class="flex-shrink-0 text-center">
-                                   <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->pluck('numero_g_recepcion')->unique()->sort()->count())}}</span>
-                                   <h3 class="text-base font-normal text-gray-500">Procesos</h3>
-                                </div>
-                               
-                             </div>
-                          </div>
-                          <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
-                            <div class="flex items-center justify-center">
-                               <div class="flex-shrink-0 text-center">
-                                  <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->count())}}</span>
-                                  <h3 class="text-base font-normal text-gray-500">Folios</h3>
-                               </div>
-                              
-                            </div>
-                         </div>
-                          <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
-                              @if ($filters['razonsocial'])
-                                  <div class="flex items-center justify-center content-center">
-                                              <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cantprocesos)}}/</span>
-                                              <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
-                                         
-                                  
-                                  </div>
-                              @endif
-          
+                        <div class="w-6/12">
+                          <h2 class="text-2xl font-semibold my-4"> 
+                            Sincronización Procesos
+                          </h2>
+                          @php
+                            $cant=0;
+                            $cantprocesos=0;
+                              foreach($procesosall as $recepcion){
+                                  $cant+=$recepcion->peso_neto;
+                              }
+                              foreach($procesosall as $recepcion){
+                                  $cantprocesos+=$recepcion->peso_neto;
+                              }
+                      
+                          @endphp
+                          <div class="flex">
+                            <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
                               <div class="flex items-center justify-center">
                                   <div class="flex-shrink-0 text-center">
-                                     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant)}}</span>
-                                     <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Especie</h3>
                                   </div>
-                                 
-                               </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flex">
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->pluck('numero_g_recepcion')->unique()->sort()->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Procesos</h3>
+                                  </div>
+                                
+                              </div>
+                            </div>
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Folios</h3>
+                                </div>
+                                
+                              </div>
+                          </div>
+                            <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                                @if ($filters['razonsocial'])
+                                    <div class="flex items-center justify-center content-center">
+                                                <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cantprocesos)}}/</span>
+                                                <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
+                                          
+                                    
+                                    </div>
+                                @endif
+            
+                                <div class="flex items-center justify-center">
+                                    <div class="flex-shrink-0 text-center">
+                                      <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant)}}</span>
+                                      <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                    </div>
+                                  
+                                </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div class="text-xl font-bold  flex w-full">
-                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
-                      
-                            <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                        
+                        <div class="text-xl font-bold  flex w-full">
+                          <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                        
+                              <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                                  <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                      <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                          <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                              <path class="heroicon-ui"
+                                                    d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                          </svg>
+                                          <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                      </div>
+                                
+                                  </div>
+                                
+                              </div>
+                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
                                 <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
                                     <div class="flex border rounded bg-gray-300 items-center p-2 ">
-                                        <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                            <path class="heroicon-ui"
-                                                  d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
-                                        </svg>
-                                        <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
+                                        <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
                                     </div>
-                              
                                 </div>
-                              
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
+                                        <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
-                              <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
-                                  <div class="flex border rounded bg-gray-300 items-center p-2 ">
-                                     <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
-                                      <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
-                                  </div>
-                              </div>
-                              <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
-                                  <div class="flex border rounded bg-gray-300 items-center p-2 ">
-                                    <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
-                                      <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
-                                  </div>
+                            
+                              <div class="grid grid-cols-2 gap-x-4">
+                                <button onclick="confirmSyncProceso()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Procesos</p>
+                                </button>
+                                @if ($procesos->count())
+                                    
+                                  <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                      <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$procesos->first()->created_at}}</p>
+                                  </button>
+                                
+                                @endif
                               </div>
                           </div>
-                          
-                            <div class="grid grid-cols-2 gap-x-4">
-                              <button onclick="confirmSyncProceso()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
-                                  <p class="text-sm font-medium leading-none text-white">Sincronizar Procesos</p>
-                              </button>
-                              @if ($procesos->count())
-                                  
-                                <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
-                                    <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
-                                    <p class="text-sm font-medium leading-none text-white mt-1">{{$procesos->first()->created_at}}</p>
-                                </button>
-                              
-                              @endif
-                            </div>
                         </div>
-                      </div>
+                      @elseif($vista=="Despachos")
+                        <div class="w-6/12">
+                          <h2 class="text-2xl font-semibold my-4"> 
+                            Sincronización Despachos
+                          </h2>
+                          @php
+                            $cant_despachos=0;
+                            $cantdespachos=0;
+                              foreach($despachosall as $recepcion){
+                                  $cant_despachos+=$recepcion->peso_neto;
+                              }
+                              foreach($despachosall as $recepcion){
+                                  $cantdespachos+=$recepcion->peso_neto;
+                              }
+                      
+                          @endphp
+                          <div class="flex">
+                            <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Especie</h3>
+                                  </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flex">
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($despachosall->pluck('numero_g_despacho')->unique()->sort()->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Despachos</h3>
+                                  </div>
+                                
+                              </div>
+                            </div>
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($despachosall->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Filas</h3>
+                                </div>
+                                
+                              </div>
+                          </div>
+                            <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                                @if ($filters['razonsocial'])
+                                    <div class="flex items-center justify-center content-center">
+                                                <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cantdespachos)}}/</span>
+                                                <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
+                                          
+                                    
+                                    </div>
+                                @endif
+            
+                                <div class="flex items-center justify-center">
+                                    <div class="flex-shrink-0 text-center">
+                                      <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant_despachos)}}</span>
+                                      <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="text-xl font-bold  flex w-full">
+                          <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                        
+                              <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                                  <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                      <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                          <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                              <path class="heroicon-ui"
+                                                    d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                          </svg>
+                                          <input type="text" value="https://api.greenexweb.cl/api/dispatch?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                      </div>
+                                
+                                  </div>
+                                
+                              </div>
+                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
+                                        <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
+                                        <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                              <div class="grid grid-cols-2 gap-x-4">
+                                <button onclick="confirmSyncDespacho()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Despachos</p>
+                                </button>
+                                @if ($despachos->count())
+                                    
+                                  <button onclick="confirmDeletionDespacho()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                      <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$despachos->first()->created_at}}</p>
+                                  </button>
+                                
+                                @endif
+                              </div>
+                          </div>
+                        </div>
+                      @elseif($vista=="Embarques")
+                        <div class="w-6/12">
+                          <h2 class="text-2xl font-semibold my-4"> 
+                            Sincronización Embarques
+                          </h2>
+                          @php
+                            $cant_despachos=0;
+                            $cantdespachos=0;
+                              foreach($embarquesall as $recepcion){
+                                  $cant_despachos+=$recepcion->peso_neto;
+                              }
+                              foreach($embarquesall as $recepcion){
+                                  $cantdespachos+=$recepcion->peso_neto;
+                              }
+                      
+                          @endphp
+                          <div class="flex">
+                            <div class="w-full bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{$temporada->especie->name}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Especie</h3>
+                                  </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flex">
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                  <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($embarquesall->pluck('numero_g_despacho')->unique()->sort()->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Embarques</h3>
+                                  </div>
+                                
+                              </div>
+                            </div>
+                            <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
+                              <div class="flex items-center justify-center">
+                                <div class="flex-shrink-0 text-center">
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($embarquesall->count())}}</span>
+                                    <h3 class="text-base font-normal text-gray-500">Filas</h3>
+                                </div>
+                                
+                              </div>
+                          </div>
+                            <div class=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 ml-2">
+                                @if ($filters['razonsocial'])
+                                    <div class="flex items-center justify-center content-center">
+                                                <span class="text-xl sm:text-xl leading-none font-bold text-gray-900 content-center">{{number_format($cantdespachos)}}/</span>
+                                                <h3 class="text-base font-normal items-center content-center text-gray-500">{{$filters['razonsocial']}}</h3>
+                                          
+                                    
+                                    </div>
+                                @endif
+            
+                                <div class="flex items-center justify-center">
+                                    <div class="flex-shrink-0 text-center">
+                                      <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($cant_despachos)}}</span>
+                                      <h3 class="text-base font-normal text-gray-500">Kilos Totales</h3>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="text-xl font-bold  flex w-full">
+                          <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                        
+                              <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
+                                  <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                      <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                          <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                              <path class="heroicon-ui"
+                                                    d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                          </svg>
+                                          <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                      </div>
+                                
+                                  </div>
+                                
+                              </div>
+                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
+                                        <input type="date" wire:model="fechai" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
+                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
+                                      <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA F</h1>
+                                        <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                              <div class="grid grid-cols-2 gap-x-4">
+                                <button onclick="confirmSyncEmbarque()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Embarques</p>
+                                </button>
+                                @if ($embarques->count())
+                                    
+                                  <button onclick="confirmDeletionEmbarque()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                      <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$embarques->first()->created_at}}</p>
+                                  </button>
+                                
+                                @endif
+                              </div>
+                          </div>
+                        </div>
                       @else
                         <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
                             Cantidad total: {{$razonsall->count()}} @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
@@ -617,23 +842,7 @@
                 </div>
 
 
-              @else
-                <h2 class="text-2xl font-semibold my-4">Listado de Productores<h2>  
-                  <div class="mb-4">
-                    Productor/Csg
-                    <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
-                    @if ($filters['razonsocial'])
-                      <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
-                        @forelse ($this->users as $objet)
-                            <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                                <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
-                            </li>
-                            @empty
-                        @endforelse
-                      </ul>
-                    @endif
-                  </div>
-              @endif
+         
 
               <div class="flex mb-4 hidden">
                 <div class="mr-4">
@@ -3146,7 +3355,8 @@
                         </div>
                   
                 @endif
-                @if ($vista=='Despachos') 
+
+                @if ($vista=="Despachos") 
                         
                         <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
                           <div class="flex flex-col md:flex-row">
@@ -3279,6 +3489,85 @@
           }
       });
   }
+  function confirmDeletionDespacho() {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esta acción eliminará todos los registros.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'Por favor, espera mientras se eliminan los registros.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('despachos_delete').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                  Swal.fire(
+                      '¡Eliminado!',
+                      'Todos los registros han sido eliminados.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error',
+                      'Hubo un problema al eliminar los registros.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+
+  function confirmDeletionEmbarque() {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esta acción eliminará todos los registros.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'Por favor, espera mientras se eliminan los registros.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('embarques_delete').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                  Swal.fire(
+                      '¡Eliminado!',
+                      'Todos los registros han sido eliminados.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error',
+                      'Hubo un problema al eliminar los registros.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
 </script>
 
 <script>
@@ -3355,6 +3644,92 @@
                   Swal.fire(
                       '¡Sincronización completada!',
                       'Los datos de procesos han sido actualizados exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+
+  function confirmSyncDespacho() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización?',
+          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Despachos' hasta las ${formattedTime} del dia de hoy.`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, sincronizar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Despachos.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('despachos_refresh').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                      '¡Sincronización completada!',
+                      'Los datos de despachos han sido actualizados exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+
+  function confirmSyncEmbarque() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización?',
+          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Embarque' hasta las ${formattedTime} del dia de hoy.`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, sincronizar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Embarques.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+              
+              @this.call('embarques_refresh').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                      '¡Sincronización completada!',
+                      'Los datos de embarques han sido actualizados exitosamente.',
                       'success'
                   );
               }).catch(() => {
