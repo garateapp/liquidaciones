@@ -245,9 +245,9 @@ class TemporadaShow extends Component
         foreach($dateRanges as $date){
 
             if ($this->temporada->exportadora_id) {
-                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,n_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=".$this->temporada->exportadora_id);
+                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=".$this->temporada->exportadora_id);
             } else {
-                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,n_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=22");
+                $productions = Http::post("https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][gte]=".$date['start']."&filter[fecha_g_recepcion][lte]=".$date['end']."&filter[n_especie][eq]=".$this->temporada->especie->name."&filter[id_exportadora][eq]=22");
             }
             
            

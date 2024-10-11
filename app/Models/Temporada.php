@@ -11,7 +11,7 @@ class Temporada extends Model
 
     protected $guarded = ['id'];
 
-    protected $table = 'liquidacions';
+    //protected $table = 'liquidacions';
     
 
     // relacion uno a muchos inversa
