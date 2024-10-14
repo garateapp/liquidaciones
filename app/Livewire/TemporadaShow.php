@@ -708,7 +708,7 @@ class TemporadaShow extends Component
         }
 
         $end = new DateTime($this->fechaf);
-        $intervalDays=10;
+        $intervalDays=5;
 
         while ($start <= $end) {
             $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
