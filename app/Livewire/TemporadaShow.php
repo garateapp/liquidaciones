@@ -228,7 +228,7 @@ class TemporadaShow extends Component
         $dateRanges = [];
         $start = new DateTime($this->fechai);
         $end = new DateTime($this->fechaf);
-        $intervalDays=10;
+        $intervalDays=5;
         
         while ($start <= $end) {
             $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
@@ -274,8 +274,8 @@ class TemporadaShow extends Component
                     $t_categoria = $production['t_categoria'] ?? null;
                     $c_calibre = $production['c_calibre'] ?? null;
                     $c_serie = $production['c_serie'] ?? null;
-                    $cantidad = $production['cantidad'] ?? null;
-                    $peso_neto = $production['peso_neto'] ?? null;
+                    $cantidad = $production['total_cantidad'] ?? null;
+                    $peso_neto = $production['total_peso_neto'] ?? null;
                     $destruccion_tipo = $production['destruccion_tipo'] ?? null;
                     $creacion_tipo = $production['creacion_tipo'] ?? null;
                     $Notas = $production['Notas'] ?? null;
@@ -392,7 +392,7 @@ class TemporadaShow extends Component
         }
 
         $end = new DateTime($this->fechaf);
-        $intervalDays=10;
+        $intervalDays=2;
 
         while ($start <= $end) {
             $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
@@ -421,8 +421,7 @@ class TemporadaShow extends Component
                             ],
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
-                        ],
-                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, fecha_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, peso_standard, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                        ]
                     ]);
             } else {
                 $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
@@ -435,8 +434,7 @@ class TemporadaShow extends Component
                             ],
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => 22],
-                        ],
-                        'select' => 'tipo_g_produccion, numero_g_produccion, fecha_g_produccion, fecha_produccion, tipo, id_productor_proceso, n_productor_proceso, c_productor, n_productor, t_categoria, c_categoria, c_embalaje, c_calibre, c_serie, c_etiqueta, cantidad, peso_neto, id_empresa, fecha_recepcion, folio, id_exportadora, id_especie, id_variedad, id_linea_proceso, numero_guia_recepcion, id_embalaje, n_tipo_proceso, n_variedad_rotulacion, peso_std_embalaje, peso_standard, creacion_tipo, notas, Estado, destruccion_tipo, n_especie'
+                        ]
                     ]);
             }
             
@@ -463,8 +461,8 @@ class TemporadaShow extends Component
                     $c_calibre = $production['c_calibre'] ?? null;
                     $c_serie = $production['c_serie'] ?? null;
                     $c_etiqueta = $production['c_etiqueta'] ?? null;
-                    $cantidad = $production['cantidad'] ?? null;
-                    $peso_neto = $production['peso_neto'] ?? null;
+                    $cantidad = $production['total_cantidad'] ?? null;
+                    $peso_neto = $production['total_peso_neto'] ?? null;
                     $id_empresa = $production['id_empresa'] ?? null;
                     $fecha_cosecha = $production['fecha_cosecha'] ?? null;
                     $folio = $production['folio'] ?? null;

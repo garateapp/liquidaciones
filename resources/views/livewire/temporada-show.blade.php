@@ -317,7 +317,7 @@
                             <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 my-4 mr-2">
                               <div class="flex items-center justify-center">
                                   <div class="flex-shrink-0 text-center">
-                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->pluck('numero_g_recepcion')->unique()->sort()->count())}}</span>
+                                    <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{number_format($procesosall->pluck('numero_g_produccion')->unique()->sort()->count())}}</span>
                                     <h3 class="text-base font-normal text-gray-500">Procesos</h3>
                                   </div>
                                 
@@ -363,7 +363,7 @@
                                               <path class="heroicon-ui"
                                                     d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
                                           </svg>
-                                          <input type="text" value="https://api.greenexweb.cl/api/receptions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
+                                          <input type="text" value="https://api.greenexweb.cl/api/productions?filter[fecha_g_recepcion][lte]=2023-11-09&select=c_empresa,tipo_g_recepcion,numero_g_recepcion,fecha_g_recepcion,n_transportista,id_exportadora,folio,fecha_cosecha,n_grupo,r_productor,c_productor,id_especie,id_variedad,c_envase,c_categoria,t_categoria,c_calibre,c_serie,cantidad,peso_neto,destruccion_tipo,creacion_tipo,Notas,n_estado,N_tratamiento,n_tipo_cobro,N_productor_rotulado,CSG_productor_rotulado,destruccion_id" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
                                       </div>
                                 
                                   </div>
@@ -3743,7 +3743,7 @@
           }
       });
   }
-  
+
 </script>
 
 </div>
