@@ -808,20 +808,19 @@ class TemporadaShow extends Component
                     $N_Proceso = $despacho['N_Proceso'] ?? null;
                     $Estado = $despacho['Estado'] ?? null;
             
-                    // Verificar si el despacho actual es igual al anterior
-                    $isDuplicate = $previousDespacho &&
-                                   $previousDespacho['numero_g_despacho'] === $numero_g_despacho &&
-                                   $previousDespacho['tipo_g_despacho'] === $tipo_g_despacho &&
-                                   $previousDespacho['folio'] === $folio &&
-                                   $previousDespacho['fecha_g_despacho'] === $fecha_g_despacho &&
-                                   $previousDespacho['peso_neto'] === $peso_neto &&
-                                   $previousDespacho['creacion_tipo'] === $creacion_tipo &&
-                                   $previousDespacho['c_productor'] === $c_productor &&
-                                   $previousDespacho['id_embalaje'] === $id_embalaje &&
-                                   $previousDespacho['Estado'] === $Estado;
-            
-                    // Si no es duplicado, guarda el nuevo registro
-                    if (!$isDuplicate) {
+                
+                $existingDespacho = Despacho::where('numero_g_despacho', $numero_g_despacho)
+                    ->where('tipo_g_despacho', $tipo_g_despacho)
+                    ->where('folio', $folio)
+                    ->where('fecha_g_despacho', $fecha_g_despacho)
+                    ->where('peso_neto', $peso_neto)
+                    ->where('creacion_tipo', $creacion_tipo)
+                    ->where('c_productor', $c_productor)
+                    ->where('id_embalaje', $id_embalaje)
+                    ->where('Estado', $Estado)
+                    ->first();
+
+                if (!$existingDespacho) {
                         Despacho::create([
                             'temporada_id'=>$this->temporada->id,
                             'tipo_g_despacho' => $tipo_g_despacho,
