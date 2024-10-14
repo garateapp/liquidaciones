@@ -737,7 +737,7 @@
                   
                 
                 <div class="mb-4 flex">
-                  @if ($vista=='Procesos')
+                  @if ($vista=='Procesos' || $vista=='Despachos')
                     <div>
                         Unicos/Repetidos:<br>
                         <div>

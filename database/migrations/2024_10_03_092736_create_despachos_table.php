@@ -18,7 +18,8 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
-
+            
+            $table->string('id_pkg_stock_det')->nullable();
             $table->string('tipo_g_despacho')->nullable();
             $table->string('numero_g_despacho')->nullable();
             $table->string('fecha_g_despacho')->nullable();
