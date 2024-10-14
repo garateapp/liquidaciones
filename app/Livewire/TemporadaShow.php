@@ -112,7 +112,7 @@ class TemporadaShow extends Component
 
         $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
 
-        $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
+        $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->select('id_pkg_stock_det')->get();
 
         $despachos=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
         
