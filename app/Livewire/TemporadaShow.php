@@ -804,7 +804,7 @@ class TemporadaShow extends Component
                     $n_nave = $despacho['n_nave'] ?? null;
                     $Numero_Embarque = $despacho['Numero_Embarque'] ?? null;
                     $N_Proceso = $despacho['N_Proceso'] ?? null;
-                    $Estado = $despacho['Estado'] ?? null;
+                    $Estado = $despacho['estado'] ?? null;
             
                     // Verificar si el despacho actual es igual al anterior
                     $isDuplicate = $previousDespacho &&
@@ -816,7 +816,7 @@ class TemporadaShow extends Component
                                    $previousDespacho['creacion_tipo'] === $creacion_tipo &&
                                    $previousDespacho['c_productor'] === $c_productor &&
                                    $previousDespacho['id_embalaje'] === $id_embalaje &&
-                                   $previousDespacho['Estado'] === $Estado;
+                                   $previousDespacho['estado'] === $Estado;
             
                     // Si no es duplicado, guarda el nuevo registro
                     if (!$isDuplicate) {
