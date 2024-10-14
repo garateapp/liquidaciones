@@ -790,8 +790,8 @@ class TemporadaShow extends Component
                     $c_calibre = $despacho['c_calibre'] ?? null;
                     $c_serie = $despacho['c_serie'] ?? null;
                     $c_etiqueta = $despacho['c_etiqueta'] ?? null;
-                    $cantidad = $despacho['cantidad'] ?? null;
-                    $peso_neto = $despacho['peso_neto'] ?? null;
+                    $cantidad = $despacho['total_cantidad'] ?? null;
+                    $peso_neto = $despacho['total_peso_neto'] ?? null;
                     $n_variedad_rotulacion = $despacho['n_variedad_rotulacion'] ?? null;
                     $N_Pais_Destino = $despacho['N_Pais_Destino'] ?? null;
                     $N_Puerto_Destino = $despacho['N_Puerto_Destino'] ?? null;
