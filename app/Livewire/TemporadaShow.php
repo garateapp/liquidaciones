@@ -812,7 +812,7 @@ class TemporadaShow extends Component
                                    $previousDespacho['tipo_g_despacho'] === $tipo_g_despacho &&
                                    $previousDespacho['folio'] === $folio &&
                                    $previousDespacho['fecha_g_despacho'] === $fecha_g_despacho &&
-                                   $previousDespacho['peso_neto'] === $peso_neto &&
+                                   $previousDespacho['total_peso_neto'] === $peso_neto &&
                                    $previousDespacho['creacion_tipo'] === $creacion_tipo &&
                                    $previousDespacho['c_productor'] === $c_productor &&
                                    $previousDespacho['id_embalaje'] === $id_embalaje &&
