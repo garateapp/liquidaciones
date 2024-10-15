@@ -1580,6 +1580,12 @@
                      Exportar Fob Prendientes
                     </x-button>
                   </a>
+                  <x-button onclick="confirmDeleteBalance()" class="bg-red-500 text-white hover:bg-red-600 active:bg-red-900">
+                    Eliminar Balance de masa
+                 </x-button>
+                
+                         
+               
                 </div>
               @endif
               @if ($vista!='Recepcion' )
@@ -3745,5 +3751,55 @@
   }
 
 </script>
+
+<script>
+  
+  function confirmDeleteBalance() {
+    Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Mostrar mensaje de eliminación en progreso
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'El balance de masa está siendo eliminado, por favor espera.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+
+              // Llamar al método Livewire para eliminar el balance de masa
+              @this.call('delete_balancemasas').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+
+                  Swal.fire({
+                      title: '¡Eliminación completada!',
+                      text: 'El balance de masa ha sido eliminado exitosamente.',
+                      icon: 'success',
+                  });
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+
+                  Swal.fire({
+                      title: 'Error en la eliminación',
+                      text: 'Ocurrió un problema al eliminar el balance de masa. Por favor, inténtalo de nuevo más tarde.',
+                      icon: 'error',
+                  });
+              });
+          }
+      });
+  }
+
+ 
+</script>
+
 
 </div>

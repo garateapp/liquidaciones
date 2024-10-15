@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\Balancemasa;
 use App\Models\Comision;
 use App\Models\CostoPacking;
+use App\Models\Despacho;
 use App\Models\Exportacion;
 use App\Models\Familia;
 use App\Models\Flete;
@@ -49,6 +51,39 @@ class MainUpload extends Component
         
         $this->reset(['type','precio_usd']);
         $this->temporada = Temporada::find($this->temporada->id);
+    }
+
+    public function despachoImport(){
+        $despachos = Despacho::where('temporada_id', $this->temporada->id)->get();
+        foreach($despachos as $despacho) {
+            Balancemasa::create([
+                'temporada_id'             => $this->temporada->id,
+                'tipo_g_produccion'        => $despacho->tipo_g_despacho ?? '',
+                'numero_g_produccion'      => $despacho->numero_g_despacho ?? '',
+                'fecha_g_produccion_sh'    => $despacho->fecha_g_despacho ?? '',
+                'semana'                   => $despacho->semana ?? '',
+                'folio'                    => $despacho->folio ?? '',
+                'r_productor'              => $despacho->r_productor ?? '',
+                'c_productor'              => $despacho->c_productor ?? '',
+                'n_productor'              => $despacho->n_productor ?? '',
+                'n_especie'                => $despacho->n_especie ?? '',
+                'n_variedad'               => $despacho->n_variedad ?? '',
+                'c_embalaje'               => $despacho->c_embalaje ?? '',
+                'n_embalaje'               => $despacho->id_embalaje ?? '',
+                'n_categoria'              => $despacho->n_categoria ?? '',
+                't_categoria'              => $despacho->t_categoria ?? '',
+                'n_categoria_st'           => '',  // No hay campo equivalente en Despacho
+                'n_calibre'                => $despacho->n_calibre ?? '',
+                'n_etiqueta'               => $despacho->c_etiqueta ?? '',
+                'cantidad'                 => $despacho->cantidad ?? '',
+                'peso_neto'                => $despacho->peso_neto ?? '',
+                'tipo_transporte'          => $despacho->Transporte ?? '',
+                'precio_fob'               => $despacho->precio_unitario ?? '',
+                'exportadora'              => $despacho->id_exportadora ?? '',
+                'exportadora_embarque'     => $despacho->id_exportadora_embarque ?? '',
+            ]);
+        }
+        
     }
 
     public function gasto_store(){

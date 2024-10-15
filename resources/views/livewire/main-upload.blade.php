@@ -418,6 +418,16 @@
 
                 <div class="flex justify-center" x-show="masas">
                     <div>
+                        <div class="flex justify-between mb-12">
+                            <h1 class="text-xl font-semibold mb-4">
+                                Crear e importar a partir de despacho
+                            </h1>
+                            <x-button id="importButton" class="ml-4">
+                                Importar
+                            </x-button>
+                                                  
+                        </div>
+                        <hr>
                         <h1 class="text-xl font-semibold mb-4">
                             Por favor selecione el archivo de "Balance de masas" que desea importar
                         </h1>
@@ -663,5 +673,54 @@
                 
                 <!-- End Content-->
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                document.getElementById('importButton').addEventListener('click', function() {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "¿Deseas importar los despachos?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, importar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Mostrar mensaje de sincronización en progreso
+                            Swal.fire({
+                                title: 'Importando...',
+                                text: 'La importación está en curso, por favor espera.',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+            
+                            // Llamar al método Livewire directamente
+                            @this.call('despachoImport').then(() => {
+                                Swal.close(); // Cerrar la alerta de "Importando" cuando se complete la importación
+            
+                                Swal.fire({
+                                    title: '¡Importación completada!',
+                                    text: 'Los despachos han sido importados con éxito.',
+                                    icon: 'success',
+                                });
+                            }).catch(() => {
+                                Swal.close(); // Cerrar la alerta en caso de error
+            
+                                Swal.fire({
+                                    title: 'Error en la importación',
+                                    text: 'Ocurrió un problema al importar los despachos. Por favor, inténtalo de nuevo más tarde.',
+                                    icon: 'error',
+                                });
+                            });
+                        }
+                    });
+                });
+            </script>
+            
+
         </main>
 </div>

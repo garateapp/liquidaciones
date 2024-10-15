@@ -145,7 +145,7 @@ class TemporadaShow extends Component
 
         $masasbalances=Balancemasa::filter($this->filters)
             ->where('temporada_id', $this->temporada->id)
-            ->where('exportadora','Greenex SpA')
+            ->whereIn('exportadora', ['Greenex SpA', '22']) // Considerar "Greenex SpA" y "22"
             ->orderByDesc('updated_at') // Ordenar por precio_fob descendente
             ->paginate($this->ctd);
 
@@ -219,6 +219,13 @@ class TemporadaShow extends Component
        
 
         return view('livewire.temporada-show',compact('embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+    }
+
+    public function delete_balancemasas(){
+        $masas=Balancemasa::where('temporada_id',$this->temporada->id)->get();
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
     }
 
     public function production_refresh()
@@ -738,7 +745,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
                         ],
-                        'select' => 'id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                        'select' => 'fecha_produccion,r_productor,n_variedad,n_categoria,exportacion,exportacion_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
                     ]);
                 $productions = $productions->json(); 
             } else {
@@ -753,7 +760,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => 22],
                         ],
-                        'select' => 'id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                        'select' => 'fecha_produccion,r_productor,n_variedad,n_categoria,exportacion,exportacion_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
                     ]);
                     $productions = $productions->json(); 
             }
@@ -790,6 +797,7 @@ class TemporadaShow extends Component
                     $c_categoria = $despacho['c_categoria'] ?? null;
                     $t_categoria = $despacho['t_categoria'] ?? null;
                     $c_calibre = $despacho['c_calibre'] ?? null;
+                    $n_calibre = $despacho['n_calibre'] ?? null;
                     $c_serie = $despacho['c_serie'] ?? null;
                     $c_etiqueta = $despacho['c_etiqueta'] ?? null;
                     $cantidad = $despacho['cantidad'] ?? null;
@@ -808,6 +816,14 @@ class TemporadaShow extends Component
                     $Numero_Embarque = $despacho['Numero_Embarque'] ?? null;
                     $N_Proceso = $despacho['N_Proceso'] ?? null;
                     $Estado = $despacho['Estado'] ?? null;
+                    $fecha_produccion = $despacho['fecha_produccion'] ?? null;
+                    $r_productor = $despacho['r_productor'] ?? null;
+                    $n_variedad = $despacho['n_variedad'] ?? null;
+                    $n_categoria = $despacho['n_categoria'] ?? null;
+                    $exportacion = $despacho['exportacion'] ?? null;
+                    $exportacion_embarque = $despacho['exportacion_embarque'] ?? null;
+
+                    
             
                 
                 $existingDespacho = Despacho::where('id_pkg_stock_det', $id_pkg_stock_det)
@@ -847,6 +863,7 @@ class TemporadaShow extends Component
                             'c_categoria' => $c_categoria,
                             't_categoria' => $t_categoria,
                             'c_calibre' => $c_calibre,
+                            'n_calibre' => $n_calibre,
                             'c_serie' => $c_serie,
                             'c_etiqueta' => $c_etiqueta,
                             'cantidad' => $cantidad,
@@ -865,6 +882,12 @@ class TemporadaShow extends Component
                             'Numero_Embarque' => $Numero_Embarque,
                             'N_Proceso' => $N_Proceso,
                             'Estado' => $Estado,
+                            'fecha_produccion' => $fecha_produccion,
+                            'r_productor' => $r_productor,
+                            'n_variedad' => $n_variedad,
+                            'n_categoria' => $n_categoria,
+                            'exportacion' => $exportacion,
+                            'exportacion_embarque' => $exportacion_embarque,
                             'duplicado' => 'no',
                         ]);
                     }else{
@@ -892,6 +915,7 @@ class TemporadaShow extends Component
                             'c_categoria' => $c_categoria,
                             't_categoria' => $t_categoria,
                             'c_calibre' => $c_calibre,
+                            'n_calibre' => $n_calibre,
                             'c_serie' => $c_serie,
                             'c_etiqueta' => $c_etiqueta,
                             'cantidad' => $cantidad,
@@ -910,6 +934,12 @@ class TemporadaShow extends Component
                             'Numero_Embarque' => $Numero_Embarque,
                             'N_Proceso' => $N_Proceso,
                             'Estado' => $Estado,
+                            'fecha_produccion' => $fecha_produccion,
+                            'r_productor' => $r_productor,
+                            'n_variedad' => $n_variedad,
+                            'n_categoria' => $n_categoria,
+                            'exportacion' => $exportacion,
+                            'exportacion_embarque' => $exportacion_embarque,
                             'duplicado' => 'si',
                         ]);
                     }

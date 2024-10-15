@@ -23,6 +23,15 @@ return new class extends Migration
             $table->string('tipo_g_despacho')->nullable();
             $table->string('numero_g_despacho')->nullable();
             $table->string('fecha_g_despacho')->nullable();
+
+            $table->string('fecha_produccion')->nullable();
+            $table->string('r_productor')->nullable();
+            $table->string('n_variedad')->nullable();
+            $table->string('semana')->nullable();
+            $table->string('n_categoria')->nullable();
+            $table->string('exportacion')->nullable();
+            $table->string('exportacion_embarque')->nullable();
+
             $table->string('id_empresa')->nullable();
             $table->string('id_exportadora')->nullable();
             $table->string('id_exportadora_embarque')->nullable();
@@ -41,6 +50,7 @@ return new class extends Migration
             $table->string('c_categoria')->nullable();
             $table->string('t_categoria')->nullable();
             $table->string('c_calibre')->nullable();
+            $table->string('n_calibre')->nullable();
             $table->string('c_serie')->nullable();
             $table->string('c_etiqueta')->nullable();
             $table->string('cantidad')->nullable();
