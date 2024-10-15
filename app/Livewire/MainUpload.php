@@ -54,8 +54,34 @@ class MainUpload extends Component
     }
 
     public function despachoImport(){
-        $despachos = Despacho::where('temporada_id', $this->temporada->id)->get();
+        $despachos = Despacho::where('temporada_id', $this->temporada->id)
+            ->select([
+                'tipo_g_despacho', 
+                'numero_g_despacho', 
+                'fecha_g_despacho', 
+                'semana', 
+                'folio', 
+                'r_productor', 
+                'c_productor', 
+                'n_productor', 
+                'n_especie', 
+                'n_variedad', 
+                'c_embalaje', 
+                'id_embalaje', 
+                'n_categoria', 
+                't_categoria', 
+                'n_calibre', 
+                'c_etiqueta', 
+                'cantidad', 
+                'peso_neto', 
+                'Transporte', 
+                'n_exportadora', 
+                'n_exportadora_embarque'
+            ])
+            ->get();
+        $n=0;
         foreach($despachos as $despacho) {
+            $n+=1;
             Balancemasa::create([
                 'temporada_id'             => $this->temporada->id,
                 'tipo_g_produccion'        => $despacho->tipo_g_despacho ?? '',
@@ -80,10 +106,10 @@ class MainUpload extends Component
                 'exportadora'              => $despacho->n_exportadora ?? '',
                 'exportadora_embarque'     => $despacho->n_exportadora_embarque ?? '',
             ]);
-            
         }
+    
 
-        return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito ('.$n.')');
        // return redirect()->back();
         
     }
