@@ -158,7 +158,7 @@
                       @endforeach
                     
                       @if ($masastotal && $masastotalnacional)
-                        ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                        ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) test ({{number_format($kgstotmas)}} KGS)
                       @elseif($masastotal)
                         ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                       @elseif($masastotalnacional)
