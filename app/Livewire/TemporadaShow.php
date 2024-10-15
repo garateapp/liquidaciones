@@ -226,6 +226,7 @@ class TemporadaShow extends Component
         foreach ($masas as $masa){
             $masa->delete();
         }
+        return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
     }
 
     public function production_refresh()
