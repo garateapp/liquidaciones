@@ -707,14 +707,15 @@ class TemporadaShow extends Component
         $totali=$ri->count();
 
         $dateRanges = [];
-
+        /*
         if($totali>0){
             $ultimo = Despacho::orderBy('fecha_g_despacho', 'desc')->first();
             $start = new DateTime($ultimo->fecha_g_despacho); // Usa la fecha más reciente
         }else{
             $start = new DateTime($this->fechai);
-        }
+        }*/
 
+        $start = new DateTime($this->fechai);
         $end = new DateTime($this->fechaf);
         $intervalDays=3;
 
@@ -896,7 +897,8 @@ class TemporadaShow extends Component
                             'duplicado' => 'no',
                         ]);
                     }else{
-                        Despacho::create([
+                        /*
+                        $existingDespacho->update([
                             'temporada_id'=>$this->temporada->id,
                             'id_pkg_stock_det'=>$id_pkg_stock_det,
                             'tipo_g_despacho' => $tipo_g_despacho,
@@ -948,7 +950,7 @@ class TemporadaShow extends Component
                             'id_exportadora_embarque' => $id_exportadora_embarque,
                             'n_exportadora_embarque' => $n_exportadora_embarque,
                             'duplicado' => 'si',
-                        ]);
+                        ]);*/
                     }
             
                     
