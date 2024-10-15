@@ -54,10 +54,10 @@ class MainUpload extends Component
     }
 
     public function despachoImport(){
-        Despacho::where('temporada_id', $this->temporadaId)->chunk(1000, function ($despachos) {
+        Despacho::where('temporada_id', $this->temporada->id)->chunk(1000, function ($despachos) {
             foreach ($despachos as $despacho) {
                 Balancemasa::create([
-                    'temporada_id'             => $this->temporadaId,
+                    'temporada_id'             => $this->temporada->id,
                     'tipo_g_produccion'        => $despacho->tipo_g_despacho ?? '',
                     'numero_g_produccion'      => $despacho->numero_g_despacho ?? '',
                     'fecha_g_produccion_sh'    => $despacho->fecha_g_despacho ?? '',
