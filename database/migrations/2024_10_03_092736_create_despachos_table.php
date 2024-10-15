@@ -45,6 +45,7 @@ return new class extends Migration
             $table->string('c_productor')->nullable();
             $table->string('n_productor')->nullable();
             $table->string('id_especie')->nullable();
+            $table->string('n_especie')->nullable();
             $table->string('id_variedad')->nullable();
             $table->string('id_embalaje')->nullable();
             $table->string('c_embalaje')->nullable();

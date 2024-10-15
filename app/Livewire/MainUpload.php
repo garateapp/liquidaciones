@@ -59,7 +59,6 @@ class MainUpload extends Component
                 'tipo_g_despacho', 
                 'numero_g_despacho', 
                 'fecha_g_despacho', 
-                'semana', 
                 'folio', 
                 'r_productor', 
                 'c_productor', 
