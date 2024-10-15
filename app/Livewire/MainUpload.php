@@ -85,6 +85,7 @@ class MainUpload extends Component
             ]);
         }
         
+        
     }
 
     public function gasto_store(){
