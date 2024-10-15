@@ -146,27 +146,24 @@
                       @php
                           $kgstotmas=0;
                       @endphp
-                      @foreach ($masastotal2 as $masa)
+                      @foreach ($masastotal as $masa)
                         @php
                             $kgstotmas+=$masa->peso_neto;
                         @endphp
                       @endforeach
                       @foreach ($masastotalnacional as $masa)
                         @php
-                           // $kgstotmas+=$masa->peso_neto;
+                            $kgstotmas+=$masa->peso_neto;
                         @endphp
                       @endforeach
-                    {{-- comment
-                      @if ($masastotal2->count()>0 && $masastotalnacional->count()>0)
-                        ({{(number_format($masastotal2->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
+                    
+                      @if ($masastotal && $masastotalnacional)
+                        ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                       @elseif($masastotal)
                         ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                       @elseif($masastotalnacional)
                         ({{(number_format($masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                       @endif
-                    --}}
-                    ({{(number_format($masastotal2->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-
                     @endif
                   </h2>
 
