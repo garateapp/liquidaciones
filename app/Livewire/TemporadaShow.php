@@ -76,7 +76,7 @@ class TemporadaShow extends Component
         $this->temporada=$temporada;
         $this->vista=$vista;
         
-        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
+        $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
         $this->filters['etiquetas'] = $masastotal2->pluck('n_etiqueta')->unique()->sort()->values()->all();
 
         if ($temporada->recepcion_start) {
