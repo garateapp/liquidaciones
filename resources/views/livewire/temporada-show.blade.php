@@ -3776,24 +3776,24 @@
                   }
               });
 
-              // Llamar al método Livewire para eliminar el balance de masa
               @this.call('delete_balancemasas').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
-
-                  Swal.fire({
-                      title: '¡Eliminación completada!',
-                      text: 'El balance de masa ha sido eliminado exitosamente.',
-                      icon: 'success',
-                  });
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                     '¡Eliminación completada!',
+                     'El balance de masa ha sido eliminado exitosamente.',
+                      'success'
+                  );
               }).catch(() => {
                   Swal.close(); // Cerrar la alerta en caso de error
-
-                  Swal.fire({
-                      title: 'Error en la eliminación',
-                      text: 'Ocurrió un problema al eliminar el balance de masa. Por favor, inténtalo de nuevo más tarde.',
-                      icon: 'error',
-                  });
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
               });
+
+
+
           }
       });
   }
