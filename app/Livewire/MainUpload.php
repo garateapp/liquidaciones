@@ -55,6 +55,7 @@ class MainUpload extends Component
 
     public function despachoImport(){
         $despachos = Despacho::where('temporada_id', $this->temporada->id)->get();
+        dd($despachos->count());
         foreach($despachos as $despacho) {
             Balancemasa::create([
                 'temporada_id'             => $this->temporada->id,
@@ -84,7 +85,7 @@ class MainUpload extends Component
                 
             ]);
         }
-        
+
         
     }
 
