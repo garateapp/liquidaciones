@@ -150,7 +150,7 @@ class TemporadaShow extends Component
             ->paginate($this->ctd);
 
             
-        $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->where('exportadora','Greenex SpA')->get();
+        $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
 
         //$masastotal=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
