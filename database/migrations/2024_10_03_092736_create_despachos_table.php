@@ -29,8 +29,10 @@ return new class extends Migration
             $table->string('n_variedad')->nullable();
             $table->string('semana')->nullable();
             $table->string('n_categoria')->nullable();
-            $table->string('exportacion')->nullable();
-            $table->string('exportacion_embarque')->nullable();
+            $table->string('n_exportadora')->nullable();
+            $table->string('n_exportadora_embarque')->nullable();
+            
+
 
             $table->string('id_empresa')->nullable();
             $table->string('id_exportadora')->nullable();

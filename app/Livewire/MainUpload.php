@@ -79,8 +79,9 @@ class MainUpload extends Component
                 'peso_neto'                => $despacho->peso_neto ?? '',
                 'tipo_transporte'          => $despacho->Transporte ?? '',
                 'precio_fob'               => $despacho->precio_unitario ?? '',
-                'exportadora'              => $despacho->id_exportadora ?? '',
-                'exportadora_embarque'     => $despacho->id_exportadora_embarque ?? '',
+                'exportadora'              => $despacho->n_exportadora ?? '',
+                'exportadora_embarque'     => $despacho->n_exportadora_embarque ?? '',
+                
             ]);
         }
         
