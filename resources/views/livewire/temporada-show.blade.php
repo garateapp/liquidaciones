@@ -631,7 +631,7 @@
                         </div>
                       @else
                         <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
-                            Cantidad total: {{$razonsall->count()}} @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
+                             {{$razonsall->count()}} Productores @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
                         </div>
                       @endif
                       
