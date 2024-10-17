@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CondicionproductorController;
 use App\Http\Controllers\CostoController;
 use App\Http\Controllers\EspecieController;
@@ -163,5 +164,7 @@ Route::resource('especies', EspecieController::class)->names('admin.especies');
 Route::resource('condicionproductors', CondicionproductorController::class)->names('admin.condicionproductors');
 
 Route::resource('opcioncondicions', OpcioncondicionController::class)->names('admin.opcions');
+
+Route::resource('categoria', CategoriaController::class)->names('admin.categorias');
 
 Route::resource('users', UserController::class)->only(['index','edit','update','destroy'])->names('users');

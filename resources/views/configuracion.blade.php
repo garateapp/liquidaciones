@@ -72,17 +72,17 @@
                      </div>
                  </div>
                 
-                 <div class="relative group bg-white transition hover:z-[1] hover:shadow-2xl hidden">
+                 <div class="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
                        <div class="relative p-8 space-y-8">
-                           <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/package-delivery.png" class="w-10" width="512" height="512" alt="burger illustration">
+                           <img src="https://cdn-icons-png.flaticon.com/512/6724/6724239.png" class="w-10" width="512" height="512" alt="burger illustration">
                            
                            <div class="space-y-2">
-                           <a href="{{Route('admin.condicionproductors.index')}}">
-                               <h5 class="text-xl text-gray-800 font-medium transition group-hover:text-yellow-600 cursor-pointer">Comisiones</h5>
+                           <a href="{{Route('admin.categorias.index')}}">
+                               <h5 class="text-xl text-gray-800 font-medium transition group-hover:text-yellow-600 cursor-pointer">Categorias</h5>
                            </a>
                                <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                            </div>
-                           <a href="{{Route('admin.condicionproductors.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
+                           <a href="{{Route('admin.categorias.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
                                <span class="text-sm">Read more</span>
                                <span class="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0">&RightArrow;</span>
                            </a>

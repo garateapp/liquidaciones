@@ -757,19 +757,20 @@
                     <div class="">
                       Categoria:<br>
                       <div>
-                        <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                        <label for="exp">Exportación</label>
-                      </div>
-                    
-                      <div>
-                        <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                        <label for="mi">Mercado Interno</label>
+                        <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
+                        <label for="exp" title="{{$exportacionCodes}}">Exportación</label>
                       </div>
                       <div>
-                        <input type="checkbox" wire:model.live="filters.desc" id="desc" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                        <label for="desc">Desecho</label>
+                          <input type="checkbox" wire:model.live="filters.com" id="com" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
+                          <label for="com" title="{{$comercialCodes}}">Comercial</label>
                       </div>
                       <div>
+                          <input type="checkbox" wire:model.live="filters.mi" id="mi" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
+                          <label for="mi" title="{{$mercadoInternoCodes}}">Mercado Interno</label>
+                      </div>
+                     
+                      
+                      <div class="hidden">
                         <input type="checkbox" wire:model.live="filters.mer" id="mer" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         <label for="mer">Merma</label>
                       </div>

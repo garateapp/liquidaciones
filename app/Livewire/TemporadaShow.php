@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Anticipo;
 use App\Models\Balancemasa;
 use App\Models\Balancemasados;
+use App\Models\Categoria;
 use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Despacho;
@@ -52,7 +53,9 @@ class TemporadaShow extends Component
         'toDate'=>'',
         'precioFob'=>'',
         'ncategoria'=>'',
-        'exp'=>'',
+        'exp' => true,   // Inicia marcado
+        'com' => true,   // Inicia marcado
+        'mi'  => true,
         'mie'=>'',
         'mn'=>'',
         'desc'=>'',
@@ -61,7 +64,6 @@ class TemporadaShow extends Component
         'etiquetas'=>'[]',
         'material'=>'',
         'mer'=>'',
-        'mi'=>'',
         'semana'=>'',
         'norma'=>'',
         'p_unicos'=>true,
@@ -216,9 +218,11 @@ class TemporadaShow extends Component
 
         $detalles=Detalle::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
 
-       
+        $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
+        $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
+        $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function delete_balancemasas(){

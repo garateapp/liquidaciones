@@ -20,11 +20,37 @@ class Balancemasa extends Model
         return $this->hasone('App\Models\Material','c_embalaje','c_embalaje');
     }
 
-    public function scopeFilter($query,$filters){
+    public function scopeFilter($query, $filters)
+    {
+        // Obtener los códigos de categorías para los tres grupos
+        $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
+        $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
+        $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
+
+        // Filtrar según los valores seleccionados en los checkboxes
+        $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
+            $categorias = collect();
+
+            // Si está seleccionado, incluir las categorías correspondientes
+            if ($filters['exp']) {
+                $categorias = $categorias->merge($exportacionCodes);
+            }
+            if ($filters['mi']) {
+                $categorias = $categorias->merge($mercadoInternoCodes);
+            }
+            if ($filters['com']) {
+                $categorias = $categorias->merge($comercialCodes);
+            }
+
+            // Aplicar el filtro de categorías
+            $query->whereIn('n_categoria', $categorias->unique());
+        });
+
+        // Otros filtros como antes
         $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
             $query->where('c_productor', 'like', '%' . $serie . '%');
-        })->when($filters['variedad'] ?? null,function($query,$variedad){
-            $query->where('n_variedad',$variedad);
+        })->when($filters['variedad'] ?? null, function($query, $variedad) {
+            $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob == 'null') {
                 $query->whereNull('precio_fob');
@@ -32,112 +58,58 @@ class Balancemasa extends Model
         })->when($filters['norma'] ?? null, function ($query, $norma) {
             if ($norma === 'dentro') {
                 $query->where('n_categoria', 'Cat 1')
-                      ->whereNotIn('n_calibre', ['L', 'LD'])
-                      ->where('n_etiqueta', '!=', 'Loica');
+                    ->whereNotIn('n_calibre', ['L', 'LD'])
+                    ->where('n_etiqueta', '!=', 'Loica');
             }
             if ($norma === 'fuera') {
                 $query->where(function ($query) {
                     $query->orWhere('n_calibre', 'L')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_etiqueta', 'Loica');
+                        ->orWhere('n_categoria', 'Cat I')
+                        ->orWhere('n_etiqueta', 'Loica');
                 });
             }
-        })->when($filters['calibre'] ?? null,function($query,$calibre){
-            $query->where('n_calibre',$calibre);
-        })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
-            $query->where('n_etiqueta',$etiqueta);
-        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
+        })->when($filters['calibre'] ?? null, function($query, $calibre) {
+            $query->where('n_calibre', $calibre);
+        })->when($filters['etiqueta'] ?? null, function($query, $etiqueta) {
+            $query->where('n_etiqueta', $etiqueta);
+        })->when($filters['etiquetas'] ?? null, function($query, $etiquetas) {
             if (!empty($etiquetas)) {
                 $query->whereIn('n_etiqueta', $etiquetas);
             }
-        })->when($filters['material'] ?? null,function($query,$material){
-            $query->where('c_embalaje',$material);
-        })->when($filters['semana'] ?? null,function($query,$semana){
-            $query->where('semana',$semana);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
-            $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho');
-                } elseif ($filters['exp'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp']) {
-                    $query->where('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I');
-                } elseif ($filters['desc']) {
-                    $query->where('n_categoria', 'Desecho');
-                } elseif ($filters['mer']) {
-                    $query->where('n_categoria', 'Merma');
-                } elseif ($filters['mi']) {
-                    $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                }
-            });
-            
-            
+        })->when($filters['material'] ?? null, function($query, $material) {
+            $query->where('c_embalaje', $material);
+        })->when($filters['semana'] ?? null, function($query, $semana) {
+            $query->where('semana', $semana);
         });
     }
 
+
     public function scopeFilter1($query,$filters){
+
+         // Obtener los códigos de categorías para los tres grupos
+         $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
+         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
+         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
+ 
+         // Filtrar según los valores seleccionados en los checkboxes
+         $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
+             $categorias = collect();
+ 
+             // Si está seleccionado, incluir las categorías correspondientes
+             if ($filters['exp']) {
+                 $categorias = $categorias->merge($exportacionCodes);
+             }
+             if ($filters['mi']) {
+                 $categorias = $categorias->merge($mercadoInternoCodes);
+             }
+             if ($filters['com']) {
+                 $categorias = $categorias->merge($comercialCodes);
+             }
+ 
+             // Aplicar el filtro de categorías
+             $query->whereIn('n_categoria', $categorias->unique());
+         });
+
         $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
             $query->where('n_productor', 'like', '%' . $serie . '%');
         })->when($filters['variedad'] ?? null, function ($query, $variedad) {
@@ -171,90 +143,34 @@ class Balancemasa extends Model
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null,function($query,$semana){
             $query->where('semana',$semana);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
-            $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho');
-                } elseif ($filters['exp'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp']) {
-                    $query->where('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I');
-                } elseif ($filters['desc']) {
-                    $query->where('n_categoria', 'Desecho');
-                } elseif ($filters['mer']) {
-                    $query->where('n_categoria', 'Merma');
-                } elseif ($filters['mi']) {
-                    $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                }
-            });
-            
-            
         });
     }
 
     public function scopeFilter2($query,$filters){
+         // Obtener los códigos de categorías para los tres grupos
+         $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
+         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
+         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
+ 
+         // Filtrar según los valores seleccionados en los checkboxes
+         $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
+             $categorias = collect();
+ 
+             // Si está seleccionado, incluir las categorías correspondientes
+             if ($filters['exp']) {
+                 $categorias = $categorias->merge($exportacionCodes);
+             }
+             if ($filters['mi']) {
+                 $categorias = $categorias->merge($mercadoInternoCodes);
+             }
+             if ($filters['com']) {
+                 $categorias = $categorias->merge($comercialCodes);
+             }
+ 
+             // Aplicar el filtro de categorías
+             $query->whereIn('n_categoria', $categorias->unique());
+         });
+
         $query->where(function ($query) {
             $query->where('n_categoria', '!=', 'Cat 1')
                 ->where('n_categoria', '!=', 'Cat I');
@@ -291,86 +207,6 @@ class Balancemasa extends Model
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null,function($query,$semana){
             $query->where('semana',$semana);
-        })->when($filters['exp']  || $filters['mie'] || $filters['mn'] || $filters['desc'] || $filters['mer'] || $filters['mi'], function ($query) use ($filters) {
-            $query->where(function ($query) use ($filters) {
-                if ($filters['exp'] && $filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp'] && $filters['desc']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Desecho');
-                } elseif ($filters['exp'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['exp'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['desc'] && $filters['mer']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere('n_categoria', 'Merma');
-                } elseif ($filters['desc'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Desecho')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['mer'] && $filters['mi']) {
-                    $query->orWhere('n_categoria', 'Merma')
-                          ->orWhere(function ($query) {
-                              $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                          });
-                } elseif ($filters['exp']) {
-                    $query->where('n_categoria', 'Cat 1')
-                          ->orWhere('n_categoria', 'Cat I');
-                } elseif ($filters['desc']) {
-                    $query->where('n_categoria', 'Desecho');
-                } elseif ($filters['mer']) {
-                    $query->where('n_categoria', 'Merma');
-                } elseif ($filters['mi']) {
-                    $query->whereNotIn('n_categoria', ['Cat 1', 'Cat I', 'Desecho', 'Merma']);
-                }
-            });
-            
-            
         });
     }
     
