@@ -13,6 +13,7 @@ use App\Models\Gasto;
 use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
+use App\Models\Variedad;
 use Livewire\Component;
 
 class MainUpload extends Component
@@ -106,7 +107,17 @@ class MainUpload extends Component
                 'exportadora_embarque'     => $despacho->n_exportadora_embarque ?? '',
             ]);
         }
-    
+        
+        $masas=Balancemasa::where('temporada_id',$this->temporada->id)->get();
+        foreach($masas as $masa){
+            $variedad=Variedad::where('name',$masa->n_variedad)->where('temporada_id',$this->temporada->id)->first();
+            if ($variedad){
+                
+            }else{
+                Variedad::create(['name'=>$masa->n_variedad,
+                                'temporada_id'=>$this->temporada->id]);
+            }
+       }
 
         return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito ('.$n.')');
        // return redirect()->back();

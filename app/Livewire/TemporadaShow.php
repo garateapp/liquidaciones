@@ -27,6 +27,7 @@ use App\Models\Variedad;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
@@ -145,14 +146,21 @@ class TemporadaShow extends Component
         $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fobsall=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances=Balancemasa::filter($this->filters)
-            ->where('temporada_id', $this->temporada->id)
-            ->whereIn('exportadora', ['Greenex SpA', '22']) // Considerar "Greenex SpA" y "22"
-            ->orderByDesc('updated_at') // Ordenar por precio_fob descendente
-            ->paginate($this->ctd);
+        $masasbalances = Cache::remember('masasbalances_'.$this->temporada->id.'_'.serialize($this->filters).'_'.$this->ctd, 60, function() {
+            return Balancemasa::filter($this->filters)
+                ->where('temporada_id', $this->temporada->id)
+                ->whereIn('exportadora', ['Greenex SpA', '22'])
+                ->orderByDesc('updated_at')
+                ->paginate($this->ctd);
+                });
 
             
-        $masastotal=Balancemasa::filter1($this->filters)->where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
+        $masastotal = Cache::remember('masastotal_'.$this->temporada->id.'_'.serialize($this->filters), 60, function() {
+                    return Balancemasa::filter1($this->filters)
+                        ->where('temporada_id', $this->temporada->id)
+                        ->whereIn('exportadora', ['Greenex SpA', '22'])
+                        ->get();
+                });
 
         //$masastotal=Recepcion::where('temporada_id',$this->temporada->id)->get();
 

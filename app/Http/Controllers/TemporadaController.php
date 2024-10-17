@@ -454,7 +454,7 @@ class TemporadaController extends Controller
     {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
         $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
 
-        $masitas=Recepcion::where('temporada_id',$temporada->id)->paginate(3);
+        $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
         if ($masitas->count()>0) {
             return view('temporadas.show',compact('temporada','resumes','CostosPackings'));
         } else {
@@ -475,7 +475,7 @@ class TemporadaController extends Controller
     }
 
     public function resume(Temporada $temporada)
-    {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
+    {   $resumes=Balancemasa::where('temporada_id',$temporada->id)->get();
         return view('temporadas.resume',compact('temporada','resumes'));
     }
 
