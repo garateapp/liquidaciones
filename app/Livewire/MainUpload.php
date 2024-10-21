@@ -84,9 +84,9 @@ class MainUpload extends Component
             $n+=1;
             Balancemasa::create([
                 'temporada_id'             => $this->temporada->id,
-                'tipo_g_produccion'        => $despacho->tipo_g_despacho ?? '',
-                'numero_g_produccion'      => $despacho->numero_g_despacho ?? '',
-                'fecha_g_produccion_sh'    => $despacho->fecha_g_despacho ?? '',
+                'tipo_g_despacho'        => $despacho->tipo_g_despacho ?? '',
+                'numero_g_despacho'      => $despacho->numero_g_despacho ?? '',
+                'fecha_g_despacho'    => $despacho->fecha_g_despacho ?? '',
                 'semana'                   => $despacho->semana ?? '',
                 'folio'                    => $despacho->folio ?? '',
                 'r_productor'              => $despacho->r_productor ?? '',

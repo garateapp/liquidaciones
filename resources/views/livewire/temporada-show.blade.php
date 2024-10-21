@@ -100,7 +100,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -145,10 +145,16 @@
                     @if ($vista=='MASAS')
                       @php
                           $kgstotmas=0;
+                          $sinfecha=0;
                       @endphp
                       @foreach ($masastotal as $masa)
                         @php
                             $kgstotmas+=$masa->peso_neto;
+                            if ($masa->etd || $masa->eta) {
+                             
+                            }else{
+                              $sinfecha+=1;
+                            }
                         @endphp
                       @endforeach
                       @foreach ($masastotalnacional as $masa)
@@ -834,6 +840,31 @@
                         
                       
                       </select>
+                    </div>
+
+                        <!-- Extra Chatbot Card -->
+                    <div class="mt-6 ml-4 max-w-[600px] w-full p-6 bg-white border rounded-lg shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-semibold">
+                              {{$sinfecha}} Registros Sin Fecha etd/eta
+                            </h3>
+
+                            <button wire:click='filtrar_fechanull()' class="flex items-center @if($filters['fechanull']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1  px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+                              Filtrar 
+                              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="mt-4 text-gray-600">El sistema buscara en los registros de despacho la fecha etd/eta por coincidencia de la columna numero_g_despacho.</p>
+                        <div class="flex items-center mt-6">
+                            <span class="text-2xl font-bold">{{$embarquesall->count()}}</span>
+                            <span class="ml-1 text-sm text-gray-600">Embarques</span>
+                            <button onclick="confirmSyncFechas()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                              Sincronizar
+                            </button>
+                          
+                        </div>
                     </div>
                   
                   @endif
@@ -2952,10 +2983,13 @@
                                 
                                 $columnas = [
                                   'id',
-                                  'tipo_g_produccion',
-                                  'numero_g_produccion',
-                                  'fecha_g_produccion_sh',
+                                  'tipo_g_despacho',
+                                  'numero_g_despacho',
+                                  'fecha_g_despacho',
                                   'semana',
+                                  'etd',
+                                  'eta',
+                                  'Control Fecha',
                                   'folio',
                                   'r_productor',
                                   'c_productor',
@@ -2993,17 +3027,26 @@
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->id }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_produccion }}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_despacho }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_produccion }}</p>
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_despacho }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_produccion_sh))}}</p>
+                                  <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_despacho))}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{$masa->semana}}</p>
-                            </td>
+                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->semana}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->etd_semana}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->eta_semana}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200  text-sm @if($masa->control_fechas>2)bg-red-100 @else bg-white @endif">
+                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->control_fechas}}</p>
+                              </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
                               </td>
@@ -3809,45 +3852,69 @@
                 @endif
 
                 @if ($vista=='Embarques') 
-                        
-                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
-                          <div class="flex flex-col md:flex-row">
-                            <div class="">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>Round-trip</option>
-                                    <option>Missouri</option>
-                                    <option>Texas</option>
-                                </select>
-                            </div>
-                            <div class="pt-6 md:pt-0 md:pl-6">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>4 Passengers</option>
-                                    <option>3 Passengers</option>
-                                    <option>2 Passengers</option>
-                                </select>
-                            </div>
-                            <div class="pt-6 md:pt-0 md:pl-6">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>Economy</option>
-                                </select>
-                            </div>
-                          </div>
-                        
-                          <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                            <div class="grid grid-cols-1 gap-2 border border-gray-200 p-2 rounded">
-                                <div class="flex border rounded bg-gray-300 items-center p-2 ">
-                                    <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                        <path class="heroicon-ui"
-                                              d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
-                                    </svg>
-                                    <input type="text" value="https://api.greenexweb.cl/api/shipments"  class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
-                                </div>
-                          
-                            </div>
-                          
-                        </div>
-                            <div class="flex justify-center"><button class="p-2 border w-1/4 rounded-md bg-gray-800 text-white">Search</button></div>
-                        </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    N° Embarque
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    Fecha Embarque
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    Nave
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    Transporte
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    Fecha Despacho
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    Número Guía Despacho
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    ETD
+                                </th>
+                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                    ETA
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($embarques as $item)
+                            <tr>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['n_embarque'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['fecha_embarque'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['nave'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['transporte'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['fecha_despacho'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['numero_g_despacho'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['etd'] ?? 'N/A' }}
+                                </td>
+                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                    {{ $item['eta'] ?? 'N/A' }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+              
                   
                 @endif
 
@@ -4286,6 +4353,50 @@
           }
       });
   }
+  function confirmSyncFechas() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización?',
+          text: `Este proceso conectará el balance de masa con la base de Embarques para obtener las fechas etd y eta.`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, sincronizar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando la base de datos con la información de Embarques para obtener fecha etd/eta.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+
+              // Llamar al método Livewire para sincronizar fechas
+              @this.call('sync_fechas').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                      '¡Sincronización completada!',
+                      'Los datos de procesos han sido actualizados exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+          }
+      });
+  }
+
 
  
 </script>

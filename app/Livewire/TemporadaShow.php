@@ -68,7 +68,8 @@ class TemporadaShow extends Component
         'semana'=>'',
         'norma'=>'',
         'p_unicos'=>true,
-        'p_repetidos'=>true
+        'p_repetidos'=>true,
+        'fechanull'=>''
     ];
 
     #[Url]
@@ -93,6 +94,16 @@ class TemporadaShow extends Component
         }else{
             $this->fechaf = Carbon::now()->format('Y-m-d');
         }
+    }
+
+    public function filtrar_fechanull(){
+        if ($this->filters['fechanull']==True) {
+            $this->filters['fechanull']=False;
+        } else {
+            $this->filters['fechanull']=True;
+        }
+        
+        
     }
 
     public function checkEtiqueta($etiqueta)
@@ -241,6 +252,45 @@ class TemporadaShow extends Component
    //     return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
     }
 
+    public function sync_fechas(){
+        $masas=Balancemasa::where('temporada_id', $this->temporada->id)
+        ->where(function ($query) {
+            $query->whereNull('etd')
+                  ->orWhereNull('eta');
+        })
+        ->get();
+        $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
+        foreach($masas as $masa){
+            foreach ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho) as $embarque){
+                if($embarque->etd || $embarque->eta){
+                    $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
+                    $eta = $embarque->eta;
+                    
+                    // Convertir las fechas a semanas del año
+                    $etdSemana = date('W', strtotime($etd));
+                    $etaSemana = date('W', strtotime($eta));
+                        if ($etdSemana>$etaSemana) {
+                            $diferenciadefechas=$etaSemana-$etdSemana-52;
+                        }else{
+                            $diferenciadefechas=$etaSemana-$etdSemana;
+                        }
+                    // Luego puedes guardar esas semanas en tu base de datos
+                    $masa->update([
+                        'etd' => $etd,  // Mantienes la fecha original si es necesario
+                        'eta' => $eta,
+                        'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                        'eta_semana' => $etaSemana,
+                        'control_fechas'=>$diferenciadefechas
+                    ]);
+
+                                break;
+                }
+            }
+        }
+
+      //  $this->render();
+
+    }
     public function production_refresh()
     {    $ri=Recepcion::all();
         $totali=$ri->count();
@@ -988,6 +1038,150 @@ class TemporadaShow extends Component
 
         return redirect()->back();
     }
+
+    public function embarques_refresh()
+    {    $ri=Embarque::all();
+        $totali=$ri->count();
+
+        $dateRanges = [];
+        /*
+        if($totali>0){
+            $ultimo = Despacho::orderBy('fecha_g_despacho', 'desc')->first();
+            $start = new DateTime($ultimo->fecha_g_despacho); // Usa la fecha más reciente
+        }else{
+            $start = new DateTime($this->fechai);
+        }*/
+
+        $start = new DateTime($this->fechai);
+        $end = new DateTime($this->fechaf);
+        $intervalDays=3;
+
+        while ($start <= $end) {
+            $rangeEnd = (clone $start)->modify("+{$intervalDays} days");
+            if ($rangeEnd > $end) {
+                $rangeEnd = $end;
+            }
+            $dateRanges[] = [
+                'start' => $start->format('Y-m-d'),
+                'end' => $rangeEnd->format('Y-m-d')
+            ];
+            $start = (clone $rangeEnd)->modify("+1 day");
+        }
+        
+        //dd($dateRanges);
+
+        foreach($dateRanges as $date){
+
+            if ($this->temporada->exportadora_id) {
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/shipments", [
+                        'filter' => [
+                            'fecha_embarque' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ]
+                        ]
+                    ]);
+                $productions = $productions->json(); 
+            } else {
+                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/shipments", [
+                        'filter' => [
+                            'fecha_embarque' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ]
+                        ]
+                    ]);
+                    $productions = $productions->json(); 
+            }
+            
+            
+           
+           
+
+               
+
+          
+            if (!empty($productions)) {
+                foreach ($productions as $embarque) {
+                    // Nuevas columnas relacionadas con embarques
+                    $n_embarque = $embarque['n_embarque'] ?? null;
+                    $fecha_embarque = $embarque['fecha_embarque'] ?? null;
+                    $nave = $embarque['nave'] ?? null;
+                    $transporte = $embarque['transporte'] ?? null;
+                    $fecha_despacho = $embarque['fecha_despacho'] ?? null;
+                    $numero_g_despacho = $embarque['numero_g_despacho'] ?? null;
+                    $numero_guia_produccion = $embarque['numero_guia_produccion'] ?? null;
+                    $etd = $embarque['etd'] ?? null;
+                    $eta = $embarque['eta'] ?? null;
+                
+                    // Buscar despacho existente con las nuevas columnas
+                    $existingDespacho = Embarque::where('n_embarque', $n_embarque)
+                        ->where( 'temporada_id',$this->temporada->id)
+                        ->where('numero_g_despacho', $numero_g_despacho)
+                        ->where('transporte', $transporte)
+                        ->where('nave', $nave)
+                        ->where('fecha_embarque', $fecha_embarque)
+                        ->first();
+                
+                    if (!$existingDespacho) {
+                        Embarque::create([
+                            'temporada_id' =>$this->temporada->id,
+                            'n_embarque' => $n_embarque,
+                            'fecha_embarque' => $fecha_embarque,
+                            'nave' => $nave,
+                            'transporte' => $transporte,
+                            'fecha_despacho' => $fecha_despacho,
+                            'numero_g_despacho' => $numero_g_despacho,
+                            'numero_guia_produccion' => $numero_guia_produccion,
+                            'etd' => $etd,
+                            'eta' => $eta,
+                            'duplicado' => 'no',
+                        ]);
+                    } else {
+                        /*
+                        $existingDespacho->update([
+                            'n_embarque' => $n_embarque,
+                            'fecha_embarque' => $fecha_embarque,
+                            'nave' => $nave,
+                            'transporte' => $transporte,
+                            'fecha_despacho' => $fecha_despacho,
+                            'numero_g_despacho' => $numero_g_despacho,
+                            'numero_guia_produccion' => $numero_guia_produccion,
+                            'etd' => $etd,
+                            'eta' => $eta,
+                            'duplicado' => 'si',
+                        ]);
+                        */
+                    }
+                }
+                
+            }
+            
+
+
+            
+        }
+
+        $this->temporada->update([  'recepcion_start'=>$this->fechai,
+                                    'recepcion_end'=>$this->fechaf]);
+        
+        $rf=Proceso::all();
+        $total=$rf->count()-$ri->count();
+        Sync::create([
+            'tipo'=>'MANUAL',
+            'entidad'=>'PROCESOS',
+            'fecha'=>Carbon::now(),
+            'cantidad'=>$total
+        ]);
+
+        return redirect()->back();
+    }
+
+
 
     public function recepcions_delete(){
         $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();

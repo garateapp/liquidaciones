@@ -19,9 +19,9 @@ return new class extends Migration
             ->constrained()
             ->onDelete('cascade');
 
-            $table->text('tipo_g_produccion')->nullable();
-            $table->text('numero_g_produccion')->nullable();
-            $table->text('fecha_g_produccion_sh')->nullable();
+            $table->text('tipo_g_despacho')->nullable();
+            $table->text('numero_g_despacho')->nullable();
+            $table->text('fecha_g_despacho')->nullable();
             $table->text('semana')->nullable();
             $table->text('folio')->nullable();
             $table->text('r_productor')->nullable();
@@ -42,6 +42,13 @@ return new class extends Migration
             $table->text('precio_fob')->nullable();
             $table->text('exportadora')->nullable();
             $table->text('exportadora_embarque')->nullable();
+            $table->string('etd')->nullable(); // Estimated Time of Departure
+            $table->string('eta')->nullable(); // Estimated Time of Arrival
+
+            $table->string('etd_semana')->nullable(); // Estimated Time of Departure
+            $table->string('eta_semana')->nullable(); // Estimated Time of Arrival
+
+            $table->string('control_fechas')->nullable(); // Estimated Time of Arrival
 
             $table->timestamps();
         });

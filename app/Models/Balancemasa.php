@@ -80,6 +80,9 @@ class Balancemasa extends Model
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null, function($query, $semana) {
             $query->where('semana', $semana);
+        })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
+            $query->whereNull('etd')
+                    ->orWhereNull('eta');
         });
     }
 
@@ -143,6 +146,9 @@ class Balancemasa extends Model
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null,function($query,$semana){
             $query->where('semana',$semana);
+        })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
+            $query->whereNull('etd')
+                    ->orWhereNull('eta');
         });
     }
 
