@@ -511,6 +511,13 @@ class TemporadaController extends Controller
         return view('temporadas.balancemasa',compact('temporada','masitas'));
     }
 
+    public function factor(Temporada $temporada)
+    {  
+        $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.factor',compact('temporada','masitas'));
+    }
+
     public function fob(Temporada $temporada)
     {  
         $fob=Fob::where('temporada_id',$temporada->id)->paginate(3);

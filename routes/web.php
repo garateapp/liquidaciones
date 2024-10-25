@@ -79,6 +79,8 @@ Route::get('temporada/{temporada}/flete',[TemporadaController::class,'flete'])->
 
 Route::get('balance/{temporada}/masa',[TemporadaController::class,'balancemasa'])->name('temporada.balancemasa');
 
+Route::get('balance/{temporada}/factor',[TemporadaController::class,'factor'])->name('temporada.factor');
+
 Route::get('balance/{temporada}/fob',[TemporadaController::class,'fob'])->name('temporada.fob');
 
 Route::get('balance/{temporada}/recepcion',[TemporadaController::class,'recepcion'])->name('temporada.recepcion');

@@ -12,6 +12,7 @@ use App\Models\Despacho;
 use App\Models\Detalle;
 use App\Models\Embarque;
 use App\Models\Exportacion;
+use App\Models\Factorbalance;
 use App\Models\Familia;
 use App\Models\Flete;
 use App\Models\Fob;
@@ -28,6 +29,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
@@ -124,6 +126,88 @@ class TemporadaShow extends Component
         
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
+        
+
+            // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
+        $procesosall_group = Proceso::select( 
+                'id_empresa',
+                'numero_g_produccion',
+                'c_productor',
+                'c_etiqueta',
+                'id_variedad',
+                'c_calibre',
+                'c_categoria',
+                'c_embalaje',
+                DB::raw('MAX(id) as id'),  
+                DB::raw('SUM(peso_neto) as total')
+            )
+            ->where('temporada_id', $this->temporada->id)
+            ->where('tipo_g_produccion', 'PRN')
+            ->groupBy(
+                'id_empresa',
+                'numero_g_produccion',
+                'c_productor',
+                'c_etiqueta',
+                'id_variedad',
+                'c_calibre',
+                'c_categoria',
+                'c_embalaje'
+            )
+            ->get(); // No paginamos procesos porque solo se usará para referencia
+
+            $despachosall_group = Despacho::select([
+                'id_empresa', 
+                'numero_guia_produccion', 
+                'c_productor', 
+                'c_etiqueta', 
+                'id_variedad', 
+                'c_calibre', 
+                'c_categoria', 
+                'c_embalaje',
+                DB::raw('SUM(peso_neto) as total')  
+            ])
+            ->where('temporada_id', $this->temporada->id)
+            ->groupBy([
+                'id_empresa', 
+                'numero_guia_produccion', 
+                'c_productor', 
+                'c_etiqueta', 
+                'id_variedad', 
+                'c_calibre', 
+                'c_categoria', 
+                'c_embalaje'
+            ])
+            ->get();
+            
+        $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+            // Aquí se implementa la paginación (15 por página)
+/*
+            // Mapeamos los resultados paginados de $despachosall_group
+            $despachosall_group->getCollection()->transform(function ($despacho) use ($procesosall_group) {
+            // Buscamos el proceso correspondiente
+            $proceso = $procesosall_group->first(function ($proceso) use ($despacho) {
+                return $proceso->id_empresa == $despacho->id_empresa &&
+                $proceso->numero_g_produccion == $despacho->numero_guia_produccion &&
+                $proceso->c_productor == $despacho->c_productor &&
+                $proceso->c_etiqueta == $despacho->c_etiqueta &&
+                $proceso->id_variedad == $despacho->id_variedad &&
+                $proceso->c_calibre == $despacho->c_calibre &&
+                $proceso->c_categoria == $despacho->c_categoria &&
+                $proceso->c_embalaje == $despacho->c_embalaje;
+                });
+
+                // Agregamos 'total_procesos'
+                $despacho->total_procesos = $proceso ? $proceso->total : 0;
+
+                return $despacho;
+            });
+
+            // Ahora puedes acceder a la colección paginada con $despachosall_group
+
+    */
+    
+    //dd($procesosall_group);
+
         $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
 
         $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->select('id_pkg_stock_det','peso_neto')->get();
@@ -166,12 +250,24 @@ class TemporadaShow extends Component
                 });
 
             
-        $masastotal = Cache::remember('masastotal_'.$this->temporada->id.'_'.serialize($this->filters), 60, function() {
-                    return Balancemasa::filter1($this->filters)
-                        ->where('temporada_id', $this->temporada->id)
-                        ->whereIn('exportadora', ['Greenex SpA', '22'])
-                        ->get();
-                });
+        $masastotal = Balancemasa::select([
+                                'n_variedad', 
+                                'n_categoria', 
+                                'cantidad', 
+                                'peso_neto', 
+                                'precio_fob', 
+                                'tipo_transporte', 
+                                'c_embalaje', 
+                                'r_productor',
+                                'etd',
+                                'eta'
+                            ])
+                            ->filter1($this->filters)
+                            ->where('temporada_id', $this->temporada->id)
+                            ->whereIn('exportadora', ['Greenex SpA', '22'])
+                            ->get();
+                  
+                
 
         //$masastotal=Recepcion::where('temporada_id',$this->temporada->id)->get();
 
@@ -241,7 +337,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function delete_balancemasas(){

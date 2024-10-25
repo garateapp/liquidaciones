@@ -17,8 +17,10 @@
 
   <section id="informacion">
     <div class="flex w-full bg-gray-300 mt-2"  @if ($vista=="resumes") x-data="{openMenu: 1}" @else x-data="{openMenu: 1}" @endif >
-        
-        @livewire('menu-aside',['temporada'=>$temporada->id])
+
+        @if ($vista!='FACTOR')
+          @livewire('menu-aside',['temporada'=>$temporada->id])
+        @endif
         <!-- End Sidebar -->
         <div class="flex flex-col flex-1 w-full overflow-y-auto">
             <!--Start Topbar -->
@@ -142,11 +144,12 @@
                     @if ($vista=='FOB' && $fobs)
                       ({{$fobsall->count()}} Resultados)
                     @endif
+                    @php
+                        $kgstotmas=0;
+                        $sinfecha=0;
+                    @endphp
                     @if ($vista=='MASAS')
-                      @php
-                          $kgstotmas=0;
-                          $sinfecha=0;
-                      @endphp
+                    
                       @foreach ($masastotal as $masa)
                         @php
                             $kgstotmas+=$masa->peso_neto;
@@ -3005,6 +3008,8 @@
                                   'n_etiqueta',
                                   'cantidad',
                                   'peso_neto',
+                                  'Factor Multiplicador',
+                                  'peso_neto 2',
                                   'transporte',
                                   'precio_fob'
                               ];
@@ -3017,6 +3022,7 @@
                             }
                             
                           @endphp
+            
                         </tr>
                       </thead>
                       <tbody>
@@ -3090,7 +3096,15 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->peso_neto }}</p>
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto,1) }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <a href="{{route('temporada.factor',$temporada)}}">
+                                  <p class=" whitespace-no-wrap cursor-pointer text-blue-500">[0-1]</p>
+                                </a>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto,1) }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
@@ -3127,6 +3141,149 @@
                 
                       </tbody>
                     </table>
+                    {{$masasbalances->links()}}
+
+                @endif
+
+                @if ($vista=='FACTOR')
+
+                  
+                  <div class="grid grid-cols-2" >
+                    <div>
+                      <h1 class="font-bold text-xl" >
+                        Procesos
+                      </h1>
+                      <table class="min-w-full leading-normal">
+                        <thead>
+                            <tr>
+                                @php
+                                
+                                    
+                                    echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
+                                    echo 'id_empresa'.'numero_g_produccion'.'c_productor<br>'.'c_etiqueta'.'id_variedad'.'c_calibre'.'c_categoria'.'c_embalaje';
+                                    echo '</th>';
+                                @endphp
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$procesosall_group->count()}} <br> Total<br>{{number_format($procesosall_group->sum('total'),2,',','.')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($procesosall_group as $masa)
+                                <tr>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        @php
+                                            if($masa->c_etiqueta){
+                                                  $subetiqueta=$masa->c_etiqueta;
+                                                }else{
+                                                  $subetiqueta='NULL';
+                                                } 
+                                        @endphp 
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                            {{ 
+                                                $masa->id_empresa . '/' .
+                                                $masa->numero_g_produccion . '/' .
+                                                $masa->c_productor . '/' .
+                                                $subetiqueta. '/' .
+                                                $masa->id_variedad . '/' .
+                                                $masa->c_calibre . '/' .
+                                                $masa->c_categoria . '/' .
+                                                $masa->c_embalaje 
+                                            }}
+                                        </p>
+                                    </td>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
+                                    </td>
+                                  
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    
+                    
+                    
+                    </div>
+                    <div>
+                      <h1 class="font-bold text-xl">
+                        Despachos
+                      </h1>
+                    
+                        @if ($factores->count()>0)
+                        <table class="min-w-full leading-normal">
+                          <thead>
+                              <tr>
+                                  @php
+                                  
+                                      
+                                      echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
+                                      echo 'id_empresa'.'numero_g_produccion'.'c_productor<br>'.'c_etiqueta'.'id_variedad'.'c_calibre'.'c_categoria'.'c_embalaje';
+                                      echo '</th>';
+                                  @endphp
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TOTAL PROCESOS</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$despachosall_group->count()}} <br> Factor</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach ($despachosall_group as $masa)
+                                  <tr>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        @php
+                                              if($masa->c_etiqueta){
+                                                    $subetiqueta=$masa->c_etiqueta;
+                                                  }else{
+                                                    $subetiqueta='NULL';
+                                                  } 
+
+                                                  if ($masa->numero_guia_produccion) {
+                                                    $numero_guia_produccion=$masa->numero_guia_produccion;
+                                                  }else{
+                                                    $numero_guia_produccion='NULL';
+                                                  }
+                                          @endphp   
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                              {{ 
+                                                  $masa->id_empresa . '/' .
+                                                  $numero_guia_produccion . '/' .
+                                                  $masa->c_productor . '/' .
+                                                  $subetiqueta. '/' .
+                                                  $masa->id_variedad . '/' .
+                                                  $masa->c_calibre . '/' .
+                                                  $masa->c_categoria . '/' .
+                                                  $masa->c_embalaje 
+                                              }}
+                                          </p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        0-1
+                                      </td>
+                                  </tr>
+                              @endforeach
+                          </tbody>
+ 
+                        </table>
+                    
+                        @else
+                            <div class='w-full max-w-xl px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
+                              <h1 class="font-mono font-bold text-purple-900 text-lg leading-tight border-b pb-4">Sin Factores Generados ({{$despachosall_group->count()}} Combinaciones)</h1>
+                              <div class="pt-8">
+                                <div class="flex space-x-2">
+                                  <button type="button" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-purple-700 border border-purple-700 hover:bg-purple-900 hover:border-purple-900">Generar</button>
+                                </div>
+                              </div>
+                            </div>
+                           
+
+                        @endif
+                     
+                    
+                    </div>
+                  </div>
                     {{$masasbalances->links()}}
 
                 @endif
