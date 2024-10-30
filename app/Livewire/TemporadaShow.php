@@ -405,7 +405,7 @@ class TemporadaShow extends Component
             ->groupBy(
                 'id_empresa',
                 'numero_g_produccion',
-                'c_productor',
+                'c_productor_proceso',
                 'c_etiqueta',
                 'id_variedad',
                 'c_calibre',
@@ -423,7 +423,7 @@ class TemporadaShow extends Component
             $proceso = $procesosall_group->first(function ($proceso) use ($factor) {
                 return $proceso->id_empresa == $factor->id_empresa &&
                        $proceso->numero_g_produccion == $factor->numero_guia_produccion &&
-                       $proceso->c_productor == $factor->c_productor &&
+                       $proceso->c_productor_proceso == $factor->c_productor &&
                        $proceso->c_etiqueta == $factor->c_etiqueta &&
                        $proceso->id_variedad == $factor->id_variedad &&
                        $proceso->c_calibre == $factor->c_calibre &&
@@ -674,33 +674,19 @@ class TemporadaShow extends Component
       
         foreach($dateRanges as $date){
 
-            if ($this->temporada->exportadora_id) {
-                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
+            $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
+                    ->timeout(60) // Aumenta el tiempo de espera a 60 segundos
                     ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
-                    ->post("https://api.greenexweb.cl/api/productions", [
+                    ->post("https://api.greenexweb.cl/api/productions/9", [
                         'filter' => [
                             'fecha_g_produccion' => [
                                 'gte' => $date['start'],
                                 'lte' => $date['end'],
                             ],
                             'n_especie' => ['eq' => $this->temporada->especie->name],
-                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
+                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id ?? 22],
                         ]
                     ]);
-            } else {
-                $productions = Http::timeout(60) // Aumenta el tiempo de espera a 60 segundos
-                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
-                    ->post("https://api.greenexweb.cl/api/productions", [
-                        'filter' => [
-                            'fecha_g_produccion' => [
-                                'gte' => $date['start'],
-                                'lte' => $date['end'],
-                            ],
-                            'n_especie' => ['eq' => $this->temporada->especie->name],
-                            'id_exportadora' => ['eq' => 22],
-                        ]
-                    ]);
-            }
             
             
            
