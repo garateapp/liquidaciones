@@ -674,7 +674,8 @@ class TemporadaShow extends Component
       
         foreach($dateRanges as $date){
 
-            $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
+            if ($this->temporada->exportadora_id) {
+                $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
                     ->timeout(60) // Aumenta el tiempo de espera a 60 segundos
                     ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
                     ->post("https://api.greenexweb.cl/api/productions/9", [
@@ -684,9 +685,24 @@ class TemporadaShow extends Component
                                 'lte' => $date['end'],
                             ],
                             'n_especie' => ['eq' => $this->temporada->especie->name],
-                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id ?? 22],
+                            'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
                         ]
                     ]);
+            } else {
+                $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
+                    ->timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
+                    ->post("https://api.greenexweb.cl/api/productions/9", [
+                        'filter' => [
+                            'fecha_g_produccion' => [
+                                'gte' => $date['start'],
+                                'lte' => $date['end'],
+                            ],
+                            'n_especie' => ['eq' => $this->temporada->especie->name],
+                            'id_exportadora' => ['eq' => 22],
+                        ]
+                    ]);
+            }
             
             
            
