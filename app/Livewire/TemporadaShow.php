@@ -391,7 +391,7 @@ class TemporadaShow extends Component
         $procesosall_group = Proceso::select( 
                 'id_empresa',
                 'numero_g_produccion',
-                'c_productor',
+                'c_productor_proceso',
                 'c_etiqueta',
                 'id_variedad',
                 'c_calibre',
