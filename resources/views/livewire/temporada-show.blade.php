@@ -3160,7 +3160,7 @@
                                 
                                     
                                     echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
-                                    echo 'id_empresa'.'numero_g_produccion'.'c_productor<br>'.'c_etiqueta'.'id_variedad'.'c_calibre'.'c_categoria'.'c_embalaje';
+                                    echo 'id_empresa'.'numero_g_produccion'.'c_productor_proceso<br>'.'c_etiqueta'.'id_variedad'.'c_calibre'.'c_categoria'.'c_embalaje';
                                     echo '</th>';
                                 @endphp
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$procesosall_group->count()}} <br> Total<br>{{number_format($procesosall_group->sum('total'),2,',','.')}}</th>
@@ -3181,7 +3181,7 @@
                                             {{ 
                                                 $masa->id_empresa . '/' .
                                                 $masa->numero_g_produccion . '/' .
-                                                $masa->c_productor . '/' .
+                                                $masa->c_productor_proceso . '/' .
                                                 $subetiqueta. '/' .
                                                 $masa->id_variedad . '/' .
                                                 $masa->c_calibre . '/' .
@@ -3203,9 +3203,20 @@
                     
                     </div>
                     <div>
-                      <h1 class="font-bold text-xl">
-                        Despachos
-                      </h1>
+                      <div class="flex justify-between">
+                        <div>
+                          <h1 class="font-bold text-xl">
+                            Despachos
+                          </h1>
+                        </div>
+                        <div>
+                          <button type="button" onclick="processCheckFactors()" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-purple-700 border border-purple-700 hover:bg-purple-900 hover:border-purple-900">
+                            Checkear
+                        </button>
+                        
+                        </div>
+                      </div>
+                   
                     
                         @if ($factores->count()>0)
                         <table class="min-w-full leading-normal">
@@ -3219,12 +3230,12 @@
                                       echo '</th>';
                                   @endphp
                                   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TOTAL PROCESOS</th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$despachosall_group->count()}} <br> Factor</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$factores->count()}} <br> Factor</th>
                               </tr>
                           </thead>
                           <tbody>
-                              @foreach ($despachosall_group as $masa)
+                              @foreach ($factores as $masa)
                                   <tr>
                                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                         @php
@@ -3257,7 +3268,7 @@
                                           <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
                                       </td>
                                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
                                       </td>
                                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                         0-1
@@ -3273,8 +3284,11 @@
                               <h1 class="font-mono font-bold text-purple-900 text-lg leading-tight border-b pb-4">Sin Factores Generados ({{$despachosall_group->count()}} Combinaciones)</h1>
                               <div class="pt-8">
                                 <div class="flex space-x-2">
-                                  <button type="button" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-purple-700 border border-purple-700 hover:bg-purple-900 hover:border-purple-900">Generar</button>
-                                </div>
+                                  <button type="button" onclick="confirmSyncFactors()" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-purple-700 border border-purple-700 hover:bg-purple-900 hover:border-purple-900">
+                                      Generar
+                                  </button>
+                              </div>
+                              
                               </div>
                             </div>
                            
@@ -3284,7 +3298,7 @@
                     
                     </div>
                   </div>
-                    {{$masasbalances->links()}}
+                  
 
                 @endif
 
@@ -4554,6 +4568,75 @@
       });
   }
 
+  function confirmSyncFactors() {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    Swal.fire({
+        title: '¿Iniciar sincronización de factores?',
+        text: `Este proceso conectará la base de procesos y despachos para obtener los factores de multiplicación.`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, sincronizar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Sincronizando...',
+                text: 'Estamos conectando con el sistema de despachos. Por favor, espera mientras obtenemos los factores de multiplicación.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            @this.call('factores_create').then(() => {
+                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                Swal.fire(
+                    '¡Sincronización completada!',
+                    'Los factores de multiplicación han sido obtenidos exitosamente.',
+                    'success'
+                );
+            }).catch(() => {
+                Swal.close(); // Cerrar la alerta en caso de error
+                Swal.fire(
+                    'Error en la sincronización',
+                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+function processCheckFactors() {
+    Swal.fire({
+        title: 'Procesando...',
+        text: 'Por favor, espera mientras verificamos los factores de multiplicación en el sistema de despachos.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    @this.call('factores_count').then(() => {
+        Swal.close(); // Cerrar la alerta de "Procesando" cuando se complete la verificación
+        Swal.fire(
+            'Verificación completada',
+            'Los factores de multiplicación han sido verificados exitosamente.',
+            'success'
+        );
+    }).catch(() => {
+        Swal.close(); // Cerrar la alerta en caso de error
+        Swal.fire(
+            'Error en la verificación',
+            'Ocurrió un problema al verificar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+            'error'
+        );
+    });
+}
 
  
 </script>

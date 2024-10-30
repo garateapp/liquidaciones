@@ -11,6 +11,20 @@ class Factorbalance extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'temporada_id',
+        'id_empresa',
+        'numero_g_produccion',
+        'c_productor',
+        'c_etiqueta',
+        'id_variedad',
+        'c_calibre',
+        'c_categoria',
+        'c_embalaje',
+        'total',
+        'total_proceso'
+    ];
+
     public function temporada(){
         return $this->belongsTo('App\Models\Temporada');
     }

@@ -30,11 +30,16 @@
                         @php
                             $exportadoras=['22'=>'Greenex']
                         @endphp
+                        
                         <div class="mb-4">
                             {!! Form::label('exportadora_id', 'Exportadora') !!}
                             {!! Form::select('exportadora_id', $exportadoras, null , ['class'=>'form-input block w-full mt-1']) !!}
                         </div>
-                        
+
+                        <div class="mb-4">
+                            {!! Form::label('especie_id', 'Base de datos:') !!}
+                            {!! Form::select('especie_id', $opcionesTemporada, null , ['class'=>'form-input block w-full mt-1']) !!}
+                        </div>
     
                   
 

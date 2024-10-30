@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('id_productor_proceso')->nullable();
             $table->string('n_productor_proceso')->nullable();
             $table->string('c_productor')->nullable();
+            $table->string('c_productor_proceso')->nullable();
             $table->string('n_productor')->nullable();
             $table->string('t_categoria')->nullable();
             $table->string('c_categoria')->nullable();

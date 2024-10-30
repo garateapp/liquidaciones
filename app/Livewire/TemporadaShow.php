@@ -155,6 +155,8 @@ class TemporadaShow extends Component
             )
             ->get(); // No paginamos procesos porque solo se usará para referencia
 
+            $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+            
             $despachosall_group = Despacho::select([
                 'id_empresa', 
                 'numero_guia_produccion', 
@@ -179,7 +181,7 @@ class TemporadaShow extends Component
             ])
             ->get();
             
-        $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+        
             // Aquí se implementa la paginación (15 por página)
 /*
             // Mapeamos los resultados paginados de $despachosall_group
@@ -339,6 +341,102 @@ class TemporadaShow extends Component
 
         return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
+
+    public function factores_create(){
+        $despachosall_group = Despacho::select([
+            'id_empresa', 
+            'numero_guia_produccion', 
+            'c_productor', 
+            'c_etiqueta', 
+            'id_variedad', 
+            'c_calibre', 
+            'c_categoria', 
+            'c_embalaje',
+            DB::raw('SUM(peso_neto) as total')  
+        ])
+        ->where('temporada_id', $this->temporada->id)
+        ->groupBy([
+            'id_empresa', 
+            'numero_guia_produccion', 
+            'c_productor', 
+            'c_etiqueta', 
+            'id_variedad', 
+            'c_calibre', 
+            'c_categoria', 
+            'c_embalaje'
+        ])
+        ->get();
+
+        foreach ($despachosall_group as $item){
+            Factorbalance::create([
+                'temporada_id'          => $this->temporada->id,
+                'id_empresa'            => $item->id_empresa,
+                'numero_guia_produccion' => $item->numero_guia_produccion,
+                'c_productor'           => $item->c_productor,
+                'c_etiqueta'            => $item->c_etiqueta,
+                'id_variedad'           => $item->id_variedad,
+                'c_calibre'             => $item->c_calibre,
+                'c_categoria'           => $item->c_categoria,
+                'c_embalaje'            => $item->c_embalaje,
+                'total'                 => $item->total,
+                // 'total_proceso' no se incluye ya que se calculará después
+            ]);
+        }
+   //     return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+    }
+
+   
+    public function factores_count() {
+        // Obtén los procesos agrupados y calcula la suma de peso_neto en 'total'
+        $procesosall_group = Proceso::select( 
+                'id_empresa',
+                'numero_g_produccion',
+                'c_productor',
+                'c_etiqueta',
+                'id_variedad',
+                'c_calibre',
+                'c_categoria',
+                'c_embalaje',
+                DB::raw('MAX(id) as id'),  
+                DB::raw('SUM(peso_neto) as total')
+            )
+            ->where('temporada_id', $this->temporada->id)
+            ->where('tipo_g_produccion', 'PRN')
+            ->groupBy(
+                'id_empresa',
+                'numero_g_produccion',
+                'c_productor',
+                'c_etiqueta',
+                'id_variedad',
+                'c_calibre',
+                'c_categoria',
+                'c_embalaje'
+            )
+            ->get();
+    
+        // Obtén los factores para la temporada
+        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
+    
+        // Recorre cada factor y actualiza 'total_proceso' de acuerdo a $procesosall_group
+        $factores->each(function ($factor) use ($procesosall_group) {
+            // Encuentra el proceso correspondiente al factor
+            $proceso = $procesosall_group->first(function ($proceso) use ($factor) {
+                return $proceso->id_empresa == $factor->id_empresa &&
+                       $proceso->numero_g_produccion == $factor->numero_guia_produccion &&
+                       $proceso->c_productor == $factor->c_productor &&
+                       $proceso->c_etiqueta == $factor->c_etiqueta &&
+                       $proceso->id_variedad == $factor->id_variedad &&
+                       $proceso->c_calibre == $factor->c_calibre &&
+                       $proceso->c_categoria == $factor->c_categoria &&
+                       $proceso->c_embalaje == $factor->c_embalaje;
+            });
+           
+            // Actualiza el total_procesos en el factor
+            $factor->total_proceso = $proceso ? $proceso->total : 0;
+            $factor->save(); // Guarda el cambio en la base de datos
+        });
+    }
+    
 
     public function delete_balancemasas(){
         $masas=Balancemasa::where('temporada_id',$this->temporada->id)->get();
@@ -620,6 +718,7 @@ class TemporadaShow extends Component
                     $id_productor_proceso = $production['id_productor_proceso'] ?? null;
                     $n_productor_proceso = $production['n_productor_proceso'] ?? null;
                     $c_productor = $production['c_productor'] ?? null;
+                    $c_productor_proceso = $production['c_productor_proceso'] ?? null;
                     $n_productor = $production['n_productor'] ?? null;
                     $t_categoria = $production['t_categoria'] ?? null;
                     $c_categoria = $production['c_categoria'] ?? null;
@@ -767,6 +866,7 @@ class TemporadaShow extends Component
                             'id_productor_proceso' => $id_productor_proceso,
                             'n_productor_proceso' => $n_productor_proceso,
                             'c_productor' => $c_productor,
+                            'c_productor_proceso' => $c_productor_proceso,
                             'n_productor' => $n_productor,
                             't_categoria' => $t_categoria,
                             'c_categoria' => $c_categoria,
@@ -808,6 +908,7 @@ class TemporadaShow extends Component
                             'id_productor_proceso' => $id_productor_proceso,
                             'n_productor_proceso' => $n_productor_proceso,
                             'c_productor' => $c_productor,
+                            'c_productor_proceso' => $c_productor_proceso,
                             'n_productor' => $n_productor,
                             't_categoria' => $t_categoria,
                             'c_categoria' => $c_categoria,

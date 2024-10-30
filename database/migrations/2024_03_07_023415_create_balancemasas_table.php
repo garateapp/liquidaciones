@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('folio')->nullable();
             $table->text('r_productor')->nullable();
             $table->text('c_productor')->nullable();
+            $table->text('c_productor_proceso')->nullable();
             $table->text('n_productor')->nullable();
             $table->text('n_especie')->nullable();
             $table->text('n_variedad')->nullable();

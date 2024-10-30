@@ -430,7 +430,16 @@ class TemporadaController extends Controller
     public function create()
     {   
         $especies=Especie::all()->pluck('name','id');
-        return view('temporadas.create',compact('especies'));
+
+        $temporada = Http::post('https://api.greenexweb.cl/api/TemporadasPacking');
+        $temporadaData = collect($temporada->json());
+        
+        // Pluck para obtener solo los valores 'Id' y 'basedatosFX'
+        $opcionesTemporada = $temporadaData->pluck('basedatosFX', 'Id');
+
+
+
+        return view('temporadas.create',compact('especies','opcionesTemporada'));
     }
 
     /**
