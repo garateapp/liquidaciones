@@ -857,7 +857,7 @@ class TemporadaShow extends Component
                         })->first();
                 
             
-                    if (!$cont) {
+                    if ($cont) {
                         
                         Proceso::create([
                             'tipo_g_produccion' => $tipo_g_produccion,
@@ -895,9 +895,51 @@ class TemporadaShow extends Component
                             'notas' => $notas,
                             'Estado' => $estado,
                             'destruccion_tipo' => $destruccion_tipo,
-                            'temporada_id' => $this->temporada->id
+                            'temporada_id' => $this->temporada->id,
+                            'duplicado' => 'si',
                         ]);
 
+                    } else {
+                        // Si no existe el registro, se crea uno nuevo
+                        Proceso::create([
+                            'tipo_g_produccion' => $tipo_g_produccion,
+                            'numero_g_produccion' => $numero_g_produccion,
+                            'fecha_g_produccion' => $fecha_g_produccion,
+                            'fecha_produccion' => $fecha_produccion,
+                            'tipo' => $tipo,
+                            'id_productor_proceso' => $id_productor_proceso,
+                            'n_productor_proceso' => $n_productor_proceso,
+                            'c_productor' => $c_productor,
+                            'c_productor_proceso' => $c_productor_proceso,
+                            'n_productor' => $n_productor,
+                            't_categoria' => $t_categoria,
+                            'c_categoria' => $c_categoria,
+                            'c_embalaje' => $c_embalaje,
+                            'c_calibre' => $c_calibre,
+                            'c_serie' => $c_serie,
+                            'c_etiqueta' => $c_etiqueta,
+                            'cantidad' => $cantidad,
+                            'peso_neto' => $peso_neto,
+                            'id_empresa' => $id_empresa,
+                            'fecha_recepcion' => $fecha_cosecha,
+                            'folio' => $folio,
+                            'id_exportadora' => $id_exportadora,
+                            'id_especie' => $id_especie,
+                            'id_variedad' => $id_variedad,
+                            'id_linea_proceso' => $id_linea_proceso,
+                            'numero_guia_recepcion' => $numero_guia_recepcion,
+                            'id_embalaje' => $id_embalaje,
+                            'n_tipo_proceso' => $n_tipo_proceso,
+                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                            'peso_std_embalaje' => $peso_std_embalaje,
+                            'peso_standard' => $peso_standard,
+                            'creacion_tipo' => $creacion_tipo,
+                            'notas' => $notas,
+                            'Estado' => $estado,
+                            'destruccion_tipo' => $destruccion_tipo,
+                            'temporada_id' => $this->temporada->id,
+                            'duplicado' => 'no',
+                        ]);
                     }
                 }
             }
