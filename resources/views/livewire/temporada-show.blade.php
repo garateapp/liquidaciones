@@ -767,7 +767,7 @@
                       Tipo:
                    
                       <br>
-                      <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                      <select wire:model.live="filters.tipo" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                         <option value="">Todos</option>
                         
                         @foreach ($tipo_procesos as $semana)
