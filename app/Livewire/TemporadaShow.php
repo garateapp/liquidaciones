@@ -756,6 +756,7 @@ class TemporadaShow extends Component
                         ->where('fecha_g_produccion', $fecha_g_produccion)
                         ->where('tipo', $tipo)
                         ->where('id_productor_proceso', $id_productor_proceso)
+                        ->where( 'c_categoria',$c_categoria)
                         ->first();
                 
             
