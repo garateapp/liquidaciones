@@ -38,7 +38,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
@@ -69,6 +69,7 @@ class TemporadaShow extends Component
         'mer'=>'',
         'semana'=>'',
         'tipo'=>'',
+        'tipo2'=>'',
         'norma'=>'',
         'p_unicos'=>true,
         'p_repetidos'=>true,
@@ -97,6 +98,10 @@ class TemporadaShow extends Component
         }else{
             $this->fechaf = Carbon::now()->format('Y-m-d');
         }
+
+        $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
+        $this->tipo_procesos = $procesosall->pluck('tipo_g_produccion')->unique()->sort();
+        $this->tipo_procesos2 = $procesosall->pluck('tipo')->unique()->sort();
     }
 
     public function filtrar_fechanull(){
@@ -126,7 +131,7 @@ class TemporadaShow extends Component
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
-        $tipo_procesos = $procesosall->pluck('tipo_g_produccion')->unique()->sort();
+        
         
 
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
@@ -340,7 +345,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','tipo_procesos','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){

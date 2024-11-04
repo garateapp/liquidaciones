@@ -749,7 +749,7 @@
               
                   
                 
-                <div class="mb-4 flex">
+                <div class="mb-4 flex mt-2">
                   @if ($vista=='Procesos' || $vista=='Despachos')
                     <div>
                         Unicos/Repetidos:<br>
@@ -764,13 +764,31 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                      Tipo:
+                      Tipo_g_produccion:
                    
                       <br>
                       <select wire:model.live="filters.tipo" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                         <option value="">Todos</option>
                         
                         @foreach ($tipo_procesos as $semana)
+                          @if ($semana)
+                            <option value="{{$semana}}">{{$semana}}</option>
+                          @endif
+                        @endforeach
+                        
+                      
+                      </select>
+                    
+                    </div>
+
+                    <div class="ml-4">
+                      Tipo:
+                   
+                      <br>
+                      <select wire:model.live="filters.tipo2" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                        <option value="">Todos</option>
+                        
+                        @foreach ($tipo_procesos2 as $semana)
                           @if ($semana)
                             <option value="{{$semana}}">{{$semana}}</option>
                           @endif

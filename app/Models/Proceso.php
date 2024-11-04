@@ -23,6 +23,8 @@ class Proceso extends Model
             $query->where('duplicado', 'no');
         })->when($filters['tipo'] ?? null, function($query, $tipo) {
             $query->where('tipo_g_produccion', $tipo);
+        })->when($filters['tipo2'] ?? null, function($query, $tipo2) {
+            $query->where('tipo', $tipo2);
         })->when(!$filters['p_unicos'] && $filters['p_repetidos'], function ($query) {
             // Mostrar solo duplicado = 'si' si solo 'Repetidos' está seleccionado
             $query->where('duplicado', 'si');
