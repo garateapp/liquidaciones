@@ -68,6 +68,7 @@ class TemporadaShow extends Component
         'material'=>'',
         'mer'=>'',
         'semana'=>'',
+        'tipo'=>'',
         'norma'=>'',
         'p_unicos'=>true,
         'p_repetidos'=>true,
@@ -125,7 +126,7 @@ class TemporadaShow extends Component
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
-
+        $tipo_procesos = $procesosall->pluck('tipo_g_produccion')->unique()->sort();
         
 
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
@@ -339,7 +340,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','tipo_procesos','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
@@ -755,9 +756,36 @@ class TemporadaShow extends Component
                         ->where('folio', $folio)
                         ->where('tipo_g_produccion', $tipo_g_produccion)
                         ->where('fecha_g_produccion', $fecha_g_produccion)
+                        ->where('fecha_produccion', $fecha_produccion)
                         ->where('tipo', $tipo)
                         ->where('id_productor_proceso', $id_productor_proceso)
-                        ->where( 'c_categoria',$c_categoria)
+                        ->where('n_productor_proceso', $n_productor_proceso)
+                        ->where('c_productor', $c_productor)
+                        ->where('n_productor', $n_productor)
+                        ->where('t_categoria', $t_categoria)
+                        ->where('c_categoria', $c_categoria)
+                        ->where('c_embalaje', $c_embalaje)
+                        ->where('c_calibre', $c_calibre)
+                        ->where('c_serie', $c_serie)
+                        ->where('c_etiqueta', $c_etiqueta)
+                        ->where('cantidad', $cantidad)
+                        ->where('peso_neto', $peso_neto)
+                        ->where('id_empresa', $id_empresa)
+                        ->where('fecha_recepcion', $fecha_cosecha)
+                        ->where('id_exportadora', $id_exportadora)
+                        ->where('id_especie', $id_especie)
+                        ->where('id_variedad', $id_variedad)
+                        ->where('id_linea_proceso', $id_linea_proceso)
+                        ->where('numero_guia_recepcion', $numero_guia_recepcion)
+                        ->where('id_embalaje', $id_embalaje)
+                        ->where('n_tipo_proceso', $n_tipo_proceso)
+                        ->where('n_variedad_rotulacion', $n_variedad_rotulacion)
+                        ->where('peso_std_embalaje', $peso_std_embalaje)
+                        ->where('peso_standard', $peso_standard)
+                        ->where('creacion_tipo', $creacion_tipo)
+                        ->where('notas', $notas)
+                        ->where('Estado', $estado)
+                        ->where('destruccion_tipo', $destruccion_tipo)
                         ->first();
                 
             
@@ -845,13 +873,13 @@ class TemporadaShow extends Component
                             'duplicado' => 'no',
                         ]);
                     }
-                    
-                    $this->temporada->update([  'proceso_end'=> $date['end']]);
+
+                  
 
                 }
             }
 
-
+            $this->temporada->update([  'proceso_end'=> $date['end']]);
             
         }
 

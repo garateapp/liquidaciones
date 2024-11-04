@@ -763,6 +763,23 @@
                             <label for="repetidos">Repetidos</label>
                         </div>
                     </div>
+                    <div class="ml-4">
+                      Tipo:
+                   
+                      <br>
+                      <select wire:model.live="filters.semana" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                        <option value="">Todos</option>
+                        
+                        @foreach ($tipo_procesos as $semana)
+                          @if ($semana)
+                            <option value="{{$semana}}">{{$semana}}</option>
+                          @endif
+                        @endforeach
+                        
+                      
+                      </select>
+                    
+                    </div>
 
 
                   @endif
