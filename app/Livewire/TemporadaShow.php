@@ -671,7 +671,8 @@ class TemporadaShow extends Component
         }
 
    
-      
+        //dd($dateRanges);
+
         foreach($dateRanges as $date){
 
             if ($this->temporada->exportadora_id) {
