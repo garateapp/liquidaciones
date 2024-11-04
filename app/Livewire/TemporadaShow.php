@@ -845,6 +845,9 @@ class TemporadaShow extends Component
                             'duplicado' => 'no',
                         ]);
                     }
+                    
+                    $this->temporada->update([  'proceso_end'=> $date['end']]);
+
                 }
             }
 

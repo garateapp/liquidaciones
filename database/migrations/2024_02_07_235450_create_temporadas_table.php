@@ -46,9 +46,7 @@ return new class extends Migration
             $table->date('recepcion_start')->nullable();
             $table->date('recepcion_end')->nullable();
 
-            $table->date('proceso_start')->nullable();
-            $table->date('proceso_end')->nullable();
-
+         
             $table->string('exportadora_id')->nullable();
 
             $table->string('tc')->nullable();
