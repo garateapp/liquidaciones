@@ -676,7 +676,7 @@ class TemporadaShow extends Component
 
             if ($this->temporada->exportadora_id) {
                 $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
-                    ->timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->timeout(100) // Aumenta el tiempo de espera a 60 segundos
                     ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
                     ->post("https://api.greenexweb.cl/api/productions/9", [
                         'filter' => [
@@ -690,7 +690,7 @@ class TemporadaShow extends Component
                     ]);
             } else {
                 $productions = Http::withToken('4|QcJlM0Cm8l5Csl81BNMykB93jMyFhG86CL0Uyj300801cbb8')
-                    ->timeout(60) // Aumenta el tiempo de espera a 60 segundos
+                    ->timeout(100) // Aumenta el tiempo de espera a 60 segundos
                     ->retry(3, 1000) // Reintenta hasta 3 veces, con 1 segundo de espera entre intentos
                     ->post("https://api.greenexweb.cl/api/productions/9", [
                         'filter' => [
