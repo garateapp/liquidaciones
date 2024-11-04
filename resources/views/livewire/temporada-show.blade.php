@@ -405,7 +405,7 @@
                                     
                                   <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
                                       <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
-                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$procesos->first()->created_at}}</p>
+                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$temporada->proceso_end}}</p>
                                   </button>
                                 
                                 @endif
