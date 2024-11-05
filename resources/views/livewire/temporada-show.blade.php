@@ -3303,7 +3303,7 @@
                                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
                                       </td>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                      <td class="px-5 py-2 border-b border-gray-200 @if($masa->total_proceso==0) bg-white @else bg-red-100 @endif text-sm">
                                         @if ($masa->total>0)
                                           {{number_format($masa->total_proceso/$masa->total)}}
                                         @else
