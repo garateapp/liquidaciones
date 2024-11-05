@@ -3195,7 +3195,7 @@
                                 
                                     
                                     echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
-                                    echo   echo 'id_empresa / numero_g_produccion / c_productor_proceso<br>'.'c_etiqueta / id_variedad / c_calibre / c_categoria / c_embalaje';
+                                    echo  'id_empresa / numero_g_produccion / c_productor_proceso<br>'.'c_etiqueta / id_variedad / c_calibre / c_categoria / c_embalaje';
                                     echo '</th>';
                                 @endphp
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$procesosall_group->count()}} <br> Total<br>{{number_format($procesosall_group->sum('total'),2,',','.')}}</th>
