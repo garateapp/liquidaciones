@@ -178,7 +178,7 @@ class TemporadaShow extends Component
             ->groupBy([
                 'id_empresa', 
                 'numero_guia_produccion', 
-                'c_productor', 
+                'c_productor_proceso', 
                 'c_etiqueta', 
                 'id_variedad', 
                 'c_calibre', 
