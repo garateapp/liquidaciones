@@ -3304,7 +3304,12 @@
                                         <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
                                       </td>
                                       <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                        0-1
+                                        @if ($masa->total>0)
+                                          {{number_format($masa->total_proceso/$masa->total)}}
+                                        @else
+                                          0
+                                        @endif
+                                       
                                       </td>
                                   </tr>
                               @endforeach
