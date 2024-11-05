@@ -403,7 +403,6 @@ class TemporadaShow extends Component
                 'c_calibre',
                 'c_categoria',
                 'c_embalaje',
-                DB::raw('MAX(id) as id'),  
                 DB::raw('SUM(peso_neto) as total')
             )
             ->where('temporada_id', $this->temporada->id)
