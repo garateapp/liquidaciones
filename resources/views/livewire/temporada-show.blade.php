@@ -3263,7 +3263,7 @@
                                       echo '</th>';
                                   @endphp
                                   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">({{$factores->whereNull('total_proceso')->count()/$factores->count()}})<br>TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
                                   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$factores->count()}} <br> Factor</th>
                               </tr>
                           </thead>
