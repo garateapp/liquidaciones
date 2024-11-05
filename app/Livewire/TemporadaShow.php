@@ -373,6 +373,8 @@ class TemporadaShow extends Component
         ])
         ->get();
 
+        dd($despachosall_group);
+        
         foreach ($despachosall_group as $item){
             Factorbalance::create([
                 'temporada_id'          => $this->temporada->id,
