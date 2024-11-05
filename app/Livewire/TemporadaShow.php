@@ -376,7 +376,6 @@ class TemporadaShow extends Component
       
 
         foreach ($despachosall_group as $item){
-            dd($item);
             Factorbalance::create([
                 'temporada_id'          => $this->temporada->id,
                 'id_empresa'            => $item->id_empresa,
