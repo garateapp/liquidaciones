@@ -420,7 +420,7 @@ class TemporadaShow extends Component
             ->get();
     
         // Obtén los factores para la temporada
-        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
+        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->whereNull('total_proceso')->get();
     
         // Recorre cada factor y actualiza 'total_proceso' de acuerdo a $procesosall_group
         $factores->each(function ($factor) use ($procesosall_group) {
