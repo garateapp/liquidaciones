@@ -14,7 +14,7 @@ class Factorbalance extends Model
     protected $fillable = [
         'temporada_id',
         'id_empresa',
-        'numero_g_produccion',
+        'numero_guia_produccion',
         'c_productor',
         'c_etiqueta',
         'id_variedad',

@@ -3287,7 +3287,7 @@
                                         <p class="text-gray-900 whitespace-no-wrap">
                                               {{ 
                                                   $masa->id_empresa . '/' .
-                                                  $masa->numero_guia_produccion . '/' .
+                                                  $numero_guia_produccion . '/' .
                                                   $masa->c_productor . '/' .
                                                   $subetiqueta. '/' .
                                                   $masa->id_variedad . '/' .
