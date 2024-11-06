@@ -971,7 +971,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => $this->temporada->exportadora_id],
                         ],
-                        'select' => 'n_especie,fecha_produccion,r_productor,n_variedad,n_categoria,n_exportadora,id_exportadora_embarque,n_exportadora_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                        'select' => 'n_especie,fecha_produccion,r_productor,n_variedad,n_categoria,n_exportadora,id_exportadora_embarque,n_exportadora_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,n_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
                     ]);
                 $productions = $productions->json(); 
             } else {
@@ -986,7 +986,7 @@ class TemporadaShow extends Component
                             'n_especie' => ['eq' => $this->temporada->especie->name],
                             'id_exportadora' => ['eq' => 22],
                         ],
-                        'select' => 'n_especie,fecha_produccion,r_productor,n_variedad,n_categoria,n_exportadora,id_exportadora_embarque,n_exportadora_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
+                        'select' => 'n_especie,fecha_produccion,r_productor,n_variedad,n_categoria,n_exportadora,id_exportadora_embarque,n_exportadora_embarque,id_pkg_stock_det,tipo_g_despacho,numero_g_despacho,fecha_g_despacho,id_empresa,id_exportadora,id_exportadora_embarque,c_destinatario,n_destinatario,n_transportista,folio,numero_guia_produccion,c_productor,n_productor,id_especie,id_variedad,id_embalaje,c_embalaje,n_embalaje,peso_std_embalaje,c_categoria,t_categoria,c_calibre,c_serie,c_etiqueta,cantidad,peso_neto,n_variedad_rotulacion,N_Pais_Destino,N_Puerto_Destino,contenedor,precio_unitario,tipo_interno,creacion_tipo,destruccion_tipo,Transporte,nota_calidad,n_nave,Numero_Embarque,N_Proceso,Estado'
                     ]);
                     $productions = $productions->json(); 
             }
