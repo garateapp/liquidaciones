@@ -142,44 +142,45 @@ class TemporadaShow extends Component
         
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
         if ($this->vista=="FACTOR") {
-       
-        
-        $procesosall_group = Proceso::select( 
-                'id_empresa',
-                'numero_g_produccion',
-                'c_productor_proceso',
-                'c_etiqueta',
-                'id_variedad',
-                'c_calibre',
-                'c_categoria',
-                'c_embalaje',
-                DB::raw('MAX(id) as id'),  
-                DB::raw('SUM(peso_neto) as total')
-            )
-            ->where('temporada_id', $this->temporada->id)
-            ->where('tipo_g_produccion', 'PRN')
-            ->groupBy(
-                'id_empresa',
-                'numero_g_produccion',
-                'c_productor_proceso',
-                'c_etiqueta',
-                'id_variedad',
-                'c_calibre',
-                'c_categoria',
-                'c_embalaje'
-            )
-            ->get(); // No paginamos procesos porque solo se usará para referencia
+            $procesosall_group = Proceso::select( 
+                    'id_empresa',
+                    'numero_g_produccion',
+                    'c_productor_proceso',
+                    'c_etiqueta',
+                    'id_variedad',
+                    'c_calibre',
+                    'c_categoria',
+                    'c_embalaje',
+                    DB::raw('MAX(id) as id'),  
+                    DB::raw('SUM(peso_neto) as total')
+                )
+                ->where('temporada_id', $this->temporada->id)
+                ->where('tipo_g_produccion', 'PRN')
+                ->groupBy(
+                    'id_empresa',
+                    'numero_g_produccion',
+                    'c_productor_proceso',
+                    'c_etiqueta',
+                    'id_variedad',
+                    'c_calibre',
+                    'c_categoria',
+                    'c_embalaje'
+                )
+                ->get(); // No paginamos procesos porque solo se usará para referencia
 
 
-        $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+            $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+            
         } else {
             $procesosall_group=NULL;
             $factores=NULL;
         }
         
-
-        $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
-
+        if ($vista=='Procesos') {
+            $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+        }else{
+            $procesos=null;
+        }
         $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->select('id_pkg_stock_det','peso_neto')->get();
 
         $despachos=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
