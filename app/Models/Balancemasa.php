@@ -84,7 +84,7 @@ class Balancemasa extends Model
             $query->whereNull('etd')
                     ->orWhereNull('eta');
         })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
-            $query->whereNull('factor');
+            $query->where('factor','0');
         });
     }
 
@@ -151,6 +151,8 @@ class Balancemasa extends Model
         })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
             $query->whereNull('etd')
                     ->orWhereNull('eta');
+        })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
+            $query->where('factor','0');
         });
     }
 
