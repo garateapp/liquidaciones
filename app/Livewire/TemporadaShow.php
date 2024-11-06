@@ -170,29 +170,7 @@ class TemporadaShow extends Component
 
             $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
             
-            $despachosall_group = Despacho::select([
-                'id_empresa', 
-                'numero_guia_produccion', 
-                'c_productor', 
-                'c_etiqueta', 
-                'id_variedad', 
-                'c_calibre', 
-                'c_categoria', 
-                'c_embalaje',
-                DB::raw('SUM(peso_neto) as total')  
-            ])
-            ->where('temporada_id', $this->temporada->id)
-            ->groupBy([
-                'id_empresa', 
-                'numero_guia_produccion', 
-                'c_productor', 
-                'c_etiqueta', 
-                'id_variedad', 
-                'c_calibre', 
-                'c_categoria', 
-                'c_embalaje'
-            ])
-            ->get();
+          
             
         
             // Aquí se implementa la paginación (15 por página)
@@ -268,7 +246,15 @@ class TemporadaShow extends Component
         $masastotal = Balancemasa::select([
                                 'n_variedad', 
                                 'n_categoria', 
-                                
+                                'cantidad', 
+                                'peso_neto', 
+                                'factor', 
+                                'precio_fob', 
+                                'tipo_transporte', 
+                                'c_embalaje', 
+                                'r_productor',
+                                'etd',
+                                'eta'
                             ])
                             ->filter1($this->filters)
                             ->where('temporada_id', $this->temporada->id)
@@ -345,7 +331,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('factores','despachosall_group','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
