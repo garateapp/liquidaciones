@@ -140,8 +140,10 @@ class TemporadaShow extends Component
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
         
         
-
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
+        if ($this->vista=="FACTOR") {
+       
+        
         $procesosall_group = Proceso::select( 
                 'id_empresa',
                 'numero_g_produccion',
@@ -168,38 +170,13 @@ class TemporadaShow extends Component
             )
             ->get(); // No paginamos procesos porque solo se usará para referencia
 
-            $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
-            
-          
-            
+
+        $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+        } else {
+            $procesosall_group=NULL;
+            $factores=NULL;
+        }
         
-            // Aquí se implementa la paginación (15 por página)
-/*
-            // Mapeamos los resultados paginados de $despachosall_group
-            $despachosall_group->getCollection()->transform(function ($despacho) use ($procesosall_group) {
-            // Buscamos el proceso correspondiente
-            $proceso = $procesosall_group->first(function ($proceso) use ($despacho) {
-                return $proceso->id_empresa == $despacho->id_empresa &&
-                $proceso->numero_g_produccion == $despacho->numero_guia_produccion &&
-                $proceso->c_productor == $despacho->c_productor &&
-                $proceso->c_etiqueta == $despacho->c_etiqueta &&
-                $proceso->id_variedad == $despacho->id_variedad &&
-                $proceso->c_calibre == $despacho->c_calibre &&
-                $proceso->c_categoria == $despacho->c_categoria &&
-                $proceso->c_embalaje == $despacho->c_embalaje;
-                });
-
-                // Agregamos 'total_procesos'
-                $despacho->total_procesos = $proceso ? $proceso->total : 0;
-
-                return $despacho;
-            });
-
-            // Ahora puedes acceder a la colección paginada con $despachosall_group
-
-    */
-    
-    //dd($procesosall_group);
 
         $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
 
