@@ -454,12 +454,17 @@ class TemporadaShow extends Component
     }
 
     public function sync_fechas(){
+        /*
+            $masas=Balancemasa::where('temporada_id', $this->temporada->id)
+            ->where(function ($query) {
+                $query->whereNull('etd')
+                    ->orWhereNull('eta');
+            })
+            ->get();
+        */
         $masas=Balancemasa::where('temporada_id', $this->temporada->id)
-        ->where(function ($query) {
-            $query->whereNull('etd')
-                  ->orWhereNull('eta');
-        })
-        ->get();
+            ->get();
+
         $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
         foreach($masas as $masa){
             if ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho)->count()>0) {
@@ -471,10 +476,16 @@ class TemporadaShow extends Component
                         // Convertir las fechas a semanas del año
                         $etdSemana = date('W', strtotime($etd));
                         $etaSemana = date('W', strtotime($eta));
-                            if ($etdSemana>$etaSemana) {
-                                $diferenciadefechas=$etaSemana-$etdSemana-52;
+
+
+                        $prodSemana = date('W', strtotime($masa->fecha_produccion));
+
+                        $etdSemana = date('W', strtotime($etd));
+                       
+                            if ($prodSemana>$etdSemana) {
+                                $diferenciadefechas=$etdSemana-$prodSemana-52;
                             }else{
-                                $diferenciadefechas=$etaSemana-$etdSemana;
+                                $diferenciadefechas=$etdSemana-$prodSemana;
                             }
                         // Luego puedes guardar esas semanas en tu base de datos
                         $masa->update([
@@ -491,15 +502,25 @@ class TemporadaShow extends Component
             } else {
 
                 $etdSemana = date('W', strtotime($masa->fecha_g_despacho));
+
+
+                $prodSemana = date('W', strtotime($masa->fecha_produccion));
+               
+                    if ($prodSemana>$etdSemana) {
+                        $diferenciadefechas=$etdSemana-$prodSemana-52;
+                    }else{
+                        $diferenciadefechas=$etdSemana-$prodSemana;
+                    }
                 
                 $masa->update([
                     'etd' => $masa->fecha_g_despacho,  // Mantienes la fecha original si es necesario
                     'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                    'control_fechas'=>$diferenciadefechas
                 ]);
             }
         }
 
-      //  $this->render();
+        $this->render();
 
     }
     public function production_refresh()
