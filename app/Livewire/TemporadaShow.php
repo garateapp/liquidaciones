@@ -169,13 +169,13 @@ class TemporadaShow extends Component
                 ->get(); // No paginamos procesos porque solo se usará para referencia
 
 
-            $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+          
             
         } else {
             $procesosall_group=NULL;
-            $factores=NULL;
         }
-        
+        $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
+
         if ($this->vista=='Procesos') {
             $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
         }else{
