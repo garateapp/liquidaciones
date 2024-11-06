@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -147,6 +147,7 @@
                     @php
                         $kgstotmas=0;
                         $sinfecha=0;
+                        $sinfactor=0;
                     @endphp
                     @if ($vista=='MASAS')
                     
@@ -157,6 +158,11 @@
                              
                             }else{
                               $sinfecha+=1;
+                            }
+                            if ($masa->factor) {
+                              # code...
+                            }else{
+                              $sinfactor+=1;
                             }
                         @endphp
                       @endforeach
@@ -367,7 +373,7 @@
                         </div>
                         
                         <div class="text-xl font-bold  flex w-full">
-                          <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg w-full">
+                          <div class="mx-4 border border-gray-300 px-6 py-2 grid grid-cols-1 gap-x-6 bg-white shadow-lg rounded-lg w-full">
                         
                               <div class="grid grid-cols-1 md:grid-cols-1 gap-x-4">
                                   <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
@@ -382,7 +388,7 @@
                                   </div>
                                 
                               </div>
-                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4">
+                              <div class="grid grid-cols-2 md:grid-cols-2 gap-x-4 mt-2">
                                 <div class="grid grid-cols-1 gap-2 border border-gray-200 px-2 rounded">
                                     <div class="flex border rounded bg-gray-300 items-center p-2 ">
                                       <h1 class="text-gray-800 text-sm font-bold whitespace-nowrap mr-2">FECHA I</h1>
@@ -395,15 +401,28 @@
                                         <input type="date" wire:model="fechaf" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
                                     </div>
                                 </div>
-                            </div>
+                              </div>
                             
-                              <div class="grid grid-cols-2 gap-x-4">
-                                <button onclick="confirmSyncProceso()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-3 hover:bg-blue-600 focus:outline-none rounded content-center">
-                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Procesos</p>
+                              <div class="grid grid-cols-2 gap-x-4 h-8 mt-2">
+                                <button onclick="confirmSyncProceso()" class="mt-4 bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-1 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Ingresos a Procesos</p>
                                 </button>
                                 @if ($procesos->count())
                                     
-                                  <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-3 hover:bg-red-500 focus:outline-none rounded content-center">
+                                  <button onclick="confirmDeletionProceso()" class="mt-4 bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-1 hover:bg-red-500 focus:outline-none rounded content-center">
+                                      <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
+                                      <p class="text-sm font-medium leading-none text-white mt-1">{{$temporada->proceso_end}}</p>
+                                  </button>
+                                
+                                @endif
+                              </div>
+                              <div class="grid grid-cols-2 gap-x-4 h-8">
+                                <button onclick="confirmSyncProceso()" class="bg-blue-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 px-3 py-1 hover:bg-blue-600 focus:outline-none rounded content-center">
+                                    <p class="text-sm font-medium leading-none text-white">Sincronizar Salidas de Procesos</p>
+                                </button>
+                                @if ($procesos->count())
+                                    
+                                  <button onclick="confirmDeletionProceso()" class="bg-red-500 items-center focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 px-3 py-1 hover:bg-red-500 focus:outline-none rounded content-center">
                                       <p class="text-sm font-medium leading-none text-white">Eliminar Ultima Sincronización</p>
                                       <p class="text-sm font-medium leading-none text-white mt-1">{{$temporada->proceso_end}}</p>
                                   </button>
@@ -881,29 +900,78 @@
                     </div>
 
                         <!-- Extra Chatbot Card -->
-                    <div class="mt-6 ml-4 max-w-[600px] w-full p-6 bg-white border rounded-lg shadow-lg">
-                        <div class="flex justify-between items-start">
-                            <h3 class="text-xl font-semibold">
-                              {{$sinfecha}} Registros Sin Fecha etd/eta
-                            </h3>
-
-                            <button wire:click='filtrar_fechanull()' class="flex items-center @if($filters['fechanull']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1  px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                              Filtrar 
-                              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
+                        <div class="relative max-w-[600px] w-full bg-white border rounded-lg shadow-lg overflow-hidden">
+                          <!-- Slider Wrapper -->
+                          <div id="slider" class="flex transition-transform duration-500 ease-in-out">
+                              
+                              <!-- Slide 1: Current Synchronization Section -->
+                              <div class="w-full flex-shrink-0 p-2">
+                                  <div class="flex justify-between items-start">
+                                      <h3 class="text-xl font-semibold">
+                                          {{$sinfecha}} Registros Sin Fecha etd/eta
+                                      </h3>
+                                      <button wire:click='filtrar_fechanull()' class="flex items-center @if($filters['fechanull']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+                                          Filtrar
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                          </svg>
+                                      </button>
+                                  </div>
+                                  <p class="mt-4 text-gray-600">El sistema buscará en los registros de despacho la fecha etd/eta por coincidencia de la columna numero_g_despacho.</p>
+                                  <div class="flex items-center mt-4">
+                                      <span class="text-2xl font-bold">{{$embarquesall->count()}}</span>
+                                      <span class="ml-1 text-sm text-gray-600">Embarques</span>
+                                      <button onclick="confirmSyncFechas()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                                          Sincronizar
+                                      </button>
+                                  </div>
+                              </div>
+                      
+                              <!-- Slide 2: New Section for Multiplication Factor Synchronization -->
+                              <div class="w-full flex-shrink-0 p-2">
+                                  <div class="flex justify-between items-start">
+                                      <h3 class="text-xl font-semibold">
+                                         {{$sinfactor}} Registros Sin Factor de Multiplicación
+                                      </h3>
+                                      <button wire:click='filtrar_multiplicacion()' class="flex items-center @if($filters['multiplicacion']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+                                          Filtrar
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                          </svg>
+                                      </button>
+                                  </div>
+                                  <p class="mt-4 text-gray-600">El sistema realizará la sincronización basándose en el factor de multiplicación configurado.</p>
+                                  <div class="flex justify-end items-center mt-4">
+                                    <a href="{{route('temporada.factor',$temporada)}}">
+                                      <span class="text-lg font-bold">{{$factores->count()}} </span>
+                                    </a>
+                                      <span class="ml-1 text-sm text-gray-600 ">Factores</span>
+                                      <button onclick="confirmSyncFactors2()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                                          Sincronizar
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      
+                          <div class="flex justify-between mt-8" >
+                            <div>
+                              <button onclick="prevSlide()" class=" transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-r-lg hover:bg-gray-700 focus:outline-none">
+                                Prev
                             </button>
-                        </div>
-                        <p class="mt-4 text-gray-600">El sistema buscara en los registros de despacho la fecha etd/eta por coincidencia de la columna numero_g_despacho.</p>
-                        <div class="flex items-center mt-6">
-                            <span class="text-2xl font-bold">{{$embarquesall->count()}}</span>
-                            <span class="ml-1 text-sm text-gray-600">Embarques</span>
-                            <button onclick="confirmSyncFechas()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
-                              Sincronizar
-                            </button>
+                            </div>
+                            <div>
+                              <button onclick="nextSlide()" class=" transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-l-lg hover:bg-gray-700 focus:outline-none">
+                                Next
+                              </button>
+                            </div>
                           
+
+                          </div>
+                          <!-- Navigation Buttons -->
+                        
+                        
                         </div>
-                    </div>
+                      
                   
                   @endif
 
@@ -2179,6 +2247,17 @@
                     </div>
                   </div>
               @endif
+              @if ($vista=='FACTOR')
+
+                <div>
+                  <a href="{{route('temporada.balancemasa',$temporada)}}">
+                    <button type="button" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-blue-700 border border-blue-700 hover:bg-blue-900 hover:border-blue-900">
+                      Balance de Masa
+                    </button>
+                  </a>                      
+
+                </div>
+              @endif
             </div>
             
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -3135,11 +3214,11 @@
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <a href="{{route('temporada.factor',$temporada)}}">
-                                  <p class=" whitespace-no-wrap cursor-pointer text-blue-500">[0-1]</p>
+                                  <p class=" whitespace-no-wrap cursor-pointer text-blue-500">{{ number_format($masa->factor,2) }}</p>
                                 </a>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto,1) }}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto2,1) }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
@@ -3247,7 +3326,7 @@
                         <div>
                           <button type="button" onclick="processCheckFactors()" class="text-white font-normal py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline bg-purple-700 border border-purple-700 hover:bg-purple-900 hover:border-purple-900">
                             Checkear
-                        </button>
+                          </button>
                         
                         </div>
                       </div>
@@ -3304,11 +3383,8 @@
                                         <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
                                       </td>
                                       <td class="px-5 py-2 border-b border-gray-200 @if($masa->total_proceso==0) bg-red-100 @else bg-white  @endif text-sm">
-                                        @if ($masa->total>0)
-                                          {{number_format($masa->total_proceso/$masa->total)}}
-                                        @else
-                                          0
-                                        @endif
+                                          {{number_format($masa->factor,2)}}
+                                      
                                        
                                       </td>
                                   </tr>
@@ -4649,6 +4725,49 @@
     });
 }
 
+function confirmSyncFactors2() {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    Swal.fire({
+        title: '¿Iniciar sincronización de factores?',
+        text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, sincronizar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Sincronizando...',
+                text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            @this.call('factores_update').then(() => {
+                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                Swal.fire(
+                    '¡Sincronización completada!',
+                    'Los factores de multiplicación han sido obtenidos exitosamente.',
+                    'success'
+                );
+            }).catch(() => {
+                Swal.close(); // Cerrar la alerta en caso de error
+                Swal.fire(
+                    'Error en la sincronización',
+                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
 function processCheckFactors() {
     Swal.fire({
         title: 'Procesando...',
@@ -4677,6 +4796,26 @@ function processCheckFactors() {
 }
 
  
+</script>
+<script>
+  let currentIndex = 0;
+  const slides = document.querySelectorAll("#slider > div");
+  const totalSlides = slides.length;
+
+  function updateSlidePosition() {
+      const slider = document.getElementById("slider");
+      slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlidePosition();
+  }
+
+  function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateSlidePosition();
+  }
 </script>
 
 

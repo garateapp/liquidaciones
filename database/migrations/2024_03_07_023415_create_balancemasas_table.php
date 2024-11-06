@@ -19,8 +19,17 @@ return new class extends Migration
             ->constrained()
             ->onDelete('cascade');
 
+            $table->string('id_empresa')->nullable();
+            $table->string('c_etiqueta')->nullable();
+            $table->string('id_variedad')->nullable();
+            $table->string('c_calibre')->nullable();
+            $table->string('c_categoria')->nullable();
+           
+
             $table->text('tipo_g_despacho')->nullable();
             $table->text('numero_g_despacho')->nullable();
+            $table->string('numero_guia_produccion')->nullable();
+            
             $table->text('fecha_g_despacho')->nullable();
             $table->text('semana')->nullable();
             $table->text('folio')->nullable();
@@ -49,6 +58,9 @@ return new class extends Migration
             $table->string('eta_semana')->nullable(); // Estimated Time of Arrival
 
             $table->string('control_fechas')->nullable(); // Estimated Time of Arrival
+
+            $table->string('factor')->nullable(); // Estimated Time of Arrival
+            $table->string('peso_neto2')->nullable(); // Estimated Time of Arrival
 
             $table->timestamps();
         });

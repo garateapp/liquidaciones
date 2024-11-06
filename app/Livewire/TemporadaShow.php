@@ -73,7 +73,8 @@ class TemporadaShow extends Component
         'norma'=>'',
         'p_unicos'=>true,
         'p_repetidos'=>true,
-        'fechanull'=>''
+        'fechanull'=>'',
+        'multiplicacion'=>''
     ];
 
     #[Url]
@@ -110,8 +111,14 @@ class TemporadaShow extends Component
         } else {
             $this->filters['fechanull']=True;
         }
-        
-        
+    }
+
+    public function filtrar_multiplicacion(){
+        if ($this->filters['multiplicacion']==True) {
+            $this->filters['multiplicacion']=False;
+        } else {
+            $this->filters['multiplicacion']=True;
+        }
     }
 
     public function checkEtiqueta($etiqueta)
@@ -263,6 +270,7 @@ class TemporadaShow extends Component
                                 'n_categoria', 
                                 'cantidad', 
                                 'peso_neto', 
+                                'factor', 
                                 'precio_fob', 
                                 'tipo_transporte', 
                                 'c_embalaje', 
@@ -390,7 +398,36 @@ class TemporadaShow extends Component
                 // 'total_proceso' no se incluye ya que se calculará después
             ]);
         }
-   //     return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+        //return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function factores_update(){
+        $masas=Balancemasa::where('temporada_id',$this->temporada->id)
+                    ->whereNull('factor')
+                    ->get();
+        //dd($masas);
+        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
+
+        foreach ($masas as $masa) {
+            // Buscar el factor que coincida con los campos correspondientes
+            $factor = $factores->firstWhere(function ($factor) use ($masa) {
+                return $factor->id_empresa == $masa->id_empresa &&
+                    $factor->numero_guia_produccion == $masa->numero_guia_produccion &&
+                    $factor->c_productor == $masa->c_productor &&
+                    $factor->c_etiqueta == $masa->c_etiqueta &&
+                    $factor->id_variedad == $masa->id_variedad &&
+                    $factor->c_calibre == $masa->c_calibre &&
+                    $factor->c_categoria == $masa->c_categoria &&
+                    $factor->c_embalaje == $masa->c_embalaje;
+            });
+
+            if ($factor) {
+                // Si se encontró el factor correspondiente, actualiza las columnas
+                $masa->factor = $factor->factor; // Asegúrate de tener el nombre correcto del campo 'factor' en Factorbalance
+                $masa->peso_neto2 = $factor->factor*$masa->peso_neto; // Asegúrate de tener el nombre correcto del campo 'peso_neto2' en Factorbalance
+                $masa->save();
+            }
+        }
     }
 
    
@@ -422,7 +459,7 @@ class TemporadaShow extends Component
             ->get();
     
         // Obtén los factores para la temporada
-        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->whereNull('total_proceso')->get();
+        $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
     
         // Recorre cada factor y actualiza 'total_proceso' de acuerdo a $procesosall_group
         $factores->each(function ($factor) use ($procesosall_group) {
@@ -440,6 +477,13 @@ class TemporadaShow extends Component
            
             // Actualiza el total_procesos en el factor
             $factor->total_proceso = $proceso ? $proceso->total : 0;
+
+             // Actualiza el factor en base al valor de total dentro del factor
+            if ($factor->total > 0) {
+                $factor->factor = floatval($factor->total_proceso / $factor->total);
+            } else {
+                $factor->factor = 0;
+            }
             $factor->save(); // Guarda el cambio en la base de datos
         });
     }

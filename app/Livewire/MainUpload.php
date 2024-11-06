@@ -76,7 +76,13 @@ class MainUpload extends Component
                 'peso_neto', 
                 'Transporte', 
                 'n_exportadora', 
-                'n_exportadora_embarque'
+                'n_exportadora_embarque',
+                'id_empresa',
+                'c_etiqueta',
+                'id_variedad',
+                'c_calibre',
+                'c_categoria',
+                'numero_guia_produccion'
             ])
             ->get();
         $n=0;
@@ -105,6 +111,14 @@ class MainUpload extends Component
                 'tipo_transporte'          => $despacho->Transporte ?? '',
                 'exportadora'              => $despacho->n_exportadora ?? '',
                 'exportadora_embarque'     => $despacho->n_exportadora_embarque ?? '',
+
+                'id_empresa'               => $despacho->id_empresa ?? '',
+                'c_etiqueta'               => $despacho->c_etiqueta ?? '',
+                'id_variedad'              => $despacho->id_variedad ?? '',
+                'c_calibre'                => $despacho->c_calibre ?? '',
+                'c_categoria'              => $despacho->c_categoria ?? '',
+                'numero_guia_produccion'   => $despacho->numero_guia_produccion ?? '',
+                
             ]);
         }
         
