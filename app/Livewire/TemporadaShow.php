@@ -483,7 +483,7 @@ class TemporadaShow extends Component
                         $etdSemana = date('W', strtotime($etd));
                        
                             if ($prodSemana>$etdSemana) {
-                                $diferenciadefechas=$etdSemana-$prodSemana-52;
+                                $diferenciadefechas=$etdSemana-$prodSemana+52;
                             }else{
                                 $diferenciadefechas=$etdSemana-$prodSemana;
                             }
@@ -507,7 +507,7 @@ class TemporadaShow extends Component
                 $prodSemana = date('W', strtotime($masa->fecha_produccion));
                
                     if ($prodSemana>$etdSemana) {
-                        $diferenciadefechas=$etdSemana-$prodSemana-52;
+                        $diferenciadefechas=$etdSemana-$prodSemana+52;
                     }else{
                         $diferenciadefechas=$etdSemana-$prodSemana;
                     }
