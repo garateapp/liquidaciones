@@ -38,7 +38,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechaetd, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
@@ -1462,12 +1462,14 @@ class TemporadaShow extends Component
     public function set_masaid($masaid){
         $this->masaid=$masaid;
         $this->preciomasa=Balancemasa::find($masaid)->precio_fob;
+        $this->fechaetd=Balancemasa::find($masaid)->etd_semana;
     }
 
     public function save_masaid(){
         $masa=Balancemasa::find($this->masaid);
-        $masa->update(['precio_fob'=>$this->preciomasa]);    
-        $this->reset(['preciomasa','masaid']);
+        $masa->update(['precio_fob'=>$this->preciomasa,
+                        'etd_semana'=>$this->fechaetd]);    
+        $this->reset(['preciomasa','masaid','fechaetd']);
         
     }
 

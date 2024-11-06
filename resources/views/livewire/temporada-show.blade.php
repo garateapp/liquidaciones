@@ -3161,7 +3161,14 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{$masa->semana}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->etd_semana}}</p>
+
+                                @if ($masaid==$masa->id)
+                                    <input wire:model="fechaetd" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                    <p class="text-gray-900 whitespace-no-wrap">{{$masa->etd_semana}}</p>
+                                @endif
+                                
+
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{$masa->eta_semana}}</p>
