@@ -462,30 +462,40 @@ class TemporadaShow extends Component
         ->get();
         $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
         foreach($masas as $masa){
-            foreach ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho) as $embarque){
-                if($embarque->etd || $embarque->eta){
-                    $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
-                    $eta = $embarque->eta;
-                    
-                    // Convertir las fechas a semanas del año
-                    $etdSemana = date('W', strtotime($etd));
-                    $etaSemana = date('W', strtotime($eta));
-                        if ($etdSemana>$etaSemana) {
-                            $diferenciadefechas=$etaSemana-$etdSemana-52;
-                        }else{
-                            $diferenciadefechas=$etaSemana-$etdSemana;
-                        }
-                    // Luego puedes guardar esas semanas en tu base de datos
-                    $masa->update([
-                        'etd' => $etd,  // Mantienes la fecha original si es necesario
-                        'eta' => $eta,
-                        'etd_semana' => $etdSemana,  // Guardas la semana calculada
-                        'eta_semana' => $etaSemana,
-                        'control_fechas'=>$diferenciadefechas
-                    ]);
+            if ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho)->count()>0) {
+                foreach ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho) as $embarque){
+                    if($embarque->etd || $embarque->eta){
+                        $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
+                        $eta = $embarque->eta;
+                        
+                        // Convertir las fechas a semanas del año
+                        $etdSemana = date('W', strtotime($etd));
+                        $etaSemana = date('W', strtotime($eta));
+                            if ($etdSemana>$etaSemana) {
+                                $diferenciadefechas=$etaSemana-$etdSemana-52;
+                            }else{
+                                $diferenciadefechas=$etaSemana-$etdSemana;
+                            }
+                        // Luego puedes guardar esas semanas en tu base de datos
+                        $masa->update([
+                            'etd' => $etd,  // Mantienes la fecha original si es necesario
+                            'eta' => $eta,
+                            'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                            'eta_semana' => $etaSemana,
+                            'control_fechas'=>$diferenciadefechas
+                        ]);
 
-                                break;
+                                    break;
+                    }
                 }
+            } else {
+
+                $etdSemana = date('W', strtotime($masa->fecha_g_despacho));
+                
+                $masa->update([
+                    'etd' => $masa->fecha_g_despacho,  // Mantienes la fecha original si es necesario
+                    'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                ]);
             }
         }
 
