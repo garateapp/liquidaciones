@@ -176,7 +176,7 @@ class TemporadaShow extends Component
             $factores=NULL;
         }
         
-        if ($vista=='Procesos') {
+        if ($this->vista=='Procesos') {
             $procesos=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
         }else{
             $procesos=null;
