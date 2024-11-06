@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text('tipo_g_despacho')->nullable();
             $table->text('numero_g_despacho')->nullable();
             $table->string('numero_guia_produccion')->nullable();
-            
+
             $table->text('fecha_g_despacho')->nullable();
             $table->text('semana')->nullable();
             $table->text('folio')->nullable();
@@ -61,6 +61,8 @@ return new class extends Migration
 
             $table->string('factor')->nullable(); // Estimated Time of Arrival
             $table->string('peso_neto2')->nullable(); // Estimated Time of Arrival
+
+            $table->string('fecha_produccion')->nullable();
 
             $table->timestamps();
         });
