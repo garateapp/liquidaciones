@@ -3107,6 +3107,8 @@
                                   'etd',
                                   'eta',
                                   'Control Fecha',
+                                   'semana_fecha_produccion',
+                                  'fecha_produccion',
                                   'folio',
                                   'r_productor',
                                   'c_productor',
@@ -3166,6 +3168,12 @@
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200  text-sm @if($masa->control_fechas>2)bg-red-100 @else bg-white @endif">
                                   <p class="text-gray-900 whitespace-no-wrap">{{$masa->control_fechas}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{date('W', strtotime($masa->fecha_produccion))}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{$masa->fecha_produccion}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->folio }}</p>
