@@ -1020,6 +1020,7 @@ class TemporadaShow extends Component
                     $id_variedad = $despacho['id_variedad'] ?? null;
                     $id_embalaje = $despacho['id_embalaje'] ?? null;
                     $c_embalaje = $despacho['c_embalaje'] ?? null;
+                    $n_embalaje = $despacho['n_embalaje'] ?? null;
                     $peso_std_embalaje = $despacho['peso_std_embalaje'] ?? null;
                     $c_categoria = $despacho['c_categoria'] ?? null;
                     $t_categoria = $despacho['t_categoria'] ?? null;
@@ -1088,6 +1089,7 @@ class TemporadaShow extends Component
                             'id_variedad' => $id_variedad,
                             'id_embalaje' => $id_embalaje,
                             'c_embalaje' => $c_embalaje,
+                            'n_embalaje' => $n_embalaje,
                             'peso_std_embalaje' => $peso_std_embalaje,
                             'c_categoria' => $c_categoria,
                             't_categoria' => $t_categoria,

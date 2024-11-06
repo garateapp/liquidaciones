@@ -49,6 +49,7 @@ return new class extends Migration
             $table->string('id_variedad')->nullable();
             $table->string('id_embalaje')->nullable();
             $table->string('c_embalaje')->nullable();
+            $table->string('n_embalaje')->nullable();
             $table->string('peso_std_embalaje')->nullable();
             $table->string('c_categoria')->nullable();
             $table->string('t_categoria')->nullable();
