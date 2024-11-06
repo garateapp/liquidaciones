@@ -253,6 +253,8 @@ class TemporadaShow extends Component
                                 'tipo_transporte', 
                                 'c_embalaje', 
                                 'r_productor',
+                                'etd',
+                                'eta'
                             ])
                             ->filter1($this->filters)
                             ->where('temporada_id', $this->temporada->id)
