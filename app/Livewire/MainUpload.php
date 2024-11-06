@@ -82,7 +82,8 @@ class MainUpload extends Component
                 'id_variedad',
                 'c_calibre',
                 'c_categoria',
-                'numero_guia_produccion'
+                'numero_guia_produccion',
+                'fecha_produccion'
             ])
             ->get();
         $n=0;
@@ -118,6 +119,7 @@ class MainUpload extends Component
                 'c_calibre'                => $despacho->c_calibre ?? '',
                 'c_categoria'              => $despacho->c_categoria ?? '',
                 'numero_guia_produccion'   => $despacho->numero_guia_produccion ?? '',
+                'fecha_produccion'         => $despacho->fecha_produccion ?? '',
                 
             ]);
         }
