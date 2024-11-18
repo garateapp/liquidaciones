@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('c_calibre')->nullable();
             $table->string('c_serie')->nullable();
             $table->string('c_etiqueta')->nullable();
+            $table->string('n_etiqueta')->nullable();
             $table->string('cantidad')->nullable();
             $table->string('peso_neto')->nullable();
             $table->string('id_empresa')->nullable();

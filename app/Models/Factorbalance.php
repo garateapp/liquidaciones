@@ -22,7 +22,10 @@ class Factorbalance extends Model
         'c_categoria',
         'c_embalaje',
         'total',
-        'total_proceso'
+        'total_proceso',
+        'type',
+        'factor',
+        'sync_control'
     ];
 
     public function temporada(){

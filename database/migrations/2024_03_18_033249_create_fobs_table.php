@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('etiqueta')->nullable();
             $table->string('n_calibre')->nullable();
             $table->string('color')->nullable();
+            $table->string('embalaje')->nullable();
             $table->string('categoria')->nullable();
             $table->string('fob_kilo_salida')->nullable();
 

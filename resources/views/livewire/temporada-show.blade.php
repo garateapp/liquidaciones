@@ -941,15 +941,35 @@
                                       </button>
                                   </div>
                                   <p class="mt-4 text-gray-600">El sistema realizará la sincronización basándose en el factor de multiplicación configurado.</p>
-                                  <div class="flex justify-end items-center mt-4">
-                                    <a href="{{route('temporada.factor',$temporada)}}">
-                                      <span class="text-lg font-bold">{{$factores->count()}} </span>
-                                    </a>
-                                      <span class="ml-1 text-sm text-gray-600 ">Factores</span>
-                                      <button onclick="confirmSyncFactors2()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
-                                          Sincronizar
+                               
+                                  <div class="flex justify-between mt-4">
+                                    <div>
+                                      <a href="{{route('temporada.factor',$temporada)}}">
+                                        <span class="text-lg font-bold">{{$factores->count()}}</span>
+                                      </a>
+                                      <span class="ml-1 text-sm text-gray-600">Factores</span>
+                                    </div>
+                                    
+                                    <div class="flex gap-2 ml-auto">
+                                      <button onclick="confirmSyncFactors2()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700 h-10">
+                                        Sincronizar Factores
                                       </button>
+                                  
+                                      <div class="flex flex-col gap-2">
+                                        <div class="px-5 py-2 text-sm font-medium text-gray-900 bg-white border border-blue-600 rounded  hover:border-blue-700">
+                                          {{$factores->where('type','proceso')->where('sync_control','sincronizado')->count()}} / {{$factores->where('type','proceso')->count()}}
+                                        </div>
+                                        <button onclick="confirmSyncFactors3()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                                          Importar desde Procesos
+                                        </button>
+                                        <button onclick="confirmDeleteBalanceProceso()" class="px-5 py-2 text-sm font-medium text-white bg-red-600 border border-red-600 rounded hover:bg-red-700 hover:border-red-700">
+                                          Eliminar Registro de Procesos
+                                        </button>
+                                      </div>
+                                    </div>
                                   </div>
+                                  
+                                  
                               </div>
                           </div>
                       
@@ -2205,6 +2225,10 @@
                      Exportar Fob Prendientes
                     </x-button>
                   </a>
+                  
+                  <x-button onclick="confirmDeleteFob()" class="bg-red-500 text-white hover:bg-red-600 active:bg-red-900 mb-2">
+                    Eliminar FOB'S
+                 </x-button>
                   <x-button onclick="confirmDeleteBalance()" class="bg-red-500 text-white hover:bg-red-600 active:bg-red-900">
                     Eliminar Balance de masa
                  </x-button>
@@ -3356,7 +3380,7 @@
                                       echo 'id_empresa / numero_guia_produccion / c_productor<br>'.'c_etiqueta / id_variedad / c_calibre / c_categoria / c_embalaje';
                                       echo '</th>';
                                   @endphp
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"> ({{$despachosall_group->count()}}) <br>Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
                                   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">({{$factores->whereNull('total_proceso')->count()}}/{{$factores->count()}})<br>TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
                                   <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$factores->count()}} <br> Factor</th>
                               </tr>
@@ -3592,7 +3616,7 @@
                       </th>
                       <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Color
+                    Embalaje
                     </th>
                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                           Categoria
@@ -3629,7 +3653,7 @@
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$fob->n_calibre}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->color}}</p>
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->embalaje}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
@@ -4653,6 +4677,95 @@
           }
       });
   }
+
+  function confirmDeleteFob() {
+    Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esto eliminará el listado de Fobs. Esta acción no se puede deshacer.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Mostrar mensaje de eliminación en progreso
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'El balance de masa está siendo eliminado, por favor espera.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+
+              @this.call('delete_fobs').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                     '¡Eliminación completada!',
+                     'El balance de masa ha sido eliminado exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+
+
+
+          }
+      });
+  }
+
+  function confirmDeleteBalanceProceso() {
+    Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Mostrar mensaje de eliminación en progreso
+              Swal.fire({
+                  title: 'Eliminando...',
+                  text: 'El balance de masa está siendo eliminado, por favor espera.',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                      Swal.showLoading();
+                  }
+              });
+
+              @this.call('delete_balancemasasProceso').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                  Swal.fire(
+                     '¡Eliminación completada!',
+                     'El balance de masa ha sido eliminado exitosamente.',
+                      'success'
+                  );
+              }).catch(() => {
+                  Swal.close(); // Cerrar la alerta en caso de error
+                  Swal.fire(
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                      'error'
+                  );
+              });
+
+
+
+          }
+      });
+  }
+
   function confirmSyncFechas() {
       const now = new Date();
       const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -4765,6 +4878,49 @@ function confirmSyncFactors2() {
             });
             
             @this.call('factores_update').then(() => {
+                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                Swal.fire(
+                    '¡Sincronización completada!',
+                    'Los factores de multiplicación han sido obtenidos exitosamente.',
+                    'success'
+                );
+            }).catch(() => {
+                Swal.close(); // Cerrar la alerta en caso de error
+                Swal.fire(
+                    'Error en la sincronización',
+                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+function confirmSyncFactors3() {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    Swal.fire({
+        title: '¿Iniciar sincronización de factores?',
+        text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, sincronizar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Sincronizando...',
+                text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            @this.call('factores_update2').then(() => {
                 Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
                 Swal.fire(
                     '¡Sincronización completada!',

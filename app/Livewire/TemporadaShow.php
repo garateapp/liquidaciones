@@ -168,11 +168,34 @@ class TemporadaShow extends Component
                 )
                 ->get(); // No paginamos procesos porque solo se usará para referencia
 
-
+            $despachosall_group = Despacho::select([
+                'id_empresa', 
+                'numero_guia_produccion', 
+                'c_productor', 
+                'c_etiqueta', 
+                'id_variedad', 
+                'c_calibre', 
+                'c_categoria', 
+                'c_embalaje',
+                DB::raw('SUM(peso_neto) as total')  
+            ])
+            ->where('temporada_id', $this->temporada->id)
+            ->groupBy([
+                'id_empresa', 
+                'numero_guia_produccion', 
+                'c_productor', 
+                'c_etiqueta', 
+                'id_variedad', 
+                'c_calibre', 
+                'c_categoria', 
+                'c_embalaje'
+            ])
+            ->get();
           
             
         } else {
             $procesosall_group=NULL;
+            $despachosall_group=NULL;
         }
         $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
 
@@ -230,6 +253,7 @@ class TemporadaShow extends Component
                                 'precio_fob', 
                                 'tipo_transporte', 
                                 'c_embalaje', 
+                                'c_productor',
                                 'r_productor',
                                 'etd',
                                 'eta'
@@ -309,7 +333,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
@@ -386,10 +410,70 @@ class TemporadaShow extends Component
         }
     }
 
+    public function factores_update2(){
+       
+        $factores_proceso = Factorbalance::where('temporada_id', $this->temporada->id)->where('type','proceso')->whereNull('sync_control')->get();
+
+         // Iteramos sobre cada factor de proceso
+        foreach ($factores_proceso as $factor) {
+            // Buscar la fecha de producción del proceso correspondiente al numero_guia_produccion
+                $proceso = Proceso::where('numero_g_produccion', $factor->numero_guia_produccion)->first();
+                
+                // Si se encuentra el proceso y tiene la fecha de producción, sumar 7 días
+                if ($proceso && $proceso->fecha_produccion) {
+                    // Convertir la fecha_produccion a un objeto Carbon y sumar 7 días
+                    $fechacalculada = Carbon::parse($proceso->fecha_produccion)->addDays(7);
+                } else {
+                    // Si no se encuentra el proceso o no tiene fecha_produccion, asignamos un valor por defecto
+                    $fechacalculada = null; // o la fecha que prefieras
+                }
+
+                 // Verificar si ya existe un balance de masa con esta combinación
+                    $existingBalance = Balancemasa::where('temporada_id', $this->temporada->id)
+                        ->where('numero_guia_produccion', $factor->numero_guia_produccion)
+                        ->where('id_empresa', $factor->id_empresa)
+                        ->where('c_productor', $factor->c_productor)
+                        ->where('c_etiqueta', $factor->c_etiqueta)
+                        ->where('id_variedad', $factor->id_variedad)
+                        ->where('c_calibre', $factor->c_calibre)
+                        ->where('c_categoria', $factor->c_categoria)
+                        ->where('c_embalaje', $factor->c_embalaje)
+                        ->where('type', 'proceso')
+                        ->first();
+
+                // Si no existe el balance de masa, crear uno nuevo
+                if (!$existingBalance) {
+                    Balancemasa::create([
+                        'temporada_id'             => $this->temporada->id,
+                        'id_empresa'               => $factor->id_empresa ?? '',
+                        'numero_guia_produccion'   => $factor->numero_guia_produccion ?? '',
+                        'c_productor'              => $factor->c_productor ?? '',
+                        'c_etiqueta'               => $factor->c_etiqueta ?? '',
+                        'n_etiqueta'               => strtoupper($proceso->n_etiqueta) ?? '',
+                        'id_variedad'              => $factor->id_variedad ?? '',
+                        'c_calibre'                => $factor->c_calibre ?? '',
+                        'c_categoria'              => $factor->c_categoria ?? '',
+                        'c_embalaje'               => $factor->c_embalaje ?? '',
+                        'total'                    => $factor->total ?? 0, // Asumimos que 'total' es un campo de 'Factorbalance'
+                        'peso_neto'               => $factor->total_proceso ?? 0, // Asumimos que 'total_proceso' es un campo de 'Factorbalance'
+                        'factor'                   => $factor->factor ?? 0, // Asumimos que 'factor' es un campo de 'Factorbalance'
+                        'peso_neto2'               => $factor->total_proceso ?? 0, // Asumimos que 'total_proceso' es un campo de 'Factorbalance'
+                        'fecha_g_despacho'         => $fechacalculada,
+                        'exportadora'              => $this->temporada->exportadora_id ?? '22',
+                        'type'                     => 'proceso' // Fecha calculada (fecha_produccion + 7 días)
+                    ]);
+                }
+            Cache::flush();
+            
+            $factor->update(['sync_control'=>'sincronizado']);
+        }
+      
+    }
+
    
     public function factores_count() {
         // Obtén los procesos agrupados y calcula la suma de peso_neto en 'total'
-        $procesosall_group = Proceso::select( 
+        $procesosall_group = Proceso::select(
                 'id_empresa',
                 'numero_g_produccion',
                 'c_productor_proceso',
@@ -413,12 +497,65 @@ class TemporadaShow extends Component
                 'c_embalaje'
             )
             ->get();
-    
-        // Obtén los factores para la temporada
+        
+        // Obtén los factores existentes para la temporada
         $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
+        
+        // Convierte los factores a un array de combinaciones clave para facilitar la comparación
+        $factoresCombinaciones = $factores->mapWithKeys(function ($factor) {
+            return [serialize([
+                'id_empresa' => $factor->id_empresa,
+                'numero_guia_produccion' => $factor->numero_guia_produccion,
+                'c_productor' => $factor->c_productor,
+                'c_etiqueta' => $factor->c_etiqueta,
+                'id_variedad' => $factor->id_variedad,
+                'c_calibre' => $factor->c_calibre,
+                'c_categoria' => $factor->c_categoria,
+                'c_embalaje' => $factor->c_embalaje,
+            ]) => $factor];
+        });
+        
+        // Filtra los procesos para obtener aquellos que no tienen un factor correspondiente y crea las combinaciones faltantes
+        $procesosall_group->each(function ($proceso) use (&$factores, &$factoresCombinaciones) {
+            $combinacionProceso = serialize([
+                'id_empresa' => $proceso->id_empresa,
+                'numero_guia_produccion' => $proceso->numero_g_produccion,
+                'c_productor' => $proceso->c_productor_proceso,
+                'c_etiqueta' => $proceso->c_etiqueta,
+                'id_variedad' => $proceso->id_variedad,
+                'c_calibre' => $proceso->c_calibre,
+                'c_categoria' => $proceso->c_categoria,
+                'c_embalaje' => $proceso->c_embalaje,
+            ]);
+        
+            // Verifica si la combinación ya existe en los factores
+            if (!isset($factoresCombinaciones[$combinacionProceso])) {
+                // Crea un nuevo factor con la combinación y el total del proceso
+                $nuevoFactor = new Factorbalance([
+                    'temporada_id' => $this->temporada->id,
+                    'id_empresa' => $proceso->id_empresa,
+                    'numero_guia_produccion' => $proceso->numero_g_produccion,
+                    'c_productor' => $proceso->c_productor_proceso,
+                    'c_etiqueta' => $proceso->c_etiqueta,
+                    'id_variedad' => $proceso->id_variedad,
+                    'c_calibre' => $proceso->c_calibre,
+                    'c_categoria' => $proceso->c_categoria,
+                    'c_embalaje' => $proceso->c_embalaje,
+                    'total' => $proceso->total,
+                    'total_proceso' => $proceso->total, // Se inicializa igual que 'total'
+                    'factor' => 1, // Inicializamos con 1 (total_proceso / total)
+                    'type' => 'proceso' // Inicializamos con 1 (total_proceso / total)
+                ]);
+                $nuevoFactor->save(); // Guarda el nuevo factor en la base de datos
+        
+                // Agrega la nueva combinación a factoresCombinaciones para evitar duplicados
+                $factoresCombinaciones[$combinacionProceso] = $nuevoFactor;
+                $factores->push($nuevoFactor);
+            }
+        });
     
-        // Recorre cada factor y actualiza 'total_proceso' de acuerdo a $procesosall_group
-        $factores->each(function ($factor) use ($procesosall_group) {
+        // Recorre cada factor y actualiza solo los que tienen 'total_proceso' nulo o cero
+        $factores->where('total_proceso', 0)->each(function ($factor) use ($procesosall_group) {
             // Encuentra el proceso correspondiente al factor
             $proceso = $procesosall_group->first(function ($proceso) use ($factor) {
                 return $proceso->id_empresa == $factor->id_empresa &&
@@ -433,16 +570,14 @@ class TemporadaShow extends Component
            
             // Actualiza el total_procesos en el factor
             $factor->total_proceso = $proceso ? $proceso->total : 0;
-
-             // Actualiza el factor en base al valor de total dentro del factor
-            if ($factor->total > 0) {
-                $factor->factor = floatval($factor->total_proceso / $factor->total);
-            } else {
-                $factor->factor = 0;
-            }
+    
+            // Actualiza el factor solo si 'total' es mayor a cero
+            $factor->factor = $factor->total > 0 ? floatval($factor->total_proceso / $factor->total) : 0;
+            
             $factor->save(); // Guarda el cambio en la base de datos
         });
     }
+    
     
 
     public function delete_balancemasas(){
@@ -450,7 +585,31 @@ class TemporadaShow extends Component
         foreach ($masas as $masa){
             $masa->delete();
         }
-   //     return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+        //return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function delete_fobs(){
+        $masas=Fob::where('temporada_id',$this->temporada->id)->get();
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+        //return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+    }
+
+    public function delete_balancemasasProceso(){
+        $masas=Balancemasa::where('temporada_id',$this->temporada->id)->where('type','proceso')->get();
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+        $masas = Factorbalance::where('temporada_id', $this->temporada->id)->where('type','proceso')->get();
+        foreach ($masas as $factor){
+            $factor->update(['sync_control'=>null]);
+        }
+        
+        
+        Cache::flush();
+        return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Registros eliminados con exito');
+        
     }
 
     public function sync_fechas(){
@@ -767,6 +926,7 @@ class TemporadaShow extends Component
                     $c_calibre = $production['c_calibre'] ?? null;
                     $c_serie = $production['c_serie'] ?? null;
                     $c_etiqueta = $production['c_etiqueta'] ?? null;
+                    $n_etiqueta = $production['n_etiqueta'] ?? null;
                     $cantidad = $production['total_cantidad'] ?? null;
                     $peso_neto = $production['total_peso_neto'] ?? null;
                     $id_empresa = $production['id_empresa'] ?? null;
@@ -827,47 +987,48 @@ class TemporadaShow extends Component
                 
             
                     if ($cont) {
-                        
-                        Proceso::create([
-                            'tipo_g_produccion' => $tipo_g_produccion,
-                            'numero_g_produccion' => $numero_g_produccion,
-                            'fecha_g_produccion' => $fecha_g_produccion,
-                            'fecha_produccion' => $fecha_produccion,
-                            'tipo' => $tipo,
-                            'id_productor_proceso' => $id_productor_proceso,
-                            'n_productor_proceso' => $n_productor_proceso,
-                            'c_productor' => $c_productor,
-                            'c_productor_proceso' => $c_productor_proceso,
-                            'n_productor' => $n_productor,
-                            't_categoria' => $t_categoria,
-                            'c_categoria' => $c_categoria,
-                            'c_embalaje' => $c_embalaje,
-                            'c_calibre' => $c_calibre,
-                            'c_serie' => $c_serie,
-                            'c_etiqueta' => $c_etiqueta,
-                            'cantidad' => $cantidad,
-                            'peso_neto' => $peso_neto,
-                            'id_empresa' => $id_empresa,
-                            'fecha_recepcion' => $fecha_cosecha,
-                            'folio' => $folio,
-                            'id_exportadora' => $id_exportadora,
-                            'id_especie' => $id_especie,
-                            'id_variedad' => $id_variedad,
-                            'id_linea_proceso' => $id_linea_proceso,
-                            'numero_guia_recepcion' => $numero_guia_recepcion,
-                            'id_embalaje' => $id_embalaje,
-                            'n_tipo_proceso' => $n_tipo_proceso,
-                            'n_variedad_rotulacion' => $n_variedad_rotulacion,
-                            'peso_std_embalaje' => $peso_std_embalaje,
-                            'peso_standard' => $peso_standard,
-                            'creacion_tipo' => $creacion_tipo,
-                            'notas' => $notas,
-                            'Estado' => $estado,
-                            'destruccion_tipo' => $destruccion_tipo,
-                            'temporada_id' => $this->temporada->id,
-                            'duplicado' => 'si',
-                        ]);
-
+                        /*
+                            Proceso::create([
+                                'tipo_g_produccion' => $tipo_g_produccion,
+                                'numero_g_produccion' => $numero_g_produccion,
+                                'fecha_g_produccion' => $fecha_g_produccion,
+                                'fecha_produccion' => $fecha_produccion,
+                                'tipo' => $tipo,
+                                'id_productor_proceso' => $id_productor_proceso,
+                                'n_productor_proceso' => $n_productor_proceso,
+                                'c_productor' => $c_productor,
+                                'c_productor_proceso' => $c_productor_proceso,
+                                'n_productor' => $n_productor,
+                                't_categoria' => $t_categoria,
+                                'c_categoria' => $c_categoria,
+                                'c_embalaje' => $c_embalaje,
+                                'c_calibre' => $c_calibre,
+                                'c_serie' => $c_serie,
+                                'c_etiqueta' => $c_etiqueta,
+                                'n_etiqueta' => $n_etiqueta,
+                                'cantidad' => $cantidad,
+                                'peso_neto' => $peso_neto,
+                                'id_empresa' => $id_empresa,
+                                'fecha_recepcion' => $fecha_cosecha,
+                                'folio' => $folio,
+                                'id_exportadora' => $id_exportadora,
+                                'id_especie' => $id_especie,
+                                'id_variedad' => $id_variedad,
+                                'id_linea_proceso' => $id_linea_proceso,
+                                'numero_guia_recepcion' => $numero_guia_recepcion,
+                                'id_embalaje' => $id_embalaje,
+                                'n_tipo_proceso' => $n_tipo_proceso,
+                                'n_variedad_rotulacion' => $n_variedad_rotulacion,
+                                'peso_std_embalaje' => $peso_std_embalaje,
+                                'peso_standard' => $peso_standard,
+                                'creacion_tipo' => $creacion_tipo,
+                                'notas' => $notas,
+                                'Estado' => $estado,
+                                'destruccion_tipo' => $destruccion_tipo,
+                                'temporada_id' => $this->temporada->id,
+                                'duplicado' => 'si',
+                            ]);
+                        */
                     } else {
                         // Si no existe el registro, se crea uno nuevo
                         Proceso::create([
@@ -887,6 +1048,7 @@ class TemporadaShow extends Component
                             'c_calibre' => $c_calibre,
                             'c_serie' => $c_serie,
                             'c_etiqueta' => $c_etiqueta,
+                            'n_etiqueta' => $n_etiqueta,
                             'cantidad' => $cantidad,
                             'peso_neto' => $peso_neto,
                             'id_empresa' => $id_empresa,

@@ -485,32 +485,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center" x-show="fob">
-                    <div>
+                <div  x-show="fob">
+                    <div class="flex justify-between mb-12">
                         <h1 class="text-xl font-semibold mb-4">
-                            Por favor selecione el archivo de "FOB" que desea importar
+                            Crear e importar a partir de despacho
                         </h1>
-                        <div class="">
-                            <form action="{{route('temporada.importFob')}}"
-                                method="POST"
-                                class="bg-white rounded p-8 shadow"
-                                enctype="multipart/form-data">
-                                
-                                @csrf
+                        <x-button id="importButton2" class="ml-4">
+                            Importar
+                        </x-button>
+                                              
+                    </div>
+                    <div class="flex justify-center">
+                        <div>
+                            <h1 class="text-xl font-semibold mb-4">
+                                Por favor selecione el archivo de "FOB" que desea importar
+                            </h1>
+                            <div class="">
+                                <form action="{{route('temporada.importFob')}}"
+                                    method="POST"
+                                    class="bg-white rounded p-8 shadow"
+                                    enctype="multipart/form-data">
+                                    
+                                    @csrf
 
-                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+                                    <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                                <x-validation-errors class="errors">
+                                    <x-validation-errors class="errors">
 
-                                </x-validation-errors>
+                                    </x-validation-errors>
 
-                                <input type="file" name="file" accept=".csv,.xlsx">
+                                    <input type="file" name="file" accept=".csv,.xlsx">
 
-                                <x-button class="ml-4">
-                                    Importar
-                                </x-button>
-                            </form>
+                                    <x-button class="ml-4">
+                                        Importar
+                                    </x-button>
+                                </form>
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -700,6 +711,50 @@
             
                             // Llamar al método Livewire directamente
                             @this.call('despachoImport').then(() => {
+                                Swal.close(); // Cerrar la alerta de "Importando" cuando se complete la importación
+            
+                                Swal.fire({
+                                    title: '¡Importación completada!',
+                                    text: 'Los despachos han sido importados con éxito.',
+                                    icon: 'success',
+                                });
+                            }).catch(() => {
+                                Swal.close(); // Cerrar la alerta en caso de error
+            
+                                Swal.fire({
+                                    title: 'Error en la importación',
+                                    text: 'Ocurrió un problema al importar los despachos. Por favor, inténtalo de nuevo más tarde.',
+                                    icon: 'error',
+                                });
+                            });
+                        }
+                    });
+                });
+
+                document.getElementById('importButton2').addEventListener('click', function() {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "¿Deseas importar los despachos?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, importar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Mostrar mensaje de sincronización en progreso
+                            Swal.fire({
+                                title: 'Importando...',
+                                text: 'La importación está en curso, por favor espera.',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+            
+                            // Llamar al método Livewire directamente
+                            @this.call('fobImport').then(() => {
                                 Swal.close(); // Cerrar la alerta de "Importando" cuando se complete la importación
             
                                 Swal.fire({
