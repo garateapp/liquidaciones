@@ -3147,6 +3147,7 @@
                                   'n_calibre',
                                   'n_etiqueta',
                                   'cantidad',
+                                  'cantidad2',
                                   'peso_neto',
                                   'Factor Multiplicador',
                                   'peso_neto 2',
@@ -3247,6 +3248,9 @@
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto,1) }}</p>
