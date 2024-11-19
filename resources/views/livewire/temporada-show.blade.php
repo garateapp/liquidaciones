@@ -3152,8 +3152,9 @@
                                   'Factor Multiplicador',
                                   'peso_neto 2',
                                   'transporte',
-                                  'precio_fob',
-                                   'precio_fob_kg',
+                                  'fob_real',
+                                  'fob_promedio',
+                                   'fob_kg',
                                     'TOTAL'
                               ];
 
