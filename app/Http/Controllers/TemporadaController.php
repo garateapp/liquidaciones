@@ -727,6 +727,7 @@ class TemporadaController extends Controller
         $etiq=[];
         $suma=0;
             foreach($masascat1 as $masa){
+                    $calibre=null;
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
                             $calibre=$masa->n_calibre;
