@@ -621,7 +621,8 @@ class TemporadaShow extends Component
             })
             ->get();
         */
-        $masas=Balancemasa::where('temporada_id', $this->temporada->id)
+        $masas = Balancemasa::select('id', 'numero_g_despacho', 'fecha_produccion', 'fecha_g_despacho')
+            ->where('temporada_id', $this->temporada->id)
             ->get();
 
         $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
