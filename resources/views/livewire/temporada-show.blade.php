@@ -3152,7 +3152,9 @@
                                   'Factor Multiplicador',
                                   'peso_neto 2',
                                   'transporte',
-                                  'precio_fob'
+                                  'precio_fob',
+                                   'precio_fob_kg',
+                                    'TOTAL'
                               ];
 
                             
@@ -3265,6 +3267,24 @@
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
+                              </td>
+                              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                                @if ($masaid==$masa->id)
+                                    <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                @endif
+                                
+
+                              </td>
+                              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                                @if ($masaid==$masa->id)
+                                    <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                @endif
+                                
+
                               </td>
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
