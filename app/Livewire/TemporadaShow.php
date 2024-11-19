@@ -648,7 +648,7 @@ class TemporadaShow extends Component
                             }
                         // Luego puedes guardar esas semanas en tu base de datos
                         $masa->update([
-                            'semana' => $etd,  // Mantienes la fecha original si es necesario
+                            'semana' => $etdSemana,  // Mantienes la fecha original si es necesario
                             'etd' => $etd,  // Mantienes la fecha original si es necesario
                             'eta' => $eta,
                             'etd_semana' => $etdSemana,  // Guardas la semana calculada
