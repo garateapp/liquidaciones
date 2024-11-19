@@ -728,6 +728,7 @@ class TemporadaController extends Controller
         $suma=0;
             foreach($masascat1 as $masa){
                     $calibre=null;
+                    /*
                     if ($masa->n_calibre=='4J' || $masa->n_calibre=='4JD' || $masa->n_calibre=='4JDD'){
                         if ($masa->n_etiqueta=='Alsu') {
                             $calibre=$masa->n_calibre;
@@ -793,10 +794,11 @@ class TemporadaController extends Controller
                         }else{
                         $color='Light';
                         }
-                    }
+                    }*/
+
                     $nro2+=1; 
                     foreach ($fobscat1 as $fob){
-                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color)))){
+                            if ((str_replace(' ', '', $fob->n_variedad)==str_replace(' ', '', $masa->n_variedad)) && $fob->semana==$masa->semana && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->n_calibre))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_calibre))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->etiqueta))==preg_replace('/[\.\-\s]+/', '', strtolower($masa->n_etiqueta))) && (preg_replace('/[\.\-\s]+/', '', strtolower($fob->color))==preg_replace('/[\.\-\s]+/', '', strtolower($color)))){
                             
                                 if($fob->fob_kilo_salida!='null'){
                                     $masa->update(['precio_fob'=>$fob->fob_kilo_salida]);
