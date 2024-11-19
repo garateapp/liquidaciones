@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Imports\CategoriaImport;
+use App\Imports\CategoriaImport2;
 use App\Models\Categoria;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -31,6 +32,20 @@ class AdministradorCategorias extends Component
         }
 
         Excel::import(new CategoriaImport(), $this->file->store('temp'));
+       
+        session()->flash('message', 'Archivo subido e importado con éxito!');
+
+        $this->reset('file');
+    }
+    public function importExcel2()
+    {   $rules = [
+            'file' => 'required|file|mimes:xlsx,xls'
+        ];
+        $this->validate($rules);
+        //dd($this->file);
+        
+
+        Excel::import(new CategoriaImport2(), $this->file->store('temp'));
        
         session()->flash('message', 'Archivo subido e importado con éxito!');
 

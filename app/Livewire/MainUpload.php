@@ -200,6 +200,50 @@ class MainUpload extends Component
         $n=0;
         foreach ($despachosAgrupados as $agrupado) {
             $n+=1;
+
+            if ($agrupado['c_calibre']=='4J' || $agrupado['c_calibre']=='4JD' || $agrupado['c_calibre']=='4JDD'){
+            
+                if ($agrupado['c_calibre']=='4JD' || $agrupado['c_calibre']=='4JDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+            if ($agrupado['c_calibre']=='3J' || $agrupado['c_calibre']=='3JD' || $agrupado['c_calibre']=='3JDD'){
+              
+
+                if ($agrupado['c_calibre']=='3JD' || $agrupado['c_calibre']=='3JDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+            if ($agrupado['c_calibre']=='2J' || $agrupado['c_calibre']=='2JD' || $agrupado['c_calibre']=='2JDD'){
+             
+                if ($agrupado['c_calibre']=='2JD' || $agrupado['c_calibre']=='2JDD'){
+                        $color='Dark';
+                
+                }else{
+                    $color='Light';
+                }
+            }
+            if ($agrupado['c_calibre']=='J' || $agrupado['c_calibre']=='JD' || $agrupado['c_calibre']=='JDD'){
+              
+                if ($agrupado['c_calibre']=='JD' || $agrupado['c_calibre']=='JDD'){
+                        $color='Dark';
+                }else{
+                    $color='Light';
+                }
+            }
+            if ($agrupado['c_calibre']=='XL' || $agrupado['c_calibre']=='XLD' || $agrupado['c_calibre']=='XLDD'){
+              
+                if ($agrupado['c_calibre']=='XLD' || $agrupado['c_calibre']=='XLDD'){
+                    $color='Dark';
+                }else{
+                $color='Light';
+                }
+            }
+
             Fob::create([
                 'temporada_id' => $this->temporada->id,
                 'semana' => $agrupado['semana'],        // Semana calculada
@@ -208,6 +252,7 @@ class MainUpload extends Component
                 'n_calibre' => $agrupado['c_calibre'],  // Calibre
                 'categoria' => $agrupado['c_categoria'],// Categoría
                 'embalaje' => $agrupado['c_embalaje'],     // Embalaje
+                'color'=> $color,
                 'fob_kilo_salida' => $agrupado['precio_promedio'], // Precio promedio
             ]);
         }
