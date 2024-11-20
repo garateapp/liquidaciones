@@ -64,6 +64,7 @@ return new class extends Migration
 
             $table->string('fecha_produccion')->nullable();
 
+
             $table->timestamps();
         });
     }

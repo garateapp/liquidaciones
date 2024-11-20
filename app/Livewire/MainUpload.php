@@ -85,7 +85,8 @@ class MainUpload extends Component
                 'c_calibre',
                 'c_categoria',
                 'numero_guia_produccion',
-                'fecha_produccion'
+                'fecha_produccion',
+                'peso_std_embalaje'
             ])
             ->get();
         $n=0;
@@ -122,6 +123,7 @@ class MainUpload extends Component
                 'c_categoria'              => $despacho->c_categoria ?? '',
                 'numero_guia_produccion'   => $despacho->numero_guia_produccion ?? '',
                 'fecha_produccion'         => $despacho->fecha_produccion ?? '',
+                'peso_std_embalaje'        => $despacho->peso_std_embalaje ?? ''
                 
             ]);
         }
