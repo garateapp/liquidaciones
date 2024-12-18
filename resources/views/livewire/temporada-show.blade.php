@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -125,16 +125,15 @@
 
 
                       @if ($vista=='MASAS')
-                    Filtros      Balance de Masa
-
+                          Filtros      Balance de Masa
                       @elseif ($vista=='resumes')
-                     Filtros   Resumen
+                          Filtros   Resumen
                       @elseif ($vista=='show')
-                     Filtros   del Listado de Productores
-                     @elseif ($vista=='Recepcion' || $vista=='Procesos' || $vista=='Despachos' || $vista=='Embarques')
+                          Filtros   del Listado de Productores
+                      @elseif ($vista=='Recepcion' || $vista=='Procesos' || $vista=='Despachos' || $vista=='Embarques')
                     
                       @else
-                     Filtros   {{$vista}} 
+                          Filtros   {{$vista}} 
                       @endif
 
                     
@@ -146,19 +145,38 @@
                     @endif
                     @php
                         $kgstotmas=0;
-                        $sinfecha=0;
+                        $sinfechaetd=0;
+                        $sinfechaeta=0;
+                        $sinsemana=0;
                         $sinfactor=0;
                     @endphp
-                    @if ($vista=='MASAS')
+                    @if ($vista=='MASAS' || $vista=='FOB')
                     
+                  
+                          
                       @foreach ($masastotal as $masa)
-                        @php
-                            $kgstotmas+=$masa->peso_neto;
-                            if ($masa->etd || $masa->eta) {
-                             
+                        @php  
+                          
+                            
+                            if ($masa->etd) {
+                            
                             }else{
-                              $sinfecha+=1;
+                              $sinfechaetd+=1;
                             }
+                            if ($masa->eta) {
+                            
+                            }else{
+                              $sinfechaeta+=1;
+                            }
+
+                            if ($masa->semana) {
+                              # code...
+                            } else {
+                              $sinsemana+=1;
+                            }
+
+                            $kgstotmas+=$masa->peso_neto;
+
                             if ($masa->factor) {
                               # code...
                             }else{
@@ -172,18 +190,9 @@
                         @endphp
                       @endforeach
                     
-                      {{-- comment
-                        @if ($masastotal && $masastotalnacional)
-                          ({{(number_format($masastotal->count()+$masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                        @elseif($masastotal)
-                          ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                        @elseif($masastotalnacional)
-                          ({{(number_format($masastotalnacional->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
-                        @endif
-                      --}}
-
                       ({{(number_format($masastotal->count()))}} Resultados) ({{number_format($kgstotmas)}} KGS)
                     @endif
+
                   </h2>
 
                   <div class="flex w-full px-2">
@@ -659,7 +668,11 @@
                         </div>
                       @else
                         <div class="p-2 text-xl font-bold border-2 rounded-lg flex w-full">
+                          @if ($razonsall)
+                              
                              {{$razonsall->count()}} Productores @if ($filters['razonsocial'])  //  Resultados: {{$razonsallresult->count()}} @endif
+                             
+                          @endif
                         </div>
                       @endif
                       
@@ -671,16 +684,16 @@
                   <div class="mb-4">
                     Productor/Csg
                     <x-input wire:model.live="filters.razonsocial" type="text" class="w-full" />
-                    @if ($filters['razonsocial'])
-                      <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
-                        @forelse ($this->users as $objet)
-                            <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                                <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
-                            </li>
-                            @empty
-                        @endforelse
-                      </ul>
-                    @endif
+                      @if ($filters['razonsocial'])
+                        <ul class="relative z-1 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden px-4">
+                          @forelse ($this->users as $objet)
+                              <li wire:click='set_productorid({{$objet->id}})' class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
+                                  <p>{{$objet->name}}-{{$objet->rut}}-{{$objet->csg}}</p>
+                              </li>
+                              @empty
+                          @endforelse
+                        </ul>
+                      @endif
                   </div>
                 
                 <div class="flex">
@@ -770,6 +783,29 @@
                 
                 <div class="mb-4 flex mt-2">
                   @if ($vista=='Procesos' || $vista=='Despachos')
+                  
+                      @foreach ($despachosall as $masa)
+                        @php
+                          
+                            if ($masa->etd) {
+                            
+                            }else{
+                              $sinfechaetd+=1;
+                            }
+                            if ($masa->eta) {
+                            
+                            }else{
+                              $sinfechaeta+=1;
+                            }
+
+                            if ($masa->semana) {
+                              # code...
+                            } else {
+                              $sinsemana+=1;
+                            }
+                        @endphp
+                      @endforeach
+
                     <div>
                         Unicos/Repetidos:<br>
                         <div>
@@ -797,10 +833,6 @@
                         
                       
                       </select>
-                    
-                    </div>
-
-                    <div class="ml-4">
                       Tipo:
                    
                       <br>
@@ -815,13 +847,14 @@
                         
                       
                       </select>
-                    
                     </div>
+
+                   
 
 
                   @endif
-                  @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional')
-                    <div class="">
+                  @if ($vista=='MASAS' || $vista=='FOB' || $vista=='resumes' || $vista=='resumesnacional' || $vista=='Despachos')
+                    <div class="ml-4">
                       Categoria:<br>
                       <div>
                         <input type="checkbox" wire:model.live="filters.exp" id="exp" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" checked>
@@ -886,91 +919,129 @@
                           @endif
                         @endforeach
                       </select>
-                    </div>
-                    
-                    <div class="ml-4">
+
+                      <br>
                       Precio_fob:<br>
                       <select wire:model.live="filters.precioFob" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
                         <option value="">Todos</option>
                         
+                          <option value="fobcero">Fob Cero</option>
                           <option value="null"> Sin Precio Fob</option>
+                          <option value="fob"> Con Precio Fob</option>
                         
                       
                       </select>
                     </div>
-
+                    
+                   
+                      @if($vista=="Despachos" || $vista=='MASAS')
                         <!-- Extra Chatbot Card -->
-                        <div class="relative max-w-[600px] w-full bg-white border rounded-lg shadow-lg overflow-hidden">
+                        <div class="relative max-w-[600px] w-full bg-white border rounded-lg shadow-lg overflow-hidden ml-4">
                           <!-- Slider Wrapper -->
                           <div id="slider" class="flex transition-transform duration-500 ease-in-out">
-                              
-                              <!-- Slide 1: Current Synchronization Section -->
-                              <div class="w-full flex-shrink-0 p-2">
-                                  <div class="flex justify-between items-start">
-                                      <h3 class="text-xl font-semibold">
-                                          {{$sinfecha}} Registros Sin Fecha etd/eta
-                                      </h3>
-                                      <button wire:click='filtrar_fechanull()' class="flex items-center @if($filters['fechanull']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                                          Filtrar
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                          </svg>
-                                      </button>
-                                  </div>
-                                  <p class="mt-4 text-gray-600">El sistema buscará en los registros de despacho la fecha etd/eta por coincidencia de la columna numero_g_despacho.</p>
-                                  <div class="flex items-center mt-4">
-                                      <span class="text-2xl font-bold">{{$embarquesall->count()}}</span>
-                                      <span class="ml-1 text-sm text-gray-600">Embarques</span>
-                                      <button onclick="confirmSyncFechas()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
-                                          Sincronizar
-                                      </button>
-                                  </div>
-                              </div>
-                      
-                              <!-- Slide 2: New Section for Multiplication Factor Synchronization -->
-                              <div class="w-full flex-shrink-0 p-2">
-                                  <div class="flex justify-between items-start">
-                                      <h3 class="text-xl font-semibold">
-                                         {{$sinfactor}} Registros Sin Factor de Multiplicación
-                                      </h3>
-                                      <button wire:click='filtrar_multiplicacion()' class="flex items-center @if($filters['multiplicacion']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                                          Filtrar
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                          </svg>
-                                      </button>
-                                  </div>
-                                  <p class="mt-4 text-gray-600">El sistema realizará la sincronización basándose en el factor de multiplicación configurado.</p>
-                               
-                                  <div class="flex justify-between mt-4">
-                                    <div>
-                                      <a href="{{route('temporada.factor',$temporada)}}">
-                                        <span class="text-lg font-bold">{{$factores->count()}}</span>
-                                      </a>
-                                      <span class="ml-1 text-sm text-gray-600">Factores</span>
+                              @if ($vista=="Despachos")
+                                <!-- Slide 1: Current Synchronization Section -->
+                                <div class="w-full flex-shrink-0 p-2">
+                                    <div class="flex justify-between items-start">
+                                        <h3 class="text-xl font-semibold">
+                                            Sincronización de Fechas
+                                        </h3>
+                                        <button wire:click='filtrar_fechanull()' class="flex items-center @if($filters['fechanull']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+                                            Filtrar
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    
-                                    <div class="flex gap-2 ml-auto">
-                                      <button onclick="confirmSyncFactors2()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700 h-10">
-                                        Sincronizar Factores
-                                      </button>
-                                  
-                                      <div class="flex flex-col gap-2">
-                                        <div class="px-5 py-2 text-sm font-medium text-gray-900 bg-white border border-blue-600 rounded  hover:border-blue-700">
-                                          {{$factores->where('type','proceso')->where('sync_control','sincronizado')->count()}} / {{$factores->where('type','proceso')->count()}}
+                                    <p class="mt-4 text-gray-600">El sistema buscará en los registros de despacho la fecha etd/eta por coincidencia de la columna numero_g_despacho.</p>
+                                    <div class="flex justify-end items-center space-x-4">
+                                      <select 
+                                          id="syncfecha" 
+                                          wire:model.live="syncfecha" 
+                                          class="bg-gray-200 border border-gray-300 text-gray-700 rounded-lg pr-8 py-2 focus:outline-none focus:ring focus:ring-indigo-300">
+                                          <option value="todos">Todos</option>
+                                          <option value="nulos">Nulos</option>
+                                      </select>
+                                    </div>
+                                    <div class="flex items-center mt-4">
+                                        <span class="text-2xl font-bold">{{$embarquesall->count()}}</span>
+                                        <span class="ml-1 text-sm text-gray-600">Embarques</span>
+                                        <button onclick="confirmSyncFechas()" class="ml-auto px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                                            Sincronizar
+                                        </button>
+                                    </div>
+
+                                    <p>{{$sinfechaetd}} Registros sin Fecha ETD</p>
+                                    <p>{{$sinfechaeta}} Registros sin Fecha ETA</p>
+                                    <p>{{$sinsemana}} Registros sin Semana</p>
+
+                                </div>
+                              @endif
+                              <!-- Slide 2: New Section for Multiplication Factor Synchronization -->
+                              @if ($vista=='MASAS')
+                                <div class="w-full flex-shrink-0 p-2">
+                                    <div class="flex justify-between items-start">
+                                        <h3 class="text-xl font-semibold">
+                                          {{$sinfactor}} Registros Sin Factor de Multiplicación
+                                        </h3>
+                                        <button wire:click='filtrar_multiplicacion()' class="flex items-center @if($filters['multiplicacion']==True) bg-blue-600 text-white @else bg-gray-100 text-gray-500 @endif py-1 px-2 transition-colors rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+                                            Filtrar
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p class="mt-4 text-gray-600">El sistema realizará la sincronización basándose en el factor de multiplicación configurado.</p>
+                                
+                                    <div class="flex justify-between mt-4">
+                                      <div>
+                                        <a href="{{route('temporada.factor',$temporada)}}">
+                                          <span class="text-lg font-bold">{{$factores->count()}}</span>
+                                        </a>
+                                        <span class="ml-1 text-sm text-gray-600">Factores</span>
+                                      </div>
+                                      
+                                      <div class="flex gap-2 ml-auto">
+                                        <div class="flex flex-col gap-2">
+                                        
+                                          <div class="flex justify-end items-center space-x-4">
+                                            <select 
+                                                id="syncfactor" 
+                                                wire:model.live="syncfactor" 
+                                                class="bg-gray-200 border border-gray-300 text-gray-700 rounded-lg pr-8 py-2 focus:outline-none focus:ring focus:ring-indigo-300">
+                                                <option value="todos">Todos</option>
+                                                <option value="nulos">Nulos</option>
+                                            </select>
+                                          </div>
+
+                                          <button onclick="confirmSyncFactors2()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700 h-10">
+                                            Sincronizar Factores
+                                          </button>
                                         </div>
-                                        <button onclick="confirmSyncFactors3()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
-                                          Importar desde Procesos
-                                        </button>
-                                        <button onclick="confirmDeleteBalanceProceso()" class="px-5 py-2 text-sm font-medium text-white bg-red-600 border border-red-600 rounded hover:bg-red-700 hover:border-red-700">
-                                          Eliminar Registro de Procesos
-                                        </button>
+                                    
+                                        <div class="flex flex-col gap-2">
+                                          <div class="px-5 py-2 text-sm font-medium text-gray-900 bg-white border border-blue-600 rounded  hover:border-blue-700">
+                                            {{$factores->where('type','proceso')->where('sync_control','sincronizado')->count()}} / {{$factores->where('type','proceso')->count()}}
+                                          </div>
+                                          <button onclick="confirmSyncFactors3()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 hover:border-blue-700">
+                                            Importar desde Procesos
+                                          </button>
+                                          <button onclick="confirmDeleteBalanceProceso()" class="px-5 py-2 text-sm font-medium text-white bg-red-600 border border-red-600 rounded hover:bg-red-700 hover:border-red-700">
+                                            Eliminar Registro de Procesos
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  
-                                  
-                              </div>
+                                    
+                                    
+                                </div>
+                              @endif
+
+                              @if($vista=='FOB')
+                              <div class="w-full flex-shrink-0 p-2">
+                                    
+                                </div>
+                              @endif
                           </div>
                       
                           <div class="flex justify-between mt-8" >
@@ -991,7 +1062,7 @@
                         
                         
                         </div>
-                      
+                      @endif
                   
                   @endif
 
@@ -1027,6 +1098,207 @@
                 </div>
               </div>
 
+              @if($vista=="FOB")
+                <div class="px-6 pt-6 2xl:container">
+                  <div class="grid gap-6 md:grid-cols-3 lg:grid-cols-3">
+                      <div class="md:col-span-1 lg:col-span-1" >
+                          <div class="h-full py-8 px-6 space-y-6 rounded-xl border border-gray-200 bg-white">
+                          
+                              <div>
+                                  <h5 class="text-xl text-gray-600 text-center">Exportación</h5>
+                                  <div class="mt-2 flex justify-center gap-4">  
+                                            @php
+                                              $pesoexp=0;
+                                              $pesoexp2=0;
+
+                                              $pesomi=0;
+                                              $pesomi2=0;
+
+                                              $pesocom=0;
+                                              $pesocom2=0;
+
+                                              $ingresoreal_exp=0;
+                                              $ingresoprom_exp=0;
+                                              $ingresoreal_mi=0;
+                                              $ingresoprom_mi=0;
+                                              $ingresoreal_com=0;
+                                              $ingresoprom_com=0;
+                                            @endphp 
+                                        @foreach($masastotal->whereIn('n_categoria', $exportacionCodes) as $masa)
+                                            @if ($masa->fob)
+                                                @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                                   @php
+                                                       $ingresoreal_exp+=$masa->fob->fob_kilo_salida*$masa->peso_neto;
+                                                       $ingresoprom_exp+=$masa->fob->fob_kilo_salida*$masa->peso_neto2;
+                                                   @endphp
+                                                @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                                  @php
+                                                    if($masa->peso_std_embalaje*$masa->peso_neto>0){
+                                                      $ingresoreal_exp+=$masa->precio_unitario/$masa->peso_std_embalaje*$masa->peso_neto;
+                                                      $ingresoprom_exp+=$masa->fob->fob_kilo_salida/$masa->peso_std_embalaje*$masa->peso_neto2;
+                                                    }
+                                                  @endphp
+                                                @endif
+                                            @endif
+                                            @php
+                                              $pesoexp+=$masa->peso_neto2;
+                                              $pesoexp2+=$masa->peso_neto;
+                                            @endphp 
+                                        @endforeach
+                                        @foreach($masastotal->whereIn('n_categoria', $mercadoInternoCodes) as $masa)
+                                            @if ($masa->fob)
+                                                @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                                   @php
+                                                       $ingresoreal_mi+=$masa->fob->fob_kilo_salida*$masa->peso_neto;
+                                                       $ingresoprom_mi+=$masa->fob->fob_kilo_salida*$masa->peso_neto2;
+                                                   @endphp
+                                                @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                                  @php
+                                                    if($masa->peso_std_embalaje*$masa->peso_neto>0){
+                                                      $ingresoreal_mi+=$masa->precio_unitario/$masa->peso_std_embalaje*$masa->peso_neto;
+                                                      $ingresoprom_mi+=$masa->fob->fob_kilo_salida/$masa->peso_std_embalaje*$masa->peso_neto2;
+                                                    }
+                                                  @endphp
+                                                @endif
+                                            @endif
+                                              @php
+                                                $pesomi+=$masa->peso_neto2;
+                                                $pesomi2+=$masa->peso_neto;
+                                              @endphp 
+                                          @endforeach
+                                        @foreach($masastotal->whereIn('n_categoria', $comercialCodes) as $masa)
+                                        @if ($masa->fob)
+                                                @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                                   @php
+                                                       $ingresoreal_com+=$masa->fob->fob_kilo_salida*$masa->peso_neto;
+                                                       $ingresoprom_com+=$masa->fob->fob_kilo_salida*$masa->peso_neto2;
+                                                   @endphp
+                                                @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                                  @php
+                                                    if($masa->peso_std_embalaje*$masa->peso_neto>0){
+                                                      $ingresoreal_com+=$masa->precio_unitario/$masa->peso_std_embalaje*$masa->peso_neto;
+                                                      $ingresoprom_com+=$masa->fob->fob_kilo_salida/$masa->peso_std_embalaje*$masa->peso_neto2;
+                                                    }
+                                                  @endphp
+                                                @endif
+                                            @endif
+                                          @php
+                                            $pesocom+=$masa->peso_neto2;
+                                            $pesocom2+=$masa->peso_neto;
+                                          @endphp 
+                                        @endforeach
+                                  
+
+                                    
+                                      <h3 class="text-3xl font-bold text-gray-700">{{number_format($pesoexp,1,',','.')}}</h3>
+                                      <div class="flex items-end gap-1 text-green-500">
+                                          <svg class="w-3" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M6.00001 0L12 8H-3.05176e-05L6.00001 0Z" fill="currentColor"/>
+                                          </svg>
+                                          <span>2%</span>
+                                      </div>
+                                  </div>
+                                  <span class="block text-center text-gray-500">Total despacho {{number_format($pesoexp2,1,',','.')}}</span>
+                              </div>
+                              <table class="w-full text-gray-600">
+                                  <tbody>
+                                      <tr>
+                                          <td class="py-2">TOTAL REAL</td>
+                                          <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_exp,2,',','.')}}</td>
+                                        
+                                      </tr>
+                                      <tr>
+                                          <td class="py-2">TOTAL PROM</td>
+                                          <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoprom_exp,2,',','.')}}</td>
+                                            
+                                      </tr>
+                                      <tr>
+                                          <td class="py-2">DIFERENCIA</td>
+                                          <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_exp-$ingresoprom_exp,2,',','.')}}</td>
+                                          
+                                      </tr>
+                                  </tbody>
+                              </table> 
+                          </div>
+                      </div>
+                      <div class="md:col-span-1 lg:col-span-1" >
+                        <div class="h-full py-8 px-6 space-y-6 rounded-xl border border-gray-200 bg-white">
+                        
+                            <div>
+                                <h5 class="text-xl text-gray-600 text-center">Mercado Interno</h5>
+                                <div class="mt-2 flex justify-center gap-4">
+                                    <h3 class="text-3xl font-bold text-gray-700">{{number_format($pesomi,1,',','.')}}</h3>
+                                    <div class="flex items-end gap-1 text-green-500">
+                                        <svg class="w-3" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.00001 0L12 8H-3.05176e-05L6.00001 0Z" fill="currentColor"/>
+                                        </svg>
+                                        <span>2%</span>
+                                    </div>
+                                </div>
+                                <span class="block text-center text-gray-500">Total despacho {{number_format($pesomi2,1,',','.')}}</span>
+                            </div>
+                            <table class="w-full text-gray-600">
+                              <tbody>
+                                <tr>
+                                    <td class="py-2">TOTAL REAL</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_mi,0,',','.')}}</td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="py-2">TOTAL PROM</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoprom_mi,0,',','.')}}</td>
+                                      
+                                </tr>
+                                <tr>
+                                    <td class="py-2">DIFERENCIA</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_mi-$ingresoprom_mi,0,',','.')}}</td>
+                                    
+                                </tr>
+                            </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                    <div class="md:col-span-1 lg:col-span-1" >
+                      <div class="h-full py-8 px-6 space-y-6 rounded-xl border border-gray-200 bg-white">
+                      
+                          <div>
+                              <h5 class="text-xl text-gray-600 text-center">Comercial</h5>
+                              <div class="mt-2 flex justify-center gap-4">
+                                  <h3 class="text-3xl font-bold text-gray-700">{{number_format($pesocom,1,',','.')}}</h3>
+                                  <div class="flex items-end gap-1 text-green-500">
+                                      <svg class="w-3" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M6.00001 0L12 8H-3.05176e-05L6.00001 0Z" fill="currentColor"/>
+                                      </svg>
+                                      <span>2%</span>
+                                  </div>
+                              </div>
+                              <span class="block text-center text-gray-500">Total despacho {{number_format($pesocom2,1,',','.')}}</span>
+                          </div>
+                          <table class="w-full text-gray-600">
+                            <tbody>
+                                <tr>
+                                    <td class="py-2">TOTAL REAL</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_com,0,',','.')}}</td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="py-2">TOTAL PROM</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoprom_com,0,',','.')}}</td>
+                                      
+                                </tr>
+                                <tr>
+                                    <td class="py-2">DIFERENCIA</td>
+                                    <td class="text-gray-500 ml-auto text-right">{{number_format($ingresoreal_com-$ingresoprom_com,0,',','.')}}</td>
+                                    
+                                </tr>
+                            </tbody>
+                          </table> 
+                      </div>
+                  </div>
+                    
+                  </div>
+                </div>
+              @endif
              
               <div class="flex mb-4 hidden">
                 @if($vista=="resumes")
@@ -1058,759 +1330,7 @@
           
               </div>
              
-              @if ($vista=="resumes")
-                  <h1 class="mt-8 text-lg font-bold" >Exportación</h1>
-                  <div class="flex flex-col mb-2">
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                              <table class="min-w-full divide-y divide-gray-200">
-                                  <thead class="bg-yellow-400">
-                                    <tr>
-                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                                        Grupo variedad
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Caja Bulto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Kilos Netos
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Cajas Base
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Fob Liquidacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Comision
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Frio Packing
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Gastos de Exportacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Flete a huerto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Materiales
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Retorno Productor
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Retorno por kg
-                                        </th>
-                                        <th class="relative px-6 py-0">
-                                        <span class="sr-only"></span>
-                                        </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody class="bg-white divide-y divide-gray-200">
-                                    @php
-                                        $globalcajasbulto=0;
-                                        $globalpesoneto=0;
-                                        $globaltotalmateriales=0;
-                                        $globalfletehuerto=0;
-                                        $globalgastoexportacion=0;
-                                        $globalventafob=0;
-                                        $globalkgsp=0;
-                                        $globalcostopacking=0;
-                                    @endphp
-                                          @foreach ($unique_variedades as $item)
-                                          @php
-                                              $cajasbulto=0;
-                                              $pesoneto=0;
-                                              $totalmateriales=0;
-                                              $fletehuerto=0;
-                                              $gastoexportacion=0;
-                                              $ventafob=0;
-                                              $kgsp=0;
-                                              $costopacking=0;
-                                          @endphp
-                                          @foreach ($masastotal->where('n_variedad',$item->name)->whereIn('n_categoria',$exportacionCodes) as $masa)
-                                            @php
-                                                $cajasbulto+=$masa->cantidad;
-                                                $pesoneto+=$masa->peso_neto;
-                                                $globalcajasbulto+=$masa->cantidad;
-                                                $globalpesoneto+=$masa->peso_neto;
-                                                
-                                                if (!IS_NULL($masa->precio_fob)) {
-                                                  $ventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                  $globalventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                } else {
-                                                  $kgsp+=floatval($masa->peso_neto);
-                                                  $globalkgsp+=floatval($masa->peso_neto);
-                                                }
-                                                
-                                                
-                                                
-                                                if ($masa->tipo_transporte=='AEREO') {
-                                                      if ($exportacions->where('type','aereo')->count()>0) {
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      }
-                                                  }
-                                                if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','maritimo')->count()>0) {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                    }
-                                                  }
-          
-                                                foreach ($materialestotal->where('c_embalaje',$masa->c_embalaje) as $material) {
-                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                }
-          
-                                                foreach ($fletestotal->where('rut',$masa->r_productor) as $flete) {
-                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                }
-                                              
-                                            @endphp
-                                          @endforeach
-                                          {{-- comment
-                                            @php
-                                                foreach ($CostosPackingsall as $costo) {
-                                                  if ($costo->variedad==$item->name) {
-                                                    $costopacking+=$costo->total_usd;
-                                                    $globalcostopacking+=$costo->total_usd;
-                                                  }  
-                                                }
-                                            @endphp
-                                          --}}
-                                           @if ($item->red_color=='True')
-                                                @php
-                                                    $costopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                    $globalcostopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                @endphp
-                                          @else
-                                              @php
-                                                  $costopacking+=$pesoneto*$temporada->variedadroja;
-                                                  $globalcostopacking+=$pesoneto*$temporada->variedadroja;
-                                              @endphp
-                                          @endif
-
-                                            @if ($pesoneto>0)
-                                              <tr>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
-                                                </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">
-                                                          {{number_format($cajasbulto)}}
-                                                      </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">
-                                                      @if ($pesoneto==0)
-                                                        0      
-                                                      @else
-                                                       {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
-                                                          
-                                                      @endif
-                                                    </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                                  </td>
-                                              </tr>
-                                            @endif
-                                          @endforeach
-          
-                                          <tr class="bg-yellow-400">
-                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">Total</div>    
-                                            </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">
-                                                      {{number_format($globalcajasbulto)}}
-                                                  </div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">
-                                                  @if ($globalpesoneto==0)
-                                                      0
-                                                  @else
-                                                    {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
-                                                      
-                                                  @endif
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
-                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
-                                              </td>
-                                          </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-                  <h1 class="mt-6 text-lg font-bold" >Comercial</h1>
-                  <div class="flex flex-col mb-2">
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                              <table class="min-w-full divide-y divide-gray-200">
-                                  <thead class="bg-yellow-400">
-                                    <tr>
-                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                                        Grupo variedad
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Caja Bulto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Kilos Netos
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Cajas Base
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Fob Liquidacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Comision
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Frio Packing
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Gastos de Exportacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Flete a huerto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Materiales
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Retorno Productor
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Retorno por kg
-                                        </th>
-                                        <th class="relative px-6 py-0">
-                                        <span class="sr-only"></span>
-                                        </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody class="bg-white divide-y divide-gray-200">
-                                    @php
-                                        $globalcajasbulto=0;
-                                        $globalpesoneto=0;
-                                        $globaltotalmateriales=0;
-                                        $globalfletehuerto=0;
-                                        $globalgastoexportacion=0;
-                                        $globalventafob=0;
-                                        $globalkgsp=0;
-                                        $globalcostopacking=0;
-                                    @endphp
-                                          @foreach ($unique_variedades as $item)
-                                          @php
-                                              $cajasbulto=0;
-                                              $pesoneto=0;
-                                              $totalmateriales=0;
-                                              $fletehuerto=0;
-                                              $gastoexportacion=0;
-                                              $ventafob=0;
-                                              $kgsp=0;
-                                              $costopacking=0;
-                                          @endphp
-                                          @foreach ($masastotal->where('n_variedad',$item->name)->whereIn('n_categoria',$comercialCodes) as $masa)
-                                            @php
-                                                $cajasbulto+=$masa->cantidad;
-                                                $pesoneto+=$masa->peso_neto;
-                                                $globalcajasbulto+=$masa->cantidad;
-                                                $globalpesoneto+=$masa->peso_neto;
-                                                
-                                                if (!IS_NULL($masa->precio_fob)) {
-                                                  $ventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                  $globalventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                } else {
-                                                  $kgsp+=floatval($masa->peso_neto);
-                                                  $globalkgsp+=floatval($masa->peso_neto);
-                                                }
-                                                
-                                                
-                                                
-                                                if ($masa->tipo_transporte=='AEREO') {
-                                                      if ($exportacions->where('type','aereo')->count()>0) {
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      }
-                                                  }
-                                                if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','maritimo')->count()>0) {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                    }
-                                                  }
-          
-                                                foreach ($materialestotal->where('c_embalaje',$masa->c_embalaje) as $material) {
-                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                }
-          
-                                                foreach ($fletestotal->where('rut',$masa->r_productor) as $flete) {
-                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                }
-                                              
-                                            @endphp
-                                          @endforeach
-                                          {{-- comment
-                                            @php
-                                                foreach ($CostosPackingsall as $costo) {
-                                                  if ($costo->variedad==$item->name) {
-                                                    $costopacking+=$costo->total_usd;
-                                                    $globalcostopacking+=$costo->total_usd;
-                                                  }  
-                                                }
-                                            @endphp
-                                          --}}
-                                           @if ($item->red_color=='True')
-                                                @php
-                                                    $costopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                    $globalcostopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                @endphp
-                                          @else
-                                              @php
-                                                  $costopacking+=$pesoneto*$temporada->variedadroja;
-                                                  $globalcostopacking+=$pesoneto*$temporada->variedadroja;
-                                              @endphp
-                                          @endif
-
-                                            @if ($pesoneto>0)
-                                              <tr>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
-                                                </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">
-                                                          {{number_format($cajasbulto)}}
-                                                      </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">
-                                                      @if ($pesoneto==0)
-                                                        0      
-                                                      @else
-                                                       {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
-                                                          
-                                                      @endif
-                                                    </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                                  </td>
-                                              </tr>
-                                            @endif
-                                          @endforeach
-          
-                                          <tr class="bg-yellow-400">
-                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">Total</div>    
-                                            </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">
-                                                      {{number_format($globalcajasbulto)}}
-                                                  </div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">
-                                                  @if ($globalpesoneto==0)
-                                                      0
-                                                  @else
-                                                    {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
-                                                      
-                                                  @endif
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
-                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
-                                              </td>
-                                          </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-
-                  <h1 class="mt-6 text-lg font-bold" >Mercado Interno</h1>
-                  <div class="flex flex-col mb-2">
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                              <table class="min-w-full divide-y divide-gray-200">
-                                  <thead class="bg-yellow-400">
-                                    <tr>
-                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
-                                        Grupo variedad
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Caja Bulto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Kilos Netos
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Cajas Base
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Fob Liquidacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Comision
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Frio Packing
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Gastos de Exportacion
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Total Flete a huerto
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Total Materiales
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                        Retorno Productor
-                                        </th>
-                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
-                                          Retorno por kg
-                                        </th>
-                                        <th class="relative px-6 py-0">
-                                        <span class="sr-only"></span>
-                                        </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody class="bg-white divide-y divide-gray-200">
-                                    @php
-                                        $globalcajasbulto=0;
-                                        $globalpesoneto=0;
-                                        $globaltotalmateriales=0;
-                                        $globalfletehuerto=0;
-                                        $globalgastoexportacion=0;
-                                        $globalventafob=0;
-                                        $globalkgsp=0;
-                                        $globalcostopacking=0;
-                                    @endphp
-                                          @foreach ($unique_variedades as $item)
-                                          @php
-                                              $cajasbulto=0;
-                                              $pesoneto=0;
-                                              $totalmateriales=0;
-                                              $fletehuerto=0;
-                                              $gastoexportacion=0;
-                                              $ventafob=0;
-                                              $kgsp=0;
-                                              $costopacking=0;
-                                          @endphp
-                                          @foreach ($masastotal->where('n_variedad',$item->name)->whereIn('n_categoria',$mercadoInternoCodes) as $masa)
-                                            @php
-                                                $cajasbulto+=$masa->cantidad;
-                                                $pesoneto+=$masa->peso_neto;
-                                                $globalcajasbulto+=$masa->cantidad;
-                                                $globalpesoneto+=$masa->peso_neto;
-                                                
-                                                if (!IS_NULL($masa->precio_fob)) {
-                                                  $ventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                  $globalventafob+=floatval($masa->peso_neto)*floatval($masa->precio_fob);
-                                                } else {
-                                                  $kgsp+=floatval($masa->peso_neto);
-                                                  $globalkgsp+=floatval($masa->peso_neto);
-                                                }
-                                                
-                                                
-                                                
-                                                if ($masa->tipo_transporte=='AEREO') {
-                                                      if ($exportacions->where('type','aereo')->count()>0) {
-                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
-                                                      }
-                                                  }
-                                                if ($masa->tipo_transporte=='MARITIMO') {
-                                                  if ($exportacions->where('type','maritimo')->count()>0) {
-                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
-                                                    }
-                                                  }
-          
-                                                foreach ($materialestotal->where('c_embalaje',$masa->c_embalaje) as $material) {
-                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
-                                                }
-          
-                                                foreach ($fletestotal->where('rut',$masa->r_productor) as $flete) {
-                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
-                                                }
-                                              
-                                            @endphp
-                                          @endforeach
-                                          {{-- comment
-                                            @php
-                                                foreach ($CostosPackingsall as $costo) {
-                                                  if ($costo->variedad==$item->name) {
-                                                    $costopacking+=$costo->total_usd;
-                                                    $globalcostopacking+=$costo->total_usd;
-                                                  }  
-                                                }
-                                            @endphp
-                                          --}}
-                                           @if ($item->red_color=='True')
-                                                @php
-                                                    $costopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                    $globalcostopacking+=$pesoneto*$temporada->variedadbicolor;
-                                                @endphp
-                                          @else
-                                              @php
-                                                  $costopacking+=$pesoneto*$temporada->variedadroja;
-                                                  $globalcostopacking+=$pesoneto*$temporada->variedadroja;
-                                              @endphp
-                                          @endif
-
-                                            @if ($pesoneto>0)
-                                              <tr>
-                                                <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
-                                                </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">
-                                                          {{number_format($cajasbulto)}}
-                                                      </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($ventafob,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                      <div class="text-sm text-gray-900">{{number_format($ventafob*(0.08) ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">
-                                                      @if ($pesoneto==0)
-                                                        0      
-                                                      @else
-                                                       {{number_format(($ventafob-($ventafob*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
-                                                          
-                                                      @endif
-                                                    </div>    
-                                                  </td>
-                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
-                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
-                                                  </td>
-                                              </tr>
-                                            @endif
-                                          @endforeach
-          
-                                          <tr class="bg-yellow-400">
-                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">Total</div>    
-                                            </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">
-                                                      {{number_format($globalcajasbulto)}}
-                                                  </div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalventafob,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob*(0.08) ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
-                                                <div class="text-sm text-gray-900">
-                                                  @if ($globalpesoneto==0)
-                                                      0
-                                                  @else
-                                                    {{number_format(($globalventafob-($globalventafob*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
-                                                      
-                                                  @endif
-                                              </td>
-                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
-                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
-                                              </td>
-                                          </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-              
-                  <div class="flex ">
-                      <a href="{{Route('variedades.refresh',$temporada)}}" class="mr-2 hidden">
-                        <x-button>
-                          Actualizar Variedades
-                        </x-button>
-                      </a>
-                      <a href="{{Route('preciofob.refresh',$temporada)}}"  class="mr-2">
-                        <x-button>
-                          Actualizar PRECIO FOB
-                        </x-button>
-                      </a>
-                      <a href="{{Route('preciofob.create',$temporada)}}">
-                        <x-button>
-                          Crear PRECIOS FOB Pendientes
-                        </x-button>
-                      </a>
-                  </div>
-              @endif
+       
               @if ($vista=="resumesnacional")
               
                   <div class="flex flex-col mb-2">
@@ -2286,8 +1806,1031 @@
             
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                  
+                @if ($vista=='resumes')
+                  <h1 class="ml-10 mt-2" >Exportación</h1>
+                  <div class="flex flex-col mb-2 ml-4">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad 
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Real
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Promedio
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob_real=0;
+                                        $globalventafob_prom=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                            $cajasbulto=0;
+                                            $pesoneto=0;
+                                            $totalmateriales=0;
+                                            $fletehuerto=0;
+                                            $gastoexportacion=0;
+                                            $ventafob_real=0;
+                                            $ventafob_prom=0;
+                                            $kgsp=0;
+                                            $costopacking=0;
+                                        @endphp
+                                        @foreach ($masastotal->whereIn('n_categoria', $exportacionCodes) as $masa)
+                                          @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                $ventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+                                                $globalventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
 
-                @if ($vista=='resumes' || $vista=='resumesnacional' || $vista=="show")
+                                                if (!IS_NULL($masa->fob)) {
+                                                  $ventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                  $globalventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                        @endforeach
+                                          @php
+                                                  
+                                            foreach ($CostosPackingsall as $costo) {
+                                              if ($costo->variedad==$item->name) {
+                                                $costopacking+=$costo->total_usd;
+                                                $globalcostopacking+=$costo->total_usd;
+                                              }  
+                                            }
+          
+                                          @endphp
+                                          
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                
+          
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_real,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_prom,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                      {{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_real,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_prom,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <h1 class="ml-10 mt-2" >Mercado Interno</h1>
+                  <div class="flex flex-col mb-2 ml-4">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad 
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Real
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Promedio
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob_real=0;
+                                        $globalventafob_prom=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                            $cajasbulto=0;
+                                            $pesoneto=0;
+                                            $totalmateriales=0;
+                                            $fletehuerto=0;
+                                            $gastoexportacion=0;
+                                            $ventafob_real=0;
+                                            $ventafob_prom=0;
+                                            $kgsp=0;
+                                            $costopacking=0;
+                                        @endphp
+                                        @foreach ($masastotal->whereIn('n_categoria', $mercadoInternoCodes) as $masa)
+                                          @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                $ventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+                                                $globalventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+
+                                                if (!IS_NULL($masa->fob)) {
+                                                  $ventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                  $globalventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                        @endforeach
+                                          @php
+                                                  
+                                            foreach ($CostosPackingsall as $costo) {
+                                              if ($costo->variedad==$item->name) {
+                                                $costopacking+=$costo->total_usd;
+                                                $globalcostopacking+=$costo->total_usd;
+                                              }  
+                                            }
+          
+                                          @endphp
+                                          
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                
+          
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_real,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_prom,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                      {{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_real,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_prom,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <h1 class="ml-10 mt-2" >Comercial </h1>
+                  <div class="flex flex-col mb-2 ml-4">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad 
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Real
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Promedio
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob_real=0;
+                                        $globalventafob_prom=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                            $cajasbulto=0;
+                                            $pesoneto=0;
+                                            $totalmateriales=0;
+                                            $fletehuerto=0;
+                                            $gastoexportacion=0;
+                                            $ventafob_real=0;
+                                            $ventafob_prom=0;
+                                            $kgsp=0;
+                                            $costopacking=0;
+                                        @endphp
+                                        @foreach ($masastotal->whereIn('n_categoria', $comercialCodes)  as $masa)
+                                          @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                $ventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+                                                $globalventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+
+                                                if (!IS_NULL($masa->fob)) {
+                                                  $ventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                  $globalventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                        @endforeach
+                                          @php
+                                                  
+                                            foreach ($CostosPackingsall as $costo) {
+                                              if ($costo->variedad==$item->name) {
+                                                $costopacking+=$costo->total_usd;
+                                                $globalcostopacking+=$costo->total_usd;
+                                              }  
+                                            }
+          
+                                          @endphp
+                                          
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                
+          
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_real,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_prom,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                      {{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_real,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_prom,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <h1 class="ml-10 mt-2" >Total</h1>
+                  <div class="flex flex-col mb-2 ml-4">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                              <table class="min-w-full divide-y divide-gray-200">
+                                  <thead class="bg-yellow-400">
+                                    <tr>
+                                        <th class="px-6 py-0 text-center text-xs font-bold text-gray-900">
+                                        Grupo variedad 
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Caja Bulto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Kilos Netos
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Cajas Base
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Real
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Fob Promedio
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Comision
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Frio Packing
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Gastos de Exportacion
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Total Flete a huerto
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Total Materiales
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                        Retorno Productor
+                                        </th>
+                                        <th class="px-6 py-0 text-left text-xs font-bold text-gray-900">
+                                          Retorno por kg
+                                        </th>
+                                        <th class="relative px-6 py-0">
+                                        <span class="sr-only"></span>
+                                        </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $globalcajasbulto=0;
+                                        $globalpesoneto=0;
+                                        $globaltotalmateriales=0;
+                                        $globalfletehuerto=0;
+                                        $globalgastoexportacion=0;
+                                        $globalventafob_real=0;
+                                        $globalventafob_prom=0;
+                                        $globalkgsp=0;
+                                        $globalcostopacking=0;
+                                    @endphp
+                                          @foreach ($unique_variedades as $item)
+                                          @php
+                                            $cajasbulto=0;
+                                            $pesoneto=0;
+                                            $totalmateriales=0;
+                                            $fletehuerto=0;
+                                            $gastoexportacion=0;
+                                            $ventafob_real=0;
+                                            $ventafob_prom=0;
+                                            $kgsp=0;
+                                            $costopacking=0;
+                                        @endphp
+                                        @foreach ($masastotal as $masa)
+                                          @php
+                                              if ($masa->n_variedad==$item->name) {
+                                                $cajasbulto+=$masa->cantidad;
+                                                $pesoneto+=$masa->peso_neto;
+                                                $globalcajasbulto+=$masa->cantidad;
+                                                $globalpesoneto+=$masa->peso_neto;
+                                                
+                                                $ventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+                                                $globalventafob_real+=intval($masa->peso_neto)*floatval($masa->precio_unitario);
+
+                                                if (!IS_NULL($masa->fob)) {
+                                                  $ventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                  $globalventafob_prom+=intval($masa->peso_neto2)*floatval($masa->fob->fob_kilo_salida);
+                                                } else {
+                                                  $kgsp+=intval($masa->peso_neto);
+                                                  $globalkgsp+=intval($masa->peso_neto);
+                                                }
+                                                
+                                                
+                                                
+                                                if ($masa->tipo_transporte=='AEREO') {
+                                                      if ($exportacions->where('type','aereo')->count()>0) {
+                                                        $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                        $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','aereo')->first()->precio_usd;
+                                                      }
+                                                  }
+                                                if ($masa->tipo_transporte=='MARITIMO') {
+                                                  if ($exportacions->where('type','maritimo')->count()>0) {
+                                                      $gastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                      $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
+                                                    }
+                                                  }
+          
+                                                foreach ($materialestotal as $material) {
+                                                  if ($material->c_embalaje==$masa->c_embalaje) {
+                                                    $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                    $globaltotalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
+                                                  }  
+                                                }
+          
+                                                foreach ($fletestotal as $flete) {
+                                                  if ($flete->rut==$masa->r_productor) {
+                                                    $fletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                    $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
+                                                  }  
+                                                }
+                                              }
+                                              
+                                            @endphp
+                                        @endforeach
+                                          @php
+                                                  
+                                            foreach ($CostosPackingsall as $costo) {
+                                              if ($costo->variedad==$item->name) {
+                                                $costopacking+=$costo->total_usd;
+                                                $globalcostopacking+=$costo->total_usd;
+                                              }  
+                                            }
+          
+                                          @endphp
+                                          
+                                            @if ($pesoneto>0)
+                                              <tr>
+                                                <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{$item->name}}</div>    
+                                                </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                
+          
+                                                      <div class="text-sm text-gray-900">
+                                                          {{number_format($cajasbulto)}}
+                                                      </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($pesoneto)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{ number_format($pesoneto/5,0)}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_real,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($ventafob_prom,2,'.','.')}} ({{number_format($kgsp)}} Kilos/SP)</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                      <div class="text-sm text-gray-900">{{number_format($ventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($costopacking ,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($gastoexportacion,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($fletehuerto,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format($totalmateriales,2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">{{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales)),2,'.','.')}}</div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                      @if ($pesoneto==0)
+                                                        0      
+                                                      @else
+                                                      {{number_format(($ventafob_prom-($ventafob_prom*(0.08)+$costopacking+$gastoexportacion+$fletehuerto+$totalmateriales))/$pesoneto,2,'.','.')}}
+                                                          
+                                                      @endif
+                                                    </div>    
+                                                  </td>
+                                                  <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium">
+                                                      <a href="" class="text-indigo-600 hover:text-indigo-900">Ver detalles</a>
+                                                  </td>
+                                              </tr>
+                                            @endif
+                                          @endforeach
+          
+                                          <tr class="bg-yellow-400">
+                                            <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">Total</div>    
+                                            </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">
+                                                      {{number_format($globalcajasbulto)}}
+                                                  </div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalpesoneto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{ number_format($globalpesoneto/5,0)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_real,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalventafob_prom,2,'.','.')}} ({{number_format($globalkgsp)}} Kilos/SP)</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                  <div class="text-sm text-gray-900">{{number_format($globalventafob_prom*(0.08) ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalcostopacking ,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalgastoexportacion,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globalfletehuerto)}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format($globaltotalmateriales,2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">{{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales)),2,'.','.')}}</div>    
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap bg-yellow-500">
+                                                <div class="text-sm text-gray-900">
+                                                  @if ($globalpesoneto==0)
+                                                      0
+                                                  @else
+                                                    {{number_format(($globalventafob_prom-($globalventafob_prom*(0.08)+$globalcostopacking+$globalgastoexportacion+$globalfletehuerto+$globaltotalmateriales))/$globalpesoneto,2,'.','.')}}</div>    
+                                                      
+                                                  @endif
+                                              </td>
+                                              <td class="px-6 py-0 whitespace-nowrap text-right text-sm font-medium bg-yellow-500">
+                                                  <a href="" class="text-gray-600 hover:text-gray-900">Ver detalles</a>
+                                              </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                @endif 
+
+                @if ($vista=='resumesnacional' || $vista=="show")
                   <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -2378,334 +2921,334 @@
                 @endif
 
                 @if ($vista=='PACKING')
-                  @php
-                      $kgredcolor=0;
-                      $kgbicolor=0;
-                  @endphp
-                @foreach ($unique_variedades as $variedad)
-               
-                  @foreach ($masastotalnacional as $masa2)
-                      @if ($masa2->n_variedad==$variedad->name)
-                          @if ($variedad->red_color=='True')
-                                @php
-                                    $kgbicolor+=$masa2->peso_neto;
-                                @endphp
-                          @else
-                              @php
-                                  $kgredcolor+=$masa2->peso_neto;
-                              @endphp
-                          @endif
-                      @endif
-                  @endforeach
-                @endforeach
-
-                @php
-                    $kgsexportacion=0;
-                @endphp
+                    @php
+                        $kgredcolor=0;
+                        $kgbicolor=0;
+                    @endphp
+                  @foreach ($unique_variedades as $variedad)
                 
-                @foreach ($masastotal as $masa)
-                  
-                              @php
-                                  if ($masa->n_categoria=="Cat 1" || $masa->n_categoria=="Cat I") {
-                                  
-                                    $kgsexportacion+=$masa->peso_neto;
-                                  }
-
-                              @endphp
-                       
-                @endforeach
-                  
-                <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
-                  <div>
-                    <h1 class="ml-4">Agregar Variedades Bicolor:</h1>
-                  </div>
-
-                  <select wire:model="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                      <option value="" class="text-center">Selecciona una variedad</option>
-                      @foreach ($unique_variedades as $item)
-                        <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
-                      @endforeach
-                  
-                      
-
-                  </select>
-
-                  
-                  <button wire:click="redcolor_add" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
-
-                      <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
-                      Agregar
-                          
-                      </h1>
-                  </button>
-                </div>
-
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kilos</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Cantidad</th>
-                   
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          Variedades Rojas
-                        </td>
-                      
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                           
-                          @foreach ($unique_variedades as $item)
-                            @if ($item->red_color==Null)
-                              {{$item->name}}<br>
+                    @foreach ($masastotalnacional as $masa2)
+                        @if ($masa2->n_variedad==$variedad->name)
+                            @if ($variedad->red_color=='True')
+                                  @php
+                                      $kgbicolor+=$masa2->peso_neto;
+                                  @endphp
+                            @else
+                                @php
+                                    $kgredcolor+=$masa2->peso_neto;
+                                @endphp
                             @endif
-                           
-                        @endforeach
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        {{number_format($kgredcolor)}} kgs
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm ">
-                          <div class="flex items-center my-auto">
-                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
-                              {!! Form::label('variedadroja', 'Variedad Roja', ['class' => 'hidden']) !!}
-                              {!! Form::number('variedadroja', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
-                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
-                            {!! Form::close() !!}
-                          </div>
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          @if ($temporada->variedadroja)
-                            {{number_format($kgredcolor*floatval($temporada->variedadroja),2)}} usd
-                          @endif
-                        
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                        Variedades BICOLOR
-                        </td>
-                       
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
-                          <div class="grid grid-cols-1">
-                            @foreach ($unique_variedades as $item)
-                                @if ($item->red_color=='True')
-                                <div class="flex">
-                                  <p>{{$item->name}}</p> <p wire:click='redcolor_destroy({{$item->id}})' class="text-red-500 hover:text-red-700 ml-2 cursor-pointer">(Quitar)</p>
-                                </div>
-                                @endif
-                            @endforeach
-                          </div>
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgbicolor)}} kgs
-                         </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          <div class="flex items-center my-auto">
-                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
-                              {!! Form::label('variedadbicolor', 'Variedad Roja', ['class' => 'hidden']) !!}
-                              {!! Form::number('variedadbicolor', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
-                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
-                            {!! Form::close() !!}
-                          </div>
-                        </td>
+                        @endif
+                    @endforeach
+                  @endforeach
 
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          @if ($temporada->variedadbicolor)
-                            {{number_format($kgbicolor*floatval($temporada->variedadbicolor),2)}} usd
-                          @endif
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm font-bold">
-                       Total
-                        </td>
-                       
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
-                        
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgbicolor+$kgredcolor)}} kgs
-                         </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                         
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgbicolor*1.352+$kgredcolor*1.092,2)}}  usd
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
                   @php
-                      $montoservicio=$kgbicolor*1.352+$kgredcolor*1.092;
+                      $kgsexportacion=0;
                   @endphp
                   
-
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Facturado</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Monto del Servicio</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
-                     
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kks Exportacion</th>
-                      <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                         Tarifa Frio Packing Exportacion
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
-                              {!! Form::label('costos_packing', 'Variedad Roja', ['class' => 'hidden']) !!}
-                              {!! Form::number('costos_packing', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('costos_packing') ? ' border-red-600' : '')]) !!}
-                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
-                            {!! Form::close() !!}
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($montoservicio)}}
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($temporada->costos_packing-$montoservicio)}}
-                        </td>
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format($kgsexportacion)}}
-                        </td>
-                        
-                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                          {{number_format(($temporada->costos_packing-$montoservicio)/$kgsexportacion,3)}}
-                        </td>
-                      </tr>
+                  @foreach ($masastotal as $masa)
                     
-                    </tbody>
-                  </table>
-         
-                  <div>
-                    <h1 class="text-xl font-semibold mb-4 text-center">
-                        Por favor selecione el archivo de "Costos de packing" que desea importar
-                    </h1>
-                    <div class="flex justify-center ">
+                                @php
+                                    if ($masa->n_categoria=="Cat 1" || $masa->n_categoria=="Cat I") {
+                                    
+                                      $kgsexportacion+=$masa->peso_neto;
+                                    }
+
+                                @endphp
                         
-                        <form action="{{route('temporada.importCostosPacking')}}"
-                            method="POST"
-                            class="bg-white rounded p-8 shadow"
-                            enctype="multipart/form-data">
-                            
-                            @csrf
-
-                            <input type="hidden" name="temporada" value={{$temporada->id}}>
-
-                            <x-validation-errors class="errors">
-
-                            </x-validation-errors>
-
-                            <input type="file" name="file" accept=".csv,.xlsx">
-
-                            <x-button class="ml-4">
-                                Importar
-                            </x-button>
-                        </form>
+                  @endforeach
+                    
+                  <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                    <div>
+                      <h1 class="ml-4">Agregar Variedades Bicolor:</h1>
                     </div>
+
+                    <select wire:model="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="" class="text-center">Selecciona una variedad</option>
+                        @foreach ($unique_variedades as $item)
+                          <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
+                        @endforeach
+                    
+                        
+
+                    </select>
+
+                    
+                    <button wire:click="redcolor_add" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+
+                        <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                        Agregar
+                            
+                        </h1>
+                    </button>
                   </div>
+
                     <table class="min-w-full leading-normal">
                       <thead>
-                        <tr>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Especie
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Variedad
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Nombre Productor
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          CSG
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            KG
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            TotalUSD
-                          </th>
-                          <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          NETO
-                        </th>
-                      
-                      </tr>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kilos</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Cantidad</th>
+                    
                       </thead>
                       <tbody>
+                        <tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            Variedades Rojas
+                          </td>
                         
-                          @foreach ($CostosPackings as $packing)
-                            <tr>
-                              
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
-                              </td>
-                              
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
-                              </td>
-
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                  <div class="flex-shrink-0 w-10 h-10 hidden">
-                                    <img class="w-full h-full rounded-full"
-                                                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                              alt="" />
-                                                      </div>
-                                    <div class="ml-3">
-                                      <p class="text-gray-900 whitespace-no-wrap">
-                                        @foreach ($razonsall as $razon)
-                                            @if ($razon->csg==$packing->csg)
-                                              <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
-                                                {{$packing->n_productor}}
-                                              </a>
-                                            @endif
-                                        @endforeach
-                                        
-                                      </p>
-                                    </div>
-                                  </div>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                  {{$packing->kg}}
-                                </p>
-                              </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                
-                                  {{number_format($packing->total_usd,2)}}
-                                </p>
-                              </td>
-
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <span
-                                                      class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                      <span aria-hidden
-                                                          class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                <span class="relative">Activo</span>
-                                </span>
-                              </td>
-                            </tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            
+                            @foreach ($unique_variedades as $item)
+                              @if ($item->red_color==Null)
+                                {{$item->name}}<br>
+                              @endif
+                            
                           @endforeach
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          {{number_format($kgredcolor)}} kgs
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm ">
+                            <div class="flex items-center my-auto">
+                              {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                                {!! Form::label('variedadroja', 'Variedad Roja', ['class' => 'hidden']) !!}
+                                {!! Form::number('variedadroja', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
+                                {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                              {!! Form::close() !!}
+                            </div>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            @if ($temporada->variedadroja)
+                              {{number_format($kgredcolor*floatval($temporada->variedadroja),2)}} usd
+                            @endif
+                          
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Variedades BICOLOR
+                          </td>
+                        
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
+                            <div class="grid grid-cols-1">
+                              @foreach ($unique_variedades as $item)
+                                  @if ($item->red_color=='True')
+                                  <div class="flex">
+                                    <p>{{$item->name}}</p> <p wire:click='redcolor_destroy({{$item->id}})' class="text-red-500 hover:text-red-700 ml-2 cursor-pointer">(Quitar)</p>
+                                  </div>
+                                  @endif
+                              @endforeach
+                            </div>
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($kgbicolor)}} kgs
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center my-auto">
+                              {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                                {!! Form::label('variedadbicolor', 'Variedad Roja', ['class' => 'hidden']) !!}
+                                {!! Form::number('variedadbicolor', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
+                                {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                              {!! Form::close() !!}
+                            </div>
+                          </td>
+
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            @if ($temporada->variedadbicolor)
+                              {{number_format($kgbicolor*floatval($temporada->variedadbicolor),2)}} usd
+                            @endif
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm font-bold">
+                        Total
+                          </td>
+                        
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
+                          
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($kgbicolor+$kgredcolor)}} kgs
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($kgbicolor*1.352+$kgredcolor*1.092,2)}}  usd
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    @php
+                        $montoservicio=$kgbicolor*1.352+$kgredcolor*1.092;
+                    @endphp
+                    
+
+                    <table class="min-w-full leading-normal">
+                      <thead>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Facturado</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Monto del Servicio</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
+                      
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kks Exportacion</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tarifa</th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                          Tarifa Frio Packing Exportacion
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                                {!! Form::label('costos_packing', 'Variedad Roja', ['class' => 'hidden']) !!}
+                                {!! Form::number('costos_packing', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('costos_packing') ? ' border-red-600' : '')]) !!}
+                                {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                              {!! Form::close() !!}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($montoservicio)}}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($temporada->costos_packing-$montoservicio)}}
+                          </td>
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format($kgsexportacion)}}
+                          </td>
+                          
+                          <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                            {{number_format(($temporada->costos_packing-$montoservicio)/$kgsexportacion,3)}}
+                          </td>
+                        </tr>
                       
                       </tbody>
                     </table>
+          
+                    <div>
+                      <h1 class="text-xl font-semibold mb-4 text-center">
+                          Por favor selecione el archivo de "Costos de packing" que desea importar
+                      </h1>
+                      <div class="flex justify-center ">
+                          
+                          <form action="{{route('temporada.importCostosPacking')}}"
+                              method="POST"
+                              class="bg-white rounded p-8 shadow"
+                              enctype="multipart/form-data">
+                              
+                              @csrf
+
+                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                              <x-validation-errors class="errors">
+
+                              </x-validation-errors>
+
+                              <input type="file" name="file" accept=".csv,.xlsx">
+
+                              <x-button class="ml-4">
+                                  Importar
+                              </x-button>
+                          </form>
+                      </div>
+                    </div>
+                      <table class="min-w-full leading-normal">
+                        <thead>
+                          <tr>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Especie
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Variedad
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Nombre Productor
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            CSG
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              KG
+                            </th>
+                            <th
+                              class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              TotalUSD
+                            </th>
+                            <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            NETO
+                          </th>
+                        
+                        </tr>
+                        </thead>
+                        <tbody>
+                          
+                            @foreach ($CostosPackings as $packing)
+                              <tr>
+                                
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$packing->especie}}</p>
+                                </td>
+                                
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$packing->variedad}}</p>
+                                </td>
+
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <div class="flex items-center">
+                                    <div class="flex-shrink-0 w-10 h-10 hidden">
+                                      <img class="w-full h-full rounded-full"
+                                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                alt="" />
+                                                        </div>
+                                      <div class="ml-3">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                          @foreach ($razonsall as $razon)
+                                              @if ($razon->csg==$packing->csg)
+                                                <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
+                                                  {{$packing->n_productor}}
+                                                </a>
+                                              @endif
+                                          @endforeach
+                                          
+                                        </p>
+                                      </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{$packing->csg}}</p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                    {{$packing->kg}}
+                                  </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <p class="text-gray-900 whitespace-no-wrap">
+                                  
+                                    {{number_format($packing->total_usd,2)}}
+                                  </p>
+                                </td>
+
+                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                  <span
+                                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                        <span aria-hidden
+                                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Activo</span>
+                                  </span>
+                                </td>
+                              </tr>
+                            @endforeach
+                        
+                        </tbody>
+                      </table>
                 @endif
 
                 @if ($vista=='MATERIALES') 
@@ -3144,6 +3687,8 @@
                                   'n_categoria',
                                   't_categoria',
                                   'n_categoria_st',
+                                  'c_calibre',
+                                  'color',
                                   'n_calibre',
                                   'n_etiqueta',
                                   'cantidad',
@@ -3154,9 +3699,11 @@
                                   'transporte',
                                   'fob_real',
                                   'fob_promedio',
-                                   'fob_kg',
+                                   'fob_kg_real',
+                                   'fob_kg_promedio',
                                     'TOTAL_REAL',
-                                    'TOTAL_PROM'
+                                    'TOTAL_PROM',
+                                    'DIF'
                               ];
 
                             
@@ -3171,11 +3718,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                    
+                        
                           @foreach ($masasbalances as $masa)
                             <tr>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->id }}</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_guia_produccion }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_g_despacho }}</p>
@@ -3184,7 +3731,7 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->numero_g_despacho }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                  <p class="text-gray-900 whitespace-no-wrap">{{date('d/m/Y', strtotime($masa->fecha_g_despacho))}}</p>
+                                  <p class="text-gray-900 whitespace-no-wrap">{{$masa->fecha_g_despacho }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{$masa->semana}}</p>
@@ -3245,6 +3792,12 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_categoria_st }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->c_calibre }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->color }}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->n_calibre }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm" style="white-space: nowrap;">
@@ -3254,12 +3807,15 @@
                                   <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">{{ $masa->cantidad }}</p>
+
+                                <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->cantidad,2) }}</p>
+                                
+
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                   <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->peso_neto,1) }}</p>
                               </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <td class="px-5 py-2 border-b border-gray-200 @if($masa->factor==0) bg-red-100 @else bg-white @endif text-sm">
                                 <a href="{{route('temporada.factor',$temporada)}}">
                                   <p class=" whitespace-no-wrap cursor-pointer text-blue-500">{{ number_format($masa->factor,2) }}</p>
                                 </a>
@@ -3270,54 +3826,131 @@
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap">{{ $masa->tipo_transporte }}</p>
                               </td>
+                              {{-- Fob real --}}
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
                                     <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                  
+                                 
+                                    <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->precio_unitario,2,',','.') }}</p>
+                                 
+
                                 @endif
                                 
 
                               </td>
+                              {{-- Fob Promedio --}}
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
                                     <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                 
+                                      @if ($masa->fob)
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida,2,',','.') }}</p>
+                                      @else
+                                        <p class="text-gray-900 whitespace-no-wrap">NULL</p>
+                                      @endif
+                                  
                                 @endif
-                                
-
                               </td>
+                              {{-- Fob KG REAL--}}
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
                                     <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                 
+                                    @if ($masa->fob)
+                                        @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                            <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida,2,',','.')}}</p>
+                                        @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                          <p class="text-gray-900 whitespace-no-wrap">{{  number_format($masa->precio_unitario/$masa->peso_std_embalaje,2,',','.') }}</p>
+                                        @endif
+                                    @else
+                                      <p class="text-gray-900 whitespace-no-wrap">Null</p>
+                                    @endif
+                                    
                                 @endif
                                 
 
                               </td>
+                              {{-- Fob KG Promedio --}}
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
                                     <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                 
+                                    @if ($masa->fob)
+                                        @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                            <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida,2,',','.')}}</p>
+                                        @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                          <p class="text-gray-900 whitespace-no-wrap">{{  number_format($masa->fob->fob_kilo_salida/$masa->peso_std_embalaje,2,',','.') }}</p>
+                                        @endif
+                                    @else
+                                      <p class="text-gray-900 whitespace-no-wrap">Null</p>
+                                    @endif
+                                    
                                 @endif
                                 
 
                               </td>
+                              {{-- Total real --}}
                               <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
                                 @if ($masaid==$masa->id)
                                     <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap">{{ $masa->precio_fob }}</p>
+                                 
+                                    @if ($masa->fob)
+                                        @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                            <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida*$masa->peso_neto,2,',','.')}}</p>
+                                        @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                          <p class="text-gray-900 whitespace-no-wrap">{{  number_format($masa->precio_unitario/$masa->peso_std_embalaje*$masa->peso_neto,2,',','.') }}</p>
+                                        @endif
+                                    @else
+                                      <p class="text-gray-900 whitespace-no-wrap">Null</p>
+                                    @endif
+                                    
                                 @endif
                                 
 
                               </td>
-                          
-                          
-
+                               {{-- Total Promedio --}}
+                              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                               
+                                  @if ($masaid==$masa->id)
+                                      <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                  @else
+                                      @if ($masa->fob)
+                                          @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                              <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida*$masa->peso_neto2,2,',','.')}}</p>
+                                          @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                            <p class="text-gray-900 whitespace-no-wrap">{{  number_format($masa->fob->fob_kilo_salida/$masa->peso_std_embalaje*$masa->peso_neto2,2,',','.') }}</p>
+                                          @endif
+                                      @else
+                                        <p class="text-gray-900 whitespace-no-wrap">Null</p>
+                                      @endif
+                                  @endif
+                               
+                              </td>
+                               {{-- DIFERENCIA --}}
+                              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-32">
+                               
+                                  @if ($masaid==$masa->id)
+                                      <input wire:model="preciomasa" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                  @else
+                                      @if ($masa->fob)
+                                          @if ($masa->infocategoria->unidad_multiplicadora=="Kilo")
+                                              <p class="text-gray-900 whitespace-no-wrap">{{ number_format($masa->fob->fob_kilo_salida*($masa->peso_neto-$masa->peso_neto2),2,',','.')}}</p>
+                                          @elseif($masa->infocategoria->unidad_multiplicadora=="Cantidad")
+                                            <p class="text-gray-900 whitespace-no-wrap">{{  number_format($masa->fob->fob_kilo_salida/$masa->peso_std_embalaje*($masa->peso_neto-$masa->peso_neto2),2,',','.') }}</p>
+                                          @endif
+                                      @else
+                                        <p class="text-gray-900 whitespace-no-wrap">Null</p>
+                                      @endif
+                                  @endif
+                              
+                              </td>
+                             
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($masaid==$masa->id)
                                   <span wire:click='save_masaid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
@@ -3333,6 +3966,7 @@
                               
 
                               </td>
+                              
                             </tr>
                           @endforeach
                 
@@ -3416,65 +4050,74 @@
                    
                     
                         @if ($factores->count()>0)
-                        <table class="min-w-full leading-normal">
-                          <thead>
-                              <tr>
-                                  @php
-                                      echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
-                                      echo 'id_empresa / numero_guia_produccion / c_productor<br>'.'c_etiqueta / id_variedad / c_calibre / c_categoria / c_embalaje';
-                                      echo '</th>';
-                                  @endphp
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"> ({{$despachosall_group->count()}}) <br>Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">({{$factores->whereNull('total_proceso')->count()}}/{{$factores->count()}})<br>TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$factores->count()}} <br> Factor</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              @foreach ($factores as $masa)
-                                  <tr>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                        @php
-                                              if($masa->c_etiqueta){
-                                                    $subetiqueta=$masa->c_etiqueta;
-                                                  }else{
-                                                    $subetiqueta='NULL';
-                                                  } 
+                        <div class="overflow-x-auto">
+                          <table class="min-w-full leading-normal">
+                            <thead>
+                                <tr>
+                                    @php
+                                        echo '<th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">';
+                                        echo 'id_empresa / numero_guia_produccion / c_productor<br>'.'c_etiqueta / id_variedad / c_calibre / c_categoria / c_embalaje';
+                                        echo '</th>';
+                                    @endphp
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"> ({{$despachosall_group->count()}}) <br>Total<br>{{number_format($despachosall_group->sum('total'),2,',','.')}}</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">({{$factores->whereNull('total_proceso')->count()}}/{{$factores->count()}})<br>TOTAL PROCESOS<br>{{number_format($factores->sum('total_proceso'),2,',','.')}}</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{{$factores->count()}} <br> Factor</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TIPO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($factores as $masa)
+                                    <tr>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          @php
+                                                if($masa->c_etiqueta){
+                                                      $subetiqueta=$masa->c_etiqueta;
+                                                    }else{
+                                                      $subetiqueta='NULL';
+                                                    } 
 
-                                                  if ($masa->numero_guia_produccion) {
-                                                    $numero_guia_produccion=$masa->numero_guia_produccion;
-                                                  }else{
-                                                    $numero_guia_produccion='NULL';
-                                                  }
-                                          @endphp   
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                              {{ 
-                                                  $masa->id_empresa . '/' .
-                                                  $numero_guia_produccion . '/' .
-                                                  $masa->c_productor . '/' .
-                                                  $subetiqueta. '/' .
-                                                  $masa->id_variedad . '/' .
-                                                  $masa->c_calibre . '/' .
-                                                  $masa->c_categoria . '/' .
-                                                  $masa->c_embalaje 
-                                              }}
-                                          </p>
-                                      </td>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                          <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
-                                      </td>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
-                                      </td>
-                                      <td class="px-5 py-2 border-b border-gray-200 @if($masa->total_proceso==0) bg-red-100 @else bg-white  @endif text-sm">
-                                          {{number_format($masa->factor,2)}}
-                                      
-                                       
-                                      </td>
-                                  </tr>
-                              @endforeach
-                          </tbody>
- 
-                        </table>
+                                                    if ($masa->numero_guia_produccion) {
+                                                      $numero_guia_produccion=$masa->numero_guia_produccion;
+                                                    }else{
+                                                      $numero_guia_produccion='NULL';
+                                                    }
+                                            @endphp   
+                                          <p class="text-gray-900 whitespace-no-wrap">
+                                                {{ 
+                                                    $masa->id_empresa . '/' .
+                                                    $numero_guia_produccion . '/' .
+                                                    $masa->c_productor . '/' .
+                                                    $subetiqueta. '/' .
+                                                    $masa->id_variedad . '/' .
+                                                    $masa->c_calibre . '/' .
+                                                    $masa->c_categoria . '/' .
+                                                    $masa->c_embalaje 
+                                                }}
+                                            </p>
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total }}</p>
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ $masa->total_proceso }}</p>
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 @if($masa->total_proceso==0) bg-red-100 @else bg-white  @endif text-sm">
+                                            {{number_format($masa->factor,2)}}
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200  bg-white text-sm">
+                                          @if ($masa->type)
+                                              Proceso
+                                          @else
+                                              Despachos
+                                          @endif
+                                        </td>
+                                        
+                                    </tr>
+                                @endforeach
+                            </tbody>
+  
+                          </table>
+                        </div>
                     
                         @else
                             <div class='w-full max-w-xl px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
@@ -3672,6 +4315,13 @@
                           <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             FOB
                             </th>
+
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              FOB2
+                              </th>
+                              <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                FOB3
+                                </th>
                       
                         
                       
@@ -3713,10 +4363,24 @@
                                 @if ($fobid==$fob->id)
                                     <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
-                                  <p class="text-gray-900 whitespace-no-wrap"> {{$fob->fob_kilo_salida}}</p>
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format(floatval($fob->fob_kilo_salida),2,',','.')}}</p>
                                 @endif
 
                              
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida2,2,',','.')}}</p>
+                                @endif
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida3,2,',','.')}}</p>
+                                @endif
                               </td>
                           
                           
@@ -4136,7 +4800,8 @@
                                                   <th class="text-center whitespace-nowrap">Empresa</th>
                                                   <th class="text-center whitespace-nowrap">Tipo Producción</th>
                                                   <th class="text-center whitespace-nowrap">Número Producción</th>
-                                                  <th class="text-center whitespace-nowrap">Fecha Producción</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha G Producción</th>
+                                                  <th class="text-center whitespace-nowrap">Fecha G Producción 2</th>
                                                   <th class="text-center whitespace-nowrap">Tipo</th>
                                                   <th class="text-center whitespace-nowrap">ID Productor Proceso</th>
                                                   <th class="text-center whitespace-nowrap">Nombre Productor Proceso</th>
@@ -4174,6 +4839,8 @@
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->tipo_g_produccion ?? 'N/A' }}</td>
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->numero_g_produccion ?? 'N/A' }}</td>
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->fecha_g_produccion ? date('d M Y g:i a', strtotime($proceso->fecha_g_produccion)) : 'N/A' }}</td>
+                                                  <td class="text-center whitespace-nowrap">{{ date('d/m/Y', strtotime($proceso->fecha_g_produccion . ' +7 days')) }} </td>
+                                                  
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->tipo ?? 'N/A' }}</td>
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->id_productor_proceso ?? 'N/A' }}</td>
                                                   <td class="text-center whitespace-nowrap">{{ $proceso->n_productor_proceso ?? 'N/A' }}</td>
@@ -4227,113 +4894,201 @@
                 @endif
 
                 @if ($vista=='Embarques') 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    N° Embarque
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    Fecha Embarque
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    Nave
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    Transporte
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    Fecha Despacho
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    Número Guía Despacho
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    ETD
-                                </th>
-                                <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                                    ETA
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($embarques as $item)
-                            <tr>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['n_embarque'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['fecha_embarque'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['nave'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['transporte'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['fecha_despacho'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['numero_g_despacho'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['etd'] ?? 'N/A' }}
-                                </td>
-                                <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
-                                    {{ $item['eta'] ?? 'N/A' }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-              
+                  <div class="overflow-x-auto">
+                      <table class="min-w-full bg-white border border-gray-200">
+                          <thead>
+                              <tr>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      N° Embarque
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      Fecha Embarque
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      Nave
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      Transporte
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      Fecha Despacho
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      Número Guía Despacho
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      ETD
+                                  </th>
+                                  <th class="px-4 py-2 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                                      ETA
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach($embarques as $item)
+                              <tr>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['n_embarque'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['fecha_embarque'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['nave'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['transporte'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['fecha_despacho'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['numero_g_despacho'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['etd'] ?? 'N/A' }}
+                                  </td>
+                                  <td class="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
+                                      {{ $item['eta'] ?? 'N/A' }}
+                                  </td>
+                              </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                  </div>
+                
                   
                 @endif
 
                 @if ($vista=="Despachos") 
-                        
-                        <div class="mx-4 border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
-                          <div class="flex flex-col md:flex-row">
-                            <div class="">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>Round-trip</option>
-                                    <option>Missouri</option>
-                                    <option>Texas</option>
-                                </select>
-                            </div>
-                            <div class="pt-6 md:pt-0 md:pl-6">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>4 Passengers</option>
-                                    <option>3 Passengers</option>
-                                    <option>2 Passengers</option>
-                                </select>
-                            </div>
-                            <div class="pt-6 md:pt-0 md:pl-6">
-                                <select class="border p-2 pr-8 rounded">
-                                    <option>Economy</option>
-                                </select>
-                            </div>
-                          </div>
-                        
-                            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                                <div class="grid grid-cols-1 gap-2 border border-gray-200 p-2 rounded">
-                                    <div class="flex border rounded bg-gray-300 items-center p-2 ">
-                                        <svg class="fill-current text-gray-800 mr-2 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                            <path class="heroicon-ui"
-                                                  d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
-                                        </svg>
-                                        <input type="text" value="https://api.greenexweb.cl/api/dispatches" class="bg-gray-300 flex w-full focus:outline-none text-gray-700"/>
-                                    </div>
-                              
-                                </div>
-                              
-                            </div>
-                            <div class="flex justify-center"><button class="p-2 border w-1/4 rounded-md bg-gray-800 text-white">Search</button></div>
-                        </div>
-               
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full leading-normal">
+                            <thead>
+                                <tr>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Pkg Stock Det</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Tipo G Despacho</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Número G Despacho</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Fecha G Despacho</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Fecha Producción</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">R Productor</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Variedad</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Semana</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Categoría</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Exportadora</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Exportadora Embarque</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Empresa</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Exportadora</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Exportadora Embarque</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Destinatario</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Destinatario</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Transportista</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Folio</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Número Guía Producción</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Productor</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Productor</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Especie</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Especie</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Variedad</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ID Embalaje</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Embalaje</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Embalaje</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Peso Std Embalaje</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Categoría</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">T Categoría</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Calibre</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Calibre</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Serie</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">C Etiqueta</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Cantidad</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Peso Neto</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Variedad Rotulación</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N País Destino</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">N Puerto Destino</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Contenedor</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Precio Unitario</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Tipo Interno</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Creación Tipo</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Destrucción Tipo</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Transporte</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Nota Calidad</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Nave</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Número Embarque</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Número Proceso</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Estado</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ETD</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">ETA</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Semana ETD</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Semana ETA</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Control Fechas</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Duplicado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($despachos as $despacho)
+                                  <tr>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_pkg_stock_det }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->tipo_g_despacho }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->numero_g_despacho }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->fecha_g_despacho }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->fecha_produccion }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->r_productor }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_variedad }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->semana }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_categoria }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_exportadora }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_exportadora_embarque }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_empresa }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_exportadora }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_exportadora_embarque }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_destinatario }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_destinatario }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_transportista }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->folio }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->numero_guia_produccion }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_productor }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_productor }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_especie }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_especie }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_variedad }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->id_embalaje }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_embalaje }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_embalaje }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->peso_std_embalaje }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_categoria }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->t_categoria }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_calibre }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_calibre }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_serie }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->c_etiqueta }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->cantidad }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->peso_neto }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_variedad_rotulacion }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_pais_destino }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_puerto_destino }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->contenedor }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->precio_unitario }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->tipo_interno }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->creacion_tipo }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->destruccion_tipo }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->Transporte }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->nota_calidad }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->n_nave }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->Numero_Embarque }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->N_Proceso }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->Estado }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->etd }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->eta }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->etd_semana }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->eta_semana }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->control_fechas }}</td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap">{{ $despacho->duplicado }}</td>
+                                  </tr>
+                              @endforeach
+                          
+                          </tbody>
+                          
+                        </table>
+                    </div>
                 @endif
               
               </div>
@@ -4345,700 +5100,700 @@
     </div>
   </section>
    
-<script>
-  function confirmDeletion() {
-      Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esta acción eliminará todos los registros.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'Por favor, espera mientras se eliminan los registros.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('recepcions_delete').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
-                  Swal.fire(
-                      '¡Eliminado!',
-                      'Todos los registros han sido eliminados.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error',
-                      'Hubo un problema al eliminar los registros.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-</script>
-<script>
-  function confirmDeletionProceso() {
-      Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esta acción eliminará todos los registros.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'Por favor, espera mientras se eliminan los registros.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('procesos_delete').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
-                  Swal.fire(
-                      '¡Eliminado!',
-                      'Todos los registros han sido eliminados.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error',
-                      'Hubo un problema al eliminar los registros.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-  function confirmDeletionDespacho() {
-      Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esta acción eliminará todos los registros.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'Por favor, espera mientras se eliminan los registros.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('despachos_delete').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
-                  Swal.fire(
-                      '¡Eliminado!',
-                      'Todos los registros han sido eliminados.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error',
-                      'Hubo un problema al eliminar los registros.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
+  <script>
+    function confirmDeletion() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción eliminará todos los registros.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'Por favor, espera mientras se eliminan los registros.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('recepcions_delete').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'Todos los registros han sido eliminados.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error',
+                        'Hubo un problema al eliminar los registros.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+  </script>
+  <script>
+    function confirmDeletionProceso() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción eliminará todos los registros.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'Por favor, espera mientras se eliminan los registros.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('procesos_delete').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'Todos los registros han sido eliminados.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error',
+                        'Hubo un problema al eliminar los registros.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+    function confirmDeletionDespacho() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción eliminará todos los registros.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'Por favor, espera mientras se eliminan los registros.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('despachos_delete').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'Todos los registros han sido eliminados.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error',
+                        'Hubo un problema al eliminar los registros.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
 
-  function confirmDeletionEmbarque() {
+    function confirmDeletionEmbarque() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción eliminará todos los registros.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'Por favor, espera mientras se eliminan los registros.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('embarques_delete').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'Todos los registros han sido eliminados.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error',
+                        'Hubo un problema al eliminar los registros.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+  </script>
+
+  <script>
+    
+    function confirmSync() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización?',
+            text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Recepciones' hasta las ${formattedTime} del dia de hoy.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de recepciones.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('production_refresh').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los datos de recepciones han sido actualizados exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de recepciones. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function confirmSyncProceso() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización?',
+            text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Producción' hasta las ${formattedTime} del dia de hoy.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Procesos.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('procesos_refresh').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los datos de procesos han sido actualizados exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function confirmSyncDespacho() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización?',
+            text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Despachos' hasta las ${formattedTime} del dia de hoy.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Despachos.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('despachos_refresh').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los datos de despachos han sido actualizados exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function confirmSyncEmbarque() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización?',
+            text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Embarque' hasta las ${formattedTime} del dia de hoy.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Embarques.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('embarques_refresh').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los datos de embarques han sido actualizados exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+  </script>
+
+  <script>
+    
+    function confirmDeleteBalance() {
       Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esta acción eliminará todos los registros.",
-          icon: 'warning',
+            title: '¿Estás seguro?',
+            text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Mostrar mensaje de eliminación en progreso
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'El balance de masa está siendo eliminado, por favor espera.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                @this.call('delete_balancemasas').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                      '¡Eliminación completada!',
+                      'El balance de masa ha sido eliminado exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+
+
+
+            }
+        });
+    }
+
+    function confirmDeleteFob() {
+      Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esto eliminará el listado de Fobs. Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Mostrar mensaje de eliminación en progreso
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'El balance de masa está siendo eliminado, por favor espera.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                @this.call('delete_fobs').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                      '¡Eliminación completada!',
+                      'El balance de masa ha sido eliminado exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+
+
+
+            }
+        });
+    }
+
+    function confirmDeleteBalanceProceso() {
+      Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Mostrar mensaje de eliminación en progreso
+                Swal.fire({
+                    title: 'Eliminando...',
+                    text: 'El balance de masa está siendo eliminado, por favor espera.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                @this.call('delete_balancemasasProceso').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                      '¡Eliminación completada!',
+                      'El balance de masa ha sido eliminado exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+
+
+
+            }
+        });
+    }
+
+    function confirmSyncFechas() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización?',
+            text: `Este proceso conectará el balance de masa con la base de Embarques para obtener las fechas etd y eta.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos conectando la base de datos con la información de Embarques para obtener fecha etd/eta.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Llamar al método Livewire para sincronizar fechas
+                @this.call('sync_fechas').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los datos de procesos han sido actualizados exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function confirmSyncFactors() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      Swal.fire({
+          title: '¿Iniciar sincronización de factores?',
+          text: `Este proceso conectará la base de procesos y despachos para obtener los factores de multiplicación.`,
+          icon: 'info',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, eliminar',
+          confirmButtonText: 'Sí, sincronizar',
           cancelButtonText: 'Cancelar'
       }).then((result) => {
           if (result.isConfirmed) {
               Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'Por favor, espera mientras se eliminan los registros.',
+                  title: 'Sincronizando...',
+                  text: 'Estamos conectando con el sistema de despachos. Por favor, espera mientras obtenemos los factores de multiplicación.',
                   allowOutsideClick: false,
                   didOpen: () => {
                       Swal.showLoading();
                   }
               });
               
-              @this.call('embarques_delete').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Eliminando" cuando se complete la eliminación
+              @this.call('factores_create').then(() => {
+                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
                   Swal.fire(
-                      '¡Eliminado!',
-                      'Todos los registros han sido eliminados.',
+                      '¡Sincronización completada!',
+                      'Los factores de multiplicación han sido obtenidos exitosamente.',
                       'success'
                   );
               }).catch(() => {
                   Swal.close(); // Cerrar la alerta en caso de error
                   Swal.fire(
-                      'Error',
-                      'Hubo un problema al eliminar los registros.',
+                      'Error en la sincronización',
+                      'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
                       'error'
                   );
               });
           }
       });
-  }
-</script>
+    }
 
-<script>
+    function confirmSyncFactors2() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización de factores?',
+            text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('factores_update').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los factores de multiplicación han sido obtenidos exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function confirmSyncFactors3() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        Swal.fire({
+            title: '¿Iniciar sincronización de factores?',
+            text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, sincronizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Sincronizando...',
+                    text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                @this.call('factores_update2').then(() => {
+                    Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
+                    Swal.fire(
+                        '¡Sincronización completada!',
+                        'Los factores de multiplicación han sido obtenidos exitosamente.',
+                        'success'
+                    );
+                }).catch(() => {
+                    Swal.close(); // Cerrar la alerta en caso de error
+                    Swal.fire(
+                        'Error en la sincronización',
+                        'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function processCheckFactors() {
+        Swal.fire({
+            title: 'Procesando...',
+            text: 'Por favor, espera mientras verificamos los factores de multiplicación en el sistema de despachos.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        @this.call('factores_count').then(() => {
+            Swal.close(); // Cerrar la alerta de "Procesando" cuando se complete la verificación
+            Swal.fire(
+                'Verificación completada',
+                'Los factores de multiplicación han sido verificados exitosamente.',
+                'success'
+            );
+        }).catch(() => {
+            Swal.close(); // Cerrar la alerta en caso de error
+            Swal.fire(
+                'Error en la verificación',
+                'Ocurrió un problema al verificar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
+                'error'
+            );
+        });
+    }
+
   
-  function confirmSync() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  </script>
+  <script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll("#slider > div");
+    const totalSlides = slides.length;
 
-      Swal.fire({
-          title: '¿Iniciar sincronización?',
-          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Recepciones' hasta las ${formattedTime} del dia de hoy.`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, sincronizar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Sincronizando...',
-                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de recepciones.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('production_refresh').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                      '¡Sincronización completada!',
-                      'Los datos de recepciones han sido actualizados exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de recepciones. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
+    function updateSlidePosition() {
+        const slider = document.getElementById("slider");
+        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
 
-  function confirmSyncProceso() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlidePosition();
+    }
 
-      Swal.fire({
-          title: '¿Iniciar sincronización?',
-          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Producción' hasta las ${formattedTime} del dia de hoy.`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, sincronizar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Sincronizando...',
-                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Procesos.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('procesos_refresh').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                      '¡Sincronización completada!',
-                      'Los datos de procesos han sido actualizados exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-
-  function confirmSyncDespacho() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-      Swal.fire({
-          title: '¿Iniciar sincronización?',
-          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Despachos' hasta las ${formattedTime} del dia de hoy.`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, sincronizar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Sincronizando...',
-                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Despachos.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('despachos_refresh').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                      '¡Sincronización completada!',
-                      'Los datos de despachos han sido actualizados exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-
-  function confirmSyncEmbarque() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-      Swal.fire({
-          title: '¿Iniciar sincronización?',
-          text: `Este proceso conectará el sistema de liquidaciones y la base de datos de 'Embarque' hasta las ${formattedTime} del dia de hoy.`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, sincronizar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Sincronizando...',
-                  text: 'Estamos conectando con el API de Greenex. Por favor, espera mientras actualizamos los datos de Embarques.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-              
-              @this.call('embarques_refresh').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                      '¡Sincronización completada!',
-                      'Los datos de embarques han sido actualizados exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-
-</script>
-
-<script>
-  
-  function confirmDeleteBalance() {
-    Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // Mostrar mensaje de eliminación en progreso
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'El balance de masa está siendo eliminado, por favor espera.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-
-              @this.call('delete_balancemasas').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                     '¡Eliminación completada!',
-                     'El balance de masa ha sido eliminado exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-
-
-
-          }
-      });
-  }
-
-  function confirmDeleteFob() {
-    Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esto eliminará el listado de Fobs. Esta acción no se puede deshacer.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // Mostrar mensaje de eliminación en progreso
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'El balance de masa está siendo eliminado, por favor espera.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-
-              @this.call('delete_fobs').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                     '¡Eliminación completada!',
-                     'El balance de masa ha sido eliminado exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-
-
-
-          }
-      });
-  }
-
-  function confirmDeleteBalanceProceso() {
-    Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esto eliminará el balance de masa. Esta acción no se puede deshacer.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // Mostrar mensaje de eliminación en progreso
-              Swal.fire({
-                  title: 'Eliminando...',
-                  text: 'El balance de masa está siendo eliminado, por favor espera.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-
-              @this.call('delete_balancemasasProceso').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                     '¡Eliminación completada!',
-                     'El balance de masa ha sido eliminado exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-
-
-
-          }
-      });
-  }
-
-  function confirmSyncFechas() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-      Swal.fire({
-          title: '¿Iniciar sincronización?',
-          text: `Este proceso conectará el balance de masa con la base de Embarques para obtener las fechas etd y eta.`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, sincronizar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: 'Sincronizando...',
-                  text: 'Estamos conectando la base de datos con la información de Embarques para obtener fecha etd/eta.',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                      Swal.showLoading();
-                  }
-              });
-
-              // Llamar al método Livewire para sincronizar fechas
-              @this.call('sync_fechas').then(() => {
-                  Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                  Swal.fire(
-                      '¡Sincronización completada!',
-                      'Los datos de procesos han sido actualizados exitosamente.',
-                      'success'
-                  );
-              }).catch(() => {
-                  Swal.close(); // Cerrar la alerta en caso de error
-                  Swal.fire(
-                      'Error en la sincronización',
-                      'Ocurrió un problema al conectar con el sistema de procesos. Por favor, inténtalo de nuevo más tarde.',
-                      'error'
-                  );
-              });
-          }
-      });
-  }
-
-  function confirmSyncFactors() {
-    const now = new Date();
-    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    Swal.fire({
-        title: '¿Iniciar sincronización de factores?',
-        text: `Este proceso conectará la base de procesos y despachos para obtener los factores de multiplicación.`,
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, sincronizar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: 'Sincronizando...',
-                text: 'Estamos conectando con el sistema de despachos. Por favor, espera mientras obtenemos los factores de multiplicación.',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            
-            @this.call('factores_create').then(() => {
-                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                Swal.fire(
-                    '¡Sincronización completada!',
-                    'Los factores de multiplicación han sido obtenidos exitosamente.',
-                    'success'
-                );
-            }).catch(() => {
-                Swal.close(); // Cerrar la alerta en caso de error
-                Swal.fire(
-                    'Error en la sincronización',
-                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
-                    'error'
-                );
-            });
-        }
-    });
-}
-
-function confirmSyncFactors2() {
-    const now = new Date();
-    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    Swal.fire({
-        title: '¿Iniciar sincronización de factores?',
-        text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, sincronizar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: 'Sincronizando...',
-                text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            
-            @this.call('factores_update').then(() => {
-                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                Swal.fire(
-                    '¡Sincronización completada!',
-                    'Los factores de multiplicación han sido obtenidos exitosamente.',
-                    'success'
-                );
-            }).catch(() => {
-                Swal.close(); // Cerrar la alerta en caso de error
-                Swal.fire(
-                    'Error en la sincronización',
-                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
-                    'error'
-                );
-            });
-        }
-    });
-}
-
-function confirmSyncFactors3() {
-    const now = new Date();
-    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    Swal.fire({
-        title: '¿Iniciar sincronización de factores?',
-        text: `Este proceso conectará el balance de masas con el listado de factores para obtener los factores de multiplicación.`,
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, sincronizar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: 'Sincronizando...',
-                text: 'Estamos procesando la data. Por favor, espera mientras obtenemos los factores de multiplicación.',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            
-            @this.call('factores_update2').then(() => {
-                Swal.close(); // Cerrar la alerta de "Sincronizando" cuando se complete la sincronización
-                Swal.fire(
-                    '¡Sincronización completada!',
-                    'Los factores de multiplicación han sido obtenidos exitosamente.',
-                    'success'
-                );
-            }).catch(() => {
-                Swal.close(); // Cerrar la alerta en caso de error
-                Swal.fire(
-                    'Error en la sincronización',
-                    'Ocurrió un problema al conectar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
-                    'error'
-                );
-            });
-        }
-    });
-}
-
-function processCheckFactors() {
-    Swal.fire({
-        title: 'Procesando...',
-        text: 'Por favor, espera mientras verificamos los factores de multiplicación en el sistema de despachos.',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
-    @this.call('factores_count').then(() => {
-        Swal.close(); // Cerrar la alerta de "Procesando" cuando se complete la verificación
-        Swal.fire(
-            'Verificación completada',
-            'Los factores de multiplicación han sido verificados exitosamente.',
-            'success'
-        );
-    }).catch(() => {
-        Swal.close(); // Cerrar la alerta en caso de error
-        Swal.fire(
-            'Error en la verificación',
-            'Ocurrió un problema al verificar con el sistema de despachos. Por favor, inténtalo de nuevo más tarde.',
-            'error'
-        );
-    });
-}
-
- 
-</script>
-<script>
-  let currentIndex = 0;
-  const slides = document.querySelectorAll("#slider > div");
-  const totalSlides = slides.length;
-
-  function updateSlidePosition() {
-      const slider = document.getElementById("slider");
-      slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-  }
-
-  function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateSlidePosition();
-  }
-
-  function prevSlide() {
-      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-      updateSlidePosition();
-  }
-</script>
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateSlidePosition();
+    }
+  </script>
 
 
 </div>

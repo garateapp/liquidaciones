@@ -74,6 +74,14 @@ return new class extends Migration
             $table->string('N_Proceso')->nullable();
             $table->string('Estado')->nullable();
 
+            $table->string('etd')->nullable(); // Estimated Time of Departure
+            $table->string('eta')->nullable(); // Estimated Time of Arrival
+
+            $table->string('etd_semana')->nullable(); // Estimated Time of Departure
+            $table->string('eta_semana')->nullable(); // Estimated Time of Arrival
+
+            $table->string('control_fechas')->nullable(); // Estimated Time of Arrival
+
             $table->string('duplicado')->nullable();
 
             $table->timestamps();

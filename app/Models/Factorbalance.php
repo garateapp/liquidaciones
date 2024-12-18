@@ -18,6 +18,7 @@ class Factorbalance extends Model
         'c_productor',
         'c_etiqueta',
         'id_variedad',
+        'n_variedad',
         'c_calibre',
         'c_categoria',
         'c_embalaje',

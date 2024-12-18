@@ -38,7 +38,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $fechaetd, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechaetd, $syncfecha, $syncfactor, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
@@ -84,8 +84,21 @@ class TemporadaShow extends Component
     public function mount(Temporada $temporada, $vista){
         $this->temporada=$temporada;
         $this->vista=$vista;
+
+        if($this->temporada->fecha_sync){
+            $this->syncfecha=$this->temporada->fecha_sync;
+        }else{
+            $this->syncfecha="todos";
+        }
+
+        if($this->temporada->factor_sync){
+            $this->syncfactor=$this->temporada->fecha_sync;
+        }else{
+            $this->syncfactor="todos";
+        }
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
+
         $this->filters['etiquetas'] = $masastotal2->pluck('n_etiqueta')->unique()->sort()->values()->all();
 
         if ($temporada->recepcion_start) {
@@ -197,6 +210,7 @@ class TemporadaShow extends Component
             $procesosall_group=NULL;
             $despachosall_group=NULL;
         }
+
         $factores=Factorbalance::where('temporada_id',$this->temporada->id)->get();
 
         if ($this->vista=='Procesos') {
@@ -204,24 +218,64 @@ class TemporadaShow extends Component
         }else{
             $procesos=null;
         }
-        $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->select('id_pkg_stock_det','peso_neto')->get();
 
-        $despachos=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+        if ($this->vista=='Despachos' || $this->vista=='Procesos') {
+            $despachosall=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
+
+            $despachos=Despacho::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+        }else{
+            $despachosall=null;
+            $despachos=null;
+        }
+
+        if ($this->vista=="resumes") {
+            $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
+            $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
+            $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
+        } else {
+            $exportacionCodes = null;
+            $mercadoInternoCodes = null;
+            $comercialCodes = null;
+        }
         
-        $embarquesall=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
-
-        $embarques=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
         
+        if ($this->vista=="Embarques" || $this->vista=="Despachos") {
+            $embarquesall=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
-        $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
+            $embarques=Embarque::filter($this->filters)->where('temporada_id',$this->temporada->id)->orderBy($this->sortByProc, $this->sortDirection)->paginate($this->ctd);
+            
+        } else {
+            
+            $embarquesall=null;
 
-        $recepcions=Recepcion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-        
+            $embarques=null;
+            
+        }
+       
+        if ($this->vista=="Recepcion") {
+                $recepcionall=Recepcion::where('temporada_id',$this->temporada->id)->get();
+
+                $recepcions=Recepcion::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+                
+            } else {
+                $recepcionall=null;
+
+                $recepcions=null;
+            }
+
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
         
-        $materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-        $embarques=Embarque::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
-        $embarquestotal=Embarque::where('temporada_id',$this->temporada->id)->get();
+        //$materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        
+        if ($this->vista=="Embarques") {
+            $embarques=Embarque::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+            $embarquestotal=Embarque::where('temporada_id',$this->temporada->id)->get();
+        } else {
+            $embarques=null;
+            $embarquestotal=null;
+        }
+        
+       
 
 
         $materialestotal=Material::where('temporada_id',$this->temporada->id)->get();
@@ -232,16 +286,18 @@ class TemporadaShow extends Component
         $fletes=Flete::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         $fletestotal=Flete::where('temporada_id',$this->temporada->id)->get();
         
-        $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        $fobs=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)
+                ->orderBy('fob_kilo_salida', 'asc')
+                ->paginate($this->ctd);
+
         $fobsall=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
-        $masasbalances = Cache::remember('masasbalances_'.$this->temporada->id.'_'.serialize($this->filters).'_'.$this->ctd, 60, function() {
-            return Balancemasa::filter($this->filters)
+        $masasbalances = Balancemasa::filter($this->filters)
                 ->where('temporada_id', $this->temporada->id)
                 ->whereIn('exportadora', ['Greenex SpA', '22'])
                 ->orderByDesc('updated_at')
                 ->paginate($this->ctd);
-                });
+                
 
             
         $masastotal = Balancemasa::select([
@@ -249,14 +305,19 @@ class TemporadaShow extends Component
                                 'n_categoria', 
                                 'cantidad', 
                                 'peso_neto', 
+                                'peso_neto2', 
                                 'factor', 
-                                'precio_fob', 
+                                'fob_id', 
                                 'tipo_transporte', 
                                 'c_embalaje', 
                                 'c_productor',
                                 'r_productor',
                                 'etd',
-                                'eta'
+                                'eta',
+                                 'semana',
+                                 'precio_unitario',
+                                 'n_calibre',
+                                 'peso_std_embalaje'
                             ])
                             ->filter1($this->filters)
                             ->where('temporada_id', $this->temporada->id)
@@ -269,19 +330,17 @@ class TemporadaShow extends Component
 
         $unique_categoriasexp = $masastotal->pluck('n_categoria')->unique()->sort();
 
-     
-
         $masastotalnacional=Balancemasa::filter2($this->filters)->where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
         
         $unique_categorianac = $masastotalnacional->pluck('n_categoria')->unique()->sort();
 
         $unique_productores = $masastotal->pluck('c_productor')->unique();
-
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
+
         $unique_etiquetas = $masastotal2->pluck('n_etiqueta')->unique()->sort();
 
-        $unique_calibres = $masastotal2->pluck('n_calibre')->unique()->sort();       
+        $unique_calibres = $masastotal2->pluck('c_calibre')->unique()->sort();       
         
         $unique_materiales = $masastotal2->pluck('c_embalaje')->unique()->sort();
 
@@ -291,36 +350,45 @@ class TemporadaShow extends Component
 
         $unique_variedades = Variedad::where('temporada_id',$this->temporada->id)->get();
 
-        $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
-            ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
-            ->groupBy('rut');
-            
-        $subQuery->whereIn('csg', $unique_productores);
+        if ($this->vista=='show' || $this->vista=='resumes') {
+           
         
-        $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
-                        $join->on('razonsocials.id', '=', 'sub.id');
-                    })
-                    ->select('razonsocials.*', 'sub.csg_count')
-                    ->orderBy($this->sortBy, $this->sortDirection)
-                    ->paginate($this->ctd);
-                    
-        
-        $subQuery2 = Razonsocial::select('rut', \DB::raw('MAX(id) as id'))
+                        
+                $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
+                    ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
                     ->groupBy('rut');
-        
-        $subQuery2->whereIn('csg', $unique_productores);
-        
-        $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
-                        $join->on('razonsocials.id', '=', 'sub.id');
-                    })
-                    ->select('razonsocials.*')
-                    ->get();
+                    
+                $subQuery->whereIn('csg', $unique_productores);
+                
+                $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*', 'sub.csg_count')
+                            ->orderBy($this->sortBy, $this->sortDirection)
+                            ->paginate($this->ctd);
+                            
+                
+                $subQuery2 = Razonsocial::select('rut', \DB::raw('MAX(id) as id'))
+                            ->groupBy('rut');
+                
+                $subQuery2->whereIn('csg', $unique_productores);
+                
+                $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*')
+                            ->get();
 
-        $razonsallresult = Razonsocial::joinSub($subQuery, 'sub', function($join) {
-                        $join->on('razonsocials.id', '=', 'sub.id');
-                    })
-                    ->select('razonsocials.*')
-                    ->get();
+                $razonsallresult = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*')
+                            ->get();
+        } else {
+            $razons=null;
+            $razonsall=null;
+            $razonsallresult=null;
+        }
 
 
         $comisions=Comision::all();
@@ -333,7 +401,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','materialestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','materiales','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
@@ -342,7 +410,8 @@ class TemporadaShow extends Component
             'numero_guia_produccion', 
             'c_productor', 
             'c_etiqueta', 
-            'id_variedad', 
+           
+            'n_variedad', 
             'c_calibre', 
             'c_categoria', 
             'c_embalaje',
@@ -354,7 +423,8 @@ class TemporadaShow extends Component
             'numero_guia_produccion', 
             'c_productor', 
             'c_etiqueta', 
-            'id_variedad', 
+           
+            'n_variedad', 
             'c_calibre', 
             'c_categoria', 
             'c_embalaje'
@@ -370,7 +440,8 @@ class TemporadaShow extends Component
                 'numero_guia_produccion' => $item->numero_guia_produccion,
                 'c_productor'           => $item->c_productor,
                 'c_etiqueta'            => $item->c_etiqueta,
-                'id_variedad'           => $item->id_variedad,
+              
+                'n_variedad'           => $item->n_variedad,
                 'c_calibre'             => $item->c_calibre,
                 'c_categoria'           => $item->c_categoria,
                 'c_embalaje'            => $item->c_embalaje,
@@ -382,9 +453,17 @@ class TemporadaShow extends Component
     }
 
     public function factores_update(){
-        $masas=Balancemasa::where('temporada_id',$this->temporada->id)
-                    ->whereNull('factor')
+
+        if($this->syncfecha=="todos"){
+            $masas=Balancemasa::where('temporada_id',$this->temporada->id)
                     ->get();
+        }else{
+            $masas=Balancemasa::where('temporada_id',$this->temporada->id)
+                ->whereNull('factor')
+                ->get();
+        }
+
+       
         //dd($masas);
         $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
 
@@ -420,14 +499,18 @@ class TemporadaShow extends Component
                 $proceso = Proceso::where('numero_g_produccion', $factor->numero_guia_produccion)->first();
                 
                 // Si se encuentra el proceso y tiene la fecha de producción, sumar 7 días
-                if ($proceso && $proceso->fecha_produccion) {
+                if ($proceso && $proceso->fecha_g_produccion) {
+
+
                     // Convertir la fecha_produccion a un objeto Carbon y sumar 7 días
-                    $fechacalculada = Carbon::parse($proceso->fecha_produccion)->addDays(7);
+                    $fechacalculada =  date('d/m/Y', strtotime($proceso->fecha_g_produccion . ' +7 days'));
+                    
                 } else {
                     // Si no se encuentra el proceso o no tiene fecha_produccion, asignamos un valor por defecto
                     $fechacalculada = null; // o la fecha que prefieras
                 }
 
+                
                  // Verificar si ya existe un balance de masa con esta combinación
                     $existingBalance = Balancemasa::where('temporada_id', $this->temporada->id)
                         ->where('numero_guia_produccion', $factor->numero_guia_produccion)
@@ -443,6 +526,55 @@ class TemporadaShow extends Component
 
                 // Si no existe el balance de masa, crear uno nuevo
                 if (!$existingBalance) {
+                    $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
+                      
+                        if ($embarquesall->where('numero_g_despacho',$proceso->numero_g_despacho)->count()>0) {
+                          
+                            foreach ($embarquesall->where('numero_g_despacho',$proceso->numero_g_despacho) as $embarque){
+                                if($embarque->etd || $embarque->eta){
+                                    $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
+                                    $eta = $embarque->eta;
+                                    
+                                    // Convertir las fechas a semanas del año
+                                    $etdSemana = date('W', strtotime($etd));
+                                    $etaSemana = date('W', strtotime($eta));
+            
+            
+                                    $prodSemana = date('W', strtotime($fechacalculada));
+            
+                                    $etdSemana = date('W', strtotime($etd));
+                                   
+                                        if ($prodSemana>$etdSemana) {
+                                            $diferenciadefechas=$etdSemana-$prodSemana+52;
+                                        }else{
+                                            $diferenciadefechas=$etdSemana-$prodSemana;
+                                        }
+                                    // Luego puedes guardar esas semanas en tu base de datos
+                                   break;
+                                }
+                            }
+                        } else {
+            
+                            $etdSemana = date('W', strtotime($fechacalculada));
+                            $etd = $fechacalculada; // Supongamos que es una fecha en formato Y-m-d
+                            $eta = $fechacalculada;
+                            $etaSemana = date('W', strtotime($fechacalculada));
+
+                            $prodSemana = date('W', strtotime($fechacalculada));
+                           
+
+                                if ($prodSemana>$etdSemana) {
+                                    $diferenciadefechas=$etdSemana-$prodSemana+52;
+                                }else{
+                                    $diferenciadefechas=$etdSemana-$prodSemana;
+                                }
+                            
+                          
+                           
+                        }
+                   
+
+
                     Balancemasa::create([
                         'temporada_id'             => $this->temporada->id,
                         'id_empresa'               => $factor->id_empresa ?? '',
@@ -451,6 +583,7 @@ class TemporadaShow extends Component
                         'c_etiqueta'               => $factor->c_etiqueta ?? '',
                         'n_etiqueta'               => strtoupper($proceso->n_etiqueta) ?? '',
                         'id_variedad'              => $factor->id_variedad ?? '',
+                        'n_variedad'              => $factor->n_variedad ?? '',
                         'c_calibre'                => $factor->c_calibre ?? '',
                         'c_categoria'              => $factor->c_categoria ?? '',
                         'c_embalaje'               => $factor->c_embalaje ?? '',
@@ -460,7 +593,14 @@ class TemporadaShow extends Component
                         'peso_neto2'               => $factor->total_proceso ?? 0, // Asumimos que 'total_proceso' es un campo de 'Factorbalance'
                         'fecha_g_despacho'         => $fechacalculada,
                         'exportadora'              => $this->temporada->exportadora_id ?? '22',
-                        'type'                     => 'proceso' // Fecha calculada (fecha_produccion + 7 días)
+                        'type'                     => 'proceso', // Fecha calculada (fecha_produccion + 7 días)
+                        'color'                    => str_ends_with($factor->c_calibre ?? '', 'D') ? 'Dark' : 'Light',
+                        'semana' => $etdSemana,  // Mantienes la fecha original si es necesario
+                        'etd' => $etd,  // Mantienes la fecha original si es necesario
+                        'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                          
+                       
+
                     ]);
                 }
             Cache::flush();
@@ -578,14 +718,42 @@ class TemporadaShow extends Component
         });
     }
     
-    
+    public function updatedSyncfecha($value)
+    {
+        
+        switch ($value) {
+            case 'todos':
+                $this->temporada->fecha_sync = 'todos'; // Cambia el valor según lo necesario
+                break;
+            case 'nulos':
+                $this->temporada->fecha_sync = 'nulos'; // Establece el valor en nulo
+                break;
+        }
+        
+        $this->temporada->save(); // Guarda los cambios en la base de datos
+    }
+
+    public function updatedSyncfactor($value)
+    {
+        
+        switch ($value) {
+            case 'todos':
+                $this->temporada->factor_sync = 'todos'; // Cambia el valor según lo necesario
+                break;
+            case 'nulos':
+                $this->temporada->factor_sync = 'nulos'; // Establece el valor en nulo
+                break;
+        }
+        
+        $this->temporada->save(); // Guarda los cambios en la base de datos
+    }
 
     public function delete_balancemasas(){
         $masas=Balancemasa::where('temporada_id',$this->temporada->id)->get();
         foreach ($masas as $masa){
             $masa->delete();
         }
-        //return redirect()->route('temporada.balancemasa',$this->temporada)->with('info','Importación realizada con exito');
+        return redirect()->route('temporada.balancemasa',$this->temporada);
     }
 
     public function delete_fobs(){
@@ -613,21 +781,26 @@ class TemporadaShow extends Component
     }
 
     public function sync_fechas(){
-        /*
-            $masas=Balancemasa::where('temporada_id', $this->temporada->id)
+        
+        if($this->syncfecha=="todos"){
+            $masas = Despacho::where('temporada_id', $this->temporada->id)->get();
+        }else{
+            $masas=Despacho::where('temporada_id', $this->temporada->id)
             ->where(function ($query) {
-                $query->whereNull('etd')
-                    ->orWhereNull('eta');
+                $query->whereNull('semana')
+                        ->orWhereNull('etd')
+                        ->orWhereNull('eta');
             })
             ->get();
-        */
-        $masas = Balancemasa::select('id', 'numero_g_despacho', 'fecha_produccion', 'fecha_g_despacho')
-            ->where('temporada_id', $this->temporada->id)
-            ->get();
+        }
+        
+       
 
         $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
         foreach($masas as $masa){
+          
             if ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho)->count()>0) {
+              
                 foreach ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho) as $embarque){
                     if($embarque->etd || $embarque->eta){
                         $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
@@ -673,13 +846,18 @@ class TemporadaShow extends Component
                         $diferenciadefechas=$etdSemana-$prodSemana;
                     }
                 
+              
+
                 $masa->update([
                     'etd' => $masa->fecha_g_despacho,  // Mantienes la fecha original si es necesario
                     'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                    'semana' => $etdSemana,
                     'control_fechas'=>$diferenciadefechas
                 ]);
             }
         }
+
+       
 
         $this->render();
 
@@ -1104,15 +1282,15 @@ class TemporadaShow extends Component
         $totali=$ri->count();
 
         $dateRanges = [];
-        /*
+        
         if($totali>0){
             $ultimo = Despacho::orderBy('fecha_g_despacho', 'desc')->first();
             $start = new DateTime($ultimo->fecha_g_despacho); // Usa la fecha más reciente
         }else{
             $start = new DateTime($this->fechai);
-        }*/
+        }
 
-        $start = new DateTime($this->fechai);
+       
         $end = new DateTime($this->fechaf);
         $intervalDays=3;
 
@@ -1170,7 +1348,8 @@ class TemporadaShow extends Component
 
                
 
-          
+            $embarquesall=Embarque::where('temporada_id',$this->temporada->id)->get();
+
             if (!empty($productions)) {
                 foreach ($productions as $despacho) {
                     
@@ -1241,7 +1420,7 @@ class TemporadaShow extends Component
                     ->first();
 
                 if (!$existingDespacho) {
-                        Despacho::create([
+                        $masa=Despacho::create([
                             'temporada_id'=>$this->temporada->id,
                             'id_pkg_stock_det'=>$id_pkg_stock_det,
                             'tipo_g_despacho' => $tipo_g_despacho,
@@ -1295,6 +1474,64 @@ class TemporadaShow extends Component
                             'n_exportadora_embarque' => $n_exportadora_embarque,
                             'duplicado' => 'no',
                         ]);
+                        /*
+                            if ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho)->count()>0) {
+                
+                                foreach ($embarquesall->where('numero_g_despacho',$masa->numero_g_despacho) as $embarque){
+                                    if($embarque->etd || $embarque->eta){
+                                        $etd = $embarque->etd; // Supongamos que es una fecha en formato Y-m-d
+                                        $eta = $embarque->eta;
+                                        
+                                        // Convertir las fechas a semanas del año
+                                        $etdSemana = date('W', strtotime($etd));
+                                        $etaSemana = date('W', strtotime($eta));
+                
+                
+                                        $prodSemana = date('W', strtotime($masa->fecha_produccion));
+                
+                                        $etdSemana = date('W', strtotime($etd));
+                                    
+                                            if ($prodSemana>$etdSemana) {
+                                                $diferenciadefechas=$etdSemana-$prodSemana+52;
+                                            }else{
+                                                $diferenciadefechas=$etdSemana-$prodSemana;
+                                            }
+                                        // Luego puedes guardar esas semanas en tu base de datos
+                                        $masa->update([
+                                            'semana' => $etdSemana,  // Mantienes la fecha original si es necesario
+                                            'etd' => $etd,  // Mantienes la fecha original si es necesario
+                                            'eta' => $eta,
+                                            'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                                            'eta_semana' => $etaSemana,
+                                            'control_fechas'=>$diferenciadefechas
+                                        ]);
+                
+                                                    break;
+                                    }
+                                }
+                            } else {
+                
+                                $etdSemana = date('W', strtotime($masa->fecha_g_despacho));
+                
+                
+                                $prodSemana = date('W', strtotime($masa->fecha_produccion));
+                            
+                                    if ($prodSemana>$etdSemana) {
+                                        $diferenciadefechas=$etdSemana-$prodSemana+52;
+                                    }else{
+                                        $diferenciadefechas=$etdSemana-$prodSemana;
+                                    }
+                                
+                            
+                
+                                $masa->update([
+                                    'etd' => $masa->fecha_g_despacho,  // Mantienes la fecha original si es necesario
+                                    'etd_semana' => $etdSemana,  // Guardas la semana calculada
+                                    'semana' => $etdSemana,
+                                    'control_fechas'=>$diferenciadefechas
+                                ]);
+                            }
+                        */
                     }else{
                         /*
                         $existingDespacho->update([
@@ -1361,8 +1598,8 @@ class TemporadaShow extends Component
             
         }
 
-        $this->temporada->update([  'recepcion_start'=>$this->fechai,
-                                    'recepcion_end'=>$this->fechaf]);
+        $this->temporada->update([  'recepcion_start'=> new DateTime($this->fechai),
+                                    'recepcion_end'=> new DateTime($this->fechaf)]);
         
         $rf=Proceso::all();
         $total=$rf->count()-$ri->count();

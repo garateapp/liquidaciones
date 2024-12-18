@@ -15,6 +15,8 @@ class Fob extends Model
         return $this->belongsTo('App\Models\Temporada');
     }
 
+   
+
     public function scopeFilter($query,$filters){
         $query->when($filters['variedad'] ?? null,function($query,$variedad){
             $query->where('n_variedad','like','%'.$variedad.'%');

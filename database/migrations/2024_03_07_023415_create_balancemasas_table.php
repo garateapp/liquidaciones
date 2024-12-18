@@ -48,7 +48,7 @@ return new class extends Migration
             $table->text('cantidad')->nullable();
             $table->text('peso_neto')->nullable();
             $table->text('tipo_transporte')->nullable();
-            $table->text('precio_fob')->nullable();
+            $table->text('precio_unitario')->nullable();
             $table->text('exportadora')->nullable();
             $table->text('exportadora_embarque')->nullable();
             $table->string('etd')->nullable(); // Estimated Time of Departure
@@ -62,7 +62,20 @@ return new class extends Migration
             $table->string('factor')->nullable(); // Estimated Time of Arrival
             $table->string('peso_neto2')->nullable(); // Estimated Time of Arrival
 
+            $table->string('fecha_sync')->nullable();
+            $table->string('factor_sync')->nullable();
+
             $table->string('fecha_produccion')->nullable();
+
+            $table->string('peso_std_embalaje')->nullable();
+
+            $table->foreignId('fob_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+
+            $table->string('color')->nullable();
+            $table->string('type')->nullable(); // Código del embalaje
 
 
             $table->timestamps();

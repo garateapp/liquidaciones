@@ -20,6 +20,19 @@ class Balancemasa extends Model
         return $this->hasone('App\Models\Material','c_embalaje','c_embalaje');
     }
 
+    public function fob(){
+        return $this->belongsTo('App\Models\Fob');
+    }
+    public function despacho()
+    {
+        return $this->belongsTo(Despacho::class, 'numero_g_despacho', 'numero_g_despacho');
+    }
+    public function infocategoria()
+    {
+        return $this->belongsTo(Categoria::class, 'n_categoria', 'nombre');
+    }
+    
+
     public function scopeFilter($query, $filters)
     {
         // Obtener los códigos de categorías para los tres grupos
@@ -52,8 +65,19 @@ class Balancemasa extends Model
         })->when($filters['variedad'] ?? null, function($query, $variedad) {
             $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
+            if ($precioFob == 'fobcero') {
+                $query->where(function ($query) {
+                    $query->whereHas('fob', function ($query) {
+                        $query->where('fob_kilo_salida', 0)
+                              ->orWhere('fob_kilo_salida', null);
+                    });
+                });
+            }
             if ($precioFob == 'null') {
-                $query->whereNull('precio_fob');
+                $query->WhereNull('fob_id');
+            }
+            if ($precioFob == 'fob') {
+                $query->where('fob_id','>',0);
             }
         })->when($filters['norma'] ?? null, function ($query, $norma) {
             if ($norma === 'dentro') {
@@ -82,7 +106,8 @@ class Balancemasa extends Model
             $query->where('semana', $semana);
         })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
             $query->whereNull('etd')
-                    ->orWhereNull('eta');
+                    ->orWhereNull('eta')
+                    ->orWhereNull('semana');
         })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
             $query->where('factor','0');
         });
@@ -120,8 +145,19 @@ class Balancemasa extends Model
         })->when($filters['variedad'] ?? null, function ($query, $variedad) {
             $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
-            if ($precioFob === 'null') {
-                $query->whereNull('precio_fob');
+            if ($precioFob == 'fobcero') {
+                $query->where(function ($query) {
+                    $query->whereHas('fob', function ($query) {
+                        $query->where('fob_kilo_salida', 0)
+                              ->orWhere('fob_kilo_salida', null);
+                    });
+                });
+            }
+            if ($precioFob == 'null') {
+                $query->WhereNull('fob_id');
+            }
+            if ($precioFob == 'fob') {
+                $query->where('fob_id','>',0);
             }
         })->when($filters['norma'] ?? null, function ($query, $norma) {
             if ($norma === 'dentro') {
@@ -150,7 +186,8 @@ class Balancemasa extends Model
             $query->where('semana',$semana);
         })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
             $query->whereNull('etd')
-                    ->orWhereNull('eta');
+                    ->orWhereNull('eta')
+                    ->orWhereNull('semana');
         })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
             $query->where('factor','0');
         });
@@ -190,7 +227,7 @@ class Balancemasa extends Model
             $query->where('n_variedad', $variedad);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
             if ($precioFob === 'null') {
-                $query->whereNull('precio_fob');
+                $query->whereNull('fob_id');
             }
         })->when($filters['norma'] ?? null, function ($query, $norma) {
             if ($norma === 'dentro') {

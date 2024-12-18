@@ -16,6 +16,7 @@ use App\Models\Material;
 use App\Models\Resumen;
 use App\Models\Temporada;
 use App\Models\Variedad;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class MainUpload extends Component
@@ -86,7 +87,14 @@ class MainUpload extends Component
                 'c_categoria',
                 'numero_guia_produccion',
                 'fecha_produccion',
-                'peso_std_embalaje'
+                'peso_std_embalaje',
+                'semana',
+                'etd',
+                'eta',
+                'etd_semana',
+                'eta_semana',
+                'control_fechas',
+                'precio_unitario'
             ])
             ->get();
         $n=0;
@@ -97,7 +105,7 @@ class MainUpload extends Component
                 'tipo_g_despacho'        => $despacho->tipo_g_despacho ?? '',
                 'numero_g_despacho'      => $despacho->numero_g_despacho ?? '',
                 'fecha_g_despacho'    => $despacho->fecha_g_despacho ?? '',
-                'semana'                   => $despacho->semana ?? '',
+                'semana'                   => $despacho->semana ?? null,
                 'folio'                    => $despacho->folio ?? '',
                 'r_productor'              => $despacho->r_productor ?? '',
                 'c_productor'              => $despacho->c_productor ?? '',
@@ -123,7 +131,14 @@ class MainUpload extends Component
                 'c_categoria'              => $despacho->c_categoria ?? '',
                 'numero_guia_produccion'   => $despacho->numero_guia_produccion ?? '',
                 'fecha_produccion'         => $despacho->fecha_produccion ?? '',
-                'peso_std_embalaje'        => $despacho->peso_std_embalaje ?? ''
+                'peso_std_embalaje'        => $despacho->peso_std_embalaje ?? '',
+                'etd'                      => $despacho->etd ?? null,
+                'eta'                      => $despacho->eta ?? null,
+                'etd_semana'               => $despacho->etd_semana ?? '',   
+                'eta_semana'               => $despacho->eta_semana ?? '',
+                'control_fechas'          => $despacho->control_fechas ?? '',
+                'precio_unitario'          => $despacho->precio_unitario ?? '',
+                'color'                    => str_ends_with($despacho->c_calibre ?? '', 'D') ? 'Dark' : 'Light',
                 
             ]);
         }
@@ -146,117 +161,63 @@ class MainUpload extends Component
 
     public function fobImport(){
 
-        $embarquesall = Embarque::where('temporada_id', $this->temporada->id)->get();
-
+       
         // Parte 1: Agregar la columna `etd` a los despachos
-        $despachosConEtd = Despacho::where('temporada_id', $this->temporada->id)
+        $despachos =  Despacho::where('temporada_id', $this->temporada->id)
+            ->whereNotNull('c_calibre') // Asegura que c_calibre no sea nulo
             ->select([
+                'semana',
                 'c_etiqueta', 
                 'n_variedad', 
                 'c_calibre',
                 'c_categoria',
-                'c_embalaje', 
-                'numero_g_despacho',
-                'precio_unitario'
+                'c_embalaje',
+                DB::raw('AVG(precio_unitario) as precio_promedio'),
+               
             ])
-            ->get()
-            ->map(function ($despacho) use ($embarquesall) {
-                $embarque = $embarquesall->firstWhere('numero_g_despacho', $despacho->numero_g_despacho);
-                $despacho->etd = $embarque->etd ?? null; // Agrega `etd` si existe en embarques
+            ->groupBy([
+                'semana',
+                'c_etiqueta',
+                'n_variedad',
+                'c_calibre',
+                'c_categoria',
+                'c_embalaje'
+            ])
+            ->get();
+        
+
+        $despachos = $despachos->map(function ($despacho) {
+                $despacho->color = str_ends_with($despacho->c_calibre, 'D') ? 'Dark' : 'Light';
                 return $despacho;
             });
-        
-        // Parte 2: Agrupar por combinación de FOB y calcular el promedio, excluyendo los registros nulos
-        $despachosAgrupados = $despachosConEtd->filter(function ($despacho) {
-            // Excluye despachos con valores nulos en cualquier columna clave
-            return !is_null($despacho->c_etiqueta) &&
-                   !is_null($despacho->n_variedad) &&
-                   !is_null($despacho->c_calibre) &&
-                   !is_null($despacho->c_categoria) &&
-                   !is_null($despacho->c_embalaje);
-        })->groupBy(function ($despacho) {
-            return implode('|', [
-                $despacho->c_etiqueta,
-                $despacho->n_variedad,
-                $despacho->c_calibre,
-                $despacho->c_categoria,
-                $despacho->c_embalaje
-            ]);
-        })->map(function ($grupo) {
-            $promedio = $grupo->avg('precio_unitario'); // Calcula el promedio
-            $primerDespacho = $grupo->first(); // Toma el primer despacho como referencia
-        
-            return [
-                'etd' => $primerDespacho->etd,
-                'semana' => $primerDespacho->etd ? date('W', strtotime($primerDespacho->etd)) : null,
-                'c_etiqueta' => $primerDespacho->c_etiqueta,
-                'n_variedad' => $primerDespacho->n_variedad,
-                'c_calibre' => $primerDespacho->c_calibre,
-                'c_categoria' => $primerDespacho->c_categoria,
-                'c_embalaje' => $primerDespacho->c_embalaje,
-                'precio_promedio' => $promedio
-            ];
-        });
+
+                
         
         // Parte 3: Crear los registros de FOB
         $n=0;
-        foreach ($despachosAgrupados as $agrupado) {
-            $n+=1;
-
-            if ($agrupado['c_calibre']=='4J' || $agrupado['c_calibre']=='4JD' || $agrupado['c_calibre']=='4JDD'){
+        foreach ($despachos as $agrupado) {
             
-                if ($agrupado['c_calibre']=='4JD' || $agrupado['c_calibre']=='4JDD'){
-                    $color='Dark';
-                }else{
-                $color='Light';
-                }
+            $n+=1;
+            
+            if($agrupado['c_etiqueta']!=""){
+                $etiqueta=$agrupado['c_etiqueta'];
+            }else{
+                $etiqueta="vacia";
             }
-            if ($agrupado['c_calibre']=='3J' || $agrupado['c_calibre']=='3JD' || $agrupado['c_calibre']=='3JDD'){
-              
-
-                if ($agrupado['c_calibre']=='3JD' || $agrupado['c_calibre']=='3JDD'){
-                    $color='Dark';
-                }else{
-                $color='Light';
-                }
-            }
-            if ($agrupado['c_calibre']=='2J' || $agrupado['c_calibre']=='2JD' || $agrupado['c_calibre']=='2JDD'){
-             
-                if ($agrupado['c_calibre']=='2JD' || $agrupado['c_calibre']=='2JDD'){
-                        $color='Dark';
                 
-                }else{
-                    $color='Light';
-                }
-            }
-            if ($agrupado['c_calibre']=='J' || $agrupado['c_calibre']=='JD' || $agrupado['c_calibre']=='JDD'){
-              
-                if ($agrupado['c_calibre']=='JD' || $agrupado['c_calibre']=='JDD'){
-                        $color='Dark';
-                }else{
-                    $color='Light';
-                }
-            }
-            if ($agrupado['c_calibre']=='XL' || $agrupado['c_calibre']=='XLD' || $agrupado['c_calibre']=='XLDD'){
-              
-                if ($agrupado['c_calibre']=='XLD' || $agrupado['c_calibre']=='XLDD'){
-                    $color='Dark';
-                }else{
-                $color='Light';
-                }
-            }
-
-            Fob::create([
-                'temporada_id' => $this->temporada->id,
-                'semana' => $agrupado['semana'],        // Semana calculada
-                'etiqueta' => $agrupado['c_etiqueta'],  // Etiqueta
-                'n_variedad' => $agrupado['n_variedad'],// Variedad
-                'n_calibre' => $agrupado['c_calibre'],  // Calibre
-                'categoria' => $agrupado['c_categoria'],// Categoría
-                'embalaje' => $agrupado['c_embalaje'],     // Embalaje
-                'color'=> $color,
-                'fob_kilo_salida' => $agrupado['precio_promedio'], // Precio promedio
-            ]);
+                Fob::create([
+                    'temporada_id' => $this->temporada->id,
+                    'semana' => $agrupado['semana'],        // Semana calculada
+                    'etiqueta' => $etiqueta,  // Etiqueta
+                    'n_variedad' => $agrupado['n_variedad'],// Variedad
+                    'n_calibre' => $agrupado['c_calibre'],  // Calibre
+                    'categoria' => $agrupado['c_categoria'],// Categoría
+                    'embalaje' => $agrupado['c_embalaje'],     // Embalaje
+                    'color'=> $agrupado['color'],
+                    'fob_kilo_salida' => $agrupado['precio_promedio'], // Precio promedio
+                ]);
+                
+           
         }
                 
 

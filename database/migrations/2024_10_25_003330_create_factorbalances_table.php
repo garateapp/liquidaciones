@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('c_productor')->nullable(); // Código del productor
             $table->string('c_etiqueta')->nullable(); // Código de etiqueta
             $table->string('id_variedad')->nullable(); // ID de la variedad
+            $table->string('n_variedad')->nullable(); // ID de la variedad
             $table->string('c_calibre')->nullable(); // Código del calibre
             $table->string('c_categoria')->nullable(); // Código de la categoría
             $table->string('c_embalaje')->nullable(); // Código del embalaje
@@ -33,6 +34,9 @@ return new class extends Migration
             $table->string('total_proceso')->nullable(); // Total del proceso como string
 
             $table->string('factor')->nullable();
+
+            $table->string('type')->nullable(); // Código del embalaje
+            $table->string('sync_control')->nullable(); // Código del embalaje
 
 
             $table->timestamps();

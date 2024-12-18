@@ -18,7 +18,9 @@ class Proceso extends Model
 
     public function scopeFilter($query, $filters)
     {
-        $query->when($filters['p_unicos'] && !$filters['p_repetidos'], function ($query) {
+        $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
+            $query->where('numero_g_produccion', 'like', '%' . $serie . '%');
+        })->when($filters['p_unicos'] && !$filters['p_repetidos'], function ($query) {
             // Mostrar solo duplicado = 'no' si solo 'Únicos' está seleccionado
             $query->where('duplicado', 'no');
         })->when($filters['tipo'] ?? null, function($query, $tipo) {

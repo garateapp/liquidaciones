@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('balancemasas', function (Blueprint $table) {
-            
-            $table->string('peso_std_embalaje')->nullable();
-
+        Schema::table('fobs', function (Blueprint $table) {
+            $table->string('fob_kilo_salida2')->nullable();
+            $table->string('fob_kilo_salida3')->nullable();
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('balancemasas', function (Blueprint $table) {
+        Schema::table('fobs', function (Blueprint $table) {
             //
         });
     }
