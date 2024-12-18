@@ -618,7 +618,7 @@ class TemporadaShow extends Component
                 'numero_g_produccion',
                 'c_productor_proceso',
                 'c_etiqueta',
-                'n_variedad',
+                'n_variedad_rotulacion as n_variedad',
                 'c_calibre',
                 'c_categoria',
                 'c_embalaje',
@@ -637,6 +637,8 @@ class TemporadaShow extends Component
                 'c_embalaje'
             )
             ->get();
+
+            //dd($procesosall_group);
         
         // Obtén los factores existentes para la temporada
         $factores = Factorbalance::where('temporada_id', $this->temporada->id)->get();
