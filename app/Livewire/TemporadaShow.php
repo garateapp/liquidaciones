@@ -474,7 +474,7 @@ class TemporadaShow extends Component
                     $factor->numero_guia_produccion == $masa->numero_guia_produccion &&
                     $factor->c_productor == $masa->c_productor &&
                     $factor->c_etiqueta == $masa->c_etiqueta &&
-                    $factor->id_variedad == $masa->id_variedad &&
+                    $factor->n_variedad == $masa->n_variedad &&
                     $factor->c_calibre == $masa->c_calibre &&
                     $factor->c_categoria == $masa->c_categoria &&
                     $factor->c_embalaje == $masa->c_embalaje;
@@ -618,7 +618,7 @@ class TemporadaShow extends Component
                 'numero_g_produccion',
                 'c_productor_proceso',
                 'c_etiqueta',
-                'id_variedad',
+                'n_variedad',
                 'c_calibre',
                 'c_categoria',
                 'c_embalaje',
@@ -631,7 +631,7 @@ class TemporadaShow extends Component
                 'numero_g_produccion',
                 'c_productor_proceso',
                 'c_etiqueta',
-                'id_variedad',
+                'n_variedad',
                 'c_calibre',
                 'c_categoria',
                 'c_embalaje'
@@ -648,7 +648,7 @@ class TemporadaShow extends Component
                 'numero_guia_produccion' => $factor->numero_guia_produccion,
                 'c_productor' => $factor->c_productor,
                 'c_etiqueta' => $factor->c_etiqueta,
-                'id_variedad' => $factor->id_variedad,
+                'n_variedad' => $factor->n_variedad,
                 'c_calibre' => $factor->c_calibre,
                 'c_categoria' => $factor->c_categoria,
                 'c_embalaje' => $factor->c_embalaje,
@@ -662,7 +662,7 @@ class TemporadaShow extends Component
                 'numero_guia_produccion' => $proceso->numero_g_produccion,
                 'c_productor' => $proceso->c_productor_proceso,
                 'c_etiqueta' => $proceso->c_etiqueta,
-                'id_variedad' => $proceso->id_variedad,
+                'n_variedad' => $proceso->n_variedad,
                 'c_calibre' => $proceso->c_calibre,
                 'c_categoria' => $proceso->c_categoria,
                 'c_embalaje' => $proceso->c_embalaje,
@@ -677,7 +677,7 @@ class TemporadaShow extends Component
                     'numero_guia_produccion' => $proceso->numero_g_produccion,
                     'c_productor' => $proceso->c_productor_proceso,
                     'c_etiqueta' => $proceso->c_etiqueta,
-                    'id_variedad' => $proceso->id_variedad,
+                    'n_variedad' => $proceso->n_variedad,
                     'c_calibre' => $proceso->c_calibre,
                     'c_categoria' => $proceso->c_categoria,
                     'c_embalaje' => $proceso->c_embalaje,
