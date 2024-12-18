@@ -517,7 +517,7 @@ class TemporadaShow extends Component
                         ->where('id_empresa', $factor->id_empresa)
                         ->where('c_productor', $factor->c_productor)
                         ->where('c_etiqueta', $factor->c_etiqueta)
-                        ->where('id_variedad', $factor->id_variedad)
+                        ->where('n_variedad', $factor->n_variedad)
                         ->where('c_calibre', $factor->c_calibre)
                         ->where('c_categoria', $factor->c_categoria)
                         ->where('c_embalaje', $factor->c_embalaje)
