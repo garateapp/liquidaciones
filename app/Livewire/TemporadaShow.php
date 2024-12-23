@@ -11,6 +11,7 @@ use App\Models\CostoPacking;
 use App\Models\Despacho;
 use App\Models\Detalle;
 use App\Models\Embarque;
+use App\Models\Exception;
 use App\Models\Exportacion;
 use App\Models\Factorbalance;
 use App\Models\Familia;
@@ -38,7 +39,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $fechaetd, $syncfecha, $syncfactor, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechaetd, $syncfecha, $foliosexept, $syncfactor, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
@@ -65,6 +66,7 @@ class TemporadaShow extends Component
         'calibre'=>'',
         'etiqueta'=>'',
         'etiquetas'=>'[]',
+        'notfolios'=>'[]',
         'material'=>'',
         'mer'=>'',
         'semana'=>'',
@@ -101,6 +103,8 @@ class TemporadaShow extends Component
 
         $this->filters['etiquetas'] = $masastotal2->pluck('n_etiqueta')->unique()->sort()->values()->all();
 
+        $this->filters['notfolios'] = Exception::where('temporada_id',$this->temporada->id)->pluck('item')->unique()->sort()->values()->all();
+       
         if ($temporada->recepcion_start) {
             $this->fechai = $temporada->recepcion_start;
         } else {
@@ -116,6 +120,52 @@ class TemporadaShow extends Component
         $procesosall=Proceso::where('temporada_id',$this->temporada->id)->get();
         $this->tipo_procesos = $procesosall->pluck('tipo_g_produccion')->unique()->sort();
         $this->tipo_procesos2 = $procesosall->pluck('tipo')->unique()->sort();
+    }
+
+    public function updatedFoliosexept($folio)
+    {   
+        if (($key = array_search($folio, $this->filters['notfolios'])) !== false) {
+            $excepcion=Exception::where('temporada_id',$this->temporada->id)->where('item',$folio)->first();
+            $excepcion->delete();
+            unset($this->filters['notfolios'][$key]);
+        } else {
+            Exception::create(['temporada_id'=>$this->temporada->id,
+                                'item'=>$folio]);
+            $this->filters['notfolios'][] = $folio;
+
+        }
+        $this->filters['notfolios'] = array_values($this->filters['notfolios']); // reindexar el array
+        $this->render();
+    }
+
+    public function checkfolio($folio)
+    {   
+        if (($key = array_search($folio, $this->filters['notfolios'])) !== false) {
+            $excepcion=Exception::where('temporada_id',$this->temporada->id)->where('item',$folio)->first();
+            if($excepcion){
+                $excepcion->delete();
+            }
+            unset($this->filters['notfolios'][$key]);
+        } else {
+            Exception::create(['temporada_id'=>$this->temporada->id,
+                                'item'=>$folio]);
+            $this->filters['notfolios'][] = $folio;
+
+        }
+        $this->filters['notfolios'] = array_values($this->filters['notfolios']); // reindexar el array
+        $this->render();
+    }
+
+    public function checkfolioreset()
+    {   
+      
+        foreach($this->filters['notfolios']  as $folio){
+            $excepcion=Exception::where('temporada_id',$this->temporada->id)->where('item',$folio)->first();
+            $excepcion->delete();
+        }
+       
+        $this->filters['notfolios'] = []; // reindexar el array
+        $this->render();
     }
 
     public function filtrar_fechanull(){
@@ -346,6 +396,8 @@ class TemporadaShow extends Component
 
         $unique_semanas = $masastotal2->pluck('semana')->unique()->sort();
 
+        $unique_folios = $masastotal2->pluck('folio')->unique()->sort();
+
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
         $unique_variedades = Variedad::where('temporada_id',$this->temporada->id)->get();
@@ -401,7 +453,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){

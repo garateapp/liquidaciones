@@ -102,8 +102,8 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor">
-                  <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset">
+                  <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
                         <div class="px-6 my-6 mx-auto">
@@ -118,6 +118,7 @@
                     </div>
                   </div>
                 </div>
+                
                 
                 
                       
@@ -932,11 +933,34 @@
                       
                       </select>
                     </div>
+
+                    <div class="ml-4">
+                        Excepto folio:
+                        <select  wire:model.live="foliosexept" name="" id="" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-40">
+                          <option value="">Todos</option>
+                          @foreach ($unique_folios as $folio)
+                            @if ($folio)
+                              <option value="{{$folio}}">{{$folio}}</option>
+                            @endif
+                          @endforeach
+                        </select>    
+
+                        @foreach ($filters['notfolios'] as $folio)
+                              <p wire:click="checkfolio('{{ $folio }}')" class="cursor-pointer hover:text-red-500 hover:font-bold mt-2" title="Quitar">{{$folio}}</p>
+                        @endforeach
+                        @if ($filters['notfolios'])
+                          @if (count($filters['notfolios'])>1)
+                            <p wire:click="checkfolioreset()" class="cursor-pointer text-red-500 font-bold mt-2" title="Quitar">Quitar Todos</p>
+                          @endif     
+                        @endif              
+                       
+                    </div>
                     
                    
                       @if($vista=="Despachos" || $vista=='MASAS')
                         <!-- Extra Chatbot Card -->
-                        <div class="relative max-w-[600px] w-full bg-white border rounded-lg shadow-lg overflow-hidden ml-4">
+                        <div class="relative max-w-[600px] w-full bg-white border rounded-lg shadow-lg overflow-hidden ml-4 z-10"
+                        wire:loading.class="pointer-events-none">
                           <!-- Slider Wrapper -->
                           <div id="slider" class="flex transition-transform duration-500 ease-in-out">
                               @if ($vista=="Despachos")
@@ -1038,7 +1062,7 @@
                               @endif
 
                               @if($vista=='FOB')
-                              <div class="w-full flex-shrink-0 p-2">
+                                <div class="w-full flex-shrink-0 p-2">
                                     
                                 </div>
                               @endif
@@ -1062,6 +1086,7 @@
                         
                         
                         </div>
+
                       @endif
                   
                   @endif
@@ -1098,7 +1123,7 @@
                 </div>
               </div>
 
-              @if($vista=="FOB")
+              @if($vista=="FOB" || $vista=="MASAS")
                 <div class="px-6 pt-6 2xl:container">
                   <div class="grid gap-6 md:grid-cols-3 lg:grid-cols-3">
                       <div class="md:col-span-1 lg:col-span-1" >

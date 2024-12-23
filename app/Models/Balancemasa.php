@@ -100,6 +100,10 @@ class Balancemasa extends Model
             if (!empty($etiquetas)) {
                 $query->whereIn('n_etiqueta', $etiquetas);
             }
+        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
+            if (!empty($notfolios)) {
+                $query->whereNotIn('folio', $notfolios);
+            }
         })->when($filters['material'] ?? null, function($query, $material) {
             $query->where('c_embalaje', $material);
         })->when($filters['semana'] ?? null, function($query, $semana) {
@@ -178,6 +182,10 @@ class Balancemasa extends Model
             if (!empty($etiquetas)) {
                 $query->whereIn('n_etiqueta', $etiquetas);
             }
+        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
+            if (!empty($notfolios)) {
+                $query->whereNotIn('folio', $notfolios);
+            }
         })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
             $query->where('n_etiqueta', $etiqueta);
         })->when($filters['material'] ?? null, function ($query, $material) {
@@ -249,6 +257,10 @@ class Balancemasa extends Model
         })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
             if (!empty($etiquetas)) {
                 $query->whereIn('n_etiqueta', $etiquetas);
+            }
+        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
+            if (!empty($notfolios)) {
+                $query->whereNotIn('folio', $notfolios);
             }
         })->when($filters['material'] ?? null, function ($query, $material) {
             $query->where('c_embalaje', $material);
