@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -4306,6 +4306,188 @@
                         </div>
                       </div>
                   </div>
+
+                  <table class="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            n_variedad
+                          </th>
+                          <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Semana
+                          </th>
+                          <th
+                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Etiqueta
+                        </th>
+                        <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Calibre
+                      </th>
+                      <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Color
+                    </th>
+                      <th
+                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Embalaje
+                    </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Categoria
+                          </th>
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            FOB
+                            </th>
+
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              FOB2
+                              </th>
+                              <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                FOB3
+                                </th>
+                      
+                        
+                      
+                      </tr>
+                      </thead>
+                      <tbody>
+                    
+                          @foreach ($fobs as $fob)
+                            <tr>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                
+                                    <div class="ml-3">
+                                      <p class="text-gray-900 whitespace-no-wrap">
+                                        {{$fob->n_variedad}}
+                                      </p>
+                                    </div>
+                                  </div>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->semana}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->etiqueta}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->n_calibre}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->color}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->embalaje}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format(floatval($fob->fob_kilo_salida),2,',','.')}}</p>
+                                @endif
+
+                             
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida2,2,',','.')}}</p>
+                                @endif
+                              </td>
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                @else
+                                  <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida3,2,',','.')}}</p>
+                                @endif
+                              </td>
+                          
+                          
+
+                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                @if ($fobid==$fob->id)
+                                  <span wire:click='save_fobid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Guardar</span>
+                                  </span>
+                                @else
+                                  <span wire:click='set_fobid({{$fob->id}})' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                    <span class="relative">Editar</span>
+                                  </span>
+                                @endif
+
+                                <span  class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                  <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                  <span class="relative">Eliminar</span>
+                              </span>
+                                </span>
+                              </td>
+                            </tr>
+                          @endforeach
+                
+                      </tbody>
+                  </table>
+                @endif
+
+                @if ($vista=='FOB TREE')
+
+                1- Categoria (Primero ver FOB promedio de categorias)
+                Luego desplegar y ver:
+               //  2_ Variedad
+               //  3-Etiqueta
+               //  4-Embalaje
+               // 5_Calibre
+              //  6-Color
+              //  7.-Semana
+                
+
+              <div class="main flex flex-col m-5">
+               
+                @foreach ($exportacionCodes as $categoria)
+                  <div wire:click="checkfobcategoria('{{$categoria}}')">
+                    <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
+                      <div class="left">
+                        <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$categoria}}</div>
+                        <div class="desc text-gray-600">Categoria de Exportación</div>
+                      </div>
+                      <div class="right m-auto mr-0">
+                        <div class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @if($filters['ncategoria']==$categoria) 
+                    @foreach ($unique_variedades as $variedad)
+                      <div wire:click="checkfobcategoria('{{$categoria}}')" class="ml-2">
+                        <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
+                          <div class="left">
+                            <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$variedad->name}}</div>
+                            <div class="desc text-gray-600">Variedad</div>
+                          </div>
+                          <div class="right m-auto mr-0">
+                            <div class="icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    @endforeach
+                  @endif
+                @endforeach
+               
+              </div>
 
                   <table class="min-w-full leading-normal">
                       <thead>

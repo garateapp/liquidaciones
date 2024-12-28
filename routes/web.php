@@ -83,6 +83,8 @@ Route::get('balance/{temporada}/factor',[TemporadaController::class,'factor'])->
 
 Route::get('balance/{temporada}/fob',[TemporadaController::class,'fob'])->name('temporada.fob');
 
+Route::get('balance/{temporada}/fobtree',[TemporadaController::class,'fobtree'])->name('temporada.fobtree');
+
 Route::get('balance/{temporada}/recepcion',[TemporadaController::class,'recepcion'])->name('temporada.recepcion');
 
 Route::get('balance/{temporada}/procesos',[TemporadaController::class,'procesos'])->name('temporada.procesos');

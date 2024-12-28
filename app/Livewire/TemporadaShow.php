@@ -156,6 +156,12 @@ class TemporadaShow extends Component
         $this->render();
     }
 
+    public function checkfobcategoria($categoria)
+    {   
+        $this->filters['ncategoria'] = $categoria; // reindexar el array
+        $this->render();
+    }
+
     public function checkfolioreset()
     {   
       

@@ -534,6 +534,13 @@ class TemporadaController extends Controller
         return view('temporadas.fob',compact('temporada','fob'));
     }
 
+    public function fobtree(Temporada $temporada)
+    {  
+        $fob=Fob::where('temporada_id',$temporada->id)->paginate(3);
+
+        return view('temporadas.fobtree',compact('temporada','fob'));
+    }
+
     public function recepcion(Temporada $temporada)
     {  
         return view('temporadas.recepcion',compact('temporada'));
