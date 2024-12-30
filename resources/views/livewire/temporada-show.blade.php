@@ -1833,7 +1833,7 @@
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                   
                 @if ($vista=='resumes')
-                 
+                  {{-- comment
                     <h1 class="ml-10 mt-2" >Exportación</h1>
                     <div class="flex flex-col mb-2 ml-4">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -1910,8 +1910,9 @@
                                               $kgsp=0;
                                               $costopacking=0;
                                           @endphp
-                                          @foreach ($masastotal->whereIn('n_categoria', $exportacionCodes)->where('n_variedad',$item->name) as $masa)
+                                          @foreach ($masastotal->whereIn('n_categoria', $exportacionCodes) as $masa)
                                             @php
+                                                if ($masa->n_variedad==$item->name) {
                                                   $cajasbulto+=$masa->cantidad;
                                                   $pesoneto+=$masa->peso_neto;
                                                   $globalcajasbulto+=$masa->cantidad;
@@ -1942,7 +1943,7 @@
                                                         $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
                                                     }
-                                            /*
+            
                                                   foreach ($materialestotal as $material) {
                                                     if ($material->c_embalaje==$masa->c_embalaje) {
                                                       $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
@@ -1956,7 +1957,7 @@
                                                       $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                     }  
                                                   }
-                                              */
+                                                }
                                                 
                                               @endphp
                                           @endforeach
@@ -2088,7 +2089,7 @@
                           </div>
                       </div>
                     </div>
-                  {{-- comment   
+                    
                     <h1 class="ml-10 mt-2" >Mercado Interno</h1>
                     <div class="flex flex-col mb-2 ml-4">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
