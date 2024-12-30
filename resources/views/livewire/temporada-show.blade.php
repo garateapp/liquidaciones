@@ -1910,9 +1910,8 @@
                                               $kgsp=0;
                                               $costopacking=0;
                                           @endphp
-                                          @foreach ($masastotal->whereIn('n_categoria', $exportacionCodes) as $masa)
+                                          @foreach ($masastotal->whereIn('n_categoria', $exportacionCodes)->where('n_variedad',$item->name) as $masa)
                                             @php
-                                                if ($masa->n_variedad==$item->name) {
                                                   $cajasbulto+=$masa->cantidad;
                                                   $pesoneto+=$masa->peso_neto;
                                                   $globalcajasbulto+=$masa->cantidad;
@@ -1957,7 +1956,7 @@
                                                       $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                     }  
                                                   }
-                                                }
+                                              
                                                 
                                               @endphp
                                           @endforeach
