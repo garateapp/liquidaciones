@@ -1833,7 +1833,7 @@
               <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                   
                 @if ($vista=='resumes')
-                  {{-- comment
+                 
                     <h1 class="ml-10 mt-2" >Exportación</h1>
                     <div class="flex flex-col mb-2 ml-4">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -2089,6 +2089,7 @@
                           </div>
                       </div>
                     </div>
+                  {{-- comment   
                     <h1 class="ml-10 mt-2" >Mercado Interno</h1>
                     <div class="flex flex-col mb-2 ml-4">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
