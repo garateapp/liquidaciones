@@ -24,6 +24,19 @@ class Fob extends Model
             $query->where('etiqueta','like','%'.$etiqueta.'%');
         })->when($filters['ncategoria'] ?? null,function($query,$ncategoria){
             $query->where('categoria','like','%'.$ncategoria.'%');
+        })->when($filters['norma'] ?? null, function ($query, $norma) {
+            if ($norma === 'dentro') {
+                $query->where('categoria', 'CAT1')
+                    ->whereNotIn('n_calibre', ['L', 'LD'])
+                    ->where('etiqueta', '!=', 'LOI');
+            }
+            if ($norma === 'fuera') {
+                $query->where(function ($query) {
+                    $query->orWhere('n_calibre', 'L')
+                        ->orWhere('categoria', 'CAT I')
+                        ->orWhere('etiqueta', 'LOI');
+                });
+            }
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
         })->when($filters['color'] ?? null,function($query,$color){
