@@ -4438,15 +4438,6 @@
 
                 @if ($vista=='FOB TREE')
 
-                1- Categoria (Primero ver FOB promedio de categorias)
-                Luego desplegar y ver:
-               //  2_ Variedad
-               //  3-Etiqueta
-               //  4-Embalaje
-               // 5_Calibre
-              //  6-Color
-              //  7.-Semana
-                
 
               <div class="main flex flex-col m-5">
                
