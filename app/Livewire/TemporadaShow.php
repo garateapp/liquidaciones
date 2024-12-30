@@ -63,6 +63,7 @@ class TemporadaShow extends Component
         'mie'=>'',
         'mn'=>'',
         'desc'=>'',
+        'color'=>'',
         'calibre'=>'',
         'etiqueta'=>'',
         'etiquetas'=>'[]',
@@ -158,8 +159,47 @@ class TemporadaShow extends Component
 
     public function checkfobcategoria($categoria)
     {   
-        $this->filters['ncategoria'] = $categoria; // reindexar el array
+        if($this->filters['ncategoria'] == $categoria){
+            $this->filters['ncategoria'] = ""; // reindexar el array
+        }else{
+            $this->filters['ncategoria'] = $categoria; // reindexar el array
+        }
+            
+
+        $this->filters['variedad']="";
+        $this->filters['etiqueta']="";
+        $this->filters['calibre']="";
         $this->render();
+    }
+
+    public function checkfobvariedad($variedad){
+        //$this->productorid=$razonsocial;
+        $this->filters['variedad']=$variedad;
+        $this->filters['etiqueta']="";
+        $this->filters['calibre']="";
+    }
+
+    public function checkfobetiqueta($etiqueta){
+        //$this->productorid=$razonsocial;
+        $this->filters['etiqueta']=$etiqueta;
+        $this->filters['material']="";
+        $this->filters['calibre']="";
+    }
+
+    public function checkfobmaterial($material){
+        //$this->productorid=$razonsocial;
+        $this->filters['material']=$material;
+        $this->filters['calibre']="";
+    }
+
+    public function checkfobcalibre($calibre){
+        //$this->productorid=$razonsocial;
+        $this->filters['calibre']=$calibre;
+    }
+
+    public function checkfobcolor($color){
+        //$this->productorid=$razonsocial;
+        $this->filters['color']=$color;
     }
 
     public function checkfolioreset()
@@ -348,6 +388,19 @@ class TemporadaShow extends Component
 
         $fobsall=Fob::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
 
+        $fobsall2=Fob::where('temporada_id',$this->temporada->id)->get();
+
+
+        $color_fobs=$fobsall->pluck('color')->unique()->sort()->values()->all();
+
+        $categoria_fobs=$fobsall->pluck('categoria')->unique()->sort()->values()->all();
+
+        $etiqueta_fobs=$fobsall->pluck('etiqueta')->unique()->sort()->values()->all();
+
+        $embalaje_fobs=$fobsall->pluck('embalaje')->unique()->sort()->values()->all();
+
+        $calibre_fobs=$fobsall->pluck('n_calibre')->unique()->sort()->values()->all();
+
         $masasbalances = Balancemasa::filter($this->filters)
                 ->where('temporada_id', $this->temporada->id)
                 ->whereIn('exportadora', ['Greenex SpA', '22'])
@@ -459,7 +512,7 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
@@ -1861,6 +1914,9 @@ class TemporadaShow extends Component
         //$this->productorid=$razonsocial;
         $this->filters['razonsocial']=$razonsocial->csg;
     }
+
+    
+    
 
     public function set_gastoid($detalle_id){
         $this->gastoid=$detalle_id;

@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -4450,40 +4450,206 @@
 
               <div class="main flex flex-col m-5">
                
-                @foreach ($exportacionCodes as $categoria)
-                  <div wire:click="checkfobcategoria('{{$categoria}}')">
-                    <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
+                @foreach ($categoria_fobs as $categoria)
+                  <div wire:click="checkfobcategoria('{{$categoria}}')" class="@if($filters['ncategoria']==$categoria) ml-2  @endif">
+                    <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-100  @endif">
                       <div class="left">
                         <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$categoria}}</div>
                         <div class="desc text-gray-600">Categoria de Exportación</div>
                       </div>
                       <div class="right m-auto mr-0">
-                        <div class="icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </div>
+                        @if($fobsall2->where('categoria',$categoria)->count()>0)
+                          <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$categoria)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$categoria)->count(),2,',','.')}}</p>
+                        @else
+                          <p class="text-2xl font-bold text-gray-600">-</p>
+                        @endif
+                        
                       </div>
                     </div>
                   </div>
                   @if($filters['ncategoria']==$categoria) 
-                    @foreach ($unique_variedades as $variedad)
-                      <div wire:click="checkfobcategoria('{{$categoria}}')" class="ml-2">
-                        <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
-                          <div class="left">
-                            <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$variedad->name}}</div>
-                            <div class="desc text-gray-600">Variedad</div>
-                          </div>
-                          <div class="right m-auto mr-0">
-                            <div class="icon">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                              </svg>
+                    @if($filters['variedad']) 
+                        <div wire:click="checkfobcategoria('{{$categoria}}')" class="ml-4">
+                          <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
+                            <div class="left">
+                              <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$filters['variedad']}}</div>
+                              <div class="desc text-gray-600">Variedad</div>
+                            </div>
+                            <div class="right m-auto mr-0">
+                              @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->count()>0)
+                                <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->count(),2,',','.')}}</p>
+                              @else
+                                <p class="text-2xl font-bold text-gray-600">-</p>
+                              @endif
+                              
                             </div>
                           </div>
                         </div>
-                      </div>
-                    @endforeach
+                        @if($filters['etiqueta']) 
+                          <div wire:click="checkfobvariedad('{{$filters['variedad']}}')" class="ml-6">
+                            <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-300  @endif">
+                              <div class="left">
+                                <div class="header  text-gray-600   font-semibold text-2xl">{{$filters['etiqueta']}}</div>
+                                <div class="desc text-gray-600">Etiqueta - Variedad: {{$filters['variedad']}}</div>
+                              </div>
+                              <div class="right m-auto mr-0">
+
+                                @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->count()>0)
+                                  <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->count(),2,',','.')}}</p>
+                                @else
+                                  <p class="text-2xl font-bold text-gray-600">-</p>
+                                @endif
+                                
+                              
+                              </div>
+                            </div>
+                          </div>
+                          @if ($filters['material'])
+                              <div wire:click="checkfobmaterial('{{$etiqueta}}')" class="ml-8">
+                                <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['material']==$filters['material']) bg-gray-300  @endif">
+                                  <div class="left">
+                                    <div class="header @if($filters['material']==$filters['material']) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$filters['material']}}</div>
+                                    <div class="desc text-gray-600">Embalaje - Etiqueta: {{$filters['etiqueta']}}</div>
+                                  </div>
+                                  <div class="right m-auto mr-0">
+
+                                    @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->count()>0)
+                                      <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->count(),2,',','.')}}</p>
+                                    @else
+                                      <p class="text-2xl font-bold text-gray-600">-</p>
+                                    @endif
+                                    
+                                 
+                                  </div>
+                                </div>
+                              </div>
+                              @if ($filters['calibre'])
+                                <div wire:click="checkfobmaterial('{{$filters['material']}}')" class="ml-10">
+                                  <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['material']==$etiqueta) bg-gray-400  @endif">
+                                    <div class="left">
+                                      <div class="header @if($filters['material']==$etiqueta) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$filters['calibre']}}</div>
+                                      <div class="desc text-gray-600">Calibre - Embalaje: {{$filters['calibre']}}</div>
+                                    </div>
+                                    <div class="right m-auto mr-0">
+                                      @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->count()>0)
+                                        <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->count(),2,',','.')}}</p>
+                                      @else
+                                        <p class="text-2xl font-bold text-gray-600">-</p>
+                                      @endif
+                                    </div>
+                                  </div>
+                                </div>
+                              
+                                @foreach ($color_fobs as $color)
+                                  @if($color)
+                                    <div wire:click="checkfobcolor('{{$color}}')" class="ml-12">
+                                      <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['material']==$color) bg-gray-400  @endif">
+                                        <div class="left">
+                                          <div class="header @if($filters['material']==$color) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$color}}</div>
+                                          <div class="desc text-gray-600">Calibre - Embalaje: {{$filters['material']}}</div>
+                                        </div>
+                                        <div class="right m-auto mr-0">
+                                          @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->count()>0)
+                                            <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->where('color',$color)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$filters['calibre'])->where('color',$color)->count(),2,',','.')}}</p>
+                                          @else
+                                            <p class="text-2xl font-bold text-gray-600">-</p>
+                                          @endif
+                                        </div>
+                                      </div>
+                                    </div>
+                                  @endif
+                                @endforeach
+
+                              @else
+                                
+                                @foreach ($calibre_fobs as $calibre)
+                                  @if($calibre)
+                                    <div wire:click="checkfobcalibre('{{$calibre}}')" class="ml-10">
+                                      <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['material']==$calibre) bg-gray-400  @endif">
+                                        <div class="left">
+                                          <div class="header @if($filters['material']==$calibre) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$calibre}}</div>
+                                          <div class="desc text-gray-600">Calibre - Embalaje: {{$filters['material']}}</div>
+                                        </div>
+                                        <div class="right m-auto mr-0">
+                                          @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$calibre)->count()>0)
+                                            <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$calibre)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$filters['material'])->where('n_calibre',$calibre)->count(),2,',','.')}}</p>
+                                          @else
+                                            <p class="text-2xl font-bold text-gray-600">-</p>
+                                          @endif
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                  @endif
+                                @endforeach
+                              @endif
+                          @else
+                              @foreach ($embalaje_fobs as $embalaje)
+                                @if($embalaje)
+                                  <div wire:click="checkfobmaterial('{{$embalaje}}')" class="ml-8">
+                                    <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['material']==$embalaje) bg-gray-400  @endif">
+                                      <div class="left">
+                                        <div class="header @if($filters['material']==$embalaje) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$embalaje}}</div>
+                                        <div class="desc text-gray-600">Embalaje - Etiqueta: {{$filters['etiqueta']}}</div>
+                                      </div>
+                                      <div class="right m-auto mr-0">
+                                        @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$embalaje)->count()>0)
+                                          <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$embalaje)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$filters['etiqueta'])->where('embalaje',$embalaje)->count(),2,',','.')}}</p>
+                                        @else
+                                          <p class="text-2xl font-bold text-gray-600">-</p>
+                                        @endif
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                @endif
+                              @endforeach
+                          @endif
+
+
+                        @else
+                          @foreach ($etiqueta_fobs as $etiqueta)
+                            @if($etiqueta)
+                              <div wire:click="checkfobetiqueta('{{$etiqueta}}')" class="ml-6">
+                                <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-300  @endif">
+                                  <div class="left">
+                                    <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$etiqueta}}</div>
+                                    <div class="desc text-gray-600">Etiqueta - Variedad: {{$filters['variedad']}}</div>
+                                  </div>
+                                  <div class="right m-auto mr-0">
+                                    @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$etiqueta)->count()>0)
+                                      <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$etiqueta)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$filters['variedad'])->where('etiqueta',$etiqueta)->count(),2,',','.')}}</p>
+                                    @else
+                                      <p class="text-2xl font-bold text-gray-600">-</p>
+                                    @endif
+                                  
+                                  </div>
+                                </div>
+                              </div>
+                            @endif
+                          @endforeach
+                        @endif
+
+                    @else
+                      @foreach ($unique_variedades as $variedad)
+                        <div wire:click="checkfobvariedad('{{$variedad->name}}')" class="ml-4">
+                          <div class="each flex hover:shadow-lg select-none px-2 py-1 rounded-md border-gray-300 border mb-1 hover:border-gray-500 cursor-pointer @if($filters['ncategoria']==$categoria) bg-gray-200  @endif">
+                            <div class="left">
+                              <div class="header @if($filters['ncategoria']==$categoria) text-gray-600 @else text-blue-600  @endif  font-semibold text-2xl">{{$variedad->name}}</div>
+                              <div class="desc text-gray-600">Variedad</div>
+                            </div>
+                            <div class="right m-auto mr-0">
+                              @if($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$variedad->name)->count()>0)
+                                <p class="text-2xl font-bold text-gray-600">{{number_format($fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$variedad->name)->sum('fob_kilo_salida')/$fobsall2->where('categoria',$filters['ncategoria'])->where('n_variedad',$variedad->name)->count(),2,',','.')}}</p>
+                              @else
+                                <p class="text-2xl font-bold text-gray-600">-</p>
+                              @endif
+                            </div>
+                          </div>
+                        </div>
+                      @endforeach
+
+                    @endif
                   @endif
                 @endforeach
                

@@ -19,11 +19,15 @@ class Fob extends Model
 
     public function scopeFilter($query,$filters){
         $query->when($filters['variedad'] ?? null,function($query,$variedad){
-            $query->where('n_variedad','like','%'.$variedad.'%');
+            $query->where('n_variedad','like',$variedad);
         })->when($filters['etiqueta'] ?? null,function($query,$etiqueta){
             $query->where('etiqueta','like','%'.$etiqueta.'%');
+        })->when($filters['ncategoria'] ?? null,function($query,$ncategoria){
+            $query->where('categoria','like','%'.$ncategoria.'%');
         })->when($filters['calibre'] ?? null,function($query,$calibre){
             $query->where('n_calibre',$calibre);
+        })->when($filters['color'] ?? null,function($query,$color){
+            $query->where('color',$color);
         })->when($filters['semana'] ?? null,function($query,$semana){
             $query->where('semana',$semana);
         })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
