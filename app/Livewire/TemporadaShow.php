@@ -189,7 +189,6 @@ class TemporadaShow extends Component
     public function checkfobmaterial($material){
         //$this->productorid=$razonsocial;
         $this->filters['material']=$material;
-        $this->filters['calibre']="";
     }
 
     public function checkfobcalibre($calibre){
