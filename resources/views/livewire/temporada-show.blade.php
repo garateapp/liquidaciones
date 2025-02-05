@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid">
+                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid, save_fobid">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -1123,7 +1123,7 @@
                 </div>
               </div>
 
-              @if($vista=="FOB" || $vista=="MASAS")
+              @if($vista=="FOB TREE" || $vista=="FOB" || $vista=="MASAS")
                 <div class="px-6 pt-6 2xl:container">
                   <div class="grid gap-6 md:grid-cols-3 lg:grid-cols-3">
                       <div class="md:col-span-1 lg:col-span-1" >
@@ -4388,24 +4388,20 @@
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
-                                @else
+                               
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format(floatval($fob->fob_kilo_salida),2,',','.')}}</p>
-                                @endif
-
-                             
+                              
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                    <input wire:model="preciofob2" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida2,2,',','.')}}</p>
                                 @endif
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                    <input wire:model="preciofob3" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida3,2,',','.')}}</p>
                                 @endif
@@ -4733,24 +4729,18 @@
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$fob->categoria}}</p>
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
-                                @else
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format(floatval($fob->fob_kilo_salida),2,',','.')}}</p>
-                                @endif
-
-                             
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                    <input wire:model="preciofob2" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida2,2,',','.')}}</p>
                                 @endif
                               </td>
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($fobid==$fob->id)
-                                    <input wire:model="preciofob" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
+                                    <input wire:model="preciofob3" class="w-32 shadow-sm  border-2 border-gray-300 bg-white h-10 px-2 rounded-lg focus:outline-none">
                                 @else
                                   <p class="text-gray-900 whitespace-no-wrap"> {{number_format($fob->fob_kilo_salida3,2,',','.')}}</p>
                                 @endif
@@ -4760,7 +4750,7 @@
 
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 @if ($fobid==$fob->id)
-                                  <span wire:click='save_fobid()' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                  <span wire:click='save_fobid' class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                                     <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                     <span class="relative">Guardar</span>
                                   </span>

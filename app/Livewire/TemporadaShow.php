@@ -39,7 +39,7 @@ use Livewire\WithPagination;
 
 class TemporadaShow extends Component
 {   use WithPagination;
-    public $fechaetd, $syncfecha, $foliosexept, $syncfactor, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
+    public $fechaetd, $syncfecha, $foliosexept, $syncfactor, $fechai, $fechaf, $first_recepcion, $last_recepcion, $variedadpacking, $tipo_procesos, $tipo_procesos2, $productorid, $familia,$unidad, $item, $descuenta, $categoria, $masaid, $gastoid, $gastocant, $fobid, $preciomasa , $preciofob2 , $preciofob3 , $temporada,$vista,$razonsocial,$type,$precio_usd, $etiqueta, $empresa, $exportacionedit_id, $valor, $ctd=25;
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
@@ -1991,13 +1991,18 @@ class TemporadaShow extends Component
 
     public function set_fobid($fobid){
         $this->fobid=$fobid;
-        $this->preciofob=Fob::find($fobid)->fob_kilo_salida;
+        $this->preciofob2=Fob::find($fobid)->fob_kilo_salida2;
+        $this->preciofob3=Fob::find($fobid)->fob_kilo_salida3;
     }
 
     public function save_fobid(){
         $fob=Fob::find($this->fobid);
-        $fob->update(['fob_kilo_salida'=>$this->preciofob]);    
-        $this->reset(['preciofob','fobid']);
+        if($this->preciofob2 || $this->preciofob3){
+            $fob->update(['fob_kilo_salida2'=>$this->preciofob2,
+                  'fob_kilo_salida3'=>$this->preciofob3]);
+        }
+      
+        $this->reset(['preciofob2','preciofob3','fobid']);
         
     }
     
