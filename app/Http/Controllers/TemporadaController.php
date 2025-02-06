@@ -31,6 +31,7 @@ use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Gasto;
 use App\Models\Material;
+use App\Models\PackingCode;
 use App\Models\Proceso;
 use App\Models\Razonsocial;
 use App\Models\Recepcion;
@@ -681,7 +682,7 @@ class TemporadaController extends Controller
 
         $file = $request->file('file');
 
-        $masas=Material::where('temporada_id',$request->temporada)->get();
+        $masas=PackingCode::where('temporada_id',$request->temporada)->get();
         
         foreach ($masas as $masa){
             $masa->delete();
