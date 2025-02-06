@@ -107,6 +107,8 @@ Route::post('costos/packing/import',[TemporadaController::class,'importCostosPac
 
 Route::post('costos/materiales/import',[TemporadaController::class,'importMateriales'])->name('temporada.importMateriales');
 
+Route::post('costos/packingcode/import',[TemporadaController::class,'importPackingcode'])->name('temporada.importPackingcode');
+
 Route::get('edit/{exportacion}/{temporada}',[TemporadaController::class,'exportacionedit'])->name('exportacion.edit');
 
 Route::get('edit/gasto/{gasto}/{temporada}',[TemporadaController::class,'gastoedit'])->name('gasto.edit');

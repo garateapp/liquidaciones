@@ -15,6 +15,7 @@ use App\Imports\FleteImport;
 use App\Imports\FobImport;
 use App\Imports\GastoImport;
 use App\Imports\MaterialImport;
+use App\Imports\PackingCodeImport;
 use App\Imports\PackingImport;
 use App\Imports\ResumenImport;
 use App\Models\Anticipo;
@@ -671,6 +672,28 @@ class TemporadaController extends Controller
 
         return redirect()->route('temporada.materiales',$temporada)->with('info','Importación realizada con exito');
     }
+
+    
+    public function importPackingcode(Request $request)
+    {    $request->validate([
+            'file'=>'required|mimes:csv,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        $masas=Material::where('temporada_id',$request->temporada)->get();
+        
+        foreach ($masas as $masa){
+            $masa->delete();
+        }
+
+        FacadesExcel::import(new PackingCodeImport($request->temporada),$file);
+
+        $temporada=Temporada::find($request->temporada);
+
+        return redirect()->route('temporada.packing',$temporada)->with('info','Importación realizada con exito');
+    }
+
     public function exportacionedit(Exportacion $exportacion,Temporada $temporada)
     {   
         return view('exportacion.edit',compact('exportacion','temporada'));

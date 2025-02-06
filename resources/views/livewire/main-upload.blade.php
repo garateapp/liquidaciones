@@ -114,32 +114,80 @@
                 {{-- Seccción formulario --}}
 
                 <div class="flex justify-center" x-show="packing">
-                    <div>
-                    <h1 class="text-xl font-semibold mb-4">
-                        Por favor selecione el archivo de "Costos de packing" que desea importar
-                    </h1>
-                    <div class="flex">
-                        
-                        <form action="{{route('temporada.importCostosPacking')}}"
-                            method="POST"
-                            class="bg-white rounded p-8 shadow"
-                            enctype="multipart/form-data">
+                    
+                    <div x-data="{ subpacking: true }">
+                        <div class="mx-8 shadow rounded-full border h-12 mt-4 flex items-center bg-gray-300 relative mb-4">
+                            <!-- Botón Por Código -->
+                            <div class="w-1/2 text-center">
+                                <button @click="subpacking = true" class="px-4 py-2 font-semibold text-gray-700">Por Código</button>
+                            </div>
                             
-                            @csrf
+                            <!-- Botón Por Productor -->
+                            <div class="w-1/2 text-center">
+                                <button @click="subpacking = false" class="px-4 py-2 font-semibold text-gray-700">Por Productor</button>
+                            </div>
+                        
+                            <!-- Switch -->
+                            <span 
+                                class="absolute w-1/2 h-10 bg-white shadow-md rounded-full transition-all duration-300 flex items-center justify-center font-semibold"
+                                :class="subpacking ? 'left-1' : 'left-1/2'">
+                                <span x-text="subpacking ? 'Por Código' : 'Por Productor'"></span>
+                            </span>
+                        </div>
+                        
 
-                            <input type="hidden" name="temporada" value={{$temporada->id}}>
+                        
+                        <h1 x-show="subpacking" class="text-xl font-semibold mb-4">
+                            Por favor selecione el archivo de "Costos de packing por Codigo" que desea importar
+                        </h1>
+                        <div x-show="subpacking" class="flex">
+                            
+                            <form action="{{route('temporada.importCostosPacking')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
 
-                            <x-validation-errors class="errors">
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                            </x-validation-errors>
+                                <x-validation-errors class="errors">
 
-                            <input type="file" name="file" accept=".csv,.xlsx">
+                                </x-validation-errors>
 
-                            <x-button class="ml-4">
-                                Importar
-                            </x-button>
-                        </form>
-                    </div>
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+                        </div>
+
+                        <h1 x-show="!subpacking" class="text-xl font-semibold mb-4">
+                            Por favor selecione el archivo de "Costos de packing por Productor" que desea importar
+                        </h1>
+                        <div x-show="!subpacking" class="flex">
+                            
+                            <form action="{{route('temporada.importCostosPacking')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
+
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                                <x-validation-errors class="errors">
+
+                                </x-validation-errors>
+
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
