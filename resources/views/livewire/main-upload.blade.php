@@ -142,7 +142,7 @@
                         </h1>
                         <div x-show="subpacking" class="flex">
                             
-                            <form action="{{route('temporada.importCostosPacking')}}"
+                            <form action="{{route('temporada.importPackingcode')}}"
                                 method="POST"
                                 class="bg-white rounded p-8 shadow"
                                 enctype="multipart/form-data">
