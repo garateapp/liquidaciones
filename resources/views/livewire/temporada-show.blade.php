@@ -1943,7 +1943,7 @@
                                                         $globalgastoexportacion+=$masa->peso_neto*$exportacions->where('type','maritimo')->first()->precio_usd;
                                                       }
                                                     }
-            
+                                                    /*
                                                   foreach ($materialestotal as $material) {
                                                     if ($material->c_embalaje==$masa->c_embalaje) {
                                                       $totalmateriales+=$masa->cantidad*$material->costo_por_caja_usd;
@@ -1957,6 +1957,7 @@
                                                       $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                     }  
                                                   }
+*/
                                                 }
                                                 
                                               @endphp
