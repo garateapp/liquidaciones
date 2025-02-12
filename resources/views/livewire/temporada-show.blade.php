@@ -1957,7 +1957,7 @@
                                                       $globalfletehuerto+=$masa->peso_neto*$flete->tarifa;
                                                     }  
                                                   }
-*/
+                                                  */
                                                 }
                                                 
                                               @endphp
