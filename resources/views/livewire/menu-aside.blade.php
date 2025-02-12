@@ -143,8 +143,8 @@
             <a href="{{route('temporada.packing',$temporada)}}"
             wire:navigate>
               <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-                <div class="rounded-full p-2 @if($temporada->packings->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
-                  <i class="fas fa-chart-pie fa-sm @if($temporada->packings->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+                <div class="rounded-full p-2 @if($temporada->packings->count()>0 || $temporada->packingcodes->count()>0)bg-green-200 @else bg-indigo-200 @endif flex flex-col items-center">
+                  <i class="fas fa-chart-pie fa-sm @if($temporada->packings->count()>0 || $temporada->packingcodes->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
                 </div>
                 <p class="text-xs mt-1 text-center font-semibold">Costos Packing</p>
               </div>

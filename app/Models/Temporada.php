@@ -29,6 +29,11 @@ class Temporada extends Model
         return $this->hasmany('App\Models\CostoPacking');
     }
 
+    // relacion uno a muchos inversa
+    public function packingcodes(){
+        return $this->hasmany('App\Models\PackingCode');
+    }
+
     public function materials(){
         return $this->hasmany('App\Models\Material');
     }

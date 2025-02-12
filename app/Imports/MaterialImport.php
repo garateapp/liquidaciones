@@ -28,8 +28,7 @@ class MaterialImport implements ToCollection, WithStartRow
                  Material::create([ 
                     'temporada_id'=>$this->temporada,
                     'c_embalaje'=> $row[0],
-                    'costo_por_caja_usd'=> $row[1],
-                    'descripcion'=> $row[2]
+                    'costo_por_caja_usd'=> $row[1]
                 ]);
             }
         }

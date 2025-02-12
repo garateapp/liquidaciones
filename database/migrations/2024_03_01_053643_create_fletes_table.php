@@ -19,10 +19,10 @@ return new class extends Migration
             ->constrained()
             ->onDelete('cascade');
 
-            $table->string('grupo')->nullable();
-            $table->string('rut')->nullable();
+            $table->string('condicion')->nullable();
             $table->string('productor')->nullable();
-            $table->string('tarifa')->nullable();
+            $table->string('clp')->nullable();
+            $table->string('usd')->nullable();
             
             $table->timestamps();
         });

@@ -18,7 +18,7 @@
         
         <div class="card">
 
-            @if ($CostosPackings->count()==0)
+            @if ($CostosPackings->count()==0 && $packingCodes->count()==0)
                     <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
                     <hr class="mt-2 mb-6">
                     <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">

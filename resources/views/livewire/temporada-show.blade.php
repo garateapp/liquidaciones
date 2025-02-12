@@ -3153,34 +3153,36 @@
                       
                       </tbody>
                     </table>
-          
-                    <div>
-                      <h1 class="text-xl font-semibold mb-4 text-center">
-                          Por favor selecione el archivo de "Costos de packing" que desea importar
-                      </h1>
-                      <div class="flex justify-center ">
-                          
-                          <form action="{{route('temporada.importCostosPacking')}}"
-                              method="POST"
-                              class="bg-white rounded p-8 shadow"
-                              enctype="multipart/form-data">
-                              
-                              @csrf
 
-                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+                    @if ($CostosPackings->count()>0)
+                      <div>
+                        <h1 class="text-xl font-semibold mb-4 text-center">
+                            Por favor selecione el archivo de "Costos de packing" que desea importar
+                        </h1>
+                        <div class="flex justify-center ">
+                            
+                            <form action="{{route('temporada.importCostosPacking')}}"
+                                method="POST"
+                                class="bg-white rounded p-8 shadow"
+                                enctype="multipart/form-data">
+                                
+                                @csrf
 
-                              <x-validation-errors class="errors">
+                                <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                              </x-validation-errors>
+                                <x-validation-errors class="errors">
 
-                              <input type="file" name="file" accept=".csv,.xlsx">
+                                </x-validation-errors>
 
-                              <x-button class="ml-4">
-                                  Importar
-                              </x-button>
-                          </form>
+                                <input type="file" name="file" accept=".csv,.xlsx">
+
+                                <x-button class="ml-4">
+                                    Importar
+                                </x-button>
+                            </form>
+                        </div>
                       </div>
-                    </div>
+                   
                       <table class="min-w-full leading-normal">
                         <thead>
                           <tr>
@@ -3277,6 +3279,62 @@
                         
                         </tbody>
                       </table>
+                    @endif
+                    @if ($PackingCodes->count()>0)
+                    <div class="mt-4">
+                      <h1 class="text-xl font-semibold mb-4 text-center">
+                          Por favor selecione el archivo de "Costos de packing por Codigo" que desea importar
+                      </h1>
+                      <div class="flex justify-center ">
+                          
+                          <form action="{{route('temporada.importPackingcode')}}"
+                              method="POST"
+                              class="bg-white rounded p-8 shadow"
+                              enctype="multipart/form-data">
+                              
+                              @csrf
+
+                              <input type="hidden" name="temporada" value={{$temporada->id}}>
+
+                              <x-validation-errors class="errors">
+
+                              </x-validation-errors>
+
+                              <input type="file" name="file" accept=".csv,.xlsx">
+
+                              <x-button class="ml-4">
+                                  Importar
+                              </x-button>
+                          </form>
+                      </div>
+                    </div>
+                      <table class="min-w-full leading-normal">
+                        <thead>
+                            <tr>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Código Embalaje
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Costo por Caja (USD)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($PackingCodes as $costo)
+                                <tr>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $costo->c_embalaje }}</p>
+                                    </td>
+                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ number_format($costo->costo_por_caja_usd, 2) }}</p>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                      </table>
+                      
+                    @endif
+                  
                 @endif
 
                 @if ($vista=='MATERIALES') 
@@ -3323,20 +3381,14 @@
                     <table class="min-w-full leading-normal">
                       <thead>
                         <tr>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             CODIGO DE EMBALAJE
                           </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             TARIFA (DolaresxCaja)
                           </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            DESCRIPCION
-                          </th>
-                          <th
-                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                         
+                          <th class="hidden px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             ACCIÓN
                           </th>
                         
@@ -3363,14 +3415,10 @@
                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <p class="text-gray-900 whitespace-no-wrap"> {{$material->costo_por_caja_usd}}</p>
                               </td>
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                  {{$material->descripcion}}
-                                </p>
-                              </td>
+                              
                           
 
-                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <td class="hidden px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                 <span
                                                       class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                                                       <span aria-hidden
@@ -3571,18 +3619,18 @@
                       <tr>
                         <th
                           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Grupo
+                        Condicion  
                         </th>
                         <th
                           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Rut
+                        Productor
                         </th>
                         <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Productor
+                      CLP
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        TARIFA
+                        USD
                         </th>
                     
                       
@@ -3602,19 +3650,19 @@
                                                     </div>
                                   <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                      {{$flete->grupo}}
+                                      {{$flete->condicion}}
                                     </p>
                                   </div>
                                 </div>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->rut}}</p>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                               <p class="text-gray-900 whitespace-no-wrap"> {{$flete->productor}}</p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->tarifa}}</p>
+                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->clp}}</p>
+                            </td>
+                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                              <p class="text-gray-900 whitespace-no-wrap"> {{$flete->usd}}</p>
                             </td>
                         
                         

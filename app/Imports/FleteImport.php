@@ -28,10 +28,10 @@ class FleteImport implements ToCollection, WithStartRow
                  Flete::create([ 
                     'temporada_id'=>$this->temporada,
 
-                    'grupo'=> $row[0],
-                    'rut'=> $row[1],
-                    'productor'=> $row[2],
-                    'tarifa'=> $row[3]
+                    'condicion'=> $row[0],
+                    'productor'=> $row[1],
+                    'clp'=> $row[2],
+                    'usd'=> $row[3]
                 ]);
             }
         }

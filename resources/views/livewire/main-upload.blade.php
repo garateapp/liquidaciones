@@ -140,7 +140,7 @@
                         <h1 x-show="subpacking" class="text-xl font-semibold mb-4">
                             Por favor selecione el archivo de "Costos de packing por Codigo" que desea importar
                         </h1>
-                        <div x-show="subpacking" class="flex">
+                        <div x-show="subpacking" class="flex justify-center">
                             
                             <form action="{{route('temporada.importPackingcode')}}"
                                 method="POST"
@@ -162,11 +162,20 @@
                                 </x-button>
                             </form>
                         </div>
-
+                        <div x-show="subpacking" class="flex justify-center mt-4">
+                            
+                            <div> 
+                                <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
+                                <button wire:click='packingcode_export({{$temporada->id}})' class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                    <span>Download</span>
+                                </button>
+                            </div> 
+                        </div>
                         <h1 x-show="!subpacking" class="text-xl font-semibold mb-4">
                             Por favor selecione el archivo de "Costos de packing por Productor" que desea importar
                         </h1>
-                        <div x-show="!subpacking" class="flex">
+                        <div x-show="!subpacking" class="flex justify-center">
                             
                             <form action="{{route('temporada.importCostosPacking')}}"
                                 method="POST"
@@ -188,36 +197,51 @@
                                 </x-button>
                             </form>
                         </div>
+                        <div x-show="!subpacking" class="flex justify-center mt-4">
+                        
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex justify-center" x-show="materiales">
-                    <div>
-                        <h1 class="text-xl font-semibold mb-4">
-                            Por favor selecione el archivo de "Materiales" que desea importar
-                        </h1>
-                        <div class="flex">
-                            
-                            <form action="{{route('temporada.importMateriales')}}"
-                                method="POST"
-                                class="bg-white rounded p-8 shadow"
-                                enctype="multipart/form-data">
+                <div x-show="materiales">
+                    <div class="flex justify-center" >
+                        <div>
+                            <h1 class="text-xl font-semibold mb-4">
+                                Por favor selecione el archivo de "Materiales" que desea importar
+                            </h1>
+                            <div class="flex">
                                 
-                                @csrf
+                                <form action="{{route('temporada.importMateriales')}}"
+                                    method="POST"
+                                    class="bg-white rounded p-8 shadow"
+                                    enctype="multipart/form-data">
+                                    
+                                    @csrf
 
-                                <input type="hidden" name="temporada" value={{$temporada->id}}>
+                                    <input type="hidden" name="temporada" value={{$temporada->id}}>
 
-                                <x-validation-errors class="errors">
+                                    <x-validation-errors class="errors">
 
-                                </x-validation-errors>
+                                    </x-validation-errors>
 
-                                <input type="file" name="file" accept=".csv,.xlsx">
+                                    <input type="file" name="file" accept=".csv,.xlsx">
 
-                                <x-button class="ml-4">
-                                    Importar
-                                </x-button>
-                            </form>
+                                    <x-button class="ml-4">
+                                        Importar
+                                    </x-button>
+                                </form>
+                            </div>
                         </div>
+                    </div>
+                    <div class="flex justify-center mt-4">
+                            
+                        <div> 
+                            <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
+                            <button wire:click='material_export({{$temporada->id}})' class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                <span>Download</span>
+                            </button>
+                        </div> 
                     </div>
                 </div>
 
@@ -368,32 +392,39 @@
                     Por favor selecione el archivo de "Flete a huerto" que desea importar
                   
                 </h1>
-                <div class="flex justify-center" x-show="fletes">
+                <div  x-show="fletes">
 
-
-                  
-                  
-  
-  
-                    <form action="{{route('temporada.importFlete')}}"
-                        method="POST"
-                        class="bg-white rounded p-8 shadow"
-                        enctype="multipart/form-data">
-                        
-                        @csrf
-  
-                        <input type="hidden" name="temporada" value={{$temporada->id}}>
-  
-                        <x-validation-errors class="errors">
-  
-                        </x-validation-errors>
-  
-                        <input type="file" name="file" accept=".csv,.xlsx">
-  
-                        <x-button class="ml-4">
-                            Importar
-                        </x-button>
-                    </form>
+                    <div class="flex justify-center">
+                        <form action="{{route('temporada.importFlete')}}"
+                            method="POST"
+                            class="bg-white rounded p-8 shadow"
+                            enctype="multipart/form-data">
+                            
+                            @csrf
+    
+                            <input type="hidden" name="temporada" value={{$temporada->id}}>
+    
+                            <x-validation-errors class="errors">
+    
+                            </x-validation-errors>
+    
+                            <input type="file" name="file" accept=".csv,.xlsx">
+    
+                            <x-button class="ml-4">
+                                Importar
+                            </x-button>
+                        </form>
+                    </div>
+                    <div class="flex justify-center mt-4">
+                            
+                        <div> 
+                            <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
+                            <button wire:click='flete_export({{$temporada->id}})' class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                <span>Download</span>
+                            </button>
+                        </div> 
+                    </div>
                     
                 </div>
                 

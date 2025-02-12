@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Exports\FleteExport;
+use App\Exports\MaterialExport;
+use App\Exports\PackingcodeExport;
 use App\Models\Balancemasa;
 use App\Models\Comision;
 use App\Models\CostoPacking;
@@ -18,6 +21,7 @@ use App\Models\Temporada;
 use App\Models\Variedad;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MainUpload extends Component
 {   public $familia,$unidad, $item, $descuenta, $categoria, $temporada,$type,$precio_usd, $etiqueta, $empresa, $valor,$vista;
@@ -36,6 +40,21 @@ class MainUpload extends Component
         $familias=Familia::where('status','active')->get();
        
         return view('livewire.main-upload',compact('familias','materiales','resumes','CostosPackings','exportacions','fletes','comisions'));
+    }
+
+    public function packingcode_export(Temporada $temporada)
+    {   
+        return Excel::download(new PackingcodeExport($temporada->id),'Packing_Code.xlsx');
+    }
+
+    public function material_export(Temporada $temporada)
+    {   
+        return Excel::download(new MaterialExport($temporada->id),'Codigo_Materiales.xlsx');
+    }
+
+    public function flete_export(Temporada $temporada)
+    {   
+        return Excel::download(new FleteExport($temporada->id),'Flete_a_huerto.xlsx');
     }
 
     public function exportacion_store(){

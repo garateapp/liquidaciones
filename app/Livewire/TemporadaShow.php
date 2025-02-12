@@ -19,6 +19,7 @@ use App\Models\Flete;
 use App\Models\Fob;
 use App\Models\Gasto;
 use App\Models\Material;
+use App\Models\PackingCode;
 use App\Models\Proceso;
 use App\Models\Razonsocial;
 use App\Models\Recepcion;
@@ -359,8 +360,12 @@ class TemporadaShow extends Component
             }
 
         $CostosPackingsall=CostoPacking::where('temporada_id',$this->temporada->id)->get();
+        if ($this->vista=="MATERIALES") {
+            $materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
+        } else {
+            $materiales=null;
+        }
         
-        //$materiales=Material::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         if ($this->vista=="Embarques") {
             $embarques=Embarque::where('temporada_id',$this->temporada->id)->paginate($this->ctd);
@@ -511,7 +516,9 @@ class TemporadaShow extends Component
         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
 
-        return view('livewire.temporada-show',compact('fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        $PackingCodes=PackingCode::where('temporada_id',$this->temporada->id)->get();
+
+        return view('livewire.temporada-show',compact('materiales','PackingCodes','fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){

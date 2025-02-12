@@ -503,7 +503,8 @@ class TemporadaController extends Controller
     public function packing(Temporada $temporada)
     {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
         $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
-        return view('temporadas.packing',compact('temporada','CostosPackings','resumes'));
+        $packingCodes=PackingCode::where('temporada_id',$temporada->id)->get();
+        return view('temporadas.packing',compact('temporada','CostosPackings','resumes','packingCodes'));
     }
 
     public function exportacion(Temporada $temporada)
