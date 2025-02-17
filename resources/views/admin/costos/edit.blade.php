@@ -22,71 +22,96 @@
         <div class="px-6 py-4">
             {!! Form::model($costo, ['route'=>['admin.costos.update',$costo],'method' => 'put']) !!}
 
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <div>
-                        <div class="form-group flex justify-center">
-                            <div class="block">
-                                {!! Form::label('name', 'Nombre:',['class'=>'text-center']) !!}<br>
-                                {!! Form::text('name', null , ['class' => 'form-control mb-4'.($errors->has('name') ? ' is-invalid' : ''),'placeholder'=>'Escriba un nombre']) !!}
-                                @error('name')
-                                    <span class="invalid-feedback">
-                                        <strong>{{$message}}</strong>
-            
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                </div>
-                <div>
-                <strong class="flex justify-center">Aplica para:</strong>
-                <br>
-
-                    <div class="grid grid-cols-2">
-
-                        <div>
-                        @error('permissions')
-                                <small class="text-danger">
-                                    <strong>{{$message}}</strong>
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div>
+                            <div class="form-group flex justify-center">
+                                <div>
+                                    <div class="block">
+                                        {!! Form::label('name', 'Nombre:',['class'=>'text-center']) !!}<br>
+                                        {!! Form::text('name', null , ['class' => 'form-control mb-4'.($errors->has('name') ? ' is-invalid' : ''),'placeholder'=>'Escriba un nombre']) !!}
+                                        @error('name')
+                                            <span class="invalid-feedback">
+                                                <strong>{{$message}}</strong>
                     
-                                </small>
-                        @enderror
-                
-                        @foreach($especies as $permission)
-                            <div class="">
-                                <label class="">
-                                    {!! Form::checkbox('superespecies[]', $permission->id ,null, ['class' => 'mr-1']) !!}
-                                    {{$permission->name}}
-                                </label>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @php
+                                       $opciones = [
+                                            'null'=> 'NULL',
+                                            'TPC' => 'Tarifa Por Caja',
+                                            'MTC' => 'Monto total (Divido por Categoría)',
+                                            'MTE' => 'Monto total (Separado por Especie)',
+                                            'TPK' => 'Tarifa Por Kilo',
+                                            'MTEB' => 'Monto Total (Por número de Embarque)',
+                                            'MTEmp' => 'Monto total (Por Empresa)',
+                                            'MTT' => 'Monto total (Según tipo de Transporte)'
+                                        ];
+                                    @endphp
+                                  
+                                    <div class="block">
+                                        {!! Form::label('metodo', 'Método:',['class'=>'text-center']) !!}<br>
+                                        {!! Form::select('metodo', $opciones, null, ['class'=>'mt-1 block w-full rounded-lg']) !!}
+                                        @error('metodo')
+                                            <span class="invalid-feedback">
+                                                <strong>{{$message}}</strong>
+                    
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        @endforeach
                     </div>
                     <div>
-                        <!-- Checkboxes -->
-                        <div>
-                            {!! Form::checkbox('exp', 1, $costo->exp, ['id' => 'exp']) !!}
-                            {!! Form::label('exp', 'Exportación') !!}
+                    <strong class="flex justify-center">Aplica para:</strong>
+                    <br>
+
+                        <div class="grid grid-cols-2">
+
+                            <div>
+                            @error('permissions')
+                                    <small class="text-danger">
+                                        <strong>{{$message}}</strong>
+                        
+                                    </small>
+                            @enderror
+                    
+                            @foreach($especies as $permission)
+                                <div class="">
+                                    <label class="">
+                                        {!! Form::checkbox('superespecies[]', $permission->id ,null, ['class' => 'mr-1']) !!}
+                                        {{$permission->name}}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
-        
                         <div>
-                            {!! Form::checkbox('mi', 1, $costo->mi, ['id' => 'mi']) !!}
-                            {!! Form::label('mi', 'Mercado Interno') !!}
+                            <!-- Checkboxes -->
+                            <div>
+                                {!! Form::checkbox('exp', 1, $costo->exp, ['id' => 'exp']) !!}
+                                {!! Form::label('exp', 'Exportación') !!}
+                            </div>
+            
+                            <div>
+                                {!! Form::checkbox('mi', 1, $costo->mi, ['id' => 'mi']) !!}
+                                {!! Form::label('mi', 'Mercado Interno') !!}
+                            </div>
+            
+                            <div>
+                                {!! Form::checkbox('com', 1, $costo->com, ['id' => 'com']) !!}
+                                {!! Form::label('com', 'Comercial') !!}
+                            </div>
                         </div>
-        
-                        <div>
-                            {!! Form::checkbox('com', 1, $costo->com, ['id' => 'com']) !!}
-                            {!! Form::label('com', 'Comercial') !!}
                         </div>
-                    </div>
                     </div>
                 </div>
-            </div>
 
-                
-            <div class="flex justify-center mt-6">
-                <button  class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
-                    <p class="text-sm font-medium leading-none text-white">Actualizar Rol</p>
-                </button>
-            </div>
+                    
+                <div class="flex justify-center mt-6">
+                    <button  class="items-center focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 px-6 py-3 bg-gray-500 hover:bg-gray-500 focus:outline-none rounded">
+                        <p class="text-sm font-medium leading-none text-white">Actualizar Costo</p>
+                    </button>
+                </div>
 
             {!! Form::close() !!}
         </div>

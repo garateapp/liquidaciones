@@ -171,7 +171,7 @@
             <thead class="bg-gray-50 rounded-full">
                 <th>ID</th>
                 <th>Costo</th>
-               
+                <th>Metodo</th>
                <th>Exportación</th>
                <th>Mercado Interno</th>
                <th>Comercial</th>
@@ -211,6 +211,47 @@
                    </p>
                 
                 </td>
+
+                <td class="text-center">
+                  <p class="text-base font-medium leading-none text-gray-700 mr-2"
+                     @switch($costo->metodo)
+                        @case('TPC')
+                           title="Tarifa Por Caja"
+                           @break
+                        @case('MTC')
+                           title="Monto total (Dividido por Categoría)"
+                           @break
+                        @case('MTE')
+                           title="Monto total (separado por especie)"
+                           @break
+                        @case('TPK')
+                           title="Tarifa Por Kilo"
+                           @break
+                        @case('MTEB')
+                           title="Monto Total (Por número de embarque)"
+                           @break
+                        @case('MTEmp')
+                           title="Monto total (Por Empresa)"
+                           @break
+                        @case('MTT')
+                           title="Monto total (Según tipo de Transporte)"
+                           @break
+                        @default
+                           title="No especificado"
+                     @endswitch 
+                  >
+
+                                 @if ($costo->metodo)
+                                    {{$costo->metodo}}
+                                 @else
+                                     null
+                                 @endif
+                                                
+                  
+                        
+                  </p>
+               
+               </td>
 
                       @if ($costo->exp)
                          <td class="text-center">
