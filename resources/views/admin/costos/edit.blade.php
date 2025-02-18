@@ -48,10 +48,20 @@
                                             'MTT' => 'Monto total (Según tipo de Transporte)'
                                         ];
                                     @endphp
-                                  
+                                    <div class="block">
+                                        {!! Form::label('costomenu_id', 'Menú:',['class'=>'text-center']) !!}<br>
+                                        {!! Form::select('costomenu_id', $opcionesmenu, null, ['class'=>'mt-1 block w-full rounded-lg mb-4']) !!}
+                                        @error('costomenu_id')
+                                            <span class="invalid-feedback">
+                                                <strong>{{$message}}</strong>
+                    
+                                            </span>
+                                        @enderror
+                                    </div>
+
                                     <div class="block">
                                         {!! Form::label('metodo', 'Método:',['class'=>'text-center']) !!}<br>
-                                        {!! Form::select('metodo', $opciones, null, ['class'=>'mt-1 block w-full rounded-lg']) !!}
+                                        {!! Form::select('metodo', $opciones, null, ['class'=>'mt-1 block w-full rounded-lg mb-4']) !!}
                                         @error('metodo')
                                             <span class="invalid-feedback">
                                                 <strong>{{$message}}</strong>
@@ -59,6 +69,7 @@
                                             </span>
                                         @enderror
                                     </div>
+                                  
                                 </div>
                             </div>
                     </div>

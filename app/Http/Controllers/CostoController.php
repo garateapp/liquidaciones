@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Costo;
+use App\Models\Costomenu;
 use App\Models\Superespecie;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -26,7 +27,9 @@ class CostoController extends Controller
     {
         $especies = Superespecie::all();
 
-        return view('admin.costos.create',compact('especies'));
+        $opcionesmenu = Costomenu::all();
+
+        return view('admin.costos.create',compact('especies','opcionesmenu'));
     }
 
     /**
@@ -61,7 +64,10 @@ class CostoController extends Controller
     public function edit(Costo $costo)
     {   
         $especies = Superespecie::all();
-        return view('admin.costos.edit',compact('costo','especies'));
+
+        $opcionesmenu = Costomenu::all();
+        
+        return view('admin.costos.edit',compact('costo','especies','opcionesmenu'));
     }
 
     /**
@@ -77,6 +83,7 @@ class CostoController extends Controller
         $costo->update([
             'name'=>$request->name,
             'metodo'=>$request->metodo,
+            'costomenu_id'=>$request->costomenu_id,
             'exp'=>$request->exp,
             'mi'=>$request->mi,
             'com'=>$request->com
