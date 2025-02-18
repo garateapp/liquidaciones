@@ -27,7 +27,7 @@ class CostoController extends Controller
     {
         $especies = Superespecie::all();
 
-        $opcionesmenu = Costomenu::all();
+        $opcionesmenu = Costomenu::pluck('name', 'id');
 
         return view('admin.costos.create',compact('especies','opcionesmenu'));
     }
@@ -65,7 +65,7 @@ class CostoController extends Controller
     {   
         $especies = Superespecie::all();
 
-        $opcionesmenu = Costomenu::all();
+        $opcionesmenu = Costomenu::pluck('name', 'id');
         
         return view('admin.costos.edit',compact('costo','especies','opcionesmenu'));
     }

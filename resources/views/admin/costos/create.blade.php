@@ -34,9 +34,10 @@
                                     $opciones = [
                                         'null'=> 'NULL',
                                         'TPC' => 'Tarifa Por Caja',
+                                        'TPK' => 'Tarifa Por Kilo',
+                                        'TPT' => 'Tarifa Por Transporte',
                                         'MTC' => 'Monto total (Divido por Categoría)',
                                         'MTE' => 'Monto total (Separado por Especie)',
-                                        'TPK' => 'Tarifa Por Kilo',
                                         'MTEB' => 'Monto Total (Por número de Embarque)',
                                         'MTEmp' => 'Monto total (Por Empresa)',
                                         'MTT' => 'Monto total (Según tipo de Transporte)'

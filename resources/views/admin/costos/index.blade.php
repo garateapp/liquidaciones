@@ -218,6 +218,9 @@
                         @case('TPC')
                            title="Tarifa Por Caja"
                            @break
+                        @case('TPT')
+                           title="Tarifa Por Transporte"
+                           @break
                         @case('MTC')
                            title="Monto total (Dividido por Categoría)"
                            @break
