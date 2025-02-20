@@ -34,14 +34,14 @@
                           <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                       </div>
                       <a href="{{Route('admin.especies.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
-                          <span class="text-sm">Read more</span>
+                          <span class="text-sm">Ver más</span>
                           <span class="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0">&RightArrow;</span>
                       </a>
                   </div>
               </div>
               <div class="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
                    <div class="relative p-8 space-y-8">
-                       <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/package-delivery.png" class="w-10" width="512" height="512" alt="burger illustration">
+                       <img src="{{asset('image/presupuesto.png')}}" class="w-10" width="512" height="512" alt="burger illustration">
                        
                        <div class="space-y-2">
                        <a href="{{Route('admin.costos.index')}}">
@@ -50,14 +50,14 @@
                            <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                        </div>
                        <a href="{{Route('admin.costos.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
-                           <span class="text-sm">Read more</span>
+                           <span class="text-sm">Ver más</span>
                            <span class="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0">&RightArrow;</span>
                        </a>
                    </div>
                </div>
                  <div class="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
                      <div class="relative p-8 space-y-8">
-                         <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/trowel.png" class="w-10" width="512" height="512" alt="burger illustration">
+                         <img src="{{asset('image/productorespng.png')}}" class="w-10" width="512" height="512" alt="burger illustration">
                          
                          <div class="space-y-2">
                                <a href="{{Route('admin.condicionproductors.index')}}">
@@ -66,7 +66,7 @@
                              <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                          </div>
                          <a href="{{Route('admin.condicionproductors.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
-                             <span class="text-sm">Read more</span>
+                             <span class="text-sm">Ver más</span>
                              <span class="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0">&RightArrow;</span>
                          </a>
                      </div>
@@ -83,7 +83,7 @@
                                <p class="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
                            </div>
                            <a href="{{Route('admin.categorias.index')}}" class="flex justify-between items-center group-hover:text-yellow-600">
-                               <span class="text-sm">Read more</span>
+                               <span class="text-sm">Ver más</span>
                                <span class="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0">&RightArrow;</span>
                            </a>
                        </div>

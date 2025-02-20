@@ -1,8 +1,8 @@
-<div>
-        <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
-            <div class="grid pb-10  mt-4 " x-data="{@if($vista=='packing') packing: true @else packing: false @endif, @if($vista=='materiales') materiales: true @else materiales: false @endif, @if($vista=='comision') comision: true @else comision: false @endif, @if($vista=='exportacion') exportacion: true @else exportacion: false @endif, @if($vista=='fletes') fletes: true @else fletes: false @endif, @if($vista=='masas') masas: true @else masas: false @endif, @if($vista=='anticipos') anticipos: true @else anticipos: false @endif ,  @if($vista=='fob') fob: true @else fob: false @endif , @if($vista=='gastos') gastos: true @else gastos: false @endif  }">
+<div class="w-full">
+        <main class="relative z-0 flex-1 pb-8 px-6 bg-white w-full">
+            <div class="grid pb-10  mt-4 w-full" x-data="{@if($vista=='packing') packing: true @else packing: false @endif, @if($vista=='materiales') materiales: true @else materiales: false @endif, @if($vista=='comision') comision: true @else comision: false @endif, @if($vista=='exportacion') exportacion: true @else exportacion: false @endif, @if($vista=='fletes') fletes: true @else fletes: false @endif, @if($vista=='masas') masas: true @else masas: false @endif, @if($vista=='anticipos') anticipos: true @else anticipos: false @endif ,  @if($vista=='fob') fob: true @else fob: false @endif , @if($vista=='gastos') gastos: true @else gastos: false @endif  }">
                 <!-- Start Content-->
-                <div class="mb-2 grid grid-cols-12 items-center">
+                <div class="hidden mb-2 grid grid-cols-12 items-center">
                     <div class="col-span-12 sm:col-span-5 md:col-span-5 lg:col-span-5 xxl:col-span-5">
                         <p class="text-lg font-semibold text-gray-400">Información pendiente de subir</p>
                     </div>
@@ -19,94 +19,94 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-12 gap-6 border-b-2 pb-2 mb-3">
-                    <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
-                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3 gap-x-2">
-                        
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
+                <div class="grid grid-cols-12 gap-6 pb-2 mb-3">
+                    <div class="hidden col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xxl:col-span-12">
+                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 mt-3 gap-x-2">
                             
-                                @if ($CostosPackings->count()>0)
-                                <p class="text-xl font-bold"> {{$CostosPackings->count()}} </p>
-                                @else 
-                                <p class="text-lg font-bold">  PENDIENTE  </p>
-                                @endif
+                            <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': packing, 'bg-white': ! packing}" @click="packing = true; materiales = false; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
                                 
-                            
-                            <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
-                        </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
-                                @if ($materiales->count()>0)
-                                <p class="text-xl font-bold"> {{$materiales->count()}} </p>
-                                @else 
-                                <p class="text-lg font-bold">  PENDIENTE  </p>
-                                @endif
-                            <p class="text-xs font-semibold text-gray-400">Materiales</p>
-                        </div>
-                        <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
-                                @if ($exportacions->count()>0)
-                                    <p class="text-xl font-bold"> {{$exportacions->count()}} </p>
+                                    @if ($CostosPackings->count()>0)
+                                    <p class="text-xl font-bold"> {{$CostosPackings->count()}} </p>
+                                    @else 
+                                    <p class="text-lg font-bold">  PENDIENTE  </p>
+                                    @endif
+                                    
+                                
+                                <p class="text-xs font-semibold text-gray-400">Costos Packing</p>
+                            </div>
+                            <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': materiales, 'bg-white': ! materiales}" @click="packing = false; materiales = true; comision = false; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
+                                    @if ($materiales->count()>0)
+                                    <p class="text-xl font-bold"> {{$materiales->count()}} </p>
+                                    @else 
+                                    <p class="text-lg font-bold">  PENDIENTE  </p>
+                                    @endif
+                                <p class="text-xs font-semibold text-gray-400">Materiales</p>
+                            </div>
+                            <div class="p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': exportacion, 'bg-white': ! exportacion}" @click="packing = false; materiales = false; comision = false; exportacion = true; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
+                                    @if ($exportacions->count()>0)
+                                        <p class="text-xl font-bold"> {{$exportacions->count()}} </p>
+                                    @else 
+                                        <p class="text-lg font-bold">  PENDIENTE  </p>
+                                    @endif
+                                <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
+                            </div>
+
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false; anticipos = false ;  fob= false ; gastos = false">
+                                @if ($fletes->count()>0)
+                                    <p class="text-xl font-bold"> {{$fletes->count()}} </p>
                                 @else 
                                     <p class="text-lg font-bold">  PENDIENTE  </p>
                                 @endif
-                            <p class="text-xs font-semibold text-gray-400">Gastos de Exportación</p>
-                        </div>
+                                <p class="text-xs font-semibold text-gray-400">Flete a Huerto</p>
+                            </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fletes, 'bg-white': ! fletes}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = true; masas = false; anticipos = false ;  fob= false ; gastos = false">
-                            @if ($fletes->count()>0)
-                                <p class="text-xl font-bold"> {{$fletes->count()}} </p>
-                            @else 
-                                <p class="text-lg font-bold">  PENDIENTE  </p>
-                            @endif
-                            <p class="text-xs font-semibold text-gray-400">Flete a Huerto</p>
-                        </div>
-
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
-                            @if ($comisions->count()>0)
-                                <p class="text-xl font-bold"> {{$comisions->count()}} </p>
-                            @else 
-                                <p class="text-lg font-bold">  PENDIENTE  </p>
-                            @endif
-                            <p class="text-xs font-semibold text-gray-400">Comisión</p>
-                        </div>
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': comision, 'bg-white': ! comision}" @click="packing = false; materiales = false; comision = true; exportacion = false; fletes = false; masas = false; anticipos = false ;  fob= false ; gastos = false">
+                                @if ($comisions->count()>0)
+                                    <p class="text-xl font-bold"> {{$comisions->count()}} </p>
+                                @else 
+                                    <p class="text-lg font-bold">  PENDIENTE  </p>
+                                @endif
+                                <p class="text-xs font-semibold text-gray-400">Comisión</p>
+                            </div>
+                            
                         
-                    
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true ; anticipos = false ;  fob= false ; gastos = false">
-                                <p class="text-xl font-bold">5,700</p>
-                                <p class="text-xs font-semibold text-gray-400">Balance de masas</p>
-                        </div>
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': masas, 'bg-white': ! masas}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = true ; anticipos = false ;  fob= false ; gastos = false">
+                                    <p class="text-xl font-bold">5,700</p>
+                                    <p class="text-xs font-semibold text-gray-400">Balance de masas</p>
+                            </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': anticipos, 'bg-white': ! anticipos}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = true  ; fob = false ; gastos = false">
-                            <p class="text-xl font-bold">
-                                @if ($temporada->anticipos->count()>0)
-                                    {{$temporada->anticipos->count()}}
-                                @else
-                                    PENDIENTE
-                                @endif
-                            </p>
-                            <p class="text-xs font-semibold text-gray-400">Anticipos</p>
-                        </div>
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': anticipos, 'bg-white': ! anticipos}" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = true  ; fob = false ; gastos = false">
+                                <p class="text-xl font-bold">
+                                    @if ($temporada->anticipos->count()>0)
+                                        {{$temporada->anticipos->count()}}
+                                    @else
+                                        PENDIENTE
+                                    @endif
+                                </p>
+                                <p class="text-xs font-semibold text-gray-400">Anticipos</p>
+                            </div>
 
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fob , 'bg-white': ! fob }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = true ; gastos = false">
-                            <p class="text-xl font-bold">
-                                @if ($temporada->fobs->count()>0)
-                                    {{$temporada->fobs->count()}}
-                                @else
-                                    PENDIENTE
-                                @endif
-                            </p>
-                            <p class="text-xs font-semibold text-gray-400">FOB</p>
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': fob , 'bg-white': ! fob }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = true ; gastos = false">
+                                <p class="text-xl font-bold">
+                                    @if ($temporada->fobs->count()>0)
+                                        {{$temporada->fobs->count()}}
+                                    @else
+                                        PENDIENTE
+                                    @endif
+                                </p>
+                                <p class="text-xs font-semibold text-gray-400">FOB</p>
+                            </div>
+                            <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': gastos , 'bg-white': ! gastos }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = false ; gastos = true">
+                                <p class="text-xl font-bold">
+                                    @if ($temporada->gastos->count()>0)
+                                        {{$temporada->gastos->count()}}
+                                    @else
+                                        PENDIENTE
+                                    @endif
+                                </p>
+                                <p class="text-xs font-semibold text-gray-400">GASTOS</p>
+                            </div>
                         </div>
-                        <div class=" p-4 hover:bg-gray-100 hover:rounded-2xl" :class="{'bg-gray-100 rounded-2xl': gastos , 'bg-white': ! gastos }" @click="packing = false; materiales = false; comision = false; exportacion = false; fletes = false; masas = false ; anticipos = false  ; fob = false ; gastos = true">
-                            <p class="text-xl font-bold">
-                                @if ($temporada->gastos->count()>0)
-                                    {{$temporada->gastos->count()}}
-                                @else
-                                    PENDIENTE
-                                @endif
-                            </p>
-                            <p class="text-xs font-semibold text-gray-400">GASTOS</p>
-                        </div>
-                    </div>
                     </div>
                 
                 </div>

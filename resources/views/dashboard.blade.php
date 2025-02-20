@@ -17,7 +17,7 @@
                               </a>
                         </div>
                         <div class="w-1/4">
-                            <img src="https://www.emprenderconactitud.com/img/fidelizamas.png" alt="Imagen relacionada con el programa de fidelización" class="w-full h-auto">
+                            <img src="{{Route('admin.condicionproductors.index')}}" alt="Imagen simbolica de los productores" class="w-full h-auto">
                         </div>
                     </div>
                 </div>
