@@ -17,7 +17,8 @@ class CostoController extends Controller
     {
         $costos=Costo::all();
         $superespecies=Superespecie::all();
-        return view('admin.costos.index',compact('costos','superespecies'));
+        $costomenus=Costomenu::all();
+        return view('admin.costos.index',compact('costos','superespecies','costomenus'));
     }
 
     /**

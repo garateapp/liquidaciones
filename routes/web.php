@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CondicionproductorController;
 use App\Http\Controllers\CostoController;
+use App\Http\Controllers\CostomenuController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\FamiliaController;
 use App\Http\Controllers\GastoController;
@@ -162,6 +163,8 @@ Route::get('/config', [HomeController::class,'configuracion'])->name('configurac
 Route::resource('role', RoleController::class)->names('admin.roles');
 
 Route::resource('costos', CostoController::class)->names('admin.costos');
+
+Route::resource('costomenus', CostomenuController::class)->names('costomenus');
 
 Route::resource('variedads', VariedadController::class)->names('admin.variedads');
 
