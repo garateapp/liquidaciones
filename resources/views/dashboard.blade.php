@@ -17,7 +17,7 @@
                               </a>
                         </div>
                         <div class="w-1/4">
-                            <img src="{{Route('admin.condicionproductors.index')}}" alt="Imagen simbolica de los productores" class="w-full h-auto">
+                            <img src="{{asset('image/productorespng.png')}}" alt="Imagen simbolica de los productores" class="w-full h-auto">
                         </div>
                     </div>
                 </div>
