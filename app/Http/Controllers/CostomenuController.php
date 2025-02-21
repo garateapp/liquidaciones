@@ -48,17 +48,23 @@ class CostomenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Costomenu $costomenu)
     {
-        //
+        return view('admin.costomenu.edit', compact('costomenu'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Costomenu $costomenu)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $costomenu->update($request->all());
+        
+        return redirect()->route('admin.costos.index')->with('info','El costo se ha actualizado exitosamente');
     }
 
     /**
