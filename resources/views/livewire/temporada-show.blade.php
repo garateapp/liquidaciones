@@ -3435,12 +3435,12 @@
                 @endif
 
                 @if ($vista=='EXPORTACION') 
-                    @if ($costomenus->where('name','Gastos de Exportación')->count()>0)
-                      @if ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null')->count()>0)
-                        <div x-data="{ openTab: {{$costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null')->first()->id}} }" class="px-2">
+                    @if ($costomenus->where('name','Gastos de exportación')->count()>0)
+                      @if ($costomenus->where('name','Gastos de exportación')->first()->costos->where('metodo', '!=', 'null')->count()>0)
+                        <div x-data="{ openTab: {{$costomenus->where('name','Gastos de exportación')->first()->costos->where('metodo', '!=', 'null')->first()->id}} }" class="px-2">
                           <div class="max-w-md mx-auto">
                               <div class="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
-                                @foreach ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
+                                @foreach ($costomenus->where('name','Gastos de exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
                                     <button x-on:click="openTab = {{$menu->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$menu->id}} }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$menu->name}}</button>
                                 @endforeach
                               
