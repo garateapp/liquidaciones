@@ -3446,7 +3446,7 @@
                               
                               </div>
                           </div>
-                          @foreach ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
+                          @foreach ($costomenus->where('name','Gastos de exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
                               @switch($menu->metodo)
                                 @case('TPT')
                                     <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
