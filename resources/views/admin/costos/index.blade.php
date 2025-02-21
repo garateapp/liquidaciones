@@ -172,6 +172,7 @@
                 <th>ID</th>
                 <th>Costo</th>
                 <th>Metodo</th>
+                <th>Menú</th>
                <th>Exportación</th>
                <th>Mercado Interno</th>
                <th>Comercial</th>
@@ -215,20 +216,20 @@
                 <td class="text-center">
                   <p class="text-base font-medium leading-none text-gray-700 mr-2"
                      @switch($costo->metodo)
+                        @case('TPT')
+                           title="Tarifa Por Transporte"
+                           @break
                         @case('TPC')
                            title="Tarifa Por Caja"
                            @break
-                        @case('TPT')
-                           title="Tarifa Por Transporte"
+                        @case('TPK')
+                           title="Tarifa Por Kilo"
                            @break
                         @case('MTC')
                            title="Monto total (Dividido por Categoría)"
                            @break
                         @case('MTE')
                            title="Monto total (separado por especie)"
-                           @break
-                        @case('TPK')
-                           title="Tarifa Por Kilo"
                            @break
                         @case('MTEB')
                            title="Monto Total (Por número de embarque)"
@@ -246,6 +247,20 @@
 
                                  @if ($costo->metodo)
                                     {{$costo->metodo}}
+                                 @else
+                                     null
+                                 @endif
+                                                
+                  
+                        
+                  </p>
+               
+               </td>
+               <td class="text-center">
+                  <p class="text-base font-medium leading-none text-gray-700 mr-2">
+
+                                 @if ($costo->menu)
+                                    {{$costo->menu->name}}
                                  @else
                                      null
                                  @endif
@@ -327,10 +342,9 @@
             
        
           @empty
-
-     
-             {{-- comment  --}}    
-             <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
+          
+            {{-- comment  --}}    
+            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded">
                <td class="text-center">
                   <p class="text-base font-medium leading-none text-gray-700 mr-2">
 
@@ -352,7 +366,7 @@
                 
                 </td>
               
-             </tr>
+            </tr>
          
            
           @endforelse

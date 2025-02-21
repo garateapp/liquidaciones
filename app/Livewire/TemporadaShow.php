@@ -7,6 +7,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Categoria;
 use App\Models\Comision;
+use App\Models\Costomenu;
 use App\Models\CostoPacking;
 use App\Models\Despacho;
 use App\Models\Detalle;
@@ -518,7 +519,9 @@ class TemporadaShow extends Component
 
         $PackingCodes=PackingCode::where('temporada_id',$this->temporada->id)->get();
 
-        return view('livewire.temporada-show',compact('materiales','PackingCodes','fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        $costomenus=Costomenu::all();
+
+        return view('livewire.temporada-show',compact('costomenus','materiales','PackingCodes','fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){

@@ -1830,7 +1830,7 @@
             </div>
             
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-              <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+              <div class="inline-block min-w-full rounded-lg overflow-hidden">
                   
                 @if ($vista=='resumes')
                 
@@ -3435,94 +3435,142 @@
                 @endif
 
                 @if ($vista=='EXPORTACION') 
-                  <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                    @if ($costomenus->where('name','Gastos de Exportación')->count()>0)
+                      @if ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null')->count()>0)
+                        <div x-data="{ openTab: {{$costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null')->first()->id}} }" class="px-2">
+                          <div class="max-w-md mx-auto">
+                              <div class="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
+                                @foreach ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
+                                    <button x-on:click="openTab = {{$menu->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$menu->id}} }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$menu->name}}</button>
+                                @endforeach
+                              
+                              </div>
+                          </div>
+                          @foreach ($costomenus->where('name','Gastos de Exportación')->first()->costos->where('metodo', '!=', 'null') as $menu)
+                              @switch($menu->metodo)
+                                @case('TPT')
+                                    <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
 
-                    <select wire:model="type" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="" class="text-center">Selecciona una categoría</option>
-                        <option value="maritimo" class="text-center">Maritimo</option>
-                        <option value="aereo" class="text-center">Aereo</option>
-                        <option value="terrestre" class="text-center">Terrestre</option>
-
-                        
-
-                    </select>
-
-                    <input wire:model="precio_usd" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
-                    
-                    <button wire:click="exportacion_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
-
-                        <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
-                        Agregar
-                            
-                        </h1>
-                    </button>
-                  </div>
-
-                  <table class="min-w-full leading-normal">
-                    <thead>
-                      <tr>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Tipo
-                        </th>
-                        <th
-                          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Precio USD
-                        </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Acción
-                          </th>
-                      
-                      
-                    
-                    </tr>
-                    </thead>
-                    <tbody>
-                      
-                      @if ($exportacions)
-                          
-                        @foreach ($exportacions as $exportacion)
-                          <tr>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <div class="flex items-center">
-                                <div class="flex-shrink-0 w-10 h-10 hidden">
-                                  <img class="w-full h-full rounded-full"
-                                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                            alt="" />
+                                      <select wire:model="type" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                          <option value="" class="text-center">Selecciona una categoría</option>
+                                          <option value="maritimo" class="text-center">Maritimo</option>
+                                          <option value="aereo" class="text-center">Aereo</option>
+                                          <option value="terrestre" class="text-center">Terrestre</option>
+                  
+                                          
+                  
+                                      </select>
+                  
+                                      <input wire:model="precio_usd" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
+                                      
+                                      <button wire:click="exportacion_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                  
+                                          <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
+                                          Agregar
+                                              
+                                          </h1>
+                                      </button>
+                                    </div>
+                                    <table x-show="openTab === {{$menu->id}}" class="min-w-full leading-normal">
+                                      <thead>
+                                        <tr>
+                                          <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Tipo
+                                          </th>
+                                          <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                          Precio USD
+                                          </th>
+                                          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Acción
+                                            </th>
+                                        
+                                        
+                                      
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        @if ($exportacions)
+                                            
+                                          @foreach ($exportacions as $exportacion)
+                                            <tr>
+                                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                <div class="flex items-center">
+                                                  <div class="flex-shrink-0 w-10 h-10 hidden">
+                                                    <img class="w-full h-full rounded-full"
+                                                                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                              alt="" />
+                                                                      </div>
+                                                    <div class="ml-3">
+                                                      <p class="text-gray-900 whitespace-no-wrap">
+                                                        {{$exportacion->type}}
+                                                      </p>
                                                     </div>
-                                  <div class="ml-3">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                      {{$exportacion->type}}
-                                    </p>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <p class="text-gray-900 whitespace-no-wrap"> 
+                                                  </div>
+                                              </td>
+                                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                <p class="text-gray-900 whitespace-no-wrap"> 
+                                              
+                                                  {{$exportacion->precio_usd}}</p>
+                                              </td>
+                                          
+                                          
+                  
+                                              <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                <a href="{{route('exportacion.edit',['exportacion'=>$exportacion,'temporada'=>$temporada])}}">
+                                                  <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                      <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                                      <span class="relative">Editar</span>
+                                                  </span>
+                                                </a>
+                                                <span wire:click="exportacion_destroy({{$exportacion->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                                    <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                                    <span class="relative">Eliminar</span>
+                                                </span>
+                                              </td>
+                                            </tr>
+                                          @endforeach
+                                        @endif
+                  
+                                      </tbody>
+                                    </table>
+                                  @break
+                                @case('TPC')
+                                
+                                  @break
+                                @case('TPK')
+                                
+                                  @break
+                                @case('MTC')
+                                  
+                                  @break
+                                @case('MTE')
+                                  
+                                  @break
+                                @case('MTEB')
+                                
+                                  @break
+                                @case('MTEmp')
+                                
+                                  @break
+                                @case('MTT')
+                                
+                                  @break
+                                @default
+                                
+                              @endswitch 
                             
-                                {{$exportacion->precio_usd}}</p>
-                            </td>
-                        
-                        
-
-                            <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                              <a href="{{route('exportacion.edit',['exportacion'=>$exportacion,'temporada'=>$temporada])}}">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                    <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                    <span class="relative">Editar</span>
-                                </span>
-                              </a>
-                              <span wire:click="exportacion_destroy({{$exportacion->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                  <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                  <span class="relative">Eliminar</span>
-                              </span>
-                            </td>
-                          </tr>
-                        @endforeach
+                            
+                          
+                          @endforeach
+                        </div>
                       @endif
+                    @endif
+                
 
-                    </tbody>
-                  </table>
+                
                     
                 
                   

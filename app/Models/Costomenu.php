@@ -11,4 +11,8 @@ class Costomenu extends Model
 
     protected $guarded = ['id'];
 
+    public function costos(){
+        return $this->hasmany('App\Models\Costo','costomenu_id');
+    }
+
 }

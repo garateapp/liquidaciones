@@ -16,4 +16,9 @@ class Costo extends Model
         return $this->belongsToMany(Superespecie::class);
     }
 
+      // relacion uno a muchos inversa
+    public function menu(){
+        return $this->BelongsTo('App\Models\Costomenu','costomenu_id');
+    }
+
 }
