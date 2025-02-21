@@ -3463,7 +3463,7 @@
                   
                                       <input wire:model="precio_usd" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
                                       
-                                      <button wire:click="exportacion_store" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                                      <button wire:click="exportacion_store('{{$menu->id}}')" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
                   
                                           <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
                                           Agregar
@@ -3492,9 +3492,9 @@
                                       </thead>
                                       <tbody>
                                         
-                                        @if ($exportacions)
+                                        @if ($exportacions->where('costo_id',$menu->id))
                                             
-                                          @foreach ($exportacions as $exportacion)
+                                          @foreach ($exportacions->where('costo_id',$menu->id) as $exportacion)
                                             <tr>
                                               <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                                 <div class="flex items-center">

@@ -2103,7 +2103,7 @@ class TemporadaShow extends Component
         $flete->delete();
     }
 
-    public function exportacion_store(){
+    public function exportacion_store($costo_id){
         $rules = [
             'type'=>'required',
             'precio_usd'=>'required'
@@ -2115,7 +2115,8 @@ class TemporadaShow extends Component
         Exportacion::create([
             'temporada_id'=>$this->temporada->id,
             'type'=>$this->type,
-            'precio_usd'=>$this->precio_usd            
+            'precio_usd'=>$this->precio_usd,
+            'costo_id'=>$costo_id   
         ]);
         
         $this->reset(['type','precio_usd']);
