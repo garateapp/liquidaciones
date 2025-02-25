@@ -2085,7 +2085,31 @@ class TemporadaShow extends Component
 
     public function updatevariedades(){
 
-       foreach($this->masastotal as $masa){
+        $masastotal = Balancemasa::select([
+            'n_variedad', 
+            'n_categoria', 
+            'cantidad', 
+            'peso_neto', 
+            'peso_neto2', 
+            'factor', 
+            'fob_id', 
+            'tipo_transporte', 
+            'c_embalaje', 
+            'c_productor',
+            'r_productor',
+            'etd',
+            'eta',
+             'semana',
+             'precio_unitario',
+             'n_calibre',
+             'peso_std_embalaje'
+        ])
+        ->filter1($this->filters)
+        ->where('temporada_id', $this->temporada->id)
+        ->whereIn('exportadora', ['Greenex SpA', '22'])
+        ->get();
+
+       foreach($masastotal as $masa){
             $variedad=Variedad::where('name',$masa->n_variedad)->first();
             if ($variedad){
 
