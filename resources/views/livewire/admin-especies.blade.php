@@ -154,9 +154,9 @@
                             </div>
                         @endif
                 @endforeach
-                @foreach ($especiesnull as $especie)
+                @foreach ($variedadsnull as $especie)
                             
-                    @if ($selectedsubespecie)
+                    @if ($selectedsubvariedad)
                         @if ($selectedsubespecie->id==$especie->id)
                             <div class="py-3 w-full font-semibold rounded-md bg-yellow-200 transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">
                                 <div class="flex items-center justify-center text-gray-600 ">

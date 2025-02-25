@@ -9,7 +9,7 @@ use App\Models\Variedad;
 use Livewire\Component;
 
 class AdminEspecies extends Component
-{   public $selectedespecie, $selectedsubespecie, $selectedsubespeciefam, $selectedvariedad;
+{   public $selectedespecie, $selectedsubespecie, $selectedsubespeciefam, $selectedvariedad, $selectedsubvariedad;
 
     public function mount(){
         $this->selectedespecie=Superespecie::all()->first();
@@ -21,7 +21,8 @@ class AdminEspecies extends Component
         $variedades=Supervariedad::where('superespecie_id',$this->selectedespecie->id)->get();
 
         $especiesnull=Especie::where('superespecie_id',null)->get();
-        return view('livewire.admin-especies',compact('superespecies','especies','especiesnull','variedades'));
+        $variedadsnull=Variedad::where('superespecie_id',null)->get();
+        return view('livewire.admin-especies',compact('superespecies','especies','especiesnull','variedades','variedadsnull'));
     }
 
     public function updateespecie(Superespecie $item){
@@ -32,6 +33,10 @@ class AdminEspecies extends Component
     public function updatesubespecie(Especie $item){
         $this->selectedsubespecie=$item;
         $this->selectedsubespeciefam=$item->superespecie_id;
+    }
+
+    public function updatesubvariedad(Variedad $item){
+        $this->selectedsubvariedad=$item;
     }
     
     public function updatesubespecietype(){
