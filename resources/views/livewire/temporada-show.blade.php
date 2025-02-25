@@ -2963,7 +2963,7 @@
                 
                     @foreach ($masastotalnacional as $masa2)
                         @if ($masa2->n_variedad==$variedad->name)
-                            @if ($variedad->bi_color=='True')
+                            @if ($variedad->bi_color=='Bicolor')
                                   @php
                                       $kgbicolor+=$masa2->peso_neto;
                                   @endphp
@@ -3035,7 +3035,7 @@
                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                             
                             @foreach ($unique_variedades as $item)
-                              @if ($item->bi_color==Null)
+                              @if ($item->bi_color=="Rojo")
                                 {{$item->name}}<br>
                               @endif
                             
