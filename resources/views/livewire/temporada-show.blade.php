@@ -3068,7 +3068,7 @@
                           <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm flex">
                             <div class="grid grid-cols-1">
                               @foreach ($unique_variedades as $item)
-                                  @if ($item->red_color=='True')
+                                  @if ($item->bi_color=='bicolor')
                                   <div class="flex">
                                     <p>{{$item->name}}</p> <p wire:click='redcolor_destroy({{$item->id}})' class="text-red-500 hover:text-red-700 ml-2 cursor-pointer">(Quitar)</p>
                                   </div>
