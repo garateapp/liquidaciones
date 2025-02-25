@@ -198,7 +198,6 @@
                 
                 @endforeach
             </div>
-            <img src="https://tailus.io/sources/blocks/end-image/preview/images/ux-design.svg" class="w-2/3 ml-auto " alt="illustration" loading="lazy" width="900" height="600">
         </div>
     </div>
 </div>
