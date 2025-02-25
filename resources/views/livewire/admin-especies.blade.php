@@ -127,7 +127,7 @@
                                         </svg>
                                     </div>
                                     <div class="flex items-center justify-center mt-2 mx-2">
-                                        <select wire:model.live='selectedsubespeciefam'>
+                                        <select wire:model.live='selectedsubvariedadfam'>
                                             <option value="null">N/A</option>
                                            
                                                 <option value="rojo">Rojo</option>
