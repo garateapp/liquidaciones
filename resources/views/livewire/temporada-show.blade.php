@@ -102,7 +102,7 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid, save_fobid, exportacion_store, exportacion_destroy">
+                <div wire:loading wire:target="updatevariedades, filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid, save_fobid, exportacion_store, exportacion_destroy">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
@@ -956,6 +956,11 @@
                        
                     </div>
                     
+                    <div class="ml-4" >
+                        <button wire:click='updatevariedades' >
+                            Actualizar Variedades
+                        </button>
+                    </div>
                    
                       @if($vista=="Despachos" || $vista=='MASAS')
                         <!-- Extra Chatbot Card -->
