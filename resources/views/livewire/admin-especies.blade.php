@@ -166,7 +166,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex items-center justify-center mt-2 mx-2">
-                                    <select wire:model='selectedsubespeciefam'>
+                                    <select wire:model='selectedsubvariedadfam'>
                                         <option value="null">N/A</option>
                                         @foreach ($superespecies as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
