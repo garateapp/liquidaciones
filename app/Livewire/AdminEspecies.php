@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Especie;
 use App\Models\Superespecie;
+use App\Models\Variedad;
 use Livewire\Component;
 
 class AdminEspecies extends Component
@@ -16,6 +17,8 @@ class AdminEspecies extends Component
     public function render()
     {   $superespecies=Superespecie::all();
         $especies=Especie::where('superespecie_id',$this->selectedespecie->id)->get();
+        $variedades=Variedad::where('especie_id',$especies->first()->id)->get();
+
         $especiesnull=Especie::where('superespecie_id',null)->get();
         return view('livewire.admin-especies',compact('superespecies','especies','especiesnull'));
     }

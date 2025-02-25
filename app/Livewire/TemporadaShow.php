@@ -1947,7 +1947,7 @@ class TemporadaShow extends Component
         $this->validate ($rules);
 
         $variedad=Variedad::find($this->variedadpacking);
-        $variedad->red_color='True';
+        $variedad->bi_color='True';
         $variedad->save();
         $this->reset('variedadpacking');
     }
@@ -1955,7 +1955,7 @@ class TemporadaShow extends Component
     public function redcolor_destroy($id){
        
         $variedad=Variedad::find($id);
-        $variedad->red_color=Null;
+        $variedad->bi_color=Null;
         $variedad->save();
     }
 
