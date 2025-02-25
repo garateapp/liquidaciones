@@ -45,6 +45,6 @@ class AdminEspecies extends Component
     }
 
     public function updatesubvariedadtype(){
-        $this->selectedsubvariedad->update(['supervariedad_id'=>$this->selectedsubvariedadfam]);
+        $this->selectedsubvariedad->update(['bi_color'=>$this->selectedsubvariedadfam]);
     }
 }

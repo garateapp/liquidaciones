@@ -134,7 +134,7 @@
                                                 <option value="bicolor">Bicolor</option>
                                             
                                         </select>
-                                        <button wire:click='updatesubespecietype()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>
+                                        <button wire:click='updatesubvvariedadtype()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>
                                     </div>
                                 </div>
                                
