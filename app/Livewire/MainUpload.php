@@ -10,6 +10,7 @@ use App\Models\Comision;
 use App\Models\CostoPacking;
 use App\Models\Despacho;
 use App\Models\Embarque;
+use App\Models\Especie;
 use App\Models\Exportacion;
 use App\Models\Familia;
 use App\Models\Flete;
@@ -170,7 +171,7 @@ class MainUpload extends Component
             if ($variedad){
                 
             }else{
-                $superespecie=Superespecie::where('name',$this->temporada->especie->name)->first();
+                $superespecie=Especie::where('name',$this->temporada->especie->name)->first();
                 
                 $supervariedad = Supervariedad::firstOrCreate(['name' => $masa->n_variedad,
                                                             'superespecie_id'=>$superespecie->id]);

@@ -12,6 +12,7 @@ use App\Models\CostoPacking;
 use App\Models\Despacho;
 use App\Models\Detalle;
 use App\Models\Embarque;
+use App\Models\Especie;
 use App\Models\Exception;
 use App\Models\Exportacion;
 use App\Models\Factorbalance;
@@ -2115,7 +2116,7 @@ class TemporadaShow extends Component
             if ($variedad){
 
             }else{
-                $superespecie=Superespecie::where('name',$this->temporada->especie->name)->first();
+                $superespecie=Especie::where('name',$this->temporada->especie->name)->first();
                 
                 $supervariedad = Supervariedad::firstOrCreate(['name' => $masa->n_variedad,
                                                             'superespecie_id'=>$superespecie->id]);

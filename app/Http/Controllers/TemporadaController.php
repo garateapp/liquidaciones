@@ -739,7 +739,7 @@ class TemporadaController extends Controller
             if ($variedad){
 
             }else{
-                $superespecie=Superespecie::where('name',$temporada->especie->name)->first();
+                $superespecie=Especie::where('name',$temporada->especie->name)->first();
                 
                 $supervariedad = Supervariedad::firstOrCreate(['name' => $masa->n_variedad,
                                                             'superespecie_id'=>$superespecie->id]);
