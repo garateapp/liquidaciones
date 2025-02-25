@@ -17,6 +17,7 @@ use App\Models\Fob;
 use App\Models\Gasto;
 use App\Models\Material;
 use App\Models\Resumen;
+use App\Models\Supervariedad;
 use App\Models\Temporada;
 use App\Models\Variedad;
 use Illuminate\Support\Facades\DB;
@@ -168,8 +169,10 @@ class MainUpload extends Component
             if ($variedad){
                 
             }else{
+                $superespecie = Supervariedad::firstOrCreate(['name' => $masa->n_variedad]);
                 Variedad::create(['name'=>$masa->n_variedad,
-                                'temporada_id'=>$this->temporada->id]);
+                                'temporada_id'=>$this->temporada->id,
+                                'bi_color'=>$superespecie->bi_color]);
             }
        }
 

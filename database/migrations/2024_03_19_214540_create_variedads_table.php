@@ -32,6 +32,8 @@ return new class extends Migration
                 $table->string('retornoproductor')->nullable();
                 $table->string('retornokg')->nullable();
 
+                $table->string('bi_color')->nullable();
+
 
             $table->timestamps();
         });

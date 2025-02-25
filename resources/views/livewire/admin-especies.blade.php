@@ -116,7 +116,7 @@
                     <h3 class="text-2xl font-semibold text-purple-900">Variedades</h3>
                     <h3 class="text-s font-light text-gray-500">{{$selectedespecie->name}}</h3>
                 </div>
-                @foreach ($especies as $especie)
+                @foreach ($variedades as $especie)
                         @if ($selectedsubespecie)
                             @if ($selectedsubespecie->id==$especie->id)
                                 <div class="py-3 w-full font-semibold rounded-md bg-orange-400 transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">

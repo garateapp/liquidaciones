@@ -36,6 +36,7 @@ use App\Models\Proceso;
 use App\Models\Razonsocial;
 use App\Models\Recepcion;
 use App\Models\Resumen;
+use App\Models\Supervariedad;
 use App\Models\Sync;
 use App\Models\Temporada;
 use App\Models\Variedad;
@@ -737,8 +738,10 @@ class TemporadaController extends Controller
             if ($variedad){
 
             }else{
+                $superespecie = Supervariedad::firstOrCreate(['name' => $masa->n_variedad]);
                 Variedad::create(['name'=>$masa->n_variedad,
-                                'temporada_id'=>$temporada->id]);
+                                'temporada_id'=>$temporada->id,
+                                'bi_color'=>$superespecie->bi_color]);
             }
        }
         return redirect()->back();
