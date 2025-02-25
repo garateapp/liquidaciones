@@ -21,7 +21,7 @@ class AdminEspecies extends Component
         $variedades=Supervariedad::where('superespecie_id',$this->selectedespecie->id)->get();
 
         $especiesnull=Especie::where('superespecie_id',null)->get();
-        $variedadsnull=Variedad::where('superespecie_id',null)->get();
+        $variedadsnull=Supervariedad::where('superespecie_id',null)->get();
         return view('livewire.admin-especies',compact('superespecies','especies','especiesnull','variedades','variedadsnull'));
     }
 
