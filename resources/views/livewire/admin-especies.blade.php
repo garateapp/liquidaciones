@@ -119,7 +119,7 @@
                 @foreach ($variedades as $especie)
                         @if ($selectedsubespecie)
                             @if ($selectedsubespecie->id==$especie->id)
-                                <div class="py-3 w-full font-semibold rounded-md bg-orange-400 transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">
+                                <div class="py-3 w-full font-semibold rounded-md bg-green-400 transition-all duration-500">
                                     <div class="flex items-center justify-center text-white ">
                                         {{$especie->name}}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class=" h-5 w-5 ms-3">
