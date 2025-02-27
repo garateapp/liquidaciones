@@ -129,7 +129,7 @@
 
           <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
               @foreach ($costomenus as $costomenu)
-                @if ($item)
+                @if ($costomenu)
                     <a href="{{route('costomenus.temporada',['temporada'=>$temporada,'costomenu'=>$costomenu])}}"
                     wire:navigate>
                     <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
