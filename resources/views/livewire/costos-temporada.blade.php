@@ -103,7 +103,7 @@
                         </table>
                         @break
                     @case('TPCL')
-                            <div class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                            <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
                                 <div>
                                 <h1 class="ml-4">Agregar Variedades Bicolor:</h1>
                                 </div>
@@ -137,7 +137,7 @@
                             $kgsexportacion=0;
                             @endphp
                             
-                            <table class="min-w-full leading-normal">
+                            <table x-show="openTab === {{$menu->id}}" class="min-w-full leading-normal">
                                 <thead>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
