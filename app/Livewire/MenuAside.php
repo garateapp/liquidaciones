@@ -16,6 +16,7 @@ class MenuAside extends Component
     public function render()
     {   $masascount=Balancemasa::where('temporada_id',$this->temporada->id)->paginate(3);
         $costomenus=Costomenu::all();
+        
         return view('livewire.menu-aside',compact('masascount','costomenus'));
     }
 }
