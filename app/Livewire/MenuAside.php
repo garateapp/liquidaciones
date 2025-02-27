@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Balancemasa;
+use App\Models\Costomenu;
 use App\Models\Temporada;
 use Livewire\Component;
 
@@ -14,7 +15,7 @@ class MenuAside extends Component
     }
     public function render()
     {   $masascount=Balancemasa::where('temporada_id',$this->temporada->id)->paginate(3);
-        
-        return view('livewire.menu-aside',compact('masascount'));
+        $costomenus=Costomenu::all();
+        return view('livewire.menu-aside',compact('masascount','costomenus'));
     }
 }

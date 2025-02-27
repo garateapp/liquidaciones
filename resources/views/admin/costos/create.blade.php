@@ -34,6 +34,7 @@
                                     $opciones = [
                                         'null'=> 'NULL',
                                         'TPT' => 'Tarifa Por Transporte',
+                                        'TPCL' => 'Tarifa Por Color',
                                         'TPC' => 'Tarifa Por Caja',
                                         'TPK' => 'Tarifa Por Kilo',
                                         'MTC' => 'Monto total (Divido por Categoría)',

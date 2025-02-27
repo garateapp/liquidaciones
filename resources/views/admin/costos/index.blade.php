@@ -219,6 +219,9 @@
                         @case('TPT')
                            title="Tarifa Por Transporte"
                            @break
+                        @case('TPCL')
+                           title="Tarifa Por Color"
+                           @break
                         @case('TPC')
                            title="Tarifa Por Caja"
                            @break

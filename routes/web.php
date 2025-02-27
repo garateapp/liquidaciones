@@ -166,6 +166,8 @@ Route::resource('costos', CostoController::class)->names('admin.costos');
 
 Route::resource('costomenus', CostomenuController::class)->names('costomenus');
 
+Route::get('temporada/{temporada}/costos/{costomenu}',[CostomenuController::class,'show'])->name('costomenus.temporada');
+
 Route::resource('variedads', VariedadController::class)->names('admin.variedads');
 
 Route::resource('especies', EspecieController::class)->names('admin.especies');

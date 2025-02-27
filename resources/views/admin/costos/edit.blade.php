@@ -38,16 +38,17 @@
                                     </div>
                                     @php
                                        $opciones = [
-                                            'null'=> 'NULL',
-                                            'TPT' => 'Tarifa Por Transporte',
-                                            'TPC' => 'Tarifa Por Caja',
-                                            'TPK' => 'Tarifa Por Kilo',
-                                            'MTC' => 'Monto total (Divido por Categoría)',
-                                            'MTE' => 'Monto total (Separado por Especie)',
-                                            'MTEB' => 'Monto Total (Por número de Embarque)',
-                                            'MTEmp' => 'Monto total (Por Empresa)',
-                                            'MTT' => 'Monto total (Según tipo de Transporte)'
-                                        ];
+                                        'null'=> 'NULL',
+                                        'TPT' => 'Tarifa Por Transporte',
+                                        'TPCL' => 'Tarifa Por Color',
+                                        'TPC' => 'Tarifa Por Caja',
+                                        'TPK' => 'Tarifa Por Kilo',
+                                        'MTC' => 'Monto total (Divido por Categoría)',
+                                        'MTE' => 'Monto total (Separado por Especie)',
+                                        'MTEB' => 'Monto Total (Por número de Embarque)',
+                                        'MTEmp' => 'Monto total (Por Empresa)',
+                                        'MTT' => 'Monto total (Según tipo de Transporte)'
+                                    ];
                                     @endphp
                                     <div class="block">
                                         {!! Form::label('costomenu_id', 'Menú:',['class'=>'text-center']) !!}<br>

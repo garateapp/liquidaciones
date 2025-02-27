@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Costomenu;
+use App\Models\Temporada;
 use Illuminate\Http\Request;
 
 class CostomenuController extends Controller
@@ -40,9 +41,9 @@ class CostomenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Temporada $temporada, Costomenu $costomenu)
     {
-        //
+        return view('temporadas.vistamenu',compact('temporada','costomenu'));
     }
 
     /**

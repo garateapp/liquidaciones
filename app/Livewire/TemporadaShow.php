@@ -1950,9 +1950,10 @@ class TemporadaShow extends Component
         $this->validate ($rules);
 
         $variedad=Variedad::find($this->variedadpacking);
-        $variedad->bi_color='rojo';
+        $variedad->bi_color='bicolor';
         $variedad->save();
         $this->reset('variedadpacking');
+        $this->render();
     }
 
     public function redcolor_destroy($id){
