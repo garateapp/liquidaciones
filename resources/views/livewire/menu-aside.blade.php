@@ -129,15 +129,17 @@
 
           <div class="grid grid-cols-1 gap-4 grid-cols-2 mt-2">
               @foreach ($costomenus as $item)
-                <a href="{{route('costomenus.temporada',['costomenu'=>$item,'temporada'=>$temporada])}}"
-                wire:navigate>
-                <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
-                  <div class="rounded-full p-2 @if($temporada->exportacions->count()>0)bg-green-200 @else bg-indigo-200 @endif  flex flex-col items-center">
-                    <i class="fas fa-wallet fa-sm @if($temporada->exportacions->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
-                  </div>
-                  <p class="text-xs mt-1 text-center font-semibold">{{$item->name}}</p>
-                </div>
-                </a>
+                @if ($item)
+                    <a href="{{route('costomenus.temporada',['costomenu'=>$item,'temporada'=>$temporada])}}"
+                    wire:navigate>
+                    <div class="p-2 flex flex-col items-center bg-white rounded-md justify-center shadow-xl cursor-pointer">
+                      <div class="rounded-full p-2 @if($temporada->exportacions->count()>0)bg-green-200 @else bg-indigo-200 @endif  flex flex-col items-center">
+                        <i class="fas fa-wallet fa-sm @if($temporada->exportacions->count()>0)text-green-600 @else text-indigo-600 @endif"></i>
+                      </div>
+                      <p class="text-xs mt-1 text-center font-semibold">{{$item->name}}</p>
+                    </div>
+                    </a>
+                @endif
               @endforeach
           </div>
 
