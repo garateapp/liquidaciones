@@ -147,6 +147,39 @@
                             
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          Color 
+                                        </td>
+                                      
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          
+                                          @foreach ($unique_variedades as $item)
+                                            @if ($item->bi_color=="rojo")
+                                              {{$item->name}}<br>
+                                            @endif
+                                          @endforeach
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        {{number_format($kgredcolor)}} kgs
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm ">
+                                          <div class="flex items-center my-auto">
+                                            {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
+                                              {!! Form::label('variedadroja', 'Variedad Roja', ['class' => 'hidden']) !!}
+                                              {!! Form::number('variedadroja', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
+                                              {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
+                                            {!! Form::close() !!}
+                                          </div>
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          @if ($temporada->variedadroja)
+                                            {{number_format($kgredcolor*floatval($temporada->variedadroja),2)}} usd
+                                          @endif
+                                        
+                                        </td>
+                                      </tr> 
+              
                                 <tr>
                                     <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                     Variedades Rojas
