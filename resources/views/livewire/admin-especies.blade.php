@@ -49,8 +49,22 @@
                                         </select>
                                         <button wire:click='updatesubespecietype()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>
                                     </div>
+                                    <p class="text-center font-bold mx-2 text-white mt-2">Opciones de color:</p>
+                                    <div class="flex items-center justify-center mx-2">
+                                        <input wire:model.live='color' type="text">
+                                        <button wire:click='savecolor()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Agregar</button>
+                                    </div>
+                                    <div class="items-center justify-center mt-2 mx-2">
+
+                                        @foreach ($especie->colorespecies as $item)
+                                            <p class="text-white mx-2">{{$item->name}} <span wire:click='delete_colorespecie({{$item->id}})'  class="text-red-500 font-bold ml-2 cursor-pointer">X</span> </p>
+                                           
+                                        @endforeach
+                                    </div>
+                                    
+                                    
+
                                 </div>
-                               
                             @else
                                 <div wire:click='updatesubespecie({{$especie->id}})' class="py-3 flex items-center justify-center w-full font-semibold rounded-md bg-orange-400 hover:bg-orange-600 text-white transition-all duration-500 dark:bg-neutral-900 dark:hover:bg-purple-500 dark:hover:text-white ">
                                     {{$especie->name}}
@@ -129,10 +143,10 @@
                                     </div>
                                     <div class="flex items-center justify-center mt-2 mx-2">
                                         <select wire:model.live='selectedsubvariedadfam'>
-                                            <option value="null">N/A</option>
-                                           
-                                                <option value="rojo">Rojo</option>
-                                                <option value="bicolor">Bicolor</option>
+                                            @foreach ($selectedsubespecie->colorespecies as $item)
+                                                <option value="{{$item->name}}">{{$item->name}}</option>
+                                            @endforeach
+                                               
                                             
                                         </select>
                                         <button wire:click='updatesubvariedadtype()' class="rounded-md bg-white hover:bg-gray-200 transition-all duration-500 ml-2 py-2 w-full">Actualizar</button>

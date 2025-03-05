@@ -18,4 +18,8 @@ class Especie extends Model
     public function superespecie(){
         return $this->belongsTo('App\Models\Superespecie');
     }
+
+    public function colorespecies(){
+        return $this->hasmany('App\Models\Colorespecie');
+    }
 }

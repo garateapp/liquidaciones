@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Colorespecie;
 use App\Models\Especie;
 use App\Models\Superespecie;
 use App\Models\Supervariedad;
@@ -9,7 +10,7 @@ use App\Models\Variedad;
 use Livewire\Component;
 
 class AdminEspecies extends Component
-{   public $selectedespecie, $selectedsubespecie, $selectedsubespeciefam, $selectedvariedad, $selectedsubvariedad,$selectedsubvariedadfam;
+{   public $selectedespecie, $selectedsubespecie, $selectedsubespeciefam, $selectedvariedad, $selectedsubvariedad,$selectedsubvariedadfam, $color;
 
     public function mount(){
         $this->selectedespecie=Superespecie::all()->first();
@@ -38,6 +39,16 @@ class AdminEspecies extends Component
     public function updatesubvariedad(Supervariedad $item){
         $this->selectedsubvariedad=$item;
         $this->selectedsubvariedadfam=$item->bi_color;
+    }
+
+    public function savecolor(){
+        Colorespecie::create(['especie_id'=>$this->selectedsubespecie->id,
+                                'name'=>$this->color]);
+        $this->reset(['color']);
+    }
+
+    public function delete_colorespecie(Colorespecie $colorespecie){
+        $colorespecie->delete();
     }
     
     public function updatesubespecietype(){
