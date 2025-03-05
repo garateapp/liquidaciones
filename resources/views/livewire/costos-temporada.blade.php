@@ -1,5 +1,21 @@
 <div>
-   
+    <div wire:loading wire:target="variedadpacking, formcolor">
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+          <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
+            <div class="w-full">
+              <div class="px-6 my-6 mx-auto">
+                <div class="mb-8">
+                  <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                    <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     @if ($costomenus->where('name',$costomenu->name)->count()>0)
         @if ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null')->count()>0)
         <div x-data="{ openTab: {{$costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null')->first()->id}} }" class="px-2">
@@ -103,12 +119,23 @@
                         </table>
                         @break
                     @case('TPCL')
+
+                            <h1 x-show="openTab === {{$menu->id}}" class="ml-4 text-center">Agregar Variedades por Color:</h1>
                             <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
                                 <div>
-                                <h1 class="ml-4">Agregar Variedades Bicolor:</h1>
+                                   
+                                <select wire:model.live="formcolor" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    <option value="" class="text-center">Selecciona un color</option>
+                                        @foreach ($temporada->especie->colorespecies as $item)
+                                            <option value="{{$item->name}}" class="text-center">{{$item->name}}</option>
+                                        @endforeach
+                                
+                                    
+            
+                                </select>
                                 </div>
             
-                                <select wire:model="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <select wire:model.live="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="" class="text-center">Selecciona una variedad</option>
                                     @foreach ($unique_variedades as $item)
                                     <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
@@ -119,7 +146,7 @@
                                 </select>
             
                                 
-                                <button wire:click="redcolor_add" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                                <button wire:click="variedadcolor_add" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
             
                                     <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
                                     Agregar
@@ -156,8 +183,8 @@
                                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                             
                                             @foreach ($unique_variedades as $item)
-                                                @if ($item->bi_color=="rojo")
-                                                {{$item->name}}<br>
+                                                @if ($item->bi_color==$color->name)
+                                                    {{$item->name}}<br>
                                                 @endif
                                             @endforeach
                                             </td>
