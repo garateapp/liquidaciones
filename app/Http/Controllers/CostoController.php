@@ -77,8 +77,7 @@ class CostoController extends Controller
     public function update(Request $request, Costo $costo)
     {
         $request->validate([
-            'name' => 'required',
-            'superespecies' =>'required'
+            'name' => 'required'
         ]);
 
         $costo->update([

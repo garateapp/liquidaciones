@@ -21,16 +21,16 @@
         <div x-data="{ openTab: {{$costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null')->first()->id}} }" class="px-2">
             <div class="max-w-md mx-auto">
                 <div class="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
-                @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $menu)
-                    <button x-on:click="openTab = {{$menu->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$menu->id}} }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$menu->name}}</button>
+                @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
+                    <button x-on:click="openTab = {{$costo->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$costo->id}} }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$costo->name}}</button>
                 @endforeach
                 
                 </div>
             </div>
-            @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $menu)
-                @switch($menu->metodo)
+            @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
+                @switch($costo->metodo)
                     @case('TPT')
-                        <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                        <div x-show="openTab === {{$costo->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
 
                             <select wire:model="type" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                 <option value="" class="text-center">Selecciona una categoría</option>
@@ -44,7 +44,7 @@
 
                             <input wire:model="precio_usd" type="number" class="form-input flex-1 w-full shadow-sm  border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none" autocomplete="off">
                             
-                            <button wire:click="exportacion_store('{{$menu->id}}')" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                            <button wire:click="exportacion_store('{{$costo->id}}')" class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
 
                                 <h1 style="font-size: 1rem;white-space: nowrap;" class="text-center text-white font-bold inline w-full" >
                                 Agregar
@@ -52,7 +52,7 @@
                                 </h1>
                             </button>
                         </div>
-                        <table x-show="openTab === {{$menu->id}}" class="min-w-full leading-normal">
+                        <table x-show="openTab === {{$costo->id}}" class="min-w-full leading-normal">
                             <thead>
                             <tr>
                                 <th
@@ -73,9 +73,9 @@
                             </thead>
                             <tbody>
                             
-                            @if ($exportacions->where('costo_id',$menu->id))
+                            @if ($exportacions->where('costo_id',$costo->id))
                                 
-                                @foreach ($exportacions->where('costo_id',$menu->id) as $exportacion)
+                                @foreach ($exportacions->where('costo_id',$costo->id) as $exportacion)
                                 <tr>
                                     <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                     <div class="flex items-center">
@@ -120,8 +120,8 @@
                         @break
                     @case('TPCL')
 
-                            <h1 x-show="openTab === {{$menu->id}}" class="ml-4 text-center">Agregar Variedades por Color:</h1>
-                            <div x-show="openTab === {{$menu->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
+                            <h1 x-show="openTab === {{$costo->id}}" class="ml-4 text-center">Agregar Variedades por Color:</h1>
+                            <div x-show="openTab === {{$costo->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
                                 <div>
                                    
                                 <select wire:model.live="formcolor" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
@@ -137,10 +137,13 @@
             
                                 <select wire:model.live="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="" class="text-center">Selecciona una variedad</option>
+
                                     @foreach ($unique_variedades->filter(function ($item) use ($temporada) {
                                         return empty($item->bi_color) || !$temporada->especie->colorespecies->contains('name', $item->bi_color);
                                     }) as $item)
-                                        <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
+                                        @if ($item->name)
+                                            <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
+                                        @endif
                                     @endforeach
                                     
                                 
@@ -167,7 +170,7 @@
                             $kgsexportacion=0;
                             @endphp
                             
-                            <table x-show="openTab === {{$menu->id}}" class="min-w-full leading-normal">
+                            <table x-show="openTab === {{$costo->id}}" class="min-w-full leading-normal">
                                 <thead>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Mercado</th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Variedad</th>
@@ -178,6 +181,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($temporada->especie->colorespecies as $color)
+                                        @php
+                                            $pesocolor=0;
+                                        @endphp
                                         <tr>
                                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                             {{$color->name}}
@@ -187,7 +193,8 @@
                                             
                                             @foreach ($unique_variedades as $item)
                                                 @if ($item->bi_color==$color->name)
-                                                    {{$item->name}}<br>
+                                                    {{$item->name}} <span wire:click='redcolor_destroy({{$item->id}})' class="text-red-500 font-bold cursor-pointer">X</span><br>
+                                                    
                                                 @endif
                                             @endforeach
                                             </td>
@@ -206,11 +213,11 @@
 
                                                         <input type="number" step="0.01" min="0"
                                                             wire:model.defer="tarifas.{{ $color->name }}"
-                                                            wire:keydown.enter="saveTarifa('{{ $color->name }}', {{ $menu->id }})"
+                                                            wire:keydown.enter="saveTarifa('{{ $color->name }}', {{ $costo->id }})"
                                                             class="w-20 shadow-sm border-2 border-gray-300 bg-white h-7 px-2 rounded-lg focus:outline-none">
 
                                                         <!-- Botón para guardar tarifa -->
-                                                        <button wire:click="saveTarifa('{{ $color->name }}', {{ $menu->id }})"
+                                                        <button wire:click="saveTarifa('{{ $color->name }}', {{ $costo->id }})"
                                                                 class="ml-2 cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                                                             <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                             <span class="relative">Guardar</span>
@@ -250,6 +257,71 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        @break
+                    @case('TPE')
+                        <div class="mt-4" x-show="openTab === {{$costo->id}}">
+                            <h1 class="text-xl font-semibold mb-4 text-center">
+                                Por favor selecione el archivo de "Costos por Codigo para {{$costo->name}}" que desea importar
+                            </h1>
+                            <div class="flex justify-center ">
+                                
+                                <form wire:submit.prevent="importFile({{ $costo->id }})">
+                                    <x-validation-errors class="errors" />
+                                
+                                    <!-- Campo para elegir el archivo -->
+                                    <input type="file" wire:model="file" accept=".csv,.xlsx">
+                                
+                                    <!-- Mostrar el nombre del archivo cargado -->
+                                    
+                                    <!-- Puedes tener un select para escoger el costo_id o pasarlo de alguna otra forma -->
+                                    <input type="hidden" wire:model="costo_id" value="{{ $costo->id }}">
+                                
+                                  
+
+                                    <x-button>
+                                        Importar
+                                    </x-button>
+                                </form>
+                                
+                            </div>
+                            <div class="flex justify-center">
+                                <p wire:loading='file' class="text-center">Cargando...</p>
+                            </div>
+                        </div>
+                        <table class="min-w-full leading-normal mt-6" x-show="openTab === {{$costo->id}}">
+                          <thead>
+                              <tr>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      Código Embalaje
+                                  </th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      Costo por Caja (USD)
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            @if ($temporada->costoembalajecodes->where('costo_id',$costo->id)->count())
+                                
+                              @foreach ($temporada->costoembalajecodes->where('costo_id',$costo->id) as $costo)
+                                  <tr>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ $costo->c_embalaje }}</p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ number_format($costo->costo_por_caja, 2) }}</p>
+                                      </td>
+                                  </tr>
+                              @endforeach
+
+                            @else
+                              <tr>
+                                <td colspan="2" class="col-span-2 text-center py-2">
+                                    Sin Registros en la base de datos
+                                </td>
+                              </tr>
+                            @endif
+                          </tbody>
+                        </table>
                         @break
                     @case('TPC')
 

@@ -2,19 +2,51 @@
 
 namespace App\Livewire;
 
+use App\Imports\PackingCodeImport;
+use App\Models\Costoembalajecode;
 use App\Models\Costomenu;
 use App\Models\Costotarifacolor;
 use App\Models\Exportacion;
 use App\Models\Temporada;
 use App\Models\Variedad;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CostosTemporada extends Component
 {   public $temporada, $costomenu,$formcolor, $variedadpacking; 
 
     protected $listeners = ['tarifaActualizada' => '$refresh'];
 
+    use WithFileUploads;
+
     public $tarifas = [];
+
+    public $file;
+
+    public function importFile($costo_id)
+    {
+        // Validar el archivo
+        $this->validate([
+            'file' => 'required|mimes:csv,xlsx',  // Validación del archivo
+        ]);
+
+        // Eliminar los registros existentes para la combinación de temporada_id y costo_id
+        Costoembalajecode::where('temporada_id', $this->temporada->id)
+            ->where('costo_id', $costo_id)
+            ->delete();
+
+        // Importar el archivo
+        Excel::import(new PackingCodeImport($this->temporada->id, $costo_id), $this->file);
+
+        // Limpiar el archivo cargado después de la importación
+        $this->file = null;
+
+        // Emitir evento para actualizar la vista
+        $this->dispatch('fileImported');
+        session()->flash('message', 'Importación realizada con éxito');
+    }
+
 
     public function saveTarifa($color, $costo_id)
     {
@@ -46,6 +78,7 @@ class CostosTemporada extends Component
         $costotarifacolor->delete();
     }
 
+    
 
     public function mount(Temporada $temporada, Costomenu $costomenu){
         $this->temporada=$temporada;
@@ -59,6 +92,8 @@ class CostosTemporada extends Component
         return view('livewire.costos-temporada',compact('costomenus','exportacions','unique_variedades'));
     }
 
+    
+
     public function variedadcolor_add(){
         $rules = [
             'variedadpacking'=>'required',
@@ -71,6 +106,13 @@ class CostosTemporada extends Component
 
         $this->reset('variedadpacking');
         $this->render();
+    }
+
+    public function redcolor_destroy($id){
+       
+        $variedad=Variedad::find($id);
+        $variedad->bi_color=null;
+        $variedad->save();
     }
     
 }

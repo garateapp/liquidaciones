@@ -222,6 +222,9 @@
                         @case('TPCL')
                            title="Tarifa Por Color"
                            @break
+                        @case('TPE')
+                           title="Tarifa Por Embalaje"
+                           @break
                         @case('TPC')
                            title="Tarifa Por Caja"
                            @break

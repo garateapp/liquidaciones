@@ -11,10 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('costos', function (Blueprint $table) {
+        Schema::create('costos', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name');
+
+            $table->string('estado')->nullable();
+
+            $table->string('metodo')->nullable();
+
+            $table->foreignId('costomenu_id')
+            ->nullable()
+            ->constrained()
+            ->onDelete('set null');
+
             $table->boolean('exp')->nullable();
             $table->boolean('mi')->nullable();
             $table->boolean('com')->nullable();
+
+            $table->timestamps();
         });
     }
 
@@ -23,8 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('costos', function (Blueprint $table) {
-            $table->dropColumn(['exp', 'mi', 'com']);
-        });
+        Schema::dropIfExists('costos');
     }
 };
