@@ -137,9 +137,12 @@
             
                                 <select wire:model.live="variedadpacking" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="" class="text-center">Selecciona una variedad</option>
-                                    @foreach ($unique_variedades as $item)
-                                    <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
+                                    @foreach ($unique_variedades->filter(function ($item) use ($temporada) {
+                                        return empty($item->bi_color) || !$temporada->especie->colorespecies->contains('name', $item->bi_color);
+                                    }) as $item)
+                                        <option value="{{$item->id}}" class="text-center">{{$item->name}}</option>
                                     @endforeach
+                                    
                                 
                                     
             
@@ -192,13 +195,30 @@
                                             {{number_format($kgredcolor)}} kgs
                                             </td>
                                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm ">
-                                            <div class="flex items-center my-auto">
-                                                {!! Form::model($temporada, ['route'=>['temporadas.update',$temporada],'method' => 'put', 'autocomplete'=>'off']) !!}    
-                                                {!! Form::label('variedadroja', 'Variedad Roja', ['class' => 'hidden']) !!}
-                                                {!! Form::number('variedadroja', null, ['step' => '0.001', 'class' => 'form-input text-right mr-2 mt-1 rounded-lg' . ($errors->has('variedadroja') ? ' border-red-600' : '')]) !!}
-                                                {!! Form::submit('Actualizar', ['class' => 'font-bold py-2 px-4 rounded bg-blue-500 text-white cursor-pointer']) !!}
-                                                {!! Form::close() !!}
-                                            </div>
+                                                @if ($temporada->costotarifacolors->where('color',$color->name)->count())
+                                                    {{$temporada->costotarifacolors->where('color',$color->name)->first()->tarifa_kg}} <span onclick="confirmDeletionCostotarifacolor({{ $temporada->costotarifacolors->where('color', $color->name)->first()->id }})"
+                                                        class="text-red-500 font-bold cursor-pointer">
+                                                      X
+                                                  </span>
+                                                  
+                                                @else
+                                                    <div class="flex items-center my-auto">
+
+                                                        <input type="number" step="0.01" min="0"
+                                                            wire:model.defer="tarifas.{{ $color->name }}"
+                                                            wire:keydown.enter="saveTarifa('{{ $color->name }}', {{ $menu->id }})"
+                                                            class="w-20 shadow-sm border-2 border-gray-300 bg-white h-7 px-2 rounded-lg focus:outline-none">
+
+                                                        <!-- Botón para guardar tarifa -->
+                                                        <button wire:click="saveTarifa('{{ $color->name }}', {{ $menu->id }})"
+                                                                class="ml-2 cursor-pointer relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                                            <span class="relative">Guardar</span>
+                                                        </button>
+                                                        
+                                                    </div>
+                                                @endif
+                                               
                                             </td>
                                             <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
                                             @if ($temporada->variedadroja)
@@ -264,6 +284,52 @@
     @endif
       
 
-
-
+    <script>
+        function confirmDeletionCostotarifacolor(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará este registro.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6', // Azul para confirmar
+                cancelButtonColor: '#d33', // Rojo para cancelar
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Mostrar el loading mientras se elimina
+                    Swal.fire({
+                        title: 'Eliminando...',
+                        text: 'Por favor, espera mientras se elimina el registro.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+    
+                    // Llamada al método Livewire con el ID
+                    @this.call('destroy_costotarifacolor', id).then(() => {
+                        // Cerrar el loading después de la eliminación
+                        Swal.close();
+                        Swal.fire({
+                            title: '¡Eliminado!',
+                            text: 'El registro ha sido eliminado.',
+                            icon: 'success', // Icono de éxito
+                            confirmButtonColor: '#28a745', // Verde para el botón de "OK"
+                        });
+                    }).catch(() => {
+                        // En caso de error
+                        Swal.close();
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar el registro.',
+                            icon: 'error',
+                            confirmButtonColor: '#d33', // Rojo para el error
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+    
 </div>

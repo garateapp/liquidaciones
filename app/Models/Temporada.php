@@ -30,6 +30,11 @@ class Temporada extends Model
     }
 
     // relacion uno a muchos inversa
+    public function costotarifacolors(){
+        return $this->hasmany('App\Models\Costotarifacolor');
+    }
+
+    // relacion uno a muchos inversa
     public function packingcodes(){
         return $this->hasmany('App\Models\PackingCode');
     }
