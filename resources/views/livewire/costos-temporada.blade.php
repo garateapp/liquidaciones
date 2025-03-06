@@ -277,16 +277,20 @@
                                     <input type="hidden" wire:model="costo_id" value="{{ $costo->id }}">
                                 
                                   
-
-                                    <x-button>
-                                        Importar
-                                    </x-button>
+                                   
+                                    
                                 </form>
+                             
                                 
                             </div>
-                            <div class="flex justify-center">
-                                <p wire:loading='file' class="text-center">Cargando...</p>
-                            </div>
+                            @if ($file)
+                                <div class="flex justify-center">
+                                    <x-button onclick="confirmImportFile({{ $costo->id }})">
+                                        Importar
+                                    </x-button>
+                                </div>
+                            @endif
+                          
                         </div>
                         <table class="min-w-full leading-normal mt-6" x-show="openTab === {{$costo->id}}">
                           <thead>
@@ -395,6 +399,53 @@
                         Swal.fire({
                             title: 'Error',
                             text: 'Hubo un problema al eliminar el registro.',
+                            icon: 'error',
+                            confirmButtonColor: '#d33', // Rojo para el error
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        function confirmImportFile(costo_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción importará el archivo y reemplazará los datos existentes.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6', // Azul para confirmar
+                cancelButtonColor: '#d33', // Rojo para cancelar
+                confirmButtonText: 'Sí, importar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Mostrar el loading mientras se importa
+                    Swal.fire({
+                        title: 'Importando...',
+                        text: 'Por favor, espera mientras se importa el archivo.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+    
+                    // Llamada al método Livewire con el ID del costo
+                    @this.call('importFile', costo_id).then(() => {
+                        // Cerrar el loading después de la importación
+                        Swal.close();
+                        Swal.fire({
+                            title: '¡Importado!',
+                            text: 'El archivo se ha importado correctamente.',
+                            icon: 'success', // Icono de éxito
+                            confirmButtonColor: '#28a745', // Verde para el botón de "OK"
+                        });
+                    }).catch(() => {
+                        // En caso de error
+                        Swal.close();
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al importar el archivo.',
                             icon: 'error',
                             confirmButtonColor: '#d33', // Rojo para el error
                         });

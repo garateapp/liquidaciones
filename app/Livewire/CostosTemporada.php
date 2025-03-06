@@ -40,11 +40,10 @@ class CostosTemporada extends Component
         Excel::import(new PackingCodeImport($this->temporada->id, $costo_id), $this->file);
 
         // Limpiar el archivo cargado después de la importación
-        $this->file = null;
+        $this->reset('file');
 
         // Emitir evento para actualizar la vista
         $this->dispatch('fileImported');
-        session()->flash('message', 'Importación realizada con éxito');
     }
 
 
