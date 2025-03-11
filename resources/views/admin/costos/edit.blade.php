@@ -37,7 +37,7 @@
                                         @enderror
                                     </div>
                                     @php
-                                        $opciones = [
+                                       $opciones = [
                                         'null'=> 'NULL',
                                         'TPT' => 'Tarifa Por Transporte',
                                         'TPCL' => 'Tarifa Por Color',
@@ -48,7 +48,8 @@
                                         'MTE' => 'Monto total (Separado por Especie)',
                                         'MTEB' => 'Monto Total (Por número de Embarque)',
                                         'MTEmp' => 'Monto total (Por Empresa)',
-                                        'MTT' => 'Monto total (Según tipo de Transporte)'
+                                        'MTT' => 'Monto total (Según tipo de Transporte)',
+                                        'MPC' => 'Monto por Condición (Según Productor)'
                                     ];
                                     @endphp
                                     <div class="block">
