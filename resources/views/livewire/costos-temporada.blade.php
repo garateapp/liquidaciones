@@ -27,6 +27,61 @@
                 
                 </div>
             </div>
+
+            @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
+                <div x-show="openTab === {{$costo->id}}" class="flex justify-center mb-6">
+                    @if ($costo->exp)
+                        <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" checked disabled readonly>
+                            Exportación
+                        </label>
+                        </div>
+                    @else
+                        <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" disabled readonly>
+                            Exportación
+                        </label>
+                        </div>
+                    @endif
+
+                    @if ($costo->mi)
+                    <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" checked disabled readonly>
+                            Mercado Interno
+                        </label>
+                    </div>
+                    @else
+                    <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" disabled readonly>
+                            Mercado Interno
+                        </label>
+                    </div>
+                    @endif
+            
+
+                    @if ($costo->com)
+                    <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" checked disabled readonly>
+                            Comercial
+                        </label>
+                    </div>
+                    @else
+                    <div class="text-center mr-4">
+                        <label class="">
+                            <input type="checkbox" disabled readonly>
+                            Comercial
+                        </label>
+                    </div>
+                    @endif
+
+                </div>
+            @endforeach
+
             @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
                 @switch($costo->metodo)
                     @case('TPT')
@@ -284,7 +339,7 @@
                                 
                             </div>
                             @if ($file)
-                                <div class="flex justify-center">
+                                <div class="flex justify-center mt-2">
                                     <x-button onclick="confirmImportFile({{ $costo->id }})">
                                         Importar
                                     </x-button>
