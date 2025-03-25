@@ -246,6 +246,9 @@
                         @case('MTT')
                            title="Monto total (Según tipo de Transporte)"
                            @break
+                        @case(  'MPC')
+                           title="Monto por Condición (Según Productor)"
+                           @break
                         @default
                            title="No especificado"
                      @endswitch 

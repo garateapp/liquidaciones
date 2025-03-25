@@ -401,7 +401,20 @@
                     
                         @break
                     @case('MTT')
+                        
                     
+                        @break
+                    @case('MPC')
+                        <div class="flex justify-center mt-4">
+                                
+                            <div> 
+                                <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
+                                <button wire:click='material_export({{$temporada->id}})' class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                    <span>Download</span>
+                                </button>
+                            </div> 
+                        </div>
                         @break
                     @default
                 
