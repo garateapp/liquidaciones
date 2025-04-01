@@ -22,7 +22,7 @@
             <div class="max-w-6xl mx-auto">
                 <div class="mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
                 @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
-                    <button x-on:click="openTab = {{$costo->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$costo->id}} }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$costo->name}}</button>
+                    <button x-on:click="openTab = {{$costo->id}}" :class="{ 'bg-blue-600 text-white': openTab === {{$costo->id}} }" class="shadow-md flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">{{$costo->name}}</button>
                 @endforeach
                 
                 </div>
