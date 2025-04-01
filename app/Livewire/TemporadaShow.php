@@ -451,7 +451,7 @@ class TemporadaShow extends Component
         
         $unique_categorianac = $masastotalnacional->pluck('n_categoria')->unique()->sort();
 
-        $unique_productores = $masastotal->pluck('c_productor')->unique();
+       
         
         $masastotal2=Balancemasa::where('temporada_id',$this->temporada->id)->whereIn('exportadora', ['Greenex SpA', '22'])->get();
 
@@ -468,6 +468,8 @@ class TemporadaShow extends Component
         $unique_especies = $CostosPackingsall->pluck('especie')->unique()->sort();
 
         $unique_variedades = Variedad::where('temporada_id',$this->temporada->id)->get();
+        
+        $unique_productores = $masastotal->pluck('c_productor')->unique();
 
         if ($this->vista=='show' || $this->vista=='resumes') {
            

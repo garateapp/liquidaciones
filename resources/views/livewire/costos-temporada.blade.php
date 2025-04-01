@@ -406,7 +406,6 @@
                         @break
                     @case('MPC')
                         <div class="flex justify-center mt-4">
-                                
                             <div> 
                                 <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
                                 <button class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
@@ -415,6 +414,93 @@
                                 </button>
                             </div> 
                         </div>
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                          <thead class="bg-white border-b">
+                                            <tr>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                #
+                                              </th>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                Name
+                                              </th>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                Rut
+                                              </th>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                Csg
+                                              </th>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                Accion
+                                              </th>
+                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                Informe
+                                              </th>
+                                             
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            @php
+                                                $n=1;
+                                            @endphp
+                                           
+                                              @foreach ($razons as $razon)
+                                               
+                                                  <tr class="bg-gray-100 border-b">
+                                                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{$razon->id}}</td>
+                                                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                        @if ($razon && $temporada)
+                                                            
+                                                        <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> {{$razon->name}}
+                                                        </a>
+                                                        
+                                                        @endif
+                                                      </td>
+                                                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                      {{$razon->rut}}
+                                                      </td>
+                                                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                      {{$razon->csg_count}}
+                                                      </td>
+                                                     
+                                                      <td class="text-sm text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                                        <a href="{{route('exportpdff',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank">
+                                                          <x-button>
+                                                            Generar
+                                                          </x-button>
+                                                        </a>
+                                                      </td> 
+                                                      <td class="text-sm text-gray-900 font-light py-4 text-center">
+        
+                                                        @if ($razon->informe)
+                                                            <a href="{{route('informe.download',$razon)}}" target="_blank" class="h-10 mr-2 items-center content-center">   
+                                                              <img class="h-10 ml-4 pl-2 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
+                                                            </a>
+                                                        
+                                                            
+                                                        @else
+                                                            
+                                                        @endif
+        
+                                                      </td>
+                                                  </tr>
+                                                @php
+                                                    $n+=1;
+                                                @endphp
+                                              @endforeach
+                                                  
+                                              
+                                            
+                                          </tbody>
+                                    </table>
+                                    {{$razons->links()}}
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
                         @break
                     @default
                 
