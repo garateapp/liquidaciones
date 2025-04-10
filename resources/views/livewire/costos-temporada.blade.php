@@ -1,12 +1,12 @@
 <div>
-    <div wire:loading wire:target="variedadpacking, formcolor">
+    <div wire:loading wire:target="variedadpacking, formcolor, archivo">
         <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
           <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
             <div class="w-full">
               <div class="px-6 my-6 mx-auto">
                 <div class="mb-8">
                   <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                    <h1 class="text-2xl font-extrabold mr-4">Cargando...</h1>
                     <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
                   </div>
                 </div>
@@ -15,6 +15,22 @@
           </div>
         </div>
       </div>
+        @if ($procesando==true)
+            <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+                <div class="max-w-sm w-full sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
+                <div class="w-full">
+                    <div class="px-6 my-6 mx-auto">
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center">
+                        <h1 class="text-2xl font-extrabold mr-4">Cargando...</h1>
+                        <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt="Cargando..."></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        @endif
 
     @if ($costomenus->where('name',$costomenu->name)->count()>0)
         @if ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null')->count()>0)
@@ -407,16 +423,44 @@
                     
                         @break
                     @case('MPC')
-                        <div class="flex justify-center mt-4">
+                        <div class="flex justify-center mt-4" x-show="openTab === {{$costo->id}}">
                             <div> 
-                                <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel?</p>
-                                <button class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
-                                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-                                    <span>Download</span>
-                                </button>
+                                <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel para subir los costos de {{$costo->name}}?</p>
+                                <div class="flex gap-x-2">
+                                    <button wire:click="exportarExcel({{$costo}})"  class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                        <span>Download</span>
+                                    </button>
+                                    
+                                       
+                                    
+                                        <input 
+                                            type="file" 
+                                            id="archivo_{{ $costo->id }}" 
+                                            wire:model="archivo" 
+                                            style="display: none;" 
+                                            onchange="@this.set('archivoCostoId', {{ $costo->id }})"
+                                        >
+                            
+                                        <button 
+                                            onclick="document.getElementById('archivo_{{ $costo->id }}').click()" class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                            <span>Upload</span>
+                                        </button>
+                                    
+                                        @error('file') 
+                                            <span class="text-red-600 text-sm">{{ $message }}</span> 
+                                        @enderror
+                                 
+                                    
+                                    
+                                </div>
                             </div> 
                         </div>
-                        <div class="flex flex-col">
+                        <div class="flex flex-col" x-show="openTab === {{$costo->id}}">
+                            @if (session()->has('mensaje'))
+                                <div class="alert alert-success text-center">{{ session('mensaje') }}</div>
+                            @endif
                             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                   <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">

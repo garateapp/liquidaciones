@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Exports\RazonsocialCondicionExport;
 use App\Imports\PackingCodeImport;
+use App\Imports\RazonCondicionImport;
 use App\Models\Balancemasa;
 use App\Models\Costoembalajecode;
 use App\Models\Costomenu;
@@ -25,6 +27,31 @@ class CostosTemporada extends Component
     protected $listeners = ['tarifaActualizada' => '$refresh'];
 
     use WithFileUploads;
+
+    public $archivo, $procesando = false;
+    public $archivoCostoId = null;
+
+    public function updatedArchivo()
+    {
+        $this->procesando = true;
+
+        $this->validate([
+            'archivo' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+        
+        // Asegúrate de tener asignado el costo_id antes
+        if ($this->archivoCostoId) {
+          
+            Excel::import(new RazonCondicionImport($this->temporada->id, $this->archivoCostoId), $this->archivo);
+
+           
+        } else {
+            session()->flash('error', 'Debe seleccionarse un Costo válido.');
+        }
+
+        $this->reset(['archivo', 'archivoCostoId', 'procesando']);
+    }
+
 
     public $tarifas = [];
 
@@ -120,7 +147,35 @@ class CostosTemporada extends Component
         $costotarifacolor->delete();
     }
 
+    public function exportarExcel($costo)
+    {
+        $masastotal = Balancemasa::select([
+            'c_productor',
+        ])
+        ->filter1($this->filters)
+        ->where('temporada_id', $this->temporada->id)
+        ->whereIn('exportadora', ['Greenex SpA', '22'])
+        ->get();
     
+        $unique_productores = $masastotal->pluck('c_productor')->unique();
+    
+        $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
+            ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
+            ->groupBy('rut')
+            ->whereIn('csg', $unique_productores);
+    
+        $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                        $join->on('razonsocials.id', '=', 'sub.id');
+                    })
+                    ->select('razonsocials.*', 'sub.csg_count')
+                    ->orderBy($this->sortBy, $this->sortDirection)
+                    ->get(); // usamos ->get() en lugar de ->paginate() para exportar todo
+               
+        
+        $temporada = $this->temporada;
+
+        return Excel::download(new RazonsocialCondicionExport($razons, $costo, $temporada), 'RazonsocialCondicionExport.xlsx');
+    }
 
     public function mount(Temporada $temporada, Costomenu $costomenu){
         $this->temporada=$temporada;

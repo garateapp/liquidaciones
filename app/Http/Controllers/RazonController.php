@@ -87,12 +87,11 @@ class RazonController extends Controller
                
                
                 if($m==14){
-                    $cont=Razonsocial::where('csg',$csg)->first();
+                    $cont=Razonsocial::where('name',$nombre)->first();
                     $search=['.','-'];
                     if($cont){
                          $cont->forceFill([
                             'name' => $nombre,
-                            'csg' => $csg,
                             'rut' => $rut,
                            
                         ])->save();
@@ -100,7 +99,6 @@ class RazonController extends Controller
                     }else{
                         $user=Razonsocial::create([
                             'name' => $nombre,
-                            'csg' => $csg,
                             'rut' => $rut,
                           
                         ]);

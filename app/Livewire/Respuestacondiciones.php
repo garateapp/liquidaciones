@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Condicionproductor;
+use App\Models\Opcion_condicion;
 use App\Models\Razonsocial;
 use App\Models\Respuestacondicion;
 use App\Models\Temporada;
@@ -25,11 +26,13 @@ class Respuestacondiciones extends Component
     {
         // Puedes obtener los datos adicionales si los necesitas (e.g., value)
         // En este ejemplo, se está registrando la respuesta sin 'value'
+        $opcion=Opcion_condicion::find($opcionId);
         Respuestacondicion::create([
             'razonsocial_id' => $this->razonsocial->id,
-            'opcion_condicion_id' => $opcionId,
+            'opcion_condicion_id' => $opcion->id,
             'temporada_id' => $this->temporada->id,
-            'value' => null, // O el valor si tienes alguno
+            'value' => $opcion->value,
+            'text' => $opcion->text,
         ]);
 
         // Enviar un mensaje o actualizar visualmente que la respuesta fue guardada
