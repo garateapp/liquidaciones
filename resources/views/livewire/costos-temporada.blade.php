@@ -430,7 +430,9 @@
                                                 Name
                                               </th>
                                               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                                Bonificación
+                                                Bonificación @foreach($costo->condicionproductor->opcions as $item)
+                                                    ({{$item->id}} {{$item->text}}-{{$item->value}})
+                                                    @endforeach
                                               </th>
                                               
                                              
@@ -439,6 +441,9 @@
                                           <tbody>
                                             @php
                                                 $n=1;
+                                            @endphp
+                                            @php
+                                                $opcionIds = $costo->condicionproductor->opcions->pluck('id')->toArray();
                                             @endphp
                                            
                                               @foreach ($razons as $razon)
@@ -454,7 +459,24 @@
                                                         @endif
                                                       </td>
                                                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                       Bonificación
+                                                        @php
+                                                            $respuestasFiltradas = $razon->respuestas->filter(function ($respuesta) use ($opcionIds) {
+                                                                return in_array($respuesta->opcion_condicion_id, $opcionIds);
+                                                            });
+                                                        @endphp
+                                                        @if($respuestasFiltradas->isNotEmpty())
+                                                            <ul>
+                                                                @foreach($respuestasFiltradas as $respuesta)
+                                                                    <li>
+                                                                        Opción: {{$respuesta->opcion_condicion->text}} - Valor: {{$respuesta->opcion_condicion->value ?? 'Sin contenido'}}
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @else
+                                                            <p>No hay respuestas que coincidan con las opciones.</p>
+                                                        @endif
+                                                    
+                                                    
                                                       </td>
                                                     
                                                      

@@ -21,4 +21,9 @@ class Costo extends Model
         return $this->BelongsTo('App\Models\Costomenu','costomenu_id');
     }
 
+      // relacion uno a muchos inversa
+    public function condicionproductor(){
+        return $this->BelongsTo('App\Models\Condicionproductor','condicionproductor_id');
+    }
+
 }
