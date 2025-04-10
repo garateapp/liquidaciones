@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Condicionproductor;
 use App\Models\Costo;
 use App\Models\Costomenu;
 use App\Models\Superespecie;
@@ -30,7 +31,9 @@ class CostoController extends Controller
 
         $opcionesmenu = Costomenu::pluck('name', 'id');
 
-        return view('admin.costos.create',compact('especies','opcionesmenu'));
+        $opcionescondiciones = Condicionproductor::pluck('name', 'id');
+
+        return view('admin.costos.create',compact('especies','opcionesmenu','opcionescondiciones'));
     }
 
     /**
@@ -67,8 +70,10 @@ class CostoController extends Controller
         $especies = Superespecie::all();
 
         $opcionesmenu = Costomenu::pluck('name', 'id');
+
+        $opcionescondiciones = Condicionproductor::pluck('name', 'id');
         
-        return view('admin.costos.edit',compact('costo','especies','opcionesmenu'));
+        return view('admin.costos.edit',compact('costo','especies','opcionesmenu','opcionescondiciones'));
     }
 
     /**
@@ -84,6 +89,7 @@ class CostoController extends Controller
             'name'=>$request->name,
             'metodo'=>$request->metodo,
             'costomenu_id'=>$request->costomenu_id,
+            'condicionproductor_id'=>$request->condicionproductor_id,
             'exp'=>$request->exp,
             'mi'=>$request->mi,
             'com'=>$request->com

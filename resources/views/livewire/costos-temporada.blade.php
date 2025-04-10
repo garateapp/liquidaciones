@@ -430,17 +430,9 @@
                                                 Name
                                               </th>
                                               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                                Rut
+                                                Bonificación
                                               </th>
-                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                                Csg
-                                              </th>
-                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                                Accion
-                                              </th>
-                                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                                Informe
-                                              </th>
+                                              
                                              
                                             </tr>
                                           </thead>
@@ -462,32 +454,10 @@
                                                         @endif
                                                       </td>
                                                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                      {{$razon->rut}}
+                                                       Bonificación
                                                       </td>
-                                                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                      {{$razon->csg_count}}
-                                                      </td>
+                                                    
                                                      
-                                                      <td class="text-sm text-gray-900 font-light px-2 py-4 whitespace-nowrap">
-                                                        <a href="{{route('exportpdff',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank">
-                                                          <x-button>
-                                                            Generar
-                                                          </x-button>
-                                                        </a>
-                                                      </td> 
-                                                      <td class="text-sm text-gray-900 font-light py-4 text-center">
-        
-                                                        @if ($razon->informe)
-                                                            <a href="{{route('informe.download',$razon)}}" target="_blank" class="h-10 mr-2 items-center content-center">   
-                                                              <img class="h-10 ml-4 pl-2 object-contain" src="{{asset('image/pdf_icon2.png')}}" title="Descargar" alt="">
-                                                            </a>
-                                                        
-                                                            
-                                                        @else
-                                                            
-                                                        @endif
-        
-                                                      </td>
                                                   </tr>
                                                 @php
                                                     $n+=1;

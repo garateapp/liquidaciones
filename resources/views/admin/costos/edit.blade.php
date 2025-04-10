@@ -1,6 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-       
+        <style>
+            #condicionproductor_block {
+                display: none;
+            }
+        </style>
     </x-slot>
     <div class="bg-white shadow-lg rounded overflow-hidden">
 
@@ -73,6 +77,17 @@
                                             </span>
                                         @enderror
                                     </div>
+
+                                    <div class="block" id="condicionproductor_block">
+                                        {!! Form::label('condicionproductor_id', 'Condición:',['class'=>'text-center']) !!}<br>
+                                        {!! Form::select('condicionproductor_id', $opcionescondiciones, null, ['class'=>'mt-1 block w-full rounded-lg mb-4']) !!}
+                                        @error('condicionproductor_id')
+                                            <span class="invalid-feedback">
+                                                <strong>{{$message}}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
                                   
                                 </div>
                             </div>
@@ -133,5 +148,24 @@
 
     </div>
 
-            
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const metodoSelect = document.getElementById('metodo');
+            const condicionBlock = document.getElementById('condicionproductor_block');
+    
+            function toggleCondicionBlock() {
+                if (metodoSelect.value === 'MPC') {
+                    condicionBlock.style.display = 'block';
+                } else {
+                    condicionBlock.style.display = 'none';
+                }
+            }
+    
+            // Ejecutar al cargar la página
+            toggleCondicionBlock();
+    
+            // Escuchar cambios
+            metodoSelect.addEventListener('change', toggleCondicionBlock);
+        });
+    </script> 
 </x-app-layout>
