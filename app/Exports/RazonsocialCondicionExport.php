@@ -72,8 +72,8 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
-                        //$opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $opcionesSheet->setCellValue("A{$row}", $opcion->value);
+                        $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        //$opcionesSheet->setCellValue("A{$row}", $opcion->value);
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
 
@@ -98,7 +98,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : null;
 
                         if ($valorInicial) {
-                            $mainSheet->setCellValue($cellFactor, $valorInicial);
+                            $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                         }
 
                         // Validación dropdown en FACTOR
