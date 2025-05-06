@@ -1765,6 +1765,9 @@ class TemporadaShow extends Component
                     ->get(); // usamos ->get() en lugar de ->paginate() para exportar todo
                
         
+    // Cargar relaciones después del get
+    $razons->load('respuestas.opcion_condicion');
+
         $temporada = $this->temporada;
 
         return Excel::download(new RazonsocialCondicionExport($razons, $costo, $temporada), 'RazonsocialCondicionExport.xlsx');
