@@ -4,7 +4,7 @@
             <th>PRODUCTOR</th>
             @if(isset($condiciones))
                 @foreach($condiciones as $condicion)
-                    <th>Condición {{ $condicion->id }}</th>
+                    <th>{{ $condicion->name }}</th>
                 @endforeach
             @else
                 <th>FACTOR</th>
