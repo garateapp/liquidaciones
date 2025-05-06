@@ -76,7 +76,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
 
-                    $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
+                    //$opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
                     $dropdownOptions = $condicion->opcions
                         ->pluck('value')
