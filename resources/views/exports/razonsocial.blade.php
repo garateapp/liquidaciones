@@ -30,7 +30,7 @@
                         $opcionIds = $costo->condicionproductor->opcions->pluck('id')->toArray();
                         $respuesta = $razon->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $opcionIds));
                     @endphp
-                    <td>{{ $respuesta ? $respuesta->value : 'Seleccione una opción' }}</td>
+                    <td>{{ $respuesta ? $respuesta->opcion_condicion->value : 'Seleccione una opción' }}</td>
                     <td>{{ $respuesta ? $respuesta->opcion_condicion->text : 'n/a' }}</td>
                 @endif
             </tr>

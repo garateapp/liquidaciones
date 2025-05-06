@@ -107,8 +107,12 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $mainSheet->getCell($cell)->setDataValidation($validation);
 
                         // Fórmula: BUSCARV inline para mostrar el text al lado
-                        $formula = "=IF({$cell}<>\"\", VLOOKUP({$cell}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
-                        $mainSheet->setCellValue($cell, $formula);
+                        $currentValue = $mainSheet->getCell($cell)->getValue();
+                        if (trim($currentValue) === '' || trim($currentValue) === 'n/a') {
+                            $formula = "=IF({$cell}<>\"\", VLOOKUP({$cell}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
+                            $mainSheet->setCellValue($cell, $formula);
+                        }
+
                     }
 
                     $col++;
