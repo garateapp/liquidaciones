@@ -117,6 +117,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
 
                     $col += 2;
                 }
+                $opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
 
             },
         ];
