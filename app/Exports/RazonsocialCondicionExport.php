@@ -110,7 +110,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $mainSheet->getCell($cellFactor)->setDataValidation($validation);
 
                         // Fórmula BUSCARV en RESPUESTA
-                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
+                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$sheetTitle}'!A:B, 2, FALSE), \"n/a\")";
                         $mainSheet->setCellValue($cellRespuesta, $formula);
                     }
 
