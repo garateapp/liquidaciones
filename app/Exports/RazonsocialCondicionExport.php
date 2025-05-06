@@ -66,7 +66,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
                     $colLetra = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
-                    $mainSheet->setCellValue("{$colLetra}1", "CONDICIÓN {$condicion->id}");
+                    $mainSheet->setCellValue("{$colLetra}1", "{$condicion->name}");
 
                     // Crear hoja Opciones_{id}
                     $opcionesSheet = $spreadsheet->createSheet();
