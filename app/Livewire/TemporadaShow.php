@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Exports\RazonsocialCondicionExport;
 use App\Models\Anticipo;
 use App\Models\Balancemasa;
 use App\Models\Balancemasados;
@@ -41,6 +42,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TemporadaShow extends Component
 {   use WithPagination;
@@ -1736,6 +1738,36 @@ class TemporadaShow extends Component
         ]);
 
         return redirect()->back();
+    }
+
+    public function exportarExcel($costo)
+    {
+        $masastotal = Balancemasa::select([
+            'c_productor',
+        ])
+        ->filter1($this->filters)
+        ->where('temporada_id', $this->temporada->id)
+        ->whereIn('exportadora', ['Greenex SpA', '22'])
+        ->get();
+    
+        $unique_productores = $masastotal->pluck('c_productor')->unique();
+    
+        $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
+            ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
+            ->groupBy('rut')
+            ->whereIn('csg', $unique_productores);
+    
+        $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                        $join->on('razonsocials.id', '=', 'sub.id');
+                    })
+                    ->select('razonsocials.*', 'sub.csg_count')
+                    ->orderBy($this->sortBy, $this->sortDirection)
+                    ->get(); // usamos ->get() en lugar de ->paginate() para exportar todo
+               
+        
+        $temporada = $this->temporada;
+
+        return Excel::download(new RazonsocialCondicionExport($razons, $costo, $temporada), 'RazonsocialCondicionExport.xlsx');
     }
 
     public function embarques_refresh()

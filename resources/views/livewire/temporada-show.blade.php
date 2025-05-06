@@ -2851,6 +2851,40 @@
                 @endif 
 
                 @if ($vista=='resumesnacional' || $vista=="show")
+                  <div class="flex justify-center mt-4">
+                      <div> 
+                          <p class="text-center mb-2">¿Aun no tienes la plantilla de Excel para subir las condiciones del productor?</p>
+                          <div class="flex gap-x-2">
+                              <button wire:click="exportarExcel('TODAS')"  class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                  <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                  <span>Download</span>
+                              </button>
+                              
+                                
+                              
+                                  <input 
+                                      type="file" 
+                                      id="archivo_TODAS" 
+                                      wire:model="archivo" 
+                                      style="display: none;" 
+                                      onchange="@this.set('archivoCostoId', 'TODAS')"
+                                  >
+                      
+                                  <button 
+                                      onclick="document.getElementById('archivo_TODAS').click()" class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
+                                      <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                      <span>Upload</span>
+                                  </button>
+                              
+                                  @error('file') 
+                                      <span class="text-red-600 text-sm">{{ $message }}</span> 
+                                  @enderror
+                          
+                              
+                              
+                          </div>
+                      </div> 
+                  </div>
                   <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

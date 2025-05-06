@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Costo;
-use App\Models\Razonsocial;
+use App\Models\Condicionproductor;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -13,87 +13,107 @@ use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
 class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
 {
-    public $razons, $costo, $temporada;
+    public $razons, $costo, $condiciones, $temporada;
 
     public function __construct($razons, $costo, $temporada)
     {
         $this->razons = $razons;
-        //dd($costo['id']);
-        $this->costo = Costo::find($costo['id']);
+
+        if ($costo === "TODAS") {
+            $this->condiciones = Condicionproductor::with('opcions')->get();
+        } else {
+            $this->costo = Costo::with('condicionproductor.opcions')->find($costo['id']);
+        }
+
         $this->temporada = $temporada;
     }
 
     public function view(): View
     {
-        return view('exports.razonsocial', [
-            'razons' => $this->razons,
-            'costo' => $this->costo,
-            'temporada' => $this->temporada,
-        ]);
+        if (isset($this->condiciones)) {
+            return view('exports.razonsocial', [
+                'razons' => $this->razons,
+                'condiciones' => $this->condiciones,
+                'temporada' => $this->temporada,
+            ]);
+        } else {
+            return view('exports.razonsocial', [
+                'razons' => $this->razons,
+                'costo' => $this->costo,
+                'temporada' => $this->temporada,
+            ]);
+        }
     }
 
     public function registerEvents(): array
-{
-    return [
-        AfterSheet::class => function (AfterSheet $event) {
-            $spreadsheet = $event->sheet->getDelegate()->getParent(); // acceso al archivo completo
-            $mainSheet = $event->sheet->getDelegate(); // hoja principal
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $spreadsheet = $event->sheet->getDelegate()->getParent();
+                $mainSheet = $event->sheet->getDelegate();
 
-            // === 1. Crear hoja "Opciones" con value => text ===
-            $opcionesSheet = $spreadsheet->createSheet();
-            $opcionesSheet->setTitle('Opciones');
+                $razons = $this->razons;
+                $condiciones = $this->condiciones ?? collect([$this->costo->condicionproductor]);
 
-            $opciones = $this->costo->condicionproductor->opcions;
+                $mainSheet->setCellValue('A1', 'PRODUCTOR');
 
-            // Escribir encabezados
-            $opcionesSheet->setCellValue('A1', 'Value');
-            $opcionesSheet->setCellValue('B1', 'Text');
-
-            // Escribir cada fila de opciones
-            foreach ($opciones as $index => $opcion) {
-                $row = $index + 2;
-                $value = str_replace(',', '.', (string) $opcion->value);
-                if (strpos((string)$value, '.') !== false) {
-                    $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                } else {
-                    $opcionesSheet->setCellValue("A{$row}", $opcion->value);
+                foreach ($razons as $index => $razon) {
+                    $mainSheet->setCellValue("A" . ($index + 2), $razon->name);
                 }
-               
-               
-                $opcionesSheet->setCellValue("B{$row}", $opcion->text);
-            }
 
-            // Ocultar hoja de opciones
-            //$opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
+                $col = 2;
+                foreach ($condiciones as $condicion) {
+                    if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
-            // === 2. Validaciones y fórmulas ===
-            $values = $opciones->pluck('value')->toArray();
-            $dropdownOptions = '"' . implode(',', $values) . '"';
+                    $colLetra = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+                    $mainSheet->setCellValue("{$colLetra}1", "CONDICIÓN {$condicion->id}");
 
-            $startRow = 2;
-            $endRow = $startRow + count($this->razons) - 1;
+                    // Crear hoja Opciones_{id}
+                    $opcionesSheet = $spreadsheet->createSheet();
+                    $sheetTitle = "Opciones_{$condicion->id}";
+                    $opcionesSheet->setTitle($sheetTitle);
 
-            for ($row = $startRow; $row <= $endRow; $row++) {
-                $respuesta = $mainSheet->getCell("C{$row}")->getValue();
+                    $opcionesSheet->setCellValue("A1", 'Value');
+                    $opcionesSheet->setCellValue("B1", 'Text');
 
-                if (trim($respuesta) === 'n/a') {
-                    // === Dropdown en columna B ===
-                    $validation = $mainSheet->getCell("B{$row}")->getDataValidation();
-                    $validation->setType(DataValidation::TYPE_LIST);
-                    $validation->setErrorStyle(DataValidation::STYLE_STOP);
-                    $validation->setAllowBlank(false);
-                    $validation->setShowDropDown(true);
-                    $validation->setFormula1($dropdownOptions);
-                    $mainSheet->getCell("B{$row}")->setDataValidation($validation);
+                    foreach ($condicion->opcions as $i => $opcion) {
+                        $row = $i + 2;
+                        $value = str_replace(',', '.', (string)$opcion->value);
+                        $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        $opcionesSheet->setCellValue("B{$row}", $opcion->text);
+                    }
 
-                    // === Fórmula BUSCARV en columna C ===
-                    $formula = "=IF(B{$row}<>\"\", VLOOKUP(B{$row}, Opciones!A:B, 2, FALSE), \"n/a\")";
-                    $mainSheet->setCellValue("C{$row}", $formula);
+                    $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
+
+                    // Validación y fórmula BUSCARV
+                    $dropdownOptions = $condicion->opcions
+                        ->pluck('value')
+                        ->map(fn($v) => str_replace(',', '.', (string)$v))
+                        ->implode(',');
+
+                    $formulaSheetName = str_replace(' ', '_', $sheetTitle);
+                    $startRow = 2;
+                    $endRow = $startRow + count($razons) - 1;
+
+                    for ($row = $startRow; $row <= $endRow; $row++) {
+                        $cell = "{$colLetra}{$row}";
+
+                        $validation = $mainSheet->getCell($cell)->getDataValidation();
+                        $validation->setType(DataValidation::TYPE_LIST);
+                        $validation->setErrorStyle(DataValidation::STYLE_STOP);
+                        $validation->setAllowBlank(false);
+                        $validation->setShowDropDown(true);
+                        $validation->setFormula1("\"{$dropdownOptions}\"");
+                        $mainSheet->getCell($cell)->setDataValidation($validation);
+
+                        // Fórmula: BUSCARV inline para mostrar el text al lado
+                        $formula = "=IF({$cell}<>\"\", VLOOKUP({$cell}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
+                        $mainSheet->setCellValue($cell, $formula);
+                    }
+
+                    $col++;
                 }
-            }
-        },
-    ];
-}
-
-
+            },
+        ];
+    }
 }
