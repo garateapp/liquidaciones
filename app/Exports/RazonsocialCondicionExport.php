@@ -72,9 +72,15 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
+                    
+                        // Establecer el valor explícitamente como cadena
                         $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
+                    
+                        // Establecer el formato de número como texto para la celda A{$row}
+                        $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode('@');
                     }
+                    
 
                     //$opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
