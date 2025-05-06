@@ -90,8 +90,17 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     for ($row = $startRow; $row <= $endRow; $row++) {
                         $cellFactor = "{$colFactor}{$row}";
                         $cellRespuesta = "{$colRespuesta}{$row}";
-
-                        // Dropdown en FACTOR
+                    
+                        // 1. Si ya hay un valor en Blade, mantenerlo
+                        $razon = $razons[$row - 2] ?? null;
+                        $respuesta = $razon?->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $condicion->opcions->pluck('id')->toArray()));
+                        $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : null;
+                    
+                        if ($valorInicial) {
+                            $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        }
+                    
+                        // 2. Aplicar dropdown al FACTOR
                         $validation = $mainSheet->getCell($cellFactor)->getDataValidation();
                         $validation->setType(DataValidation::TYPE_LIST);
                         $validation->setErrorStyle(DataValidation::STYLE_STOP);
@@ -99,11 +108,12 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $validation->setShowDropDown(true);
                         $validation->setFormula1("\"{$dropdownOptions}\"");
                         $mainSheet->getCell($cellFactor)->setDataValidation($validation);
-
-                        // Fórmula en RESPUESTA
+                    
+                        // 3. Aplicar fórmula en RESPUESTA (BUSCARV)
                         $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
                         $mainSheet->setCellValue($cellRespuesta, $formula);
                     }
+                    
 
                     $col += 2;
                 }
