@@ -30,19 +30,11 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
 
     public function view(): View
     {
-        if (isset($this->condiciones)) {
-            return view('exports.razonsocial', [
-                'razons' => $this->razons,
-                'condiciones' => $this->condiciones,
-                'temporada' => $this->temporada,
-            ]);
-        } else {
-            return view('exports.razonsocial', [
-                'razons' => $this->razons,
-                'costo' => $this->costo,
-                'temporada' => $this->temporada,
-            ]);
-        }
+        return view('exports.razonsocial', [
+            'razons' => $this->razons,
+            'condiciones' => $this->condiciones ?? [$this->costo->condicionproductor],
+            'temporada' => $this->temporada,
+        ]);
     }
 
     public function registerEvents(): array
@@ -56,7 +48,6 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                 $condiciones = $this->condiciones ?? collect([$this->costo->condicionproductor]);
 
                 $mainSheet->setCellValue('A1', 'PRODUCTOR');
-
                 foreach ($razons as $index => $razon) {
                     $mainSheet->setCellValue("A" . ($index + 2), $razon->name);
                 }
@@ -65,12 +56,14 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                 foreach ($condiciones as $condicion) {
                     if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
-                    $colLetra = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
-                    $mainSheet->setCellValue("{$colLetra}1", "{$condicion->name}");
+                    $colFactor = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+                    $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1);
 
-                    // Crear hoja Opciones_{id}
-                    $opcionesSheet = $spreadsheet->createSheet();
+                    $mainSheet->setCellValue("{$colFactor}1", "FACTOR {$condicion->id}");
+                    $mainSheet->setCellValue("{$colRespuesta}1", "RESPUESTA {$condicion->id}");
+
                     $sheetTitle = "Opciones_{$condicion->id}";
+                    $opcionesSheet = $spreadsheet->createSheet();
                     $opcionesSheet->setTitle($sheetTitle);
 
                     $opcionesSheet->setCellValue("A1", 'Value');
@@ -85,7 +78,6 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
 
                     $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
-                    // Validación y fórmula BUSCARV
                     $dropdownOptions = $condicion->opcions
                         ->pluck('value')
                         ->map(fn($v) => str_replace(',', '.', (string)$v))
@@ -96,26 +88,24 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     $endRow = $startRow + count($razons) - 1;
 
                     for ($row = $startRow; $row <= $endRow; $row++) {
-                        $cell = "{$colLetra}{$row}";
+                        $cellFactor = "{$colFactor}{$row}";
+                        $cellRespuesta = "{$colRespuesta}{$row}";
 
-                        $validation = $mainSheet->getCell($cell)->getDataValidation();
+                        // Dropdown en FACTOR
+                        $validation = $mainSheet->getCell($cellFactor)->getDataValidation();
                         $validation->setType(DataValidation::TYPE_LIST);
                         $validation->setErrorStyle(DataValidation::STYLE_STOP);
                         $validation->setAllowBlank(false);
                         $validation->setShowDropDown(true);
                         $validation->setFormula1("\"{$dropdownOptions}\"");
-                        $mainSheet->getCell($cell)->setDataValidation($validation);
+                        $mainSheet->getCell($cellFactor)->setDataValidation($validation);
 
-                        // Fórmula: BUSCARV inline para mostrar el text al lado
-                        $currentValue = $mainSheet->getCell($cell)->getValue();
-                        if (trim($currentValue) === '' || trim($currentValue) === 'n/a') {
-                            $formula = "=IF({$cell}<>\"\", VLOOKUP({$cell}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
-                            $mainSheet->setCellValue($cell, $formula);
-                        }
-
+                        // Fórmula en RESPUESTA
+                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
+                        $mainSheet->setCellValue($cellRespuesta, $formula);
                     }
 
-                    $col++;
+                    $col += 2;
                 }
             },
         ];
