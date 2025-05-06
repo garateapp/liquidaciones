@@ -72,7 +72,9 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
-                        $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                       // $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        $opcionesSheet->setCellValueExplicit("A{$row}", (string)$opcion->value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+
                         //$opcionesSheet->setCellValue("A{$row}", $opcion->value);
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
@@ -110,12 +112,18 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $validation->setFormula1("\"{$dropdownOptions}\"");
                         $mainSheet->getCell($cellFactor)->setDataValidation($validation);
 
+                        $mainSheet->setCellValueExplicit($cellFactor, (string)$valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        $mainSheet->getStyle($cellFactor)->getNumberFormat()->setFormatCode('@');
+
+
                         // Fórmula BUSCARV en RESPUESTA
-                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
+                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$sheetTitle}'!A:B, 2, FALSE), \"n/a\")";
                         $mainSheet->setCellValue($cellRespuesta, $formula);
+
                     }
 
-                    $opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
+                    //$opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
+                    $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode('@');
 
                     $col += 2;
                 }
