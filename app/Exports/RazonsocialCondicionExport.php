@@ -97,7 +97,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         // Obtener valor inicial desde respuesta si existe
                         $razon = $razons[$row - 2] ?? null;
                         $respuesta = $razon?->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $condicion->opcions->pluck('id')->toArray()));
-                        $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : null;
+                        $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : "Seleccione una opción";
 
                         if ($valorInicial) {
                             $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
