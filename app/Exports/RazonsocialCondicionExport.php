@@ -59,8 +59,8 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     $colFactor = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
                     $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1);
 
-                    $mainSheet->setCellValue("{$colFactor}1", "FACTOR {$condicion->id}");
-                    $mainSheet->setCellValue("{$colRespuesta}1", "RESPUESTA {$condicion->id}");
+                    $mainSheet->setCellValue("{$colFactor}1", "{$condicion->name}");
+                    $mainSheet->setCellValue("{$colRespuesta}1", "RESPUESTA");
 
                     $sheetTitle = "Opciones_{$condicion->id}";
                     $opcionesSheet = $spreadsheet->createSheet();
