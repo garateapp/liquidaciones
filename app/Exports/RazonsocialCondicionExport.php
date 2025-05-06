@@ -98,7 +98,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : null;
 
                         if ($valorInicial) {
-                            $mainSheet->setCellValue($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                            $mainSheet->setCellValue($cellFactor, $valorInicial);
                         }
 
                         // Validación dropdown en FACTOR
