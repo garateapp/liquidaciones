@@ -73,7 +73,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
                         $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $opcionesSheet->setCellValue("A{$row}", $opcion->value);
+                        //$opcionesSheet->setCellValue("A{$row}", $opcion->value);
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
 
@@ -114,7 +114,7 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$formulaSheetName}'!A:B, 2, FALSE), \"n/a\")";
                         $mainSheet->setCellValue($cellRespuesta, $formula);
                     }
-                    
+
                     $opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
 
                     $col += 2;
