@@ -10,7 +10,6 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
 {
@@ -73,10 +72,17 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
+                    
+                        // Establecer el valor explícitamente como cadena
                         $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+                    
+                        // Establecer el formato de número como texto
+                        $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode('@');
+                    
+                        // Establecer el texto de la opción
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
+                    
 
                     //$opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
