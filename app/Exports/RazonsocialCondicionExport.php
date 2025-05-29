@@ -56,38 +56,52 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                 foreach ($condiciones as $condicion) {
                     if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
-                    $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+                    $colFactor = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
 
-                    $mainSheet->setCellValue("{$colRespuesta}1", "{$condicion->name}");
+                    $mainSheet->setCellValue("{$colFactor}1", "{$condicion->name}");
 
                     $sheetTitle = "Opciones_{$condicion->id}";
                     $opcionesSheet = $spreadsheet->createSheet();
                     $opcionesSheet->setTitle($sheetTitle);
 
-                    $opcionesSheet->setCellValue("A1", 'Value');
-                    $opcionesSheet->setCellValue("B1", 'Text');
+                    $opcionesSheet->setCellValue("A1", 'Text');
 
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
-                        $value = str_replace(',', '.', (string)$opcion->value);
-                        $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $opcionesSheet->setCellValue("B{$row}", $opcion->text);
+                        $opcionesSheet->setCellValueExplicit("A{$row}", (string)$opcion->text, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                     }
 
                     $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
-                    $formulaSheetName = str_replace(' ', '_', $sheetTitle);
+                    $dropdownOptions = $condicion->opcions
+                        ->pluck('text')
+                        ->map(fn($v) => str_replace(',', '.', (string)$v))
+                        ->implode(',');
+
                     $startRow = 2;
                     $endRow = $startRow + count($razons) - 1;
 
                     for ($row = $startRow; $row <= $endRow; $row++) {
-                        $cellRespuesta = "{$colRespuesta}{$row}";
+                        $cellFactor = "{$colFactor}{$row}";
 
                         $razon = $razons[$row - 2] ?? null;
                         $respuesta = $razon?->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $condicion->opcions->pluck('id')->toArray()));
-                        $textoRespuesta = $respuesta ? $respuesta->opcion_condicion->text : 'n/a';
+                        $valorInicial = $respuesta ? (string)$respuesta->opcion_condicion->text : "Seleccione una opción";
 
-                        $mainSheet->setCellValue($cellRespuesta, $textoRespuesta);
+                        if ($valorInicial) {
+                            $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                        }
+
+                        // Validación dropdown en FACTOR
+                        $validation = $mainSheet->getCell($cellFactor)->getDataValidation();
+                        $validation->setType(DataValidation::TYPE_LIST);
+                        $validation->setErrorStyle(DataValidation::STYLE_STOP);
+                        $validation->setAllowBlank(false);
+                        $validation->setShowDropDown(true);
+                        $validation->setFormula1("\"{$dropdownOptions}\"");
+                        $mainSheet->getCell($cellFactor)->setDataValidation($validation);
+
+                        $mainSheet->getStyle($cellFactor)->getNumberFormat()->setFormatCode('@');
                     }
 
                     $col += 1;
@@ -95,5 +109,4 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
             },
         ];
     }
-
 }
