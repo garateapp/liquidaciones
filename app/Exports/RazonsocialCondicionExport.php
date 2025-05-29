@@ -57,36 +57,47 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
                     $colFactor = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+                    $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1);
 
                     $mainSheet->setCellValue("{$colFactor}1", "{$condicion->name}");
+                    $mainSheet->setCellValue("{$colRespuesta}1", "RESPUESTA");
 
                     $sheetTitle = "Opciones_{$condicion->id}";
                     $opcionesSheet = $spreadsheet->createSheet();
                     $opcionesSheet->setTitle($sheetTitle);
 
-                    $opcionesSheet->setCellValue("A1", 'Text');
+                    $opcionesSheet->setCellValue("A1", 'Value');
+                    $opcionesSheet->setCellValue("B1", 'Text');
 
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
+                        $value = str_replace(',', '.', (string)$opcion->text);
+                       // $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                         $opcionesSheet->setCellValueExplicit("A{$row}", (string)$opcion->text, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+
+                        //$opcionesSheet->setCellValue("A{$row}", $opcion->value);
+                        $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
 
-                    $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
+                    //$opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
 
                     $dropdownOptions = $condicion->opcions
                         ->pluck('text')
                         ->map(fn($v) => str_replace(',', '.', (string)$v))
                         ->implode(',');
 
+                    $formulaSheetName = str_replace(' ', '_', $sheetTitle);
                     $startRow = 2;
                     $endRow = $startRow + count($razons) - 1;
 
                     for ($row = $startRow; $row <= $endRow; $row++) {
                         $cellFactor = "{$colFactor}{$row}";
+                        $cellRespuesta = "{$colRespuesta}{$row}";
 
+                        // Obtener valor inicial desde respuesta si existe
                         $razon = $razons[$row - 2] ?? null;
                         $respuesta = $razon?->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $condicion->opcions->pluck('id')->toArray()));
-                        $valorInicial = $respuesta ? (string)$respuesta->opcion_condicion->text : "Seleccione una opción";
+                        $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->text) : "Seleccione una opción";
 
                         if ($valorInicial) {
                             $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
@@ -101,11 +112,22 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                         $validation->setFormula1("\"{$dropdownOptions}\"");
                         $mainSheet->getCell($cellFactor)->setDataValidation($validation);
 
+                        $mainSheet->setCellValueExplicit($cellFactor, (string)$valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                         $mainSheet->getStyle($cellFactor)->getNumberFormat()->setFormatCode('@');
+
+
+                        // Fórmula BUSCARV en RESPUESTA
+                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$sheetTitle}'!A:B, 2, FALSE), \"n/a\")";
+                        $mainSheet->setCellValue($cellRespuesta, $formula);
+
                     }
 
-                    $col += 1;
+                    //$opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
+                    $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode('@');
+
+                    $col += 2;
                 }
+
             },
         ];
     }
