@@ -56,11 +56,9 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                 foreach ($condiciones as $condicion) {
                     if (!$condicion || $condicion->opcions->isEmpty()) continue;
 
-                    $colFactor = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
-                    $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1);
+                    $colRespuesta = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
 
-                    $mainSheet->setCellValue("{$colFactor}1", "{$condicion->name}");
-                    $mainSheet->setCellValue("{$colRespuesta}1", "RESPUESTA");
+                    $mainSheet->setCellValue("{$colRespuesta}1", "{$condicion->name}");
 
                     $sheetTitle = "Opciones_{$condicion->id}";
                     $opcionesSheet = $spreadsheet->createSheet();
@@ -72,63 +70,30 @@ class RazonsocialCondicionExport implements FromView, ShouldAutoSize, WithEvents
                     foreach ($condicion->opcions as $i => $opcion) {
                         $row = $i + 2;
                         $value = str_replace(',', '.', (string)$opcion->value);
-                       // $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $opcionesSheet->setCellValueExplicit("A{$row}", (string)$opcion->value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-
-                        //$opcionesSheet->setCellValue("A{$row}", $opcion->value);
+                        $opcionesSheet->setCellValueExplicit("A{$row}", $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                         $opcionesSheet->setCellValue("B{$row}", $opcion->text);
                     }
 
                     $opcionesSheet->setSheetState(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::SHEETSTATE_HIDDEN);
-
-                    $dropdownOptions = $condicion->opcions
-                        ->pluck('value')
-                        ->map(fn($v) => str_replace(',', '.', (string)$v))
-                        ->implode(',');
 
                     $formulaSheetName = str_replace(' ', '_', $sheetTitle);
                     $startRow = 2;
                     $endRow = $startRow + count($razons) - 1;
 
                     for ($row = $startRow; $row <= $endRow; $row++) {
-                        $cellFactor = "{$colFactor}{$row}";
                         $cellRespuesta = "{$colRespuesta}{$row}";
 
-                        // Obtener valor inicial desde respuesta si existe
                         $razon = $razons[$row - 2] ?? null;
                         $respuesta = $razon?->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $condicion->opcions->pluck('id')->toArray()));
-                        $valorInicial = $respuesta ? str_replace(',', '.', (string)$respuesta->opcion_condicion->value) : "Seleccione una opción";
+                        $textoRespuesta = $respuesta ? $respuesta->opcion_condicion->text : 'n/a';
 
-                        if ($valorInicial) {
-                            $mainSheet->setCellValueExplicit($cellFactor, $valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        }
-
-                        // Validación dropdown en FACTOR
-                        $validation = $mainSheet->getCell($cellFactor)->getDataValidation();
-                        $validation->setType(DataValidation::TYPE_LIST);
-                        $validation->setErrorStyle(DataValidation::STYLE_STOP);
-                        $validation->setAllowBlank(false);
-                        $validation->setShowDropDown(true);
-                        $validation->setFormula1("\"{$dropdownOptions}\"");
-                        $mainSheet->getCell($cellFactor)->setDataValidation($validation);
-
-                        $mainSheet->setCellValueExplicit($cellFactor, (string)$valorInicial, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                        $mainSheet->getStyle($cellFactor)->getNumberFormat()->setFormatCode('@');
-
-
-                        // Fórmula BUSCARV en RESPUESTA
-                        $formula = "=IF({$cellFactor}<>\"\", VLOOKUP({$cellFactor}, '{$sheetTitle}'!A:B, 2, FALSE), \"n/a\")";
-                        $mainSheet->setCellValue($cellRespuesta, $formula);
-
+                        $mainSheet->setCellValue($cellRespuesta, $textoRespuesta);
                     }
 
-                    //$opcionesSheet->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL);
-                    $opcionesSheet->getStyle("A{$row}")->getNumberFormat()->setFormatCode('@');
-
-                    $col += 2;
+                    $col += 1;
                 }
-
             },
         ];
     }
+
 }
