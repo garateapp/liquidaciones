@@ -93,14 +93,14 @@
             <div class="bg-gray-100 rounded px-2 md:p-8 shadow mb-6">
               <h2 @click.on="openMenu = 1"  class="hidden cursor-pointer text-xs text-blue-500 font-semibold mb-4"><-Abrir Menu</h2>
                 
-                <div wire:loading wire:target="variedadpacking, updatevariedades, filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid, save_fobid, exportacion_store, exportacion_destroy">
+                <div wire:loading wire:target="archivo, importar, variedadpacking, updatevariedades, filters, checkEtiqueta, filtrar_fechanull, filtrar_multiplicacion, syncfecha, syncfactor, foliosexept, checkfolio, checkfolioreset, checkfobcategoria, checkfobvariedad, checkfobetiqueta, checkfobmaterial, checkfobcalibre, set_fobid, save_fobid, exportacion_store, exportacion_destroy">
                   <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
                     <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
                       <div class="w-full">
                         <div class="px-6 my-6 mx-auto">
                           <div class="mb-8">
                             <div class="flex justify-between items-center">
-                              <h1 class="text-2xl font-extrabold mr-4">Cargando filtros...</h1>
+                              <h1 class="text-2xl font-extrabold mr-4">Cargando...</h1>
                               <div><img class="h-10" src="{{asset('image/cargando.gif')}}" alt=""></div>
                             </div>
                           </div>
@@ -2862,43 +2862,45 @@
                               
                                 
                               
-                                 <div class="text-center">
+                              <div class="text-center">
 
-                                    {{-- Input oculto para seleccionar el archivo --}}
-                                    <input 
-                                        type="file" 
-                                        id="archivo_importacion" 
-                                        wire:model="archivo" 
-                                        class="hidden" 
-                                        accept=".xlsx,.xls"
-                                        onchange="@this.call('importar')"
-                                    >
+                                      {{-- Input oculto --}}
+                                  <input 
+                                      type="file" 
+                                      id="archivo_importacion" 
+                                      wire:model="archivo" 
+                                      class="hidden" 
+                                      accept=".xlsx,.xls"
+                                  />
 
-                                    {{-- Botón para activar el input de archivo --}}
-                                    <button 
-                                        type="button"
-                                        onclick="document.getElementById('archivo_importacion').click()"
-                                        class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded inline-flex items-center"
-                                    >
-                                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-                                        </svg>
-                                        <span>Importar respuestas</span>
-                                    </button>
+                                  {{-- Botón para abrir el selector de archivo --}}
+                                  <button 
+                                      type="button"
+                                      onclick="document.getElementById('archivo_importacion').click()"
+                                      class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded inline-flex items-center"
+                                  >
+                                      <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                          <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
+                                      </svg>
+                                      <span>Seleccionar archivo</span>
+                                  </button>
 
-                                    {{-- Mensaje de éxito --}}
+                                  {{-- Botón para confirmar importación después de seleccionar archivo --}}
+                                  @if ($archivo)
+                                      <button 
+                                          wire:click="importar"
+                                          class="ml-4 bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-4 rounded"
+                                      >
+                                          Importar ahora
+                                      </button>
+                                  @endif
+
+                                   {{-- Mensaje de éxito --}}
                                     @if (session()->has('success'))
                                         <div class="mt-2 text-green-600 text-sm">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-
-                                    {{-- Mensaje de error --}}
-                                    @error('archivo')
-                                        <div class="mt-2 text-red-600 text-sm">{{ $message }}</div>
-                                    @enderror
-
-                                </div>
 
                               
                                   @error('file') 
@@ -2907,6 +2909,7 @@
                           
                               
                               
+                            </div>
                           </div>
                       </div> 
                   </div>
