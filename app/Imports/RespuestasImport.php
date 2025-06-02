@@ -71,16 +71,24 @@ class RespuestasImport implements ToCollection
 
                 if (!$opcion) continue;
 
-                    Respuestacondicion::updateOrCreate(
-                        [
-                            'razonsocial_id' => $razon->id,
-                            'temporada_id' => $this->temporadaId,
-                            'opcion_condicion_id' => $opcion->id,
-                        ],
-                        [
-                            'value' => $valorTexto,
-                        ]
-                    );
+                    $razons=Razonsocial::where('name',$razon->name)->get();
+                    
+                    foreach($razons as $razon){
+
+                        Respuestacondicion::updateOrCreate(
+                            [
+                                'razonsocial_id' => $razon->id,
+                                'temporada_id' => $this->temporadaId,
+                                'opcion_condicion_id' => $opcion->id,
+                            ],
+                            [
+                                'value' => $valorTexto,
+                            ]
+                        );
+                    }
+
+
+
             }
         }
     }
