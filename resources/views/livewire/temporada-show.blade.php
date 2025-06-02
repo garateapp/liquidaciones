@@ -2862,19 +2862,44 @@
                               
                                 
                               
-                                  <input 
-                                      type="file" 
-                                      id="archivo_TODAS" 
-                                      wire:model="archivo" 
-                                      style="display: none;" 
-                                      onchange="@this.set('archivoCostoId', 'TODAS')"
-                                  >
-                      
-                                  <button 
-                                      onclick="document.getElementById('archivo_TODAS').click()" class="bg-gray-300 hover:bg-gray-200 text-grey-darkest font-bold py-2 px-4 rounded items-center mx-auto flex justify-center">
-                                      <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-                                      <span>Upload</span>
-                                  </button>
+                                 <div class="text-center">
+
+                                    {{-- Input oculto para seleccionar el archivo --}}
+                                    <input 
+                                        type="file" 
+                                        id="archivo_importacion" 
+                                        wire:model="archivo" 
+                                        class="hidden" 
+                                        accept=".xlsx,.xls"
+                                        onchange="@this.call('importar')"
+                                    >
+
+                                    {{-- Botón para activar el input de archivo --}}
+                                    <button 
+                                        type="button"
+                                        onclick="document.getElementById('archivo_importacion').click()"
+                                        class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded inline-flex items-center"
+                                    >
+                                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
+                                        </svg>
+                                        <span>Importar respuestas</span>
+                                    </button>
+
+                                    {{-- Mensaje de éxito --}}
+                                    @if (session()->has('success'))
+                                        <div class="mt-2 text-green-600 text-sm">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
+                                    {{-- Mensaje de error --}}
+                                    @error('archivo')
+                                        <div class="mt-2 text-red-600 text-sm">{{ $message }}</div>
+                                    @enderror
+
+                                </div>
+
                               
                                   @error('file') 
                                       <span class="text-red-600 text-sm">{{ $message }}</span> 

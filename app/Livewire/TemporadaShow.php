@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Exports\RazonsocialCondicionExport;
+use App\Imports\RespuestasImport;
 use App\Models\Anticipo;
 use App\Models\Balancemasa;
 use App\Models\Balancemasados;
@@ -41,6 +42,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -87,8 +89,22 @@ class TemporadaShow extends Component
         'multiplicacion'=>''
     ];
 
-    #[Url]
+    public $archivo;
 
+    use WithFileUploads;
+   
+    public function importar()
+    {
+        $this->validate([
+            'archivo' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new RespuestasImport($this->temporada->id), $this->archivo);
+
+        $this->reset('archivo');
+
+        session()->flash('success', 'Archivo importado correctamente.');
+    }
    
 
     public function mount(Temporada $temporada, $vista){

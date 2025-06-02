@@ -3,8 +3,7 @@
         <tr>
             <th>PRODUCTOR</th>
             @foreach($condiciones as $condicion)
-                <th>FACTOR {{ $condicion->id }}</th>
-                <th>RESPUESTA {{ $condicion->id }}</th>
+                <th>{{ $condicion->id }}</th>
             @endforeach
         </tr>
     </thead>
@@ -18,8 +17,8 @@
                         $respuesta = $razon->respuestas->first(fn($r) => in_array($r->opcion_condicion_id, $opcionIds));
                     @endphp
                     <td>{{ $respuesta ? $respuesta->opcion_condicion->text : 'Seleccione una opción' }}</td>
-                    <td>{{ $respuesta ? $respuesta->opcion_condicion->text : 'n/a' }}</td>
-                @endforeach
+   
+                    @endforeach
             </tr>
         @endforeach
     </tbody>
