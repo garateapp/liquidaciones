@@ -490,10 +490,17 @@
                                           <tbody>
                                             @php
                                                 $n=1;
+                                                $opcionIds = [];
                                             @endphp
-                                            @php
-                                                $opcionIds = $costo->condicionproductor->opcions->pluck('id')->toArray();
-                                            @endphp
+                                            
+                                                @if ($costo->condicionproductor)
+                                                    @if ($costo->condicionproductor->opcions)
+                                                        @php
+                                                            $opcionIds = $costo->condicionproductor->opcions->pluck('id')->toArray();
+                                                        @endphp
+                                                    @endif
+                                                @endif
+                                            
                                            
                                               @foreach ($razons as $razon)
                                                
