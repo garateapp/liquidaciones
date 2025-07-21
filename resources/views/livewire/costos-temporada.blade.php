@@ -540,6 +540,11 @@
                             </div>
                           </div>
                         @break
+                    @case('PSF')
+                          <div x-show="openTab === {{$costo->id}}">
+
+                          </div>
+                        @break
                     @default
                 
                 @endswitch 
