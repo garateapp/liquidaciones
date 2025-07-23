@@ -401,10 +401,76 @@
                         </table>
                         @break
                     @case('TPC')
+                        <div class="mt-4" x-show="openTab === {{$costo->id}}">
+                            <h1 class="text-xl font-semibold mb-4 text-center">
+                                Por favor selecione el archivo de "Costos por Codigo para {{$costo->name}}" que desea importar
+                            </h1>
+                            <div class="flex justify-center ">
+                                
+                                <form wire:submit.prevent="importFile({{ $costo->id }})">
+                                    <x-validation-errors class="errors" />
+                                
+                                    <!-- Campo para elegir el archivo -->
+                                    <input type="file" wire:model="file" accept=".csv,.xlsx">
+                                
+                                    <!-- Mostrar el nombre del archivo cargado -->
+                                    
+                                    <!-- Puedes tener un select para escoger el costo_id o pasarlo de alguna otra forma -->
+                                    <input type="hidden" wire:model="costo_id" value="{{ $costo->id }}">
+                                
+                                  
+                                   
+                                    
+                                </form>
+                             
+                                
+                            </div>
+                            @if ($file)
+                                <div class="flex justify-center mt-2">
+                                    <x-button onclick="confirmImportFile({{ $costo->id }})">
+                                        Importar
+                                    </x-button>
+                                </div>
+                            @endif
+                          
+                        </div>
+                        <table class="min-w-full leading-normal mt-6" x-show="openTab === {{$costo->id}}">
+                          <thead>
+                              <tr>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      Código Embalaje
+                                  </th>
+                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                      Costo por Caja (USD)
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            @if ($temporada->costoembalajecodes->where('costo_id',$costo->id)->count())
+                                
+                              @foreach ($temporada->costoembalajecodes->where('costo_id',$costo->id) as $costo)
+                                  <tr>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ $costo->c_embalaje }}</p>
+                                      </td>
+                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                          <p class="text-gray-900 whitespace-no-wrap">{{ number_format($costo->costo_por_caja, 2) }}</p>
+                                      </td>
+                                  </tr>
+                              @endforeach
 
+                            @else
+                              <tr>
+                                <td colspan="2" class="col-span-2 text-center py-2">
+                                    Sin Registros en la base de datos
+                                </td>
+                              </tr>
+                            @endif
+                          </tbody>
+                        </table>
                         @break
                     @case('TPK')
-                    
+                        
                         @break
                     @case('MTC')
                         
