@@ -6,9 +6,12 @@ use App\Exports\RazonsocialCondicionExport;
 use App\Imports\PackingCodeImport;
 use App\Imports\RazonCondicionImport;
 use App\Models\Balancemasa;
+use App\Models\Costo;
 use App\Models\Costoembalajecode;
 use App\Models\Costomenu;
+use App\Models\Costotarifacaja;
 use App\Models\Costotarifacolor;
+use App\Models\Costotarifakilo;
 use App\Models\Exception;
 use App\Models\Exportacion;
 use App\Models\Razonsocial;
@@ -18,18 +21,25 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CodigoEmbalajeExport;
+use App\Exports\PackingcodeExport;
 
 class CostosTemporada extends Component
-{   public $temporada, $costomenu,$formcolor, $variedadpacking,$ctd=25; 
+{   public $temporada, $costomenu,$formcolor, $variedadpacking,$ctd=25, $type, $precio_usd; 
     public $sortBy = 'sub.csg_count'; // Columna por defecto para ordenar
     public $sortByProc = 'id'; // Columna por defecto para ordenar
     public $sortDirection = 'desc'; // Dirección por defecto (descendente)
     protected $listeners = ['tarifaActualizada' => '$refresh'];
-
+    public $tarifa_caja_input = [];
     use WithFileUploads;
-
+    public $edit_tarifa_id = null;
+    public $edit_tarifa_value = [];
     public $archivo, $procesando = false;
     public $archivoCostoId = null;
+    // NUEVAS PROPIEDADES
+    public $tarifa_kg_input = [];
+    public $edit_tarifa_kg_id = null;
+    public $edit_tarifa_kg_value = [];
 
     public function updatedArchivo()
     {
@@ -252,11 +262,78 @@ class CostosTemporada extends Component
                             ->select('razonsocials.*')
                             ->get();
 
-        
-        return view('livewire.costos-temporada',compact('costomenus','exportacions','unique_variedades','razons'));
+                $costotarifacajas = Costotarifacaja::where('temporada_id', $this->temporada->id ?? null)->get();
+                $costotarifakilos = Costotarifakilo::where('temporada_id', $this->temporada->id ?? null)->get();
+
+        return view('livewire.costos-temporada',compact('costomenus','exportacions','unique_variedades','razons','costotarifacajas','costotarifakilos'));
     }
 
-    
+
+    public function storeTarifaCaja($costoId)
+    {
+        $this->validate([
+            "tarifa_caja_input.$costoId" => 'required|numeric|min:0',
+        ]);
+
+        Costotarifacaja::create([
+            'costo_id' => $costoId,
+            'temporada_id' => $this->temporada->id ?? null,
+            'tarifa_caja' => $this->tarifa_caja_input[$costoId],
+        ]);
+
+        unset($this->tarifa_caja_input[$costoId]);
+        $this->dispatch('alert', type: 'success', message: 'Tarifa agregada.');
+
+    }
+
+    public function destroyTarifaCaja($id)
+    {
+        Costotarifacaja::find($id)?->delete();
+        $this->dispatch('alert', type: 'success', message: 'Tarifa eliminada.');
+
+    }
+
+
+    public function editTarifaCaja($id)
+    {
+        $caja = Costotarifacaja::findOrFail($id);
+        $this->edit_tarifa_id = $caja->id;
+        $this->edit_tarifa_value[$caja->id] = $caja->tarifa_caja;
+    }
+
+    public function updateTarifaCaja($id)
+    {
+        $this->validate([
+            "edit_tarifa_value.$id" => 'required|numeric|min:0',
+        ]);
+
+        $caja = Costotarifacaja::findOrFail($id);
+        $caja->tarifa_caja = $this->edit_tarifa_value[$id];
+        $caja->save();
+
+        $this->edit_tarifa_id = null;
+        $this->dispatch('alert', type: 'success', message: 'Tarifa actualizada.');
+    }
+
+     public function exportacion_store($costo_id){
+        $rules = [
+            'type'=>'required',
+            'precio_usd'=>'required'
+            
+            ];
+      
+        $this->validate ($rules);
+
+        Exportacion::create([
+            'temporada_id'=>$this->temporada->id,
+            'type'=>$this->type,
+            'precio_usd'=>$this->precio_usd,
+            'costo_id'=>$costo_id   
+        ]);
+        
+        $this->reset(['type','precio_usd']);
+        $this->temporada = Temporada::find($this->temporada->id);
+    }
 
     public function variedadcolor_add(){
         $rules = [
@@ -278,5 +355,76 @@ class CostosTemporada extends Component
         $variedad->bi_color=null;
         $variedad->save();
     }
+
     
+    // GUARDAR
+    public function storeTarifaKilo($costoId)
+    {
+        $this->validate([
+            "tarifa_kg_input.$costoId" => 'required|numeric|min:0',
+        ]);
+
+        $existe = Costotarifakilo::where('costo_id', $costoId)
+            ->where('temporada_id', $this->temporada->id ?? null)
+            ->exists();
+
+        if ($existe) {
+            $this->dispatch('alert', type: 'warning', message: 'Ya existe una tarifa por kilo para esta temporada.');
+            return;
+        }
+
+        Costotarifakilo::create([
+            'costo_id' => $costoId,
+            'temporada_id' => $this->temporada->id ?? null,
+            'tarifa_kg' => $this->tarifa_kg_input[$costoId],
+        ]);
+
+        unset($this->tarifa_kg_input[$costoId]);
+
+        $this->dispatch('alert', type: 'success', message: 'Tarifa por kilo agregada.');
+    }
+
+
+
+    public function descargarPlantilla($costoId)
+    {
+        $costo = Costo::findOrFail($costoId);
+
+        return Excel::download(new PackingcodeExport($this->temporada->id, $costoId), 'plantilla_codigos_embalaje.xlsx');
+    }
+    // EDITAR
+    public function editTarifaKilo($id)
+    {
+        $kilo = \App\Models\Costotarifakilo::findOrFail($id);
+        $this->edit_tarifa_kg_id = $kilo->id;
+        $this->edit_tarifa_kg_value[$id] = $kilo->tarifa_kg;
+    }
+
+    // ACTUALIZAR
+    public function updateTarifaKilo($id)
+    {
+        $this->validate([
+            "edit_tarifa_kg_value.$id" => 'required|numeric|min:0',
+        ]);
+
+        $kilo = \App\Models\Costotarifakilo::findOrFail($id);
+        $kilo->tarifa_kg = $this->edit_tarifa_kg_value[$id];
+        $kilo->save();
+
+        $this->edit_tarifa_kg_id = null;
+
+        $this->dispatch('alert', type: 'success', message: 'Tarifa actualizada.');
+    }
+
+    // ELIMINAR
+    public function destroyTarifaKilo($id)
+    {
+        \App\Models\Costotarifakilo::find($id)?->delete();
+        $this->dispatch('alert', type: 'success', message: 'Tarifa eliminada.');
+    }
+
+    
+    public function exportacion_destroy(Exportacion $exportacion){
+        $exportacion->delete();
+    }
 }

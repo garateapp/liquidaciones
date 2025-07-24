@@ -149,42 +149,42 @@
                             @if ($exportacions->where('costo_id',$costo->id))
                                 
                                 @foreach ($exportacions->where('costo_id',$costo->id) as $exportacion)
-                                <tr>
-                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 w-10 h-10 hidden">
-                                        <img class="w-full h-full rounded-full"
-                                                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                                    alt="" />
-                                                            </div>
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                            {{$exportacion->type}}
-                                            </p>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap"> 
+                                    <tr>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 w-10 h-10 hidden">
+                                            <img class="w-full h-full rounded-full"
+                                                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                                        alt="" />
+                                                                </div>
+                                            <div class="ml-3">
+                                                <p class="text-gray-900 whitespace-no-wrap">
+                                                {{$exportacion->type}}
+                                                </p>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap"> 
+                                        
+                                            {{$exportacion->precio_usd}}</p>
+                                        </td>
                                     
-                                        {{$exportacion->precio_usd}}</p>
-                                    </td>
-                                
-                                
+                                    
 
-                                    <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                    <a href="{{route('exportacion.edit',['exportacion'=>$exportacion,'temporada'=>$temporada])}}">
-                                        <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                            <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                                            <span class="relative">Editar</span>
+                                        <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                        <a href="{{route('exportacion.edit',['exportacion'=>$exportacion,'temporada'=>$temporada])}}">
+                                            <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                                                <span aria-hidden class="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                                                <span class="relative">Editar</span>
+                                            </span>
+                                        </a>
+                                        <span wire:click="exportacion_destroy({{$exportacion->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                            <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                            <span class="relative">Eliminar</span>
                                         </span>
-                                    </a>
-                                    <span wire:click="exportacion_destroy({{$exportacion->id}})" class="cursor-pointer relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                        <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Eliminar</span>
-                                    </span>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @endif
 
@@ -356,6 +356,12 @@
                              
                                 
                             </div>
+                            <div class="flex justify-center mt-2">
+                                <x-button wire:click="descargarPlantilla({{ $costo->id }})" class="bg-blue-500 hover:bg-blue-600 text-white">
+                                    Descargar Plantilla
+                                </x-button>
+                            </div>
+
                             @if ($file)
                                 <div class="flex justify-center mt-2">
                                     <x-button onclick="confirmImportFile({{ $costo->id }})">
@@ -401,77 +407,122 @@
                         </table>
                         @break
                     @case('TPC')
-                        <div class="mt-4" x-show="openTab === {{$costo->id}}">
-                            <h1 class="text-xl font-semibold mb-4 text-center">
-                                Por favor selecione el archivo de "Costos por Codigo para {{$costo->name}}" que desea importar
-                            </h1>
-                            <div class="flex justify-center ">
-                                
-                                <form wire:submit.prevent="importFile({{ $costo->id }})">
-                                    <x-validation-errors class="errors" />
-                                
-                                    <!-- Campo para elegir el archivo -->
-                                    <input type="file" wire:model="file" accept=".csv,.xlsx">
-                                
-                                    <!-- Mostrar el nombre del archivo cargado -->
-                                    
-                                    <!-- Puedes tener un select para escoger el costo_id o pasarlo de alguna otra forma -->
-                                    <input type="hidden" wire:model="costo_id" value="{{ $costo->id }}">
-                                
-                                  
-                                   
-                                    
-                                </form>
-                             
-                                
-                            </div>
-                            @if ($file)
-                                <div class="flex justify-center mt-2">
-                                    <x-button onclick="confirmImportFile({{ $costo->id }})">
-                                        Importar
-                                    </x-button>
+                            @if ($costotarifacajas->where('costo_id', $costo->id)->count())
+                                <table x-show="openTab === {{$costo->id}}" class="min-w-full leading-normal">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Tarifa Caja
+                                            </th>
+                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Acción
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($costotarifacajas->where('costo_id', $costo->id) as $caja)
+                                            <tr>
+                                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                    @if($edit_tarifa_id === $caja->id)
+                                                        <input wire:model.defer="edit_tarifa_value.{{ $caja->id }}" type="number"
+                                                            class="w-full px-3 py-1 border border-gray-300 rounded"
+                                                            @keydown.enter="updateTarifaCaja({{ $caja->id }})">
+                                                    @else
+                                                        <p class="text-gray-900 whitespace-no-wrap">{{ $caja->tarifa_caja }}</p>
+                                                    @endif
+                                                </td>
+                                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                    @if($edit_tarifa_id === $caja->id)
+                                                        <button wire:click="updateTarifaCaja({{ $caja->id }})"
+                                                            class="text-green-600 font-semibold hover:underline">Guardar</button>
+                                                    @else
+                                                        <span wire:click="editTarifaCaja({{ $caja->id }})"
+                                                            class="cursor-pointer text-blue-600 font-semibold hover:underline">Editar</span>
+                                                    @endif
+
+                                                    <span wire:click="destroyTarifaCaja({{ $caja->id }})"
+                                                        class="cursor-pointer text-red-600 font-semibold hover:underline ml-4">Eliminar</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                            @else
+                                <div x-show="openTab === {{$costo->id}}" class="grid grid-cols-2 gap-x-4 items-center mb-6">
+                                    <input wire:model="tarifa_caja_input.{{ $costo->id }}" type="number" step="0.01"
+                                        class="form-input flex-1 w-full shadow-sm border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none"
+                                        placeholder="Tarifa por caja (CLP o USD)">
+
+                                    <button wire:click="storeTarifaCaja({{ $costo->id }})"
+                                        class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                                        <h1 class="text-center text-white font-bold inline w-full" style="font-size: 1rem; white-space: nowrap;">
+                                            Agregar
+                                        </h1>
+                                    </button>
                                 </div>
                             @endif
-                          
-                        </div>
-                        <table class="min-w-full leading-normal mt-6" x-show="openTab === {{$costo->id}}">
-                          <thead>
-                              <tr>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                      Código Embalaje
-                                  </th>
-                                  <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                      Costo por Caja (USD)
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                            @if ($temporada->costoembalajecodes->where('costo_id',$costo->id)->count())
-                                
-                              @foreach ($temporada->costoembalajecodes->where('costo_id',$costo->id) as $costo)
-                                  <tr>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                          <p class="text-gray-900 whitespace-no-wrap">{{ $costo->c_embalaje }}</p>
-                                      </td>
-                                      <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-                                          <p class="text-gray-900 whitespace-no-wrap">{{ number_format($costo->costo_por_caja, 2) }}</p>
-                                      </td>
-                                  </tr>
-                              @endforeach
+                        @break
 
-                            @else
-                              <tr>
-                                <td colspan="2" class="col-span-2 text-center py-2">
-                                    Sin Registros en la base de datos
-                                </td>
-                              </tr>
-                            @endif
-                          </tbody>
-                        </table>
-                        @break
                     @case('TPK')
-                        
+                            
+                            @if ($costotarifakilos->where('costo_id', $costo->id)->count())
+                                <table x-show="openTab === {{$costo->id}}" class="min-w-full leading-normal">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Tarifa KG
+                                            </th>
+                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Acción
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($costotarifakilos->where('costo_id', $costo->id) as $kilo)
+                                            <tr>
+                                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                    @if($edit_tarifa_kg_id === $kilo->id)
+                                                        <input wire:model.defer="edit_tarifa_kg_value.{{ $kilo->id }}" type="number"
+                                                            class="w-full px-3 py-1 border border-gray-300 rounded"
+                                                            @keydown.enter="updateTarifaKilo({{ $kilo->id }})">
+                                                    @else
+                                                        <p class="text-gray-900 whitespace-no-wrap">{{ $kilo->tarifa_kg }}</p>
+                                                    @endif
+                                                </td>
+                                                <td class="px-5 py-2 border-b border-gray-200 bg-white text-sm">
+                                                    @if($edit_tarifa_kg_id === $kilo->id)
+                                                        <button wire:click="updateTarifaKilo({{ $kilo->id }})"
+                                                            class="text-green-600 font-semibold hover:underline">Guardar</button>
+                                                    @else
+                                                        <span wire:click="editTarifaKilo({{ $kilo->id }})"
+                                                            class="cursor-pointer text-blue-600 font-semibold hover:underline">Editar</span>
+                                                    @endif
+
+                                                    <span wire:click="destroyTarifaKilo({{ $kilo->id }})"
+                                                        class="cursor-pointer text-red-600 font-semibold hover:underline ml-4">Eliminar</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div x-show="openTab === {{$costo->id}}" class="grid grid-cols-2 gap-x-4 items-center mb-6">
+                                    <input wire:model="tarifa_kg_input.{{ $costo->id }}" type="number" step="0.01"
+                                        class="form-input flex-1 w-full shadow-sm border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg focus:outline-none"
+                                        placeholder="Tarifa por kilo"
+                                        @keydown.enter="storeTarifaKilo({{ $costo->id }})">
+
+                                    <button wire:click="storeTarifaKilo({{ $costo->id }})"
+                                        class="focus:ring-2 focus:ring-offset-2 focus:ring-green-300 text-sm leading-none text-green-600 py-3 px-5 bg-green-600 rounded hover:bg-green-500 focus:outline-none">
+                                        <h1 class="text-center text-white font-bold inline w-full" style="font-size: 1rem; white-space: nowrap;">
+                                            Agregar
+                                        </h1>
+                                    </button>
+                                </div>
+                            @endif
                         @break
+
                     @case('MTC')
                         
                         @break
@@ -728,6 +779,15 @@
                 }
             });
         }
+        window.livewire.on('alert', ({ type, message }) => {
+            Swal.fire({
+                icon: type,
+                title: message,
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+
     </script>
     
 </div>

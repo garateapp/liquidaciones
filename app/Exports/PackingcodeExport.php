@@ -2,54 +2,45 @@
 
 namespace App\Exports;
 
-use App\Models\PackingCode;
-use App\Models\Temporada;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Models\Costoembalajecode;
+use App\Models\Proceso;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class PackingcodeExport implements FromCollection, WithHeadings
-{   use Exportable;
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    private $temporada;
+class PackingCodeExport implements FromView
+{
+    protected $temporadaId;
+    protected $costoId;
 
-    public function __construct($temporada_id) {
-        $this->temporada = Temporada::find($temporada_id);
-    }
-
-    public function collection()
+    public function __construct($temporadaId, $costoId)
     {
-        return PackingCode::where('temporada_id',$this->temporada->id)->get();
+        $this->temporadaId = $temporadaId;
+        $this->costoId = $costoId;
     }
 
-    public function startCell(): string
+    public function view(): View
     {
-        return 'A1';
-    }
-    public function headings(): array
-    {   
-        return[
-            'c_embalaje',
-            'Tarifa_Kilo_Packing_USD'
-        ];
-    }
+        // Buscar si ya hay registros existentes
+        $registros = Costoembalajecode::where('temporada_id', $this->temporadaId)
+            ->where('costo_id', $this->costoId)
+            ->get();
 
-    public function map($packingcode): array
-    {
-        return [
-            $packingcode->c_embalaje,
-            $packingcode->costo_por_caja_usd,
-           
-        ];
-    }
+        // Si no hay, preparar plantilla desde Procesos
+        if ($registros->isEmpty()) {
+            $registros = Proceso::where('temporada_id', $this->temporadaId)
+                ->select('c_embalaje')
+                ->distinct()
+                ->get()
+                ->map(function ($item) {
+                    return (object)[
+                        'c_embalaje' => $item->c_embalaje,
+                        'costo_por_caja' => null,
+                    ];
+                });
+        }
 
-    public function columnFormats(): array
-    {
-        return [
-           
-        ];
+        return view('exports.plantilla_codigos', [
+            'registros' => $registros
+        ]);
     }
-   
 }

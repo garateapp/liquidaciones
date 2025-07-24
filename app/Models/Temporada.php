@@ -36,7 +36,7 @@ class Temporada extends Model
 
      // relacion uno a muchos inversa
     public function costoembalajecodes(){
-        return $this->hasmany('App\Models\Costoembalajecode');
+        return $this->hasmany('App\Models\Costoembalajecode','temporada_id');
     }
 
     // relacion uno a muchos inversa
