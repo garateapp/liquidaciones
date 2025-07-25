@@ -20,24 +20,24 @@ class PackingCodeExport implements FromView
 
     public function view(): View
     {
-        // Buscar si ya hay registros existentes
-        $registros = Costoembalajecode::where('temporada_id', $this->temporadaId)
-            ->where('costo_id', $this->costoId)
-            ->get();
+        // Obtener todos los c_embalaje únicos desde Proceso
+        $codigos = Proceso::where('temporada_id', $this->temporadaId)
+            ->select('c_embalaje')
+            ->distinct()
+            ->pluck('c_embalaje');
 
-        // Si no hay, preparar plantilla desde Procesos
-        if ($registros->isEmpty()) {
-            $registros = Proceso::where('temporada_id', $this->temporadaId)
-                ->select('c_embalaje')
-                ->distinct()
-                ->get()
-                ->map(function ($item) {
-                    return (object)[
-                        'c_embalaje' => $item->c_embalaje,
-                        'costo_por_caja' => null,
-                    ];
-                });
-        }
+        // Obtener tarifas existentes
+        $tarifas = Costoembalajecode::where('temporada_id', $this->temporadaId)
+            ->where('costo_id', $this->costoId)
+            ->pluck('costo_por_caja', 'c_embalaje'); // clave = c_embalaje
+
+        // Mezclar datos
+        $registros = $codigos->map(function ($codigo) use ($tarifas) {
+            return (object)[
+                'c_embalaje' => $codigo,
+                'costo_por_caja' => $tarifas[$codigo] ?? null,
+            ];
+        });
 
         return view('exports.plantilla_codigos', [
             'registros' => $registros

@@ -1,4 +1,33 @@
 <div>
+   <style>
+    .swal2-confirm,
+    .swal2-cancel {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: none !important;
+    }
+
+    .swal2-confirm {
+        background-color: #2563eb !important; /* Tailwind blue-600 */
+        color: white !important;
+    }
+
+    .swal2-confirm:hover {
+        background-color: #1d4ed8 !important; /* Tailwind blue-700 */
+    }
+
+    .swal2-cancel {
+        background-color: #dc2626 !important; /* Tailwind red-600 */
+        color: white !important;
+    }
+
+    .swal2-cancel:hover {
+        background-color: #b91c1c !important; /* Tailwind red-700 */
+    }
+</style>
+
+
+
     <div wire:loading wire:target="variedadpacking, formcolor, archivo">
         <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
           <div class="max-h-full w-full max-w-sm overflow-y-auto mx-auto sm:rounded-2xl bg-white border-2 border-gray-200 shadow-xl">
