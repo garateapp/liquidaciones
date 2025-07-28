@@ -249,6 +249,9 @@
                         @case(  'MPC')
                            title="Monto por Condición (Según Productor)"
                            @break
+                        @case(  'PSF')
+                           title="Porcentaje sobre el Fob"
+                           @break
                         @default
                            title="No especificado"
                      @endswitch 
