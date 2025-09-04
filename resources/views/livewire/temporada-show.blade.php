@@ -1830,7 +1830,7 @@
 
                   @foreach($costos as $menuId)
                     <tr><td colspan="999" class="bg-gray-200 font-semibold px-3 py-2">
-                      Menú #{{ $menuId }}
+                      {{ $menuId }}
                     </td></tr>
 
                     
