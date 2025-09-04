@@ -272,7 +272,7 @@ class TemporadaShow extends Component
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
        $ordenMetodo = "'TPT','TPCL','TPE','TPC','TPK','MTC','MTE','MTEB','MTEmp','MTT','MPC','PSF','null'";
 
-        $costos = Costo::paraEspecieTemporada($this->temporada->especie)
+        $costos = Costo::paraEspecieTemporada($this->temporada)
             ->with(['superespecies', 'costomenu'])        // si tienes relación costomenu
             ->orderBy('costomenu_id')                     // primero por menú
             ->orderByRaw("FIELD(metodo, $ordenMetodo)")   // luego por método (orden personalizado en MySQL/MariaDB)
