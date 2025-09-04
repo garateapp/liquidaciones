@@ -278,7 +278,6 @@ class TemporadaShow extends Component
             ->orderByRaw("FIELD(metodo, $ordenMetodo)")   // luego por método (orden personalizado en MySQL/MariaDB)
             ->orderBy('name')                              // finalmente por nombre
             ->get();
-        dd($costos);
         
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
         if ($this->vista=="FACTOR") {
