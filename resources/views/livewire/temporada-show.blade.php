@@ -1825,7 +1825,7 @@
                   
                 @if ($vista=='resumes')
                 
-                    <h1 class="ml-10 mt-2" >Costos</h1>
+                    <h1 class="ml-10 mt-2" >Listado de Costos</h1>
                
                 <table>
                   
