@@ -1826,25 +1826,14 @@
                 @if ($vista=='resumes')
                 
                     <h1 class="ml-10 mt-2" >Exportación</h1>
-                  @php
-                    $costosAgrupados = $costos->groupBy(['metodo']);
-                  @endphp
+               
 
-                  @foreach($costosAgrupados as $menuId => $porMetodo)
+                  @foreach($costos as $menuId => $porMetodo)
                     <tr><td colspan="999" class="bg-gray-200 font-semibold px-3 py-2">
                       Menú #{{ $menuId }}
                     </td></tr>
 
-                    @foreach($porMetodo as $metodo => $items)
-                      <tr><td colspan="999" class="bg-gray-100 text-sm px-3 py-1">
-                        Método: {{ $metodo }}
-                      </td></tr>
-
-                      @foreach($items as $costo)
-                        {{-- tu fila actual --}}
-                      @endforeach
-
-                    @endforeach
+                    
                   @endforeach
 
                 
