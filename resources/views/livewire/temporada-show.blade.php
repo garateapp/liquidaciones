@@ -1827,7 +1827,8 @@
                 
                     <h1 class="ml-10 mt-2" >Exportación</h1>
                
-
+                <table>
+                  
                   @foreach($costos as $menuId)
                     <tr><td colspan="999" class="bg-gray-200 font-semibold px-3 py-2">
                       {{ $menuId->name }}
@@ -1837,6 +1838,7 @@
                   @endforeach
 
                 
+                </table>
                 @endif 
 
                 @if ($vista=='resumesnacional' || $vista=="show")
