@@ -9,6 +9,7 @@ use App\Models\Balancemasa;
 use App\Models\Balancemasados;
 use App\Models\Categoria;
 use App\Models\Comision;
+use App\Models\Costo;
 use App\Models\Costomenu;
 use App\Models\CostoPacking;
 use App\Models\Despacho;
@@ -269,7 +270,14 @@ class TemporadaShow extends Component
         $CostosPackings=CostoPacking::filter($this->filters)->where('temporada_id',$this->temporada->id)->paginate($this->ctd);
         
         $procesosall=Proceso::filter($this->filters)->where('temporada_id',$this->temporada->id)->get();
-        
+       $ordenMetodo = "'TPT','TPCL','TPE','TPC','TPK','MTC','MTE','MTEB','MTEmp','MTT','MPC','PSF','null'";
+
+    $costos = Costo::paraEspecieTemporada($this->temporada)
+        ->with(['superespecies', 'costomenu'])        // si tienes relación costomenu
+        ->orderBy('costomenu_id')                     // primero por menú
+        ->orderByRaw("FIELD(metodo, $ordenMetodo)")   // luego por método (orden personalizado en MySQL/MariaDB)
+        ->orderBy('name')                              // finalmente por nombre
+        ->get();
         
             // Paginamos los resultados de despachos y procesos (e.g., 15 elementos por página)
         if ($this->vista=="FACTOR") {
@@ -542,7 +550,7 @@ class TemporadaShow extends Component
 
         $costomenus=Costomenu::all();
 
-        return view('livewire.temporada-show',compact('costomenus','materiales','PackingCodes','fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
+        return view('livewire.temporada-show',compact('costomenus','materiales','PackingCodes','fobsall2','calibre_fobs','etiqueta_fobs','embalaje_fobs','categoria_fobs','color_fobs','unique_folios','materialestotal','despachosall_group','factores','procesosall_group','mercadoInternoCodes','comercialCodes','exportacionCodes','embarquesall','embarques','despachos','despachosall','razonsallresult','unique_categorianac','unique_categoriasexp','procesosall','procesos','recepcionall','recepcions','detalles','unique_semanas','unique_materiales','unique_etiquetas','masastotalnacional','unique_calibres','familias','fobsall','embarques','embarquestotal','fletestotal','masastotal','fobs','anticipos','unique_especies','unique_variedades','costos','resumes','CostosPackings','CostosPackingsall','exportacions','razons','comisions','fletes','masasbalances','razonsall'));
     }
 
     public function factores_create(){
