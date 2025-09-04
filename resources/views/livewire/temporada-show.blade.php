@@ -1827,7 +1827,7 @@
                 
                     <h1 class="ml-10 mt-2" >Exportación</h1>
                   @php
-                    $costosAgrupados = $costos->groupBy(['costomenu_id','metodo']);
+                    $costosAgrupados = $costos->groupBy(['metodo']);
                   @endphp
 
                   @foreach($costosAgrupados as $menuId => $porMetodo)
