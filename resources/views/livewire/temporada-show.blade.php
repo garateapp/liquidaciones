@@ -1828,7 +1828,7 @@
                     <h1 class="ml-10 mt-2" >Exportación</h1>
                
 
-                  @foreach($costos as $menuId => $porMetodo)
+                  @foreach($costos as $menuId)
                     <tr><td colspan="999" class="bg-gray-200 font-semibold px-3 py-2">
                       Menú #{{ $menuId }}
                     </td></tr>
