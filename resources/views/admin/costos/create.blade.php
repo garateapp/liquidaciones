@@ -48,7 +48,9 @@
                                         'MTEB' => 'Monto Total (Por número de Embarque)',
                                         'MTEmp' => 'Monto total (Por Empresa)',
                                         'MTT' => 'Monto total (Según tipo de Transporte)',
-                                        'MPC' => 'Monto por Condición (Según Productor)'
+                                        'MPC' => 'Monto por Condición (Según Productor)',
+                                        'PSF' => 'Porcentaje sobre el Fob'
+
                                     ];
                                 @endphp
                             <div class="block">

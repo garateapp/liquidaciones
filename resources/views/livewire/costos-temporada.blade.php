@@ -26,6 +26,22 @@
     }
 </style>
 
+@php
+    $metodoDescriptions = [
+        'TPT'  => '<p><strong>Tarifa Por Transporte:</strong> Calcula el costo según el tipo o tramo de transporte utilizado.</p>',
+        'TPCL' => '<p><strong>Tarifa Por Color:</strong> Determina el costo en función de la clasificación por color.</p>',
+        'TPE'  => '<p><strong>Tarifa Por Embalaje:</strong> Asigna costo según tipo y cantidad de embalaje.</p>',
+        'TPC'  => '<p><strong>Tarifa Por Caja:</strong> Calcula en base al número de cajas.</p>',
+        'TPK'  => '<p><strong>Tarifa Por Kilo:</strong> Costo proporcional al peso total (kg).</p>',
+        'MTC'  => '<p><strong>Monto total (Dividido por Categoría):</strong> Distribuye un monto global entre categorías.</p>',
+        'MTE'  => '<p><strong>Monto total (Separado por Especie):</strong> Separa el monto por especie.</p>',
+        'MTEB' => '<p><strong>Monto total (Por número de Embarque):</strong> Reparte por embarque.</p>',
+        'MTEmp'=> '<p><strong>Monto total (Por Empresa):</strong> Asigna un monto por empresa.</p>',
+        'MTT'  => '<p><strong>Monto total (Según tipo de Transporte):</strong> Agrupa y asigna según el transporte.</p>',
+        'MPC'  => '<p><strong>Monto por Condición (Según Productor):</strong> Calcula según la condición seleccionada del productor.</p>',
+        'PSF'  => '<p><strong>Porcentaje sobre el FOB:</strong> Aplica un % sobre el valor FOB.</p>',
+    ];
+@endphp
 
 
     <div wire:loading wire:target="variedadpacking, formcolor, archivo">
@@ -130,6 +146,12 @@
             @endforeach
 
             @foreach ($costomenus->where('name',$costomenu->name)->first()->costos->where('metodo', '!=', 'null') as $costo)
+               {{-- Bloque explicativo por método, visible solo cuando la pestaña está abierta --}}
+            <div x-show="openTab === {{ $costo->id }}" class="mb-4">
+                <div class="p-3 bg-gray-100 rounded border border-gray-300 text-sm text-gray-700">
+                    {!! $metodoDescriptions[$costo->metodo] ?? '<p><strong>No especificado:</strong> Sin descripción disponible.</p>' !!}
+                </div>
+            </div>
                 @switch($costo->metodo)
                     @case('TPT')
                         <div x-show="openTab === {{$costo->id}}" class="grid grid-cols-3 gap-x-4 items-center mb-6">
