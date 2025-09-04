@@ -61,6 +61,25 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <div class="block">
+                                {!! Form::label('metodo', 'Método:',['class'=>'text-center']) !!}<br>
+                                {!! Form::select('metodo', $opciones, null, [
+                                    'id' => 'metodo',
+                                    'class'=>'mt-1 block w-full rounded-lg mb-4'
+                                ]) !!}
+                                @error('metodo')
+                                    <span class="invalid-feedback">
+                                        <strong>{{$message}}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            {{-- Bloque explicativo dinámico --}}
+                            <div id="metodo_explicacion" class="p-4 bg-gray-100 rounded border border-gray-300 text-sm text-gray-700">
+                                <p><strong>No especificado:</strong> Selecciona un método para ver su descripción.</p>
+                            </div>
+
                             
                             <div class="block" id="condicionproductor_block">
                                 {!! Form::label('condicionproductor_id', 'Condición:',['class'=>'text-center']) !!}<br>
@@ -157,24 +176,76 @@
     </script>
     
 <script>
-    document.getElementById("name").addEventListener('keyup', slugChange);
+document.addEventListener('DOMContentLoaded', function () {
+    const metodoSelect   = document.getElementById('metodo');
+    const condicionBlock = document.getElementById('condicionproductor_block');
+    const explicacionDiv = document.getElementById('metodo_explicacion');
 
-    function slugChange(){
-        
-        title = document.getElementById("name").value;
-        document.getElementById("slug").value = slug(title);
-
+    // --- Mostrar/ocultar "Condición" si es MPC ---
+    function toggleCondicionBlock() {
+        if (!metodoSelect) return;
+        if (metodoSelect.value === 'MPC') {
+            condicionBlock.style.display = 'block'; // usa 'block' para que respete el layout
+        } else {
+            condicionBlock.style.display = 'none';
+        }
     }
 
-    function slug (str) {
-        var $slug = '';
-        var trimmed = str.trim(str);
-        $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
-        replace(/-+/g, '-').
-        replace(/^-|-$/g, '');
-        return $slug.toLowerCase();
+    // --- Explicaciones por método ---
+    const explicaciones = {
+        'TPT':  '<p><strong>Tarifa Por Transporte:</strong> Calcula el costo según el tipo o tramo de transporte utilizado.</p>',
+        'TPCL': '<p><strong>Tarifa Por Color:</strong> Determina el costo en función de la clasificación por color.</p>',
+        'TPE':  '<p><strong>Tarifa Por Embalaje:</strong> Asigna costo según tipo y cantidad de embalaje.</p>',
+        'TPC':  '<p><strong>Tarifa Por Caja:</strong> Calcula en base al número de cajas.</p>',
+        'TPK':  '<p><strong>Tarifa Por Kilo:</strong> Costo proporcional al peso total (kg).</p>',
+        'MTC':  '<p><strong>Monto total (Dividido por Categoría):</strong> Distribuye un monto global entre categorías.</p>',
+        'MTE':  '<p><strong>Monto total (Separado por Especie):</strong> Separa el monto por especie.</p>',
+        'MTEB': '<p><strong>Monto Total (Por número de Embarque):</strong> Reparte por embarque.</p>',
+        'MTEmp':'<p><strong>Monto total (Por Empresa):</strong> Asigna un monto por empresa.</p>',
+        'MTT':  '<p><strong>Monto total (Según tipo de Transporte):</strong> Agrupa y asigna según el transporte.</p>',
+        'MPC':  '<p><strong>Monto por Condición (Según Productor):</strong> Calcula según la condición seleccionada del productor.</p>',
+        'PSF':  '<p><strong>Porcentaje sobre el FOB:</strong> Aplica un % sobre el valor FOB.</p>',
+        'null': '<p><strong>No especificado:</strong> Selecciona un método para ver su descripción.</p>'
+    };
+
+    function updateExplicacion() {
+        if (!metodoSelect || !explicacionDiv) return;
+        const value = metodoSelect.value || 'null';
+        explicacionDiv.innerHTML = explicaciones[value] || explicaciones['null'];
     }
 
+    // Inicializar
+    toggleCondicionBlock();
+    updateExplicacion();
+
+    // Escuchar cambios
+    if (metodoSelect) {
+        metodoSelect.addEventListener('change', function () {
+            toggleCondicionBlock();
+            updateExplicacion();
+        });
+    }
+});
+
+// ----- (Tu script de slug se mantiene igual) -----
+document.getElementById("name").addEventListener('keyup', slugChange);
+
+function slugChange(){
+    const title = document.getElementById("name").value;
+    const slugInput = document.getElementById("slug");
+    if (!slugInput) return; // por si no existe en esta vista
+    slugInput.value = slug(title);
+}
+
+function slug (str) {
+    var $slug = '';
+    var trimmed = str.trim(str);
+    $slug = trimmed.replace(/[^a-z0-9-]/gi, '-')
+                   .replace(/-+/g, '-')
+                   .replace(/^-|-$/g, '');
+    return $slug.toLowerCase();
+}
 </script>
+
             
 </x-app-layout>
