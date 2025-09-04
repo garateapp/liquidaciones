@@ -70,14 +70,61 @@
 
                                     <div class="block">
                                         {!! Form::label('metodo', 'Método:',['class'=>'text-center']) !!}<br>
-                                        {!! Form::select('metodo', $opciones, null, ['class'=>'mt-1 block w-full rounded-lg mb-4']) !!}
+                                        {!! Form::select('metodo', $opciones, null, [
+                                            'id' => 'metodo',
+                                            'class'=>'mt-1 block w-full rounded-lg mb-4'
+                                        ]) !!}
                                         @error('metodo')
                                             <span class="invalid-feedback">
                                                 <strong>{{$message}}</strong>
-                    
                                             </span>
                                         @enderror
                                     </div>
+
+                                    {{-- Bloque explicativo dinámico --}}
+                                    <div id="metodo_explicacion" class="p-4 bg-gray-100 rounded border border-gray-300 text-sm text-gray-700">
+                                        @switch($costo->metodo)
+                                            @case('TPT')
+                                                <p><strong>Tarifa Por Transporte:</strong> El costo se calcula según el tipo de transporte utilizado.</p>
+                                                @break
+                                            @case('TPCL')
+                                                <p><strong>Tarifa Por Color:</strong> El costo se determina por los colores involucrados en el proceso.</p>
+                                                @break
+                                            @case('TPE')
+                                                <p><strong>Tarifa Por Embalaje:</strong> El costo se asigna de acuerdo al tipo y cantidad de embalaje.</p>
+                                                @break
+                                            @case('TPC')
+                                                <p><strong>Tarifa Por Caja:</strong> El costo se calcula en función de la cantidad de cajas utilizadas.</p>
+                                                @break
+                                            @case('TPK')
+                                                <p><strong>Tarifa Por Kilo:</strong> El costo se define por el peso total en kilos.</p>
+                                                @break
+                                            @case('MTC')
+                                                <p><strong>Monto total (Dividido por Categoría):</strong> Se distribuye el monto total entre las categorías.</p>
+                                                @break
+                                            @case('MTE')
+                                                <p><strong>Monto total (Separado por Especie):</strong> El monto se divide según la especie.</p>
+                                                @break
+                                            @case('MTEB')
+                                                <p><strong>Monto Total (Por número de Embarque):</strong> El monto se reparte por cada embarque realizado.</p>
+                                                @break
+                                            @case('MTEmp')
+                                                <p><strong>Monto total (Por Empresa):</strong> Se asigna un monto específico a cada empresa.</p>
+                                                @break
+                                            @case('MTT')
+                                                <p><strong>Monto total (Según tipo de Transporte):</strong> Se calcula según el transporte utilizado.</p>
+                                                @break
+                                            @case('MPC')
+                                                <p><strong>Monto por Condición (Según Productor):</strong> El cálculo depende de las condiciones establecidas por productor.</p>
+                                                @break
+                                            @case('PSF')
+                                                <p><strong>Porcentaje sobre el FOB:</strong> El costo corresponde a un porcentaje sobre el valor FOB.</p>
+                                                @break
+                                            @default
+                                                <p><strong>No especificado:</strong> Selecciona un método para ver su descripción.</p>
+                                        @endswitch
+                                    </div>
+
 
                                     <div class="block" id="condicionproductor_block">
                                         {!! Form::label('condicionproductor_id', 'Condición:',['class'=>'text-center']) !!}<br>
@@ -169,4 +216,32 @@
             metodoSelect.addEventListener('change', toggleCondicionBlock);
         });
     </script> 
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const metodoSelect = document.getElementById('metodo');
+        const explicacionDiv = document.getElementById('metodo_explicacion');
+
+        const explicaciones = {
+            'TPT': '<p><strong>Tarifa Por Transporte:</strong> El costo se calcula según el tipo de transporte utilizado.</p>',
+            'TPCL': '<p><strong>Tarifa Por Color:</strong> El costo se determina por los colores involucrados en el proceso.</p>',
+            'TPE': '<p><strong>Tarifa Por Embalaje:</strong> El costo se asigna de acuerdo al tipo y cantidad de embalaje.</p>',
+            'TPC': '<p><strong>Tarifa Por Caja:</strong> El costo se calcula en función de la cantidad de cajas utilizadas.</p>',
+            'TPK': '<p><strong>Tarifa Por Kilo:</strong> El costo se define por el peso total en kilos.</p>',
+            'MTC': '<p><strong>Monto total (Dividido por Categoría):</strong> Se distribuye el monto total entre las categorías.</p>',
+            'MTE': '<p><strong>Monto total (Separado por Especie):</strong> El monto se divide según la especie.</p>',
+            'MTEB': '<p><strong>Monto Total (Por número de Embarque):</strong> El monto se reparte por cada embarque realizado.</p>',
+            'MTEmp': '<p><strong>Monto total (Por Empresa):</strong> Se asigna un monto específico a cada empresa.</p>',
+            'MTT': '<p><strong>Monto total (Según tipo de Transporte):</strong> Se calcula según el transporte utilizado.</p>',
+            'MPC': '<p><strong>Monto por Condición (Según Productor):</strong> El cálculo depende de las condiciones establecidas por productor.</p>',
+            'PSF': '<p><strong>Porcentaje sobre el FOB:</strong> El costo corresponde a un porcentaje sobre el valor FOB.</p>',
+            'null': '<p><strong>No especificado:</strong> Selecciona un método para ver su descripción.</p>'
+        };
+
+        metodoSelect.addEventListener('change', function () {
+            const value = metodoSelect.value;
+            explicacionDiv.innerHTML = explicaciones[value] || explicaciones['null'];
+        });
+    });
+</script>
+
 </x-app-layout>
