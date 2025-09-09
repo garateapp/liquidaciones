@@ -1884,7 +1884,7 @@
                           {{ $menuId->name }}
                         </td>
                         <td class="bg-white font-semibold px-3 py-2">
-                          {{$menuId}}
+                         
                         </td>
                         <td class="bg-white font-semibold px-3 py-2">
 
