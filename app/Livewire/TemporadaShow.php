@@ -499,10 +499,37 @@ class TemporadaShow extends Component
            
         
                         
-                $razons=null;
-                $razonsall=null;
-                $razonsallresult=null;
+                $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
+                    ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
+                    ->groupBy('rut');
+                    
+                $subQuery->whereIn('csg', $unique_productores);
+                
+                $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*', 'sub.csg_count')
+                            ->orderBy($this->sortBy, $this->sortDirection)
+                            ->paginate($this->ctd);
+                            
+                
+                $subQuery2 = Razonsocial::select('rut', \DB::raw('MAX(id) as id'))
+                            ->groupBy('rut');
+                
+                $subQuery2->whereIn('csg', $unique_productores);
+                
+                $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*')
+                            ->get();
 
+                $razonsallresult = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                                $join->on('razonsocials.id', '=', 'sub.id');
+                            })
+                            ->select('razonsocials.*')
+                            ->get();
+                            
         } else {
             $razons=null;
             $razonsall=null;
