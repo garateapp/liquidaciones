@@ -466,13 +466,10 @@ class TemporadaController extends Controller
     public function show(Temporada $temporada)
     {   $resumes=Resumen::where('temporada_id',$temporada->id)->get();
         $CostosPackings=CostoPacking::where('temporada_id',$temporada->id)->get();
-
         $masitas=Balancemasa::where('temporada_id',$temporada->id)->paginate(3);
-        if ($masitas->count()>0) {
+        
             return view('temporadas.show',compact('temporada','resumes','CostosPackings'));
-        } else {
-            return redirect(route('temporada.recepcion',$temporada));
-        }
+       
     }
 
     public function nacional(Temporada $temporada)
