@@ -498,37 +498,35 @@ class TemporadaShow extends Component
         if ($this->vista=='show' || $this->vista=='resumes') {
            
         
-                        
-                $subQuery = Razonsocial::select('rut', \DB::raw('MAX(id) as id'), \DB::raw('COUNT(DISTINCT csg) as csg_count'))
-                    ->where('name', 'like', '%'.$this->filters['razonsocial'].'%')
-                    ->groupBy('rut');
-                    
-                $subQuery->whereIn('csg', $unique_productores);
-                
-                $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
-                                $join->on('razonsocials.id', '=', 'sub.id');
-                            })
-                            ->select('razonsocials.*', 'sub.csg_count')
-                            ->orderBy($this->sortBy, $this->sortDirection)
-                            ->paginate($this->ctd);
-                            
-                
-                $subQuery2 = Razonsocial::select('rut', \DB::raw('MAX(id) as id'))
-                            ->groupBy('rut');
-                
-                $subQuery2->whereIn('csg', $unique_productores);
-                
-                $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
-                                $join->on('razonsocials.id', '=', 'sub.id');
-                            })
-                            ->select('razonsocials.*')
-                            ->get();
+                                    
+                    // subQuery: último id por rut, con filtros
+            $subQuery = Razonsocial::query()
+                ->when(!empty($this->filters['razonsocial']), fn($q) =>
+                    $q->where('name', 'like', '%'.$this->filters['razonsocial'].'%'))
+                ->whereIn('csg', $unique_productores)
+                ->select('rut', \DB::raw('MAX(id) as id'))
+                ->groupBy('rut');
 
-                $razonsallresult = Razonsocial::joinSub($subQuery, 'sub', function($join) {
-                                $join->on('razonsocials.id', '=', 'sub.id');
-                            })
-                            ->select('razonsocials.*')
-                            ->get();
+            $razons = Razonsocial::joinSub($subQuery, 'sub', function($join) {
+                    $join->on('razonsocials.id', '=', 'sub.id');
+                })
+                ->select('razonsocials.*')
+                ->orderBy('name', $this->sortDirection)
+                ->paginate($this->ctd);
+
+            // Si necesitas también el “todos” sin filtro por name:
+            $subQuery2 = Razonsocial::query()
+                ->whereIn('csg', $unique_productores)
+                ->select('rut', \DB::raw('MAX(id) as id'))
+                ->groupBy('rut');
+
+            $razonsall = Razonsocial::joinSub($subQuery2, 'sub', function($join) {
+                    $join->on('razonsocials.id', '=', 'sub.id');
+                })
+                ->select('razonsocials.*')
+                ->get();
+
+            $razonsallresult=null;
                             
         } else {
             $razons=null;

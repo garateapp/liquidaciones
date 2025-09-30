@@ -1999,17 +1999,15 @@
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                 @if ($razon && $temporada)
                                                     
-                                                <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> {{$razon->name}}
-                                                </a>
+                                                  <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> {{$razon->name}}
+                                                  </a>
                                                 
                                                 @endif
                                               </td>
                                               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                               {{$razon->rut}}
                                               </td>
-                                              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                              {{$razon->csg_count}}
-                                              </td>
+                                            
                                              
                                               <td class="text-sm text-gray-900 font-light px-2 py-4 whitespace-nowrap">
                                                 <a href="{{route('exportpdff',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank">
@@ -2308,13 +2306,15 @@
                                                         </div>
                                       <div class="ml-3">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                          @foreach ($razonsall as $razon)
-                                              @if ($razon->csg==$packing->csg)
-                                                <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
-                                                  {{$packing->n_productor}}
-                                                </a>
-                                              @endif
-                                          @endforeach
+                                          @if ($razonsall->count()>0)
+                                            @foreach ($razonsall as $razon)
+                                                @if ($razon->csg==$packing->csg)
+                                                  <a href="{{route('razonsocial.temporada.show',['razonsocial'=>$razon,'temporada'=>$temporada])}}" target="_blank"> 
+                                                    {{$packing->n_productor}}
+                                                  </a>
+                                                @endif
+                                            @endforeach
+                                          @endif
                                           
                                         </p>
                                       </div>
