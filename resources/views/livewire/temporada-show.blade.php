@@ -1828,49 +1828,49 @@
                     <h1 class="ml-10 mt-2" >Categoria: Exportacion</h1>
                   
                   <table class="divide-y divide-gray-200 border-2 ml-10">
-                    <thead class="bg-white border-b">
-                      <tr>
-                        <th class="bg-gray-200 font-semibold px-3 py-2"></th>
-                        <th class="bg-gray-200 font-semibold px-3 py-2"></th>
-                        <th class="bg-gray-200 font-semibold px-3 py-2">Totales</th>
-                        <th class="bg-gray-200 font-semibold px-3 py-2">Valor Unitario</th>
-                      <tr> 
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="bg-gray-200 font-semibold px-3 py-2"></td>
-                        <td class="bg-gray-200 font-semibold px-3 py-2">Suma de Peso Neto</td>
-                        <td class="bg-white font-semibold px-3 py-2">
-                          {{ number_format($summary['total_peso'] ?? 0, 0) }}
-                        </td>
-                        <td class="bg-white font-semibold px-3 py-2"></td>
-                      </tr>
+                  <thead class="bg-white border-b">
+                    <tr>
+                      <th class="bg-gray-200 font-semibold px-3 py-2"></th>
+                      <th class="bg-gray-200 font-semibold px-3 py-2"></th>
+                      <th class="bg-gray-200 font-semibold px-3 py-2">Totales</th>
+                      <th class="bg-gray-200 font-semibold px-3 py-2">Valor Unitario</th>
+                    <tr> 
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="bg-gray-200 font-semibold px-3 py-2"></td>
+                      <td class="bg-gray-200 font-semibold px-3 py-2">Suma de Peso Neto</td>
+                      <td class="bg-white font-semibold px-3 py-2">
+                        {{ number_format($summary['total_peso'] ?? 0, 0) }}
+                      </td>
+                      <td class="bg-white font-semibold px-3 py-2"></td>
+                    </tr>
 
+                    <tr>
+                      <td class="bg-gray-200 font-semibold px-3 py-2">Ingresos</td>
+                      <td class="bg-gray-200 font-semibold px-3 py-2">Suma de Importe venta total</td>
+                      <td class="bg-white font-semibold px-3 py-2">
+                        {{ number_format($summary['ingresos_total'] ?? 0, 2) }}
+                      </td>
+                      <td class="bg-white font-semibold px-3 py-2">
+                        {{ number_format($summary['valor_unitario'] ?? 0, 6) }}
+                      </td>
+                    </tr>
+
+                    @foreach($costRows as $row)
                       <tr>
-                        <td class="bg-gray-200 font-semibold px-3 py-2">Ingresos</td>
-                        <td class="bg-gray-200 font-semibold px-3 py-2">Suma de Importe venta total</td>
+                        <td class="bg-gray-200 font-semibold px-3 py-2">Costos</td>
+                        <td class="bg-gray-200 font-semibold px-3 py-2">{{ $row['name'] }}</td>
                         <td class="bg-white font-semibold px-3 py-2">
-                          {{ number_format($summary['ingresos_total'] ?? 0, 2) }}
+                          {{ number_format($row['total'], 2) }}
                         </td>
                         <td class="bg-white font-semibold px-3 py-2">
-                          {{ number_format($summary['valor_unitario'] ?? 0, 6) }}
+                          {{ number_format($row['unit'], 6) }}
                         </td>
                       </tr>
-
-                      @foreach($costRows as $row)
-                        <tr>
-                          <td class="bg-gray-200 font-semibold px-3 py-2">Costos</td>
-                          <td class="bg-gray-200 font-semibold px-3 py-2">{{ $row['name'] }}</td>
-                          <td class="bg-white font-semibold px-3 py-2">
-                            {{ number_format($row['total'], 2) }}
-                          </td>
-                          <td class="bg-white font-semibold px-3 py-2">
-                            {{ number_format($row['unit'], 6) }}
-                          </td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                    @endforeach
+                  </tbody>
+                </table>
 
                 @endif 
 
