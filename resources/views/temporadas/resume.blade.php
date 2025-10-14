@@ -17,25 +17,13 @@
 <div class=" pb-8 pt-2">
     
     <div class="card">
-
-        @if ($resumes->count()==0)
-
-            <h1 class="text-2xl font-bold">Temporada {{$temporada->name}}</h1>
-            <hr class="mt-2 mb-6">
-            <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
-                
-                @livewire('menu-aside',['temporada'=>$temporada->id])
-
-                @livewire('main-upload', ['temporada' => $temporada,'vista'=>'resumes'], key($temporada->id))
+        <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
                     
-            </div>
+                    @livewire('menu-aside',['temporada'=>$temporada->id])
 
-        @else
+              <livewire:resumen-exportacion :temporada="$temporada" />
 
-            @livewire('temporada-show', ['temporada' => $temporada, 'vista' => 'resumes'], key($temporada->id))
-            
-        @endif
-           
+        </div>
 
     </div>
 

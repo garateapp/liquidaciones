@@ -33,240 +33,214 @@ class Balancemasa extends Model
     }
     
 
-    public function scopeFilter($query, $filters)
-    {
-        // Obtener los códigos de categorías para los tres grupos
-        $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
-        $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
-        $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
+   public function scopeFilter($query, $filters)
+{
+    // Defaults seguros
+    $exp = array_key_exists('exp', $filters) ? (bool)$filters['exp'] : true;
+    $mi  = array_key_exists('mi',  $filters) ? (bool)$filters['mi']  : true;
+    $com = array_key_exists('com', $filters) ? (bool)$filters['com'] : true;
 
-        // Filtrar según los valores seleccionados en los checkboxes
-        $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
-            $categorias = collect();
+    // Códigos por grupo
+    $exportacionCodes    = Categoria::where('grupo', 'Exportacion')->pluck('nombre')->unique();
+    $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->pluck('nombre')->unique();
+    $comercialCodes      = Categoria::where('grupo', 'Comercial')->pluck('nombre')->unique();
 
-            // Si está seleccionado, incluir las categorías correspondientes
-            if ($filters['exp']) {
-                $categorias = $categorias->merge($exportacionCodes);
-            }
-            if ($filters['mi']) {
-                $categorias = $categorias->merge($mercadoInternoCodes);
-            }
-            if ($filters['com']) {
-                $categorias = $categorias->merge($comercialCodes);
-            }
+    // Si alguno está desmarcado, filtramos por los que quedaron marcados
+    if (!$exp || !$mi || !$com) {
+        $categorias = collect();
+        if ($exp) $categorias = $categorias->merge($exportacionCodes);
+        if ($mi)  $categorias = $categorias->merge($mercadoInternoCodes);
+        if ($com) $categorias = $categorias->merge($comercialCodes);
 
-            // Aplicar el filtro de categorías
-            $query->whereIn('n_categoria', $categorias->unique());
-        });
-
-        // Otros filtros como antes
-        $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('c_productor', 'like', '%' . $serie . '%');
-        })->when($filters['variedad'] ?? null, function($query, $variedad) {
-            $query->where('n_variedad', $variedad);
-        })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
-            if ($precioFob == 'fobcero') {
-                $query->where(function ($query) {
-                    $query->whereHas('fob', function ($query) {
-                        $query->where('fob_kilo_salida', 0)
-                              ->orWhere('fob_kilo_salida', null);
-                    });
-                });
-            }
-            if ($precioFob == 'null') {
-                $query->WhereNull('fob_id');
-            }
-            if ($precioFob == 'fob') {
-                $query->where('fob_id','>',0);
-            }
-        })->when($filters['norma'] ?? null, function ($query, $norma) {
-            if ($norma === 'dentro') {
-                $query->where('n_categoria', 'Cat 1')
-                    ->whereNotIn('n_calibre', ['L', 'LD'])
-                    ->where('n_etiqueta', '!=', 'Loica');
-            }
-            if ($norma === 'fuera') {
-                $query->where(function ($query) {
-                    $query->orWhere('n_calibre', 'L')
-                        ->orWhere('n_categoria', 'Cat I')
-                        ->orWhere('n_etiqueta', 'Loica');
-                });
-            }
-        })->when($filters['calibre'] ?? null, function($query, $calibre) {
-            $query->where('n_calibre', $calibre);
-        })->when($filters['etiqueta'] ?? null, function($query, $etiqueta) {
-            $query->where('n_etiqueta', $etiqueta);
-        })->when($filters['etiquetas'] ?? null, function($query, $etiquetas) {
-            if (!empty($etiquetas)) {
-                $query->whereIn('n_etiqueta', $etiquetas);
-            }
-        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
-            if (!empty($notfolios)) {
-                $query->whereNotIn('folio', $notfolios);
-            }
-        })->when($filters['material'] ?? null, function($query, $material) {
-            $query->where('c_embalaje', $material);
-        })->when($filters['semana'] ?? null, function($query, $semana) {
-            $query->where('semana', $semana);
-        })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
-            $query->whereNull('etd')
-                    ->orWhereNull('eta')
-                    ->orWhereNull('semana');
-        })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
-            $query->where('factor','0');
-        });
+        // Si ninguno quedó marcado => sin resultados
+        if ($categorias->isEmpty()) {
+            $query->whereRaw('1=0');
+        } else {
+            $query->whereIn('n_categoria', $categorias->unique()->values());
+        }
     }
 
-
-    public function scopeFilter1($query,$filters){
-
-         // Obtener los códigos de categorías para los tres grupos
-         $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
-         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
-         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
- 
-         // Filtrar según los valores seleccionados en los checkboxes
-         $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
-             $categorias = collect();
- 
-             // Si está seleccionado, incluir las categorías correspondientes
-             if ($filters['exp']) {
-                 $categorias = $categorias->merge($exportacionCodes);
-             }
-             if ($filters['mi']) {
-                 $categorias = $categorias->merge($mercadoInternoCodes);
-             }
-             if ($filters['com']) {
-                 $categorias = $categorias->merge($comercialCodes);
-             }
- 
-             // Aplicar el filtro de categorías
-             $query->whereIn('n_categoria', $categorias->unique());
-         });
-
-        $query->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('n_productor', 'like', '%' . $serie . '%');
-        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
-            $query->where('n_variedad', $variedad);
-        })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
-            if ($precioFob == 'fobcero') {
-                $query->where(function ($query) {
-                    $query->whereHas('fob', function ($query) {
-                        $query->where('fob_kilo_salida', 0)
-                              ->orWhere('fob_kilo_salida', null);
+    $query
+        ->when(($filters['razonsocial'] ?? null), function ($q, $serie) {
+            $q->where('c_productor', 'like', "%{$serie}%");
+        })
+        ->when(($filters['variedad'] ?? null), fn($q, $v) => $q->where('n_variedad', $v))
+        ->when(($filters['precioFob'] ?? null), function ($q, $precioFob) {
+            if ($precioFob === 'fobcero') {
+                $q->whereHas('fob', function ($qq) {
+                    $qq->where(function($w){
+                        $w->where('fob_kilo_salida', 0)->orWhereNull('fob_kilo_salida');
                     });
                 });
+            } elseif ($precioFob === 'null') {
+                $q->whereNull('fob_id');
+            } elseif ($precioFob === 'fob') {
+                $q->where('fob_id', '>', 0);
             }
-            if ($precioFob == 'null') {
-                $query->WhereNull('fob_id');
-            }
-            if ($precioFob == 'fob') {
-                $query->where('fob_id','>',0);
-            }
-        })->when($filters['norma'] ?? null, function ($query, $norma) {
+        })
+        ->when(($filters['norma'] ?? null), function ($q, $norma) {
             if ($norma === 'dentro') {
-                $query->where('n_categoria', 'Cat 1')
-                      ->whereNotIn('n_calibre', ['L', 'LD'])
-                      ->where('n_etiqueta', '!=', 'Loica');
-            }
-            if ($norma === 'fuera') {
-                $query->where(function ($query) {
-                    $query->orWhere('n_calibre', 'L')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_etiqueta', 'Loica');
+                $q->where('n_categoria', 'Cat 1')
+                  ->whereNotIn('n_calibre', ['L', 'LD'])
+                  ->where('n_etiqueta', '!=', 'Loica');
+            } elseif ($norma === 'fuera') {
+                $q->where(function ($w) {
+                    $w->where('n_calibre', 'L')
+                      ->orWhere('n_categoria', 'Cat I')
+                      ->orWhere('n_etiqueta', 'Loica');
                 });
             }
-        })->when($filters['calibre'] ?? null, function ($query, $calibre) {
-            $query->where('n_calibre', $calibre);
-        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
-            if (!empty($etiquetas)) {
-                $query->whereIn('n_etiqueta', $etiquetas);
-            }
-        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
-            if (!empty($notfolios)) {
-                $query->whereNotIn('folio', $notfolios);
-            }
-        })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
-            $query->where('n_etiqueta', $etiqueta);
-        })->when($filters['material'] ?? null, function ($query, $material) {
-            $query->where('c_embalaje', $material);
-        })->when($filters['semana'] ?? null,function($query,$semana){
-            $query->where('semana',$semana);
-        })->when($filters['fechanull'] ?? null, function($query, $fechanull) {
-            $query->whereNull('etd')
-                    ->orWhereNull('eta')
-                    ->orWhereNull('semana');
-        })->when($filters['multiplicacion'] ?? null, function($query, $fechanull) {
-            $query->where('factor','0');
-        });
+        })
+        ->when(($filters['calibre'] ?? null), fn($q, $v) => $q->where('n_calibre', $v))
+        ->when(($filters['etiqueta'] ?? null), fn($q, $v) => $q->where('n_etiqueta', $v))
+        ->when(($filters['etiquetas'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereIn('n_etiqueta', $arr);
+        })
+        ->when(($filters['notfolios'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereNotIn('folio', $arr);
+        })
+        ->when(($filters['material'] ?? null), fn($q, $v) => $q->where('c_embalaje', $v))
+        ->when(($filters['semana'] ?? null),   fn($q, $v) => $q->where('semana', $v))
+        ->when(($filters['fechanull'] ?? null), function ($q) {
+            $q->where(function($w){
+                $w->whereNull('etd')
+                  ->orWhereNull('eta')
+                  ->orWhereNull('semana');
+            });
+        })
+        ->when(($filters['multiplicacion'] ?? null), fn($q) => $q->where('factor', '0'));
+}
+
+public function scopeFilter1($query, $filters)
+{
+    $exp = array_key_exists('exp', $filters) ? (bool)$filters['exp'] : true;
+    $mi  = array_key_exists('mi',  $filters) ? (bool)$filters['mi']  : true;
+    $com = array_key_exists('com', $filters) ? (bool)$filters['com'] : true;
+
+    $exportacionCodes    = Categoria::where('grupo', 'Exportacion')->pluck('nombre')->unique();
+    $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->pluck('nombre')->unique();
+    $comercialCodes      = Categoria::where('grupo', 'Comercial')->pluck('nombre')->unique();
+
+    if (!$exp || !$mi || !$com) {
+        $categorias = collect();
+        if ($exp) $categorias = $categorias->merge($exportacionCodes);
+        if ($mi)  $categorias = $categorias->merge($mercadoInternoCodes);
+        if ($com) $categorias = $categorias->merge($comercialCodes);
+
+        if ($categorias->isEmpty()) {
+            $query->whereRaw('1=0');
+        } else {
+            $query->whereIn('n_categoria', $categorias->unique()->values());
+        }
     }
 
-    public function scopeFilter2($query,$filters){
-         // Obtener los códigos de categorías para los tres grupos
-         $exportacionCodes = Categoria::where('grupo', 'Exportacion')->get()->pluck('nombre')->unique();
-         $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->get()->pluck('nombre')->unique();
-         $comercialCodes = Categoria::where('grupo', 'Comercial')->get()->pluck('nombre')->unique();
- 
-         // Filtrar según los valores seleccionados en los checkboxes
-         $query->when($filters['exp'] === false || $filters['com'] === false || $filters['mi'] === false, function($query) use ($filters, $exportacionCodes, $mercadoInternoCodes, $comercialCodes) {
-             $categorias = collect();
- 
-             // Si está seleccionado, incluir las categorías correspondientes
-             if ($filters['exp']) {
-                 $categorias = $categorias->merge($exportacionCodes);
-             }
-             if ($filters['mi']) {
-                 $categorias = $categorias->merge($mercadoInternoCodes);
-             }
-             if ($filters['com']) {
-                 $categorias = $categorias->merge($comercialCodes);
-             }
- 
-             // Aplicar el filtro de categorías
-             $query->whereIn('n_categoria', $categorias->unique());
-         });
+    $query
+        ->when(($filters['razonsocial'] ?? null), fn($q, $v) => $q->where('n_productor', 'like', "%{$v}%"))
+        ->when(($filters['variedad'] ?? null), fn($q, $v) => $q->where('n_variedad', $v))
+        ->when(($filters['precioFob'] ?? null), function ($q, $precioFob) {
+            if ($precioFob === 'fobcero') {
+                $q->whereHas('fob', function ($qq) {
+                    $qq->where(function($w){
+                        $w->where('fob_kilo_salida', 0)->orWhereNull('fob_kilo_salida');
+                    });
+                });
+            } elseif ($precioFob === 'null') {
+                $q->whereNull('fob_id');
+            } elseif ($precioFob === 'fob') {
+                $q->where('fob_id', '>', 0);
+            }
+        })
+        ->when(($filters['norma'] ?? null), function ($q, $norma) {
+            if ($norma === 'dentro') {
+                $q->where('n_categoria', 'Cat 1')
+                  ->whereNotIn('n_calibre', ['L', 'LD'])
+                  ->where('n_etiqueta', '!=', 'Loica');
+            } elseif ($norma === 'fuera') {
+                $q->where(function ($w) {
+                    $w->where('n_calibre', 'L')
+                      ->orWhere('n_categoria', 'Cat I')
+                      ->orWhere('n_etiqueta', 'Loica');
+                });
+            }
+        })
+        ->when(($filters['calibre'] ?? null), fn($q, $v) => $q->where('n_calibre', $v))
+        ->when(($filters['etiquetas'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereIn('n_etiqueta', $arr);
+        })
+        ->when(($filters['notfolios'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereNotIn('folio', $arr);
+        })
+        ->when(($filters['etiqueta'] ?? null), fn($q, $v) => $q->where('n_etiqueta', $v))
+        ->when(($filters['material'] ?? null), fn($q, $v) => $q->where('c_embalaje', $v))
+        ->when(($filters['semana'] ?? null),   fn($q, $v) => $q->where('semana', $v))
+        ->when(($filters['fechanull'] ?? null), function ($q) {
+            $q->where(function($w){
+                $w->whereNull('etd')
+                  ->orWhereNull('eta')
+                  ->orWhereNull('semana');
+            });
+        })
+        ->when(($filters['multiplicacion'] ?? null), fn($q) => $q->where('factor', '0'));
+}
 
-        $query->where(function ($query) {
-            $query->where('n_categoria', '!=', 'Cat 1')
-                ->where('n_categoria', '!=', 'Cat I');
-        })->when($filters['razonsocial'] ?? null, function ($query, $serie) {
-            $query->where('n_productor', 'like', '%' . $serie . '%');
-        })->when($filters['variedad'] ?? null, function ($query, $variedad) {
-            $query->where('n_variedad', $variedad);
-        })->when($filters['precioFob'] ?? null, function ($query, $precioFob) {
+public function scopeFilter2($query, $filters)
+{
+    $exp = array_key_exists('exp', $filters) ? (bool)$filters['exp'] : true;
+    $mi  = array_key_exists('mi',  $filters) ? (bool)$filters['mi']  : true;
+    $com = array_key_exists('com', $filters) ? (bool)$filters['com'] : true;
+
+    $exportacionCodes    = Categoria::where('grupo', 'Exportacion')->pluck('nombre')->unique();
+    $mercadoInternoCodes = Categoria::where('grupo', 'Mercado Interno')->pluck('nombre')->unique();
+    $comercialCodes      = Categoria::where('grupo', 'Comercial')->pluck('nombre')->unique();
+
+    if (!$exp || !$mi || !$com) {
+        $categorias = collect();
+        if ($exp) $categorias = $categorias->merge($exportacionCodes);
+        if ($mi)  $categorias = $categorias->merge($mercadoInternoCodes);
+        if ($com) $categorias = $categorias->merge($comercialCodes);
+
+        if ($categorias->isEmpty()) {
+            $query->whereRaw('1=0');
+        } else {
+            $query->whereIn('n_categoria', $categorias->unique()->values());
+        }
+    }
+
+    $query
+        ->where(function ($w) {
+            $w->where('n_categoria', '!=', 'Cat 1')
+              ->where('n_categoria', '!=', 'Cat I');
+        })
+        ->when(($filters['razonsocial'] ?? null), fn($q, $v) => $q->where('n_productor', 'like', "%{$v}%"))
+        ->when(($filters['variedad'] ?? null), fn($q, $v) => $q->where('n_variedad', $v))
+        ->when(($filters['precioFob'] ?? null), function ($q, $precioFob) {
             if ($precioFob === 'null') {
-                $query->whereNull('fob_id');
+                $q->whereNull('fob_id');
             }
-        })->when($filters['norma'] ?? null, function ($query, $norma) {
+        })
+        ->when(($filters['norma'] ?? null), function ($q, $norma) {
             if ($norma === 'dentro') {
-                $query->where('n_categoria', 'Cat 1')
-                      ->whereNotIn('n_calibre', ['L', 'LD'])
-                      ->where('n_etiqueta', '!=', 'Loica');
-            }
-            if ($norma === 'fuera') {
-                $query->where(function ($query) {
-                    $query->orWhere('n_calibre', 'L')
-                          ->orWhere('n_categoria', 'Cat I')
-                          ->orWhere('n_etiqueta', 'Loica');
+                $q->where('n_categoria', 'Cat 1')
+                  ->whereNotIn('n_calibre', ['L', 'LD'])
+                  ->where('n_etiqueta', '!=', 'Loica');
+            } elseif ($norma === 'fuera') {
+                $q->where(function ($w) {
+                    $w->where('n_calibre', 'L')
+                      ->orWhere('n_categoria', 'Cat I')
+                      ->orWhere('n_etiqueta', 'Loica');
                 });
             }
-        })->when($filters['calibre'] ?? null, function ($query, $calibre) {
-            $query->where('n_calibre', $calibre);
-        })->when($filters['etiqueta'] ?? null, function ($query, $etiqueta) {
-            $query->where('n_etiqueta', $etiqueta);
-        })->when($filters['etiquetas'] ?? null, function ($query, $etiquetas) {
-            if (!empty($etiquetas)) {
-                $query->whereIn('n_etiqueta', $etiquetas);
-            }
-        })->when($filters['notfolios'] ?? null, function ($query, $notfolios) {
-            if (!empty($notfolios)) {
-                $query->whereNotIn('folio', $notfolios);
-            }
-        })->when($filters['material'] ?? null, function ($query, $material) {
-            $query->where('c_embalaje', $material);
-        })->when($filters['semana'] ?? null,function($query,$semana){
-            $query->where('semana',$semana);
-        });
-    }
-    
+        })
+        ->when(($filters['calibre'] ?? null), fn($q, $v) => $q->where('n_calibre', $v))
+        ->when(($filters['etiqueta'] ?? null), fn($q, $v) => $q->where('n_etiqueta', $v))
+        ->when(($filters['etiquetas'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereIn('n_etiqueta', $arr);
+        })
+        ->when(($filters['notfolios'] ?? null), function ($q, $arr) {
+            if (!empty($arr)) $q->whereNotIn('folio', $arr);
+        })
+        ->when(($filters['material'] ?? null), fn($q, $v) => $q->where('c_embalaje', $v))
+        ->when(($filters['semana'] ?? null),   fn($q, $v) => $q->where('semana', $v));
+}
+
 }
