@@ -60,7 +60,7 @@ class ResumenExportacion extends Component
 
         // === 2) Agregados base desde la colección ===
         // Nota: usamos peso_neto para todos los cálculos principales.
-        $this->total_kilos = (float) $this->masastotal->sum('peso_neto');
+        $this->total_kilos = (float) $this->masastotal->sum('peso_neto2');
         $this->total_cajas = (float) $this->masastotal->sum('cantidad');
 
         // Ingresos = Σ(precio_unitario * peso_neto)
