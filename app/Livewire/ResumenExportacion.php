@@ -66,7 +66,7 @@ class ResumenExportacion extends Component
         // Ingresos = Σ(precio_unitario * peso_neto)
         $this->ingresos_total = (float) $this->masastotal->sum(function ($row) {
             $pu = (float) ($row['precio_unitario'] ?? 0);
-            $kg = (float) ($row['peso_neto'] ?? 0);
+            $kg = (float) ($row['peso_neto2'] ?? 0);
             return $pu * $kg;
         });
 
