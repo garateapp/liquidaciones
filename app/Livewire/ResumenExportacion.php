@@ -15,7 +15,7 @@ class ResumenExportacion extends Component
     'mi'  => true,
     'com' => true,
     ];
-    use Collection;  
+
 
     // Colecciones que usa tu UI:
     public Collection $exportacions;        // TPT: [{id,costo_id,type,precio_usd}]
@@ -286,8 +286,8 @@ class ResumenExportacion extends Component
                 ? $this->calcularTPE($costo) / $this->total_cajas
                 : 0.0, // $/caja promedio
 
-            'TPC' => $this->costotarifacajas->firstWhere('costo_id',$costo->id)->tarifa_caja
-                ?? (float)($costo->valor_unitario ?? 0),  // $/caja
+            'TPC' => optional($this->costotarifacajas->firstWhere('costo_id',$costo->id))->tarifa_caja
+                    ?? (float)($costo->valor_unitario ?? 0),
 
             'MTC' => $this->total_kilos > 0
                 ? $this->calcularMTC($costo) / $this->total_kilos
