@@ -265,22 +265,50 @@ class ResumenExportacion extends Component
     protected function calcularMTT(Costo $costo): float   { return 0.0; }
     protected function calcularMPC(Costo $costo): float   { return 0.0; } // si alguna condición de productor genera costo
 
-
-
     public function valorUnitarioParaMostrar(Costo $costo): float
     {
-        $metodo = strtoupper($costo->metodo ?? '');
+        $m = strtoupper($costo->metodo ?? '');
 
-        return match ($metodo) {
-            'POR_KG'     => (float) ($costo->valor_unitario ?? 0), // $/kg directo
-            'POR_CAJA'   => (float) ($costo->valor_unitario ?? 0), // $/caja
-            'FIJO'       => $this->total_kilos > 0 ? ((float) ($costo->monto_fijo ?? 0)) / $this->total_kilos : 0.0, // $/kg equivalente
+        return match ($m) {
+            'TPK' => $this->total_kilos > 0
+                ? $this->calcularTPK($costo) / $this->total_kilos
+                : 0.0, // $/kg
+
+            'TPCL' => $this->total_kilos > 0
+                ? $this->calcularTPCL($costo) / $this->total_kilos
+                : 0.0, // $/kg eq.
+
+            'TPT' => $this->total_kilos > 0
+                ? $this->calcularTPT($costo) / $this->total_kilos
+                : 0.0, // $/kg
+
+            'TPE' => $this->total_cajas > 0
+                ? $this->calcularTPE($costo) / $this->total_cajas
+                : 0.0, // $/caja promedio
+
+            'TPC' => $this->costotarifacajas->firstWhere('costo_id',$costo->id)->tarifa_caja
+                ?? (float)($costo->valor_unitario ?? 0),  // $/caja
+
+            'MTC' => $this->total_kilos > 0
+                ? $this->calcularMTC($costo) / $this->total_kilos
+                : 0.0, // $/kg eq.
+
+            'PSF' => $this->total_kilos > 0
+                ? $this->calcularPSF($costo) / $this->total_kilos
+                : 0.0, // $/kg eq.
+
+            // fallbacks
+            'POR_KG'   => (float)($costo->valor_unitario ?? 0), // $/kg
+            'POR_CAJA' => (float)($costo->valor_unitario ?? 0), // $/caja
+            'FIJO'     => $this->total_kilos > 0 ? ((float)($costo->monto_fijo ?? 0)) / $this->total_kilos : 0.0,
             'PORCENTAJE_INGRESO' => $this->total_kilos > 0
-                ? (((float) ($costo->porcentaje ?? 0) / 100) * $this->ingresos_total) / $this->total_kilos
+                ? (((float)($costo->porcentaje ?? 0) / 100) * $this->ingresos_total) / $this->total_kilos
                 : 0.0,
-            default      => 0.0,
+
+            default => 0.0,
         };
     }
+
 
     public function getCostosAgrupadosProperty(): array
     {
