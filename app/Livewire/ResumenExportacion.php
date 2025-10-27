@@ -290,6 +290,7 @@ class ResumenExportacion extends Component
     public function cerrarDetalle(): void
     {
        $this->selectedCostoId = null;
+       $this->detalle = [];
     }
 
     public function mount($temporada, $filters = [])
