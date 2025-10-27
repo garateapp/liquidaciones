@@ -2,7 +2,7 @@
   
   <h1 class="ml-10 mt-2">Categoria: Exportación</h1>
    <div class="flex w-full">
-                    <section class="w-4/5 border border-y-0 border-gray-800" style="max-width:600px;">
+                    <section class="w-4/5 border border-y-0 border-gray-800" style="max-width:800px;">
                        <div>
                         <table class="divide-y divide-gray-200 border-2 ml-10 w-full max-w-5xl">
                           <thead class="bg-white border-b">
