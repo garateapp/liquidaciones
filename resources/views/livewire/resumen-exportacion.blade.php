@@ -102,7 +102,7 @@
                     <aside class="w-1/5 h-12 position-relative">
                         <!--Aside menu (right side)-->
                       <div style="max-width:350px;">
-                        <div class="overflow-y-auto fixed  h-screen">
+                        <div class="overflow-y-auto fixed  h-screen pl-12">
 
                           <div 
                             x-cloak
@@ -113,7 +113,7 @@
                             x-transition:leave="transition ease-in duration-150"
                             x-transition:leave-start="opacity-100 translate-x-0"
                             x-transition:leave-end="opacity-0 translate-x-4"
-                            class="sticky top-4 bg-white border rounded-xl shadow p-4 space-y-3"
+                            class="sticky top-4 bg-white border rounded-xl shadow py-4 space-y-3"
                             >
                               <div class="flex items-start justify-between">
                                   <div>
