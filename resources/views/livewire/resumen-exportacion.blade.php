@@ -1,6 +1,6 @@
 <div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4">
   {{-- IZQUIERDA: LISTADO (scrollea) --}}
-  <div class="col-span-12 md:col-span-7 xl:col-span-8">
+  <div class="col-span-7">
     <div class="ml-4 lg:ml-8">
       <h1 class="mt-2 text-xl font-semibold">Categoria: Exportación</h1>
 
@@ -108,7 +108,7 @@
   </div>
 
   {{-- DERECHA: PANEL RESUMEN (fijo) --}}
-  <div class="col-span-12 md:col-span-5 xl:col-span-4">
+  <div class="col-span-5">
     <div
       x-cloak
       x-show="open"
