@@ -7,6 +7,14 @@ use Illuminate\Support\Collection;
 use App\Models\Costo;
 use App\Models\Balancemasa;
 
+use App\Models\Exportacion;
+use App\Models\CostoTarifaColor;
+use App\Models\CostoEmbalajeCode;
+use App\Models\CostoTarifaCaja;
+use App\Models\CostoTarifaKilo;
+use App\Models\CostoCategoria;
+use App\Models\CostoPorcentajeFob;
+
 class ResumenExportacion extends Component
 {
     public ?object $temporada = null;

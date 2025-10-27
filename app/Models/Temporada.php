@@ -11,7 +11,6 @@ use App\Models\CostoTarifaCaja;
 use App\Models\CostoTarifaKilo;
 use App\Models\CostoCategoria;
 use App\Models\CostoPorcentajeFob;
-
 // …
 
 class Temporada extends Model
