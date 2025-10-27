@@ -2,7 +2,7 @@
   
   <h1 class="ml-10 mt-2">Categoria: Exportación</h1>
    <div class="flex w-full">
-                    <section class="w-4/5 border border-y-0 border-gray-800" style="max-width:800px;">
+                    <section class="w-4/5" style="max-width:800px;">
                        <div>
                         <table class="divide-y divide-gray-200 border-2 ml-10 w-full max-w-5xl">
                           <thead class="bg-white border-b">
@@ -105,7 +105,7 @@
                         <div class="overflow-y-auto fixed  h-screen">
 
 
- <div>
+ <div class="pl-16">
       <div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4">
       {{-- Columna izquierda: tu resumen existente --}}
       <div class="col-span-12 lg:col-span-8">
