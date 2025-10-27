@@ -1,4 +1,4 @@
-<div class="mt-4 px-6">
+<div class="mt-4 px-6"  x-data="{ open: @entangle('detalleOpen'), selected: @entangle('selectedCostoId') }">
   <h1 class="text-xl font-semibold mb-3 ml-4">Categoría: Exportación</h1>
 
   {{-- Contenedor general con flex --}}
