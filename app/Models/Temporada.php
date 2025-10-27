@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Exportacion;
 use App\Models\Costotarifacolor;
-use App\Models\CostoEmbalajeCode;
+use App\Models\Costoembalajecode;
 use App\Models\CostoTarifaCaja;
 use App\Models\CostoTarifaKilo;
 use App\Models\CostoCategoria;
