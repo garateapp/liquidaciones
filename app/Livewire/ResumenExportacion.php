@@ -87,18 +87,57 @@ class ResumenExportacion extends Component
     public function calcularTotalCosto(Costo $costo): float
     {
         $metodo = strtoupper($costo->metodo ?? '');
-        $valor  = (float) ($costo->valor_unitario ?? 0);
-        $fijo   = (float) ($costo->monto_fijo ?? 0);
-        $porc   = (float) ($costo->porcentaje ?? 0);
+        $regla  = strtoupper($costo->regla  ?? ''); // ej. 'TPC' u otros casos que vayas agregando
 
-        return match ($metodo) {
-            'POR_KG'               => $valor * $this->total_kilos,
-            'POR_CAJA'             => $valor * $this->total_cajas,
-            'FIJO'                 => $fijo,
-            'PORCENTAJE_INGRESO'   => ($porc / 100) * $this->ingresos_total,
-            default                => 0.0,
+        // 1) Total base según método
+        $totalBase = match ($metodo) {
+            'POR_KG'             => ((float)($costo->valor_unitario ?? 0)) * $this->total_kilos,
+            'POR_CAJA'           => ((float)($costo->valor_unitario ?? 0)) * $this->total_cajas,
+            'FIJO'               => (float)($costo->monto_fijo ?? 0),
+            'PORCENTAJE_INGRESO' => ((float)($costo->porcentaje ?? 0) / 100) * $this->ingresos_total,
+            default              => 0.0,
+        };
+
+        // 2) Reglas especiales por caso (sobrescriben el totalBase cuando corresponda)
+        return match ($regla) {
+            'TPC'   => $this->calcularTPC($costo), // Tarifa por Caja por Código de Embalaje
+            // 'TPV' => $this->calcularTPV($costo), // (ejemplo futuro) Tarifa por Variedad
+            // 'TPP' => $this->calcularTPP($costo), // (ejemplo futuro) Tarifa por Productor
+            default => $totalBase,
         };
     }
+
+
+    protected function calcularTPC(Costo $costo): float
+    {
+        // 1) Traer tarifas por código de embalaje para este costo y temporada
+        // relación ejemplo: $temporada->costoembalajecodes() con campos: costo_id, c_embalaje, costo_por_caja
+        $tarifas = $this->temporada->costoembalajecodes
+            ->where('costo_id', $costo->id)
+            ->keyBy('c_embalaje'); // map c_embalaje => registro
+
+        // 2) Agrupar cajas por c_embalaje desde la colección $this->masastotal
+        $cajasPorCodigo = $this->masastotal
+            ->groupBy('c_embalaje')
+            ->map(fn($rows) => (float) $rows->sum('cantidad'));
+
+        // 3) Recorrer y calcular
+        $fallback = (float)($costo->valor_unitario ?? 0); // opcional
+
+        $total = 0.0;
+        foreach ($cajasPorCodigo as $codigo => $cajas) {
+            $tarifa = $tarifas->get($codigo);
+            if ($tarifa) {
+                $total += ((float)$tarifa->costo_por_caja) * $cajas;
+            } else {
+                // estrategia: usar fallback o ignorar
+                $total += $fallback * $cajas; // <-- si quieres ignorar, comenta esta línea
+            }
+        }
+
+        return $total;
+    }
+
 
     public function valorUnitarioParaMostrar(Costo $costo): float
     {
