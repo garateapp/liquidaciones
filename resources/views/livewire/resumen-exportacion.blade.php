@@ -113,7 +113,7 @@
         >
           <div class="flex justify-between items-start">
             <div>
-              <h3 class="text-lg font-bold">{{ $detalle['name'] ?? 'Detalle del costo' }}</h3>
+              <h3 class="text-lg font-bold mr-4">{{ $detalle['name'] ?? 'Detalle del costo' }}</h3>
               <p class="text-xs text-gray-500">
                 Método: {{ $detalle['metodo'] ?? '—' }} 
                 @if(!empty($detalle['regla'])) | Regla: {{ $detalle['regla'] }} @endif
