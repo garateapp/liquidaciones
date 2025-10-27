@@ -51,22 +51,22 @@ class Temporada extends Model
 
     public function costotarifacolors()
     {
-        return $this->hasMany(CostoTarifaColor::class, 'temporada_id');
+        return $this->hasMany(Costotarifacolor::class, 'temporada_id');
     }
 
     public function costoembalajecodes()
     {
-        return $this->hasMany(CostoEmbalajeCode::class, 'temporada_id');
+        return $this->hasMany(Costoembalajecode::class, 'temporada_id');
     }
 
     public function costotarifacajas()
     {
-        return $this->hasMany(CostoTarifaCaja::class, 'temporada_id');
+        return $this->hasMany(Costotarifacaja::class, 'temporada_id');
     }
 
     public function costotarifakilos()
     {
-        return $this->hasMany(CostoTarifaKilo::class, 'temporada_id');
+        return $this->hasMany(Costotarifakilo::class, 'temporada_id');
     }
 
     public function costocategorias()
