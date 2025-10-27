@@ -101,7 +101,7 @@
   {{-- DERECHA (DETALLE) --}}
   <aside class="w-[350px] shrink-0 self-start px-2">
     {{-- ¡OJO! Nada de fixed ni overflow en ancestros del sticky --}}
-    <div class="sticky top-24"> {{-- ajusta top-24 si tu header es más alto (top-16, top-20, etc.) --}}
+    <div class="fixed top-24"> {{-- ajusta top-24 si tu header es más alto (top-16, top-20, etc.) --}}
       <div 
         x-cloak
         x-show="open"
