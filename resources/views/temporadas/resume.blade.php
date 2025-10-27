@@ -20,9 +20,9 @@
         <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
                     
                     @livewire('menu-aside',['temporada'=>$temporada->id])
-
+            <div>
               <livewire:resumen-exportacion :temporada="$temporada" />
-
+            </div>
         </div>
 
     </div>
