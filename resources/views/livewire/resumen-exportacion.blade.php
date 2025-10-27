@@ -47,7 +47,8 @@
               $vuCosto    = $this->valorUnitarioParaMostrar($costo);
               $isPorCaja  = strtoupper($costo->metodo ?? '') === 'POR_CAJA';
             @endphp
-            <tr wire:click="mostrarDetalle({{ $costo->id }})">
+            <tr lass="hover:bg-gray-50 cursor-pointer @if($selectedCostoId===$costo->id) ring-2 ring-green-300 bg-green-50 @endif"
+                wire:click="mostrarDetalle({{ $costo->id }})">
               <td class="bg-gray-100 px-3 py-2"></td>
               <td class="bg-gray-100 px-3 py-2">
                 {{ $costo->name }}
