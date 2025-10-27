@@ -99,7 +99,7 @@
                     </section>
 
 
-                    <aside class="w-1/5 h-12 position-relative">
+                    <aside class="w-1/5 h-12 position-relative pl-12">
                         <!--Aside menu (right side)-->
                       <div style="max-width:350px;">
                         <div class="overflow-y-auto fixed  h-screen">
