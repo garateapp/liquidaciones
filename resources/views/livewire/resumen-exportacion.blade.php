@@ -1,6 +1,6 @@
 <div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-1 md:grid-cols-12 gap-4">
   {{-- IZQUIERDA: LISTADO (scrollea) --}}
-  <div class="md:col-span-7 xl:col-span-8">
+  <div class="md:col-span-7 xl:col-span-7">
     <div class="ml-4 lg:ml-8">
       <h1 class="mt-2 text-xl font-semibold">Categoria: Exportación</h1>
 
