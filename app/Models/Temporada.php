@@ -76,7 +76,7 @@ class Temporada extends Model
 
     public function costoporcentajefobs()
     {
-        return $this->hasMany(CostoPorcentajeFob::class, 'temporada_id');
+        return $this->hasMany(Costoporcentajefob::class, 'temporada_id');
     }
 
     public function flets(){
