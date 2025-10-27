@@ -48,6 +48,249 @@ class ResumenExportacion extends Component
 
     /** @var \Illuminate\Support\Collection<Costo> */
     public Collection $costos;
+    // ===== Panel de detalle =====
+    public ?int $selectedCostoId = null;
+    public array $detalle = []; // aquí armamos toda la info para mostrar
+    public bool $detalleOpen = false;
+
+    public function mostrarDetalle(int $costoId): void
+    {
+        $costo = $this->costos->firstWhere('id', $costoId);
+        if (!$costo) {
+            $this->selectedCostoId = null;
+            $this->detalle = [];
+            $this->detalleOpen = false;
+            return;
+        }
+
+        $metodo = strtoupper($costo->metodo ?? '');
+        $this->selectedCostoId = $costoId;
+
+        // Base común
+        $base = [
+            'id'        => $costo->id,
+            'name'      => $costo->name,
+            'metodo'    => $metodo,
+            'regla'     => strtoupper($costo->regla ?? ''),
+            'notas'     => $costo->descripcion ?? null,
+            'resumen'   => [],   // filas detalle
+            'totales'   => [],   // totales específicos
+            'explica'   => '',   // explicación corta del método
+        ];
+
+        // Explicación por método (breve)
+        $explica = [
+            'TPT' => 'Tarifa por transporte: suma (kg por cada tipo de transporte × tarifa USD del tipo).',
+            'TPCL'=> 'Tarifa por color: suma (kg del color × tarifa USD/kg del color).',
+            'TPE' => 'Tarifa por código de embalaje: suma (cajas por código × costo USD/caja).',
+            'TPC' => 'Tarifa única por caja: tarifa USD/caja × total de cajas.',
+            'TPK' => 'Tarifa única por kilo: tarifa USD/kg × total de kilos.',
+            'MTC' => 'Monto total por categoría: suma de los montos ingresados por categoría.',
+            'PSF' => 'Porcentaje sobre FOB: (porcentaje ÷ 100) × base FOB (o ingresos si no hay FOB).',
+            'POR_KG' => 'Valor unitario por kilo × total de kilos.',
+            'POR_CAJA' => 'Valor unitario por caja × total de cajas.',
+            'FIJO' => 'Monto fijo (no depende de cantidades).',
+            'PORCENTAJE_INGRESO' => 'Porcentaje sobre ingresos totales: (porcentaje ÷ 100) × ingresos.',
+        ];
+        $base['explica'] = $explica[$metodo] ?? 'Método personalizado.';
+
+        // Armar detalle según método
+        switch ($metodo) {
+            case 'TPT': {
+                $filas = $this->exportacions->where('costo_id', $costo->id);
+                $rows = [];
+                $total = 0.0;
+
+                foreach ($filas as $row) {
+                    $type  = strtolower(trim($row->type ?? ''));
+                    $label = ucfirst($type);
+                    $price = (float) ($row->precio_usd ?? 0);
+
+                    $kg = match ($type) {
+                        'maritimo'  => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')->sum('peso_neto'),
+                        'aereo'     => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')->sum('peso_neto'),
+                        'terrestre' => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')->sum('peso_neto'),
+                        default     => 0.0,
+                    };
+                    $sub = $kg * $price;
+                    $total += $sub;
+                    $rows[] = [
+                        'col1' => $label,
+                        'col2' => number_format($kg, 2, ',', '.').' kg',
+                        'col3' => '$ '.number_format($price, 4, ',', '.').' /kg',
+                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                    ];
+                }
+
+                $base['resumen'] = $rows;
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                    'Kilos totales' => number_format($this->total_kilos, 2, ',', '.').' kg',
+                    'VU equivalente' => $this->total_kilos>0 ? '$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg' : '$ 0',
+                ];
+                break;
+            }
+
+            case 'TPCL': {
+                $filas = $this->costotarifacolors->where('costo_id', $costo->id);
+                $rows = [];
+                $total = 0.0;
+
+                foreach ($filas as $row) {
+                    $color  = (string) $row->color;
+                    $tarifa = (float) $row->tarifa_kg;
+                    $kg     = (float) $this->masastotal->where('color', $color)->sum('peso_neto');
+                    $sub    = $kg * $tarifa;
+                    $total += $sub;
+
+                    $rows[] = [
+                        'col1' => $color,
+                        'col2' => number_format($kg, 2, ',', '.').' kg',
+                        'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /kg',
+                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                    ];
+                }
+
+                $base['resumen'] = $rows;
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                    'Kilos totales' => number_format($this->total_kilos, 2, ',', '.').' kg',
+                    'VU equivalente' => $this->total_kilos>0 ? '$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg' : '$ 0',
+                ];
+                break;
+            }
+
+            case 'TPE': {
+                $filas = $this->costoembalajecodes->where('costo_id', $costo->id)->keyBy('c_embalaje');
+                $rows = [];
+                $total = 0.0;
+
+                // agrupa cajas por código desde masastotal
+                $cajasPorCodigo = $this->masastotal->groupBy('c_embalaje')->map->sum('cantidad');
+
+                foreach ($cajasPorCodigo as $codigo => $cajas) {
+                    $t = $filas->get($codigo);
+                    if (!$t) continue;
+
+                    $valor = (float)$t->costo_por_caja;
+                    $sub   = $valor * (float)$cajas;
+                    $total += $sub;
+
+                    $rows[] = [
+                        'col1' => (string)$codigo,
+                        'col2' => (int)$cajas.' cajas',
+                        'col3' => '$ '.number_format($valor, 4, ',', '.').' /caja',
+                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                    ];
+                }
+
+                $base['resumen'] = $rows;
+                $base['totales'] = [
+                    'Total costo'  => '$ '.number_format($total, 2, ',', '.'),
+                    'Cajas totales'=> number_format($this->total_cajas, 0, ',', '.'),
+                    'VU/caja prom.'=> $this->total_cajas>0 ? '$ '.number_format($total/$this->total_cajas, 4, ',', '.').' /caja' : '$ 0',
+                ];
+                break;
+            }
+
+            case 'TPC': {
+                $row    = $this->costotarifacajas->firstWhere('costo_id', $costo->id);
+                $tarifa = $row?->tarifa_caja ?? (float)($costo->valor_unitario ?? 0);
+                $sub    = $tarifa * $this->total_cajas;
+
+                $base['resumen'] = [[
+                    'col1' => 'Tarifa única',
+                    'col2' => number_format($this->total_cajas, 0, ',', '.').' cajas',
+                    'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /caja',
+                    'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                ]];
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                ];
+                break;
+            }
+
+            case 'TPK': {
+                $row    = $this->costotarifakilos->firstWhere('costo_id', $costo->id);
+                $tarifa = $row?->tarifa_kg ?? (float)($costo->valor_unitario ?? 0);
+                $sub    = $tarifa * $this->total_kilos;
+
+                $base['resumen'] = [[
+                    'col1' => 'Tarifa única',
+                    'col2' => number_format($this->total_kilos, 2, ',', '.').' kg',
+                    'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /kg',
+                    'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                ]];
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                ];
+                break;
+            }
+
+            case 'MTC': {
+                $filas = $this->costocategorias->where('costo_id', $costo->id);
+                $rows = [];
+                $total = 0.0;
+
+                foreach ($filas as $cat) {
+                    $monto = (float)($cat->monto_total ?? 0);
+                    $total += $monto;
+                    $rows[] = [
+                        'col1' => $cat->categoria->nombre ?? ('Cat #'.$cat->categoria_id),
+                        'col2' => number_format((float)$cat->total_kgs, 2, ',', '.').' kg',
+                        'col3' => '$ '.number_format((float)$cat->costo_por_kg, 6, ',', '.').' /kg',
+                        'col4' => '$ '.number_format($monto, 2, ',', '.'),
+                    ];
+                }
+
+                $base['resumen'] = $rows;
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                ];
+                break;
+            }
+
+            case 'PSF': {
+                $fila = $this->costoporcentajefobs->firstWhere('costo_id', $costo->id);
+                $porc = $fila?->porcentaje ?? (float)($costo->porcentaje ?? 0);
+                $baseMonto = $this->fob_total ?? $this->ingresos_total;
+                $sub = ((float)$porc / 100.0) * (float)$baseMonto;
+
+                $base['resumen'] = [[
+                    'col1' => 'Porcentaje',
+                    'col2' => number_format((float)$porc, 4, ',', '.').' %',
+                    'col3' => 'Base',
+                    'col4' => '$ '.number_format((float)$baseMonto, 2, ',', '.'),
+                ]];
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                ];
+                break;
+            }
+
+            default: {
+                // Fallbacks genéricos
+                $total = $this->calcularTotalCosto($costo);
+                $base['resumen'] = [[
+                    'col1' => 'Parámetros',
+                    'col2' => '—',
+                    'col3' => '—',
+                    'col4' => '$ '.number_format($total, 2, ',', '.'),
+                ]];
+                $base['totales'] = [
+                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                ];
+            }
+        }
+
+        $this->detalle = $base;
+        $this->detalleOpen = true;
+    }
+
+    public function cerrarDetalle(): void
+    {
+        $this->detalleOpen = false;
+    }
 
     public function mount($temporada, $filters = [])
     {
