@@ -2,7 +2,7 @@
   
   <h1 class="ml-10 mt-2">Categoria: Exportación</h1>
    <div class="flex w-full">
-                    <section class="w-4/5 pr-24" style="max-width:800px;">
+                    <section class="w-4/5" style="max-width:800px;">
                        <div>
                         <table class="divide-y divide-gray-200 border-2 ml-10 w-full max-w-5xl">
                           <thead class="bg-white border-b">
@@ -99,86 +99,86 @@
                     </section>
 
 
-                    <aside class="w-1/5 h-12 position-relative pl-12">
+                    <aside class="w-1/5 h-12 position-relative px-12">
                         <!--Aside menu (right side)-->
-                      <div style="max-width:350px;">
-                        <div class="overflow-y-auto fixed  h-screen">
+                        <div style="max-width:350px;">
+                          <div class="overflow-y-auto fixed  h-screen">
 
-                          <div 
-                            x-cloak
-                            x-show="open" 
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 translate-x-4"
-                            x-transition:enter-end="opacity-100 translate-x-0"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="opacity-100 translate-x-0"
-                            x-transition:leave-end="opacity-0 translate-x-4"
-                            class="sticky top-4 bg-white border rounded-xl shadow p-4 space-y-3"
-                            >
-                              <div class="flex items-start justify-between">
-                                  <div>
-                                      <h3 class="text-lg font-bold">
-                                          {{ $detalle['name'] ?? 'Detalle del costo' }}
-                                      </h3>
-                                      <p class="text-xs text-gray-500">
-                                          Método: {{ $detalle['metodo'] ?? '—' }} 
-                                          @if(!empty($detalle['regla'])) | Regla: {{ $detalle['regla'] }} @endif
-                                      </p>
-                                  </div>
-                                  <button class="text-gray-500 hover:text-gray-700" wire:click="cerrarDetalle">✕</button>
-                              </div>
-
-                              @if(!empty($detalle['explica']))
-                                  <p class="text-sm text-gray-700">{{ $detalle['explica'] }}</p>
-                              @endif
-
-                              {{-- Tabla resumen de partidas --}}
-                              @if(!empty($detalle['resumen']))
-                              <div class="border rounded-lg overflow-hidden">
-                                  <table class="w-full text-sm">
-                                      <thead class="bg-gray-50 text-gray-600">
-                                          <tr>
-                                              <th class="px-3 py-2 text-left">Item</th>
-                                              <th class="px-3 py-2 text-right">Cant.</th>
-                                              <th class="px-3 py-2 text-right">Tarifa</th>
-                                              <th class="px-3 py-2 text-right">Subtotal</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          @foreach($detalle['resumen'] as $r)
-                                              <tr class="border-t">
-                                                  <td class="px-3 py-2">{{ $r['col1'] ?? '' }}</td>
-                                                  <td class="px-3 py-2 text-right">{{ $r['col2'] ?? '' }}</td>
-                                                  <td class="px-3 py-2 text-right">{{ $r['col3'] ?? '' }}</td>
-                                                  <td class="px-3 py-2 text-right font-medium">{{ $r['col4'] ?? '' }}</td>
-                                              </tr>
-                                          @endforeach
-                                      </tbody>
-                                  </table>
-                              </div>
-                              @endif
-
-                              {{-- Totales --}}
-                              @if(!empty($detalle['totales']))
-                              <div class="border rounded-lg p-3 bg-gray-50">
-                                  @foreach($detalle['totales'] as $k => $v)
-                                    <div class="flex justify-between text-sm py-0.5">
-                                      <span class="text-gray-600">{{ $k }}</span>
-                                      <span class="font-semibold">{{ $v }}</span>
+                            <div 
+                              x-cloak
+                              x-show="open" 
+                              x-transition:enter="transition ease-out duration-200"
+                              x-transition:enter-start="opacity-0 translate-x-4"
+                              x-transition:enter-end="opacity-100 translate-x-0"
+                              x-transition:leave="transition ease-in duration-150"
+                              x-transition:leave-start="opacity-100 translate-x-0"
+                              x-transition:leave-end="opacity-0 translate-x-4"
+                              class="sticky top-4 bg-white border rounded-xl shadow p-4 space-y-3"
+                              >
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold">
+                                            {{ $detalle['name'] ?? 'Detalle del costo' }}
+                                        </h3>
+                                        <p class="text-xs text-gray-500">
+                                            Método: {{ $detalle['metodo'] ?? '—' }} 
+                                            @if(!empty($detalle['regla'])) | Regla: {{ $detalle['regla'] }} @endif
+                                        </p>
                                     </div>
-                                  @endforeach
-                              </div>
-                              @endif
+                                    <button class="text-gray-500 hover:text-gray-700" wire:click="cerrarDetalle">✕</button>
+                                </div>
 
-                              {{-- Notas opcionales --}}
-                              @if(!empty($detalle['notas']))
-                                  <div class="text-xs text-gray-500">
-                                      {{ $detalle['notas'] }}
-                                  </div>
-                              @endif
-                          </div>  
-                        </div>
-                      </div>  
+                                @if(!empty($detalle['explica']))
+                                    <p class="text-sm text-gray-700">{{ $detalle['explica'] }}</p>
+                                @endif
+
+                                {{-- Tabla resumen de partidas --}}
+                                @if(!empty($detalle['resumen']))
+                                <div class="border rounded-lg overflow-hidden">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-gray-50 text-gray-600">
+                                            <tr>
+                                                <th class="px-3 py-2 text-left">Item</th>
+                                                <th class="px-3 py-2 text-right">Cant.</th>
+                                                <th class="px-3 py-2 text-right">Tarifa</th>
+                                                <th class="px-3 py-2 text-right">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($detalle['resumen'] as $r)
+                                                <tr class="border-t">
+                                                    <td class="px-3 py-2">{{ $r['col1'] ?? '' }}</td>
+                                                    <td class="px-3 py-2 text-right">{{ $r['col2'] ?? '' }}</td>
+                                                    <td class="px-3 py-2 text-right">{{ $r['col3'] ?? '' }}</td>
+                                                    <td class="px-3 py-2 text-right font-medium">{{ $r['col4'] ?? '' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                @endif
+
+                                {{-- Totales --}}
+                                @if(!empty($detalle['totales']))
+                                <div class="border rounded-lg p-3 bg-gray-50">
+                                    @foreach($detalle['totales'] as $k => $v)
+                                      <div class="flex justify-between text-sm py-0.5">
+                                        <span class="text-gray-600">{{ $k }}</span>
+                                        <span class="font-semibold">{{ $v }}</span>
+                                      </div>
+                                    @endforeach
+                                </div>
+                                @endif
+
+                                {{-- Notas opcionales --}}
+                                @if(!empty($detalle['notas']))
+                                    <div class="text-xs text-gray-500">
+                                        {{ $detalle['notas'] }}
+                                    </div>
+                                @endif
+                            </div>  
+                          </div>
+                        </div>  
                     </aside>
                 </div>
 
