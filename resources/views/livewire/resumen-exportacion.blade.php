@@ -1,114 +1,30 @@
-<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4">
+
   {{-- IZQUIERDA: LISTADO (scrollea) --}}
-  <div class="md:col-span-7 xl:col-span-7">
-    <div class="ml-4 lg:ml-8">
-      <h1 class="mt-2 text-xl font-semibold">Categoria: Exportación</h1>
+  <div class="col-span-7 xl:col-span-8">
+    <h1 class="mt-2 ml-2 text-xl font-semibold">Categoria: Exportación</h1>
 
-      {{-- Contenedor con alto de viewport y scroll interno --}}
-      <div class="mt-3 h-[calc(100vh-140px)] overflow-y-auto pr-2">
-        <table class="w-full max-w-6xl border-2 divide-y divide-gray-200">
-          <thead class="bg-white border-b sticky top-0 z-10">
-            <tr>
-              <th class="bg-gray-200 font-semibold px-3 py-2 w-40"></th>
-              <th class="bg-gray-200 font-semibold px-3 py-2">Concepto</th>
-              <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Totales</th>
-              <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Valor Unitario</th>
-            </tr>
-          </thead>
+    {{-- Alto de viewport y scroll interno SOLO en la columna izquierda --}}
+    <div class="mt-3 ml-2 pr-2 h-[calc(100vh-140px)] overflow-y-auto">
+      <table class="w-full border-2 divide-y divide-gray-200">
+        <thead class="bg-white border-b sticky top-0 z-10">
+          <tr>
+            <th class="bg-gray-200 font-semibold px-3 py-2 w-40"></th>
+            <th class="bg-gray-200 font-semibold px-3 py-2">Concepto</th>
+            <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Totales</th>
+            <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Valor Unitario</th>
+          </tr>
+        </thead>
 
-          <tbody class="bg-white">
-            {{-- Totales base --}}
-            <tr>
-              <td class="bg-gray-200 font-semibold px-3 py-2"></td>
-              <td class="bg-gray-200 font-semibold px-3 py-2">Suma de Peso Neto</td>
-              <td class="font-semibold px-3 py-2 text-right">
-                {{ number_format($total_kilos, 0, ',', '.') }} kg
-              </td>
-              <td class="font-semibold px-3 py-2 text-right">—</td>
-            </tr>
-
-            <tr>
-              <td class="bg-gray-200 font-semibold px-3 py-2">Ingresos</td>
-              <td class="bg-gray-200 font-semibold px-3 py-2">Σ(precio_unitario × peso_neto)</td>
-              <td class="px-3 py-2 text-right">
-                $ {{ number_format($ingresos_total, 0, ',', '.') }}
-              </td>
-              <td class="px-3 py-2 text-right">
-                $ {{ number_format($vu_promedio, 2, ',', '.') }} /kg
-              </td>
-            </tr>
-
-            {{-- Agrupación por menú de costos --}}
-            @foreach($this->costosAgrupados as $grupo)
-              <tr>
-                <td class="bg-gray-200 font-semibold px-3 py-2">Costos</td>
-                <td class="bg-gray-200 font-semibold px-3 py-2">{{ $grupo['menu'] }}</td>
-                <td class="px-3 py-2"></td>
-                <td class="px-3 py-2"></td>
-              </tr>
-
-              @foreach($grupo['items'] as $costo)
-                @php
-                  $totalCosto = $this->calcularTotalCosto($costo);
-                  $vuCosto    = $this->valorUnitarioParaMostrar($costo);
-                  $isPorCaja  = strtoupper($costo->metodo ?? '') === 'POR_CAJA';
-                @endphp
-
-                <tr
-                  class="hover:bg-gray-50 cursor-pointer transition @if($selectedCostoId===$costo->id) ring-2 ring-green-300 bg-green-50 @endif"
-                  wire:click="mostrarDetalle({{ $costo->id }})"
-                >
-                  <td class="bg-gray-100 px-3 py-2"></td>
-                  <td class="bg-gray-100 px-3 py-2">
-                    {{ $costo->name }}
-                    @if($costo->metodo)
-                      <span class="text-xs text-gray-500">({{ strtoupper($costo->metodo) }})</span>
-                    @endif
-                  </td>
-                  <td class="px-3 py-2 text-right">
-                    $ {{ number_format($totalCosto, 0, ',', '.') }}
-                  </td>
-                  <td class="px-3 py-2 text-right">
-                    $ {{ number_format($vuCosto, 2, ',', '.') }} {{ $isPorCaja ? '/caja' : '/kg' }}
-                  </td>
-                </tr>
-              @endforeach
-            @endforeach
-
-            {{-- Totales y resultado --}}
-            <tr class="border-t-2">
-              <td class="bg-gray-200 font-bold px-3 py-2">Totales</td>
-              <td class="bg-gray-200 font-bold px-3 py-2">Costos</td>
-              <td class="px-3 py-2 text-right font-bold">
-                $ {{ number_format($totalCostos, 0, ',', '.') }}
-              </td>
-              <td class="px-3 py-2 text-right font-bold">
-                @if($total_kilos > 0)
-                  $ {{ number_format($totalCostos / $total_kilos, 2, ',', '.') }} /kg
-                @else
-                  —
-                @endif
-              </td>
-            </tr>
-
-            <tr>
-              <td class="bg-gray-200 font-bold px-3 py-2">Resultado</td>
-              <td class="bg-gray-200 font-bold px-3 py-2">Ingresos - Costos</td>
-              <td class="px-3 py-2 text-right font-bold">
-                $ {{ number_format($resultado, 0, ',', '.') }}
-              </td>
-              <td class="px-3 py-2 text-right font-bold">
-                $ {{ number_format($vu_resultado, 2, ',', '.') }} /kg
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <tbody class="bg-white">
+          {{-- … TU TABLA (igual que ya tienes) … --}}
+        </tbody>
+      </table>
     </div>
   </div>
 
-  {{-- DERECHA: PANEL RESUMEN (fijo) --}}
-  <div class="md:col-span-5 xl:col-span-4">
+  {{-- DERECHA: PANEL RESUMEN (fijo / sticky) --}}
+  <div class="col-span-5 xl:col-span-4">
     <div
       x-cloak
       x-show="open"
@@ -122,9 +38,7 @@
     >
       <div class="flex items-start justify-between">
         <div>
-          <h3 class="text-lg font-bold">
-            {{ $detalle['name'] ?? 'Detalle del costo' }}
-          </h3>
+          <h3 class="text-lg font-bold">{{ $detalle['name'] ?? 'Detalle del costo' }}</h3>
           <p class="text-xs text-gray-500">
             Método: {{ $detalle['metodo'] ?? '—' }}
             @if(!empty($detalle['regla'])) | Regla: {{ $detalle['regla'] }} @endif
@@ -174,9 +88,7 @@
       @endif
 
       @if(!empty($detalle['notas']))
-        <div class="text-xs text-gray-500">
-          {{ $detalle['notas'] }}
-        </div>
+        <div class="text-xs text-gray-500">{{ $detalle['notas'] }}</div>
       @endif
     </div>
   </div>
