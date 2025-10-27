@@ -104,7 +104,6 @@
     <div class="fixed top-24"> {{-- ajusta top-24 si tu header es más alto (top-16, top-20, etc.) --}}
       <div 
         x-cloak
-        x-show="open"
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 translate-x-4"
         x-transition:enter-end="opacity-100 translate-x-0"
