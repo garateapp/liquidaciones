@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Exportacion;
 use App\Models\Costotarifacolor;
 use App\Models\Costoembalajecode;
-use App\Models\CostoTarifaCaja;
-use App\Models\CostoTarifaKilo;
+use App\Models\Costotarifacaja;
+use App\Models\Costotarifakilo;
 use App\Models\CostoCategoria;
-use App\Models\CostoPorcentajeFob;
+use App\Models\Costoporcentajefob;
 // …
 
 class Temporada extends Model
