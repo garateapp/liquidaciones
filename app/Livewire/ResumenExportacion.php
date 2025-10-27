@@ -163,9 +163,9 @@ class ResumenExportacion extends Component
             $price = (float) ($row->precio_usd ?? 0);
 
             $kgTipo = match ($type) {
-                'maritimo'  => (float) $this->masastotal->where('tipo_transporte', 'MARITIMO')->sum('peso_neto'),
-                'aereo'     => (float) $this->masastotal->where('tipo_transporte', 'AEREO')->sum('peso_neto'),
-                'terrestre' => (float) $this->masastotal->where('tipo_transporte', 'TERRESTRE')->sum('peso_neto'),
+                'maritimo'  => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')->sum('peso_neto'),
+                'aereo'     => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')->sum('peso_neto'),
+                'terrestre' => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')->sum('peso_neto'),
                 default     => 0.0,
             };
 

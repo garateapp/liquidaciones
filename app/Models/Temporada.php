@@ -29,15 +29,7 @@ class Temporada extends Model
         return $this->hasmany('App\Models\CostoPacking');
     }
 
-    // relacion uno a muchos inversa
-    public function costotarifacolors(){
-        return $this->hasmany('App\Models\Costotarifacolor');
-    }
 
-     // relacion uno a muchos inversa
-    public function costoembalajecodes(){
-        return $this->hasmany('App\Models\Costoembalajecode','temporada_id');
-    }
 
     // relacion uno a muchos inversa
     public function packingcodes(){
@@ -52,7 +44,40 @@ class Temporada extends Model
         return $this->hasmany('App\Models\Anticipo');
     }
     
-   
+      public function exportacions()
+    {
+        return $this->hasMany(Exportacion::class, 'temporada_id');
+    }
+
+    public function costotarifacolors()
+    {
+        return $this->hasMany(CostoTarifaColor::class, 'temporada_id');
+    }
+
+    public function costoembalajecodes()
+    {
+        return $this->hasMany(CostoEmbalajeCode::class, 'temporada_id');
+    }
+
+    public function costotarifacajas()
+    {
+        return $this->hasMany(CostoTarifaCaja::class, 'temporada_id');
+    }
+
+    public function costotarifakilos()
+    {
+        return $this->hasMany(CostoTarifaKilo::class, 'temporada_id');
+    }
+
+    public function costocategorias()
+    {
+        return $this->hasMany(CostoCategoria::class, 'temporada_id');
+    }
+
+    public function costoporcentajefobs()
+    {
+        return $this->hasMany(CostoPorcentajeFob::class, 'temporada_id');
+    }
 
     public function flets(){
         return $this->hasmany('App\Models\Flete');
@@ -79,9 +104,6 @@ class Temporada extends Model
         return $this->hasmany('App\Models\Balancemasacuatro');
     }
 
-    public function exportacions(){
-        return $this->hasmany('App\Models\Exportacion');
-    }
 
     public function comisions(){
         return $this->hasmany('App\Models\Comision');
