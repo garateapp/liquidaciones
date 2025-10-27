@@ -4,6 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Exportacion;
+use App\Models\CostoTarifaColor;
+use App\Models\CostoEmbalajeCode;
+use App\Models\CostoTarifaCaja;
+use App\Models\CostoTarifaKilo;
+use App\Models\CostoCategoria;
+use App\Models\CostoPorcentajeFob;
+
+// …
 
 class Temporada extends Model
 {
