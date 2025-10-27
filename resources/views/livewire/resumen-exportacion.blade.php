@@ -1,22 +1,20 @@
-<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4">
+<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-1 md:grid-cols-12 gap-4">
   {{-- IZQUIERDA: LISTADO (scrollea) --}}
-  <div class="col-span-12 md:col-span-7 xl:col-span-8">
-    <div class="ml-4 lg:ml-8">
-      <h1 class="mt-2 text-xl font-semibold">Categoria: Exportación</h1>
+  <div class="md:col-span-7 xl:col-span-8">
+    <h1 class="mt-2 ml-2 md:ml-4 text-xl font-semibold">Categoria: Exportación</h1>
 
-      {{-- Contenedor con alto de viewport y scroll interno --}}
-      <div class="mt-3 h-[calc(100vh-140px)] overflow-y-auto pr-2">
-        <table class="w-full max-w-6xl border-2 divide-y divide-gray-200">
-          <thead class="bg-white border-b sticky top-0 z-10">
-            <tr>
-              <th class="bg-gray-200 font-semibold px-3 py-2 w-40"></th>
-              <th class="bg-gray-200 font-semibold px-3 py-2">Concepto</th>
-              <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Totales</th>
-              <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Valor Unitario</th>
-            </tr>
-          </thead>
-
-          <tbody class="bg-white">
+    {{-- Contenedor con alto de viewport y scroll interno --}}
+    <div class="mt-3 ml-2 md:ml-4 pr-2 h-[calc(100vh-140px)] overflow-y-auto">
+      <table class="w-full border-2 divide-y divide-gray-200">
+        <thead class="bg-white border-b sticky top-0 z-10">
+          <tr>
+            <th class="bg-gray-200 font-semibold px-3 py-2 w-40"></th>
+            <th class="bg-gray-200 font-semibold px-3 py-2">Concepto</th>
+            <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Totales</th>
+            <th class="bg-gray-200 font-semibold px-3 py-2 text-right">Valor Unitario</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
             {{-- Totales base --}}
             <tr>
               <td class="bg-gray-200 font-semibold px-3 py-2"></td>
@@ -107,8 +105,8 @@
     </div>
   </div>
 
-  {{-- DERECHA: PANEL RESUMEN (fijo) --}}
-  <div class="col-span-12 md:col-span-5 xl:col-span-4">
+  {{-- DERECHA: PANEL (sticky, ocupa alto) --}}
+  <div class="md:col-span-5 xl:col-span-4">
     <div
       x-cloak
       x-show="open"
@@ -122,9 +120,7 @@
     >
       <div class="flex items-start justify-between">
         <div>
-          <h3 class="text-lg font-bold">
-            {{ $detalle['name'] ?? 'Detalle del costo' }}
-          </h3>
+          <h3 class="text-lg font-bold">{{ $detalle['name'] ?? 'Detalle del costo' }}</h3>
           <p class="text-xs text-gray-500">
             Método: {{ $detalle['metodo'] ?? '—' }}
             @if(!empty($detalle['regla'])) | Regla: {{ $detalle['regla'] }} @endif
@@ -174,9 +170,7 @@
       @endif
 
       @if(!empty($detalle['notas']))
-        <div class="text-xs text-gray-500">
-          {{ $detalle['notas'] }}
-        </div>
+        <div class="text-xs text-gray-500">{{ $detalle['notas'] }}</div>
       @endif
     </div>
   </div>
