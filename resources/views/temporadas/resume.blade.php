@@ -14,65 +14,18 @@
 @endif
 
 
-    <div class=" pb-8 pt-2">
-        <div class="p-relative h-screen" style="background-color: #15202b">
-            <div class="flex justify-center">
-
-                <header class="text-white h-12 py-4 h-auto">
-                    <!-- Navbar (left side) -->
-                    <div style="width: 275px;">
-                        <div class="overflow-y-auto fixed h-screen pr-3" style="width: 275px;">
-                           @livewire('menu-aside',['temporada'=>$temporada->id])
-                        </div>
-                    </div>
-                    </div>
-                </header>
-        
-            <main role="main">
-
-                <livewire:resumen-exportacion :temporada="$temporada" />
-
-               
-            </main>
+<div class=" pb-8 pt-2">
+    
+    <div class="card">
+        <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
+                    
+                    @livewire('menu-aside',['temporada'=>$temporada->id])
+            
+              <livewire:resumen-exportacion :temporada="$temporada" />
 
         </div>
 
     </div>
-
-
-
-
-        <style>
-    .overflow-y-auto::-webkit-scrollbar, .overflow-y-scroll::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar, .overflow-x::-webkit-scrollbar, .overflow-x-scroll::-webkit-scrollbar, .overflow-y::-webkit-scrollbar, body::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.overflow-y-auto, .overflow-y-scroll, .overflow-x-auto, .overflow-x, .overflow-x-scroll, .overflow-y, body {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-.bg-dim-700 {
-  --bg-opacity: 1;
-  background-color: #192734;
-}
-
-html, body {
-  margin: 0;
-  background-color: #15202b;
-}
-
-svg.paint-icon {
-  fill: currentcolor;
-}
-
-        </style>
-        
-
-   
 
 </div>
 
