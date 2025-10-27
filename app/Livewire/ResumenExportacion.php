@@ -15,7 +15,7 @@ class ResumenExportacion extends Component
     'mi'  => true,
     'com' => true,
     ];
-
+    use Collection;  
 
     // Colecciones que usa tu UI:
     public Collection $exportacions;        // TPT: [{id,costo_id,type,precio_usd}]
