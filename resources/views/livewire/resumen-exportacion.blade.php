@@ -1,11 +1,8 @@
-<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4">
-
-  {{-- IZQUIERDA: LISTADO (scrollea) --}}
-  <div class="col-span-7 xl:col-span-8">
-    <h1 class="mt-2 ml-2 text-xl font-semibold">Categoria: Exportación</h1>
-
-    {{-- Alto de viewport y scroll interno SOLO en la columna izquierda --}}
-    <div class="mt-3 ml-2 pr-2 h-[calc(100vh-140px)] overflow-y-auto">
+<div x-data="{ open: @entangle('detalleOpen') }" class="grid grid-cols-12 gap-4 px-2 md:px-4">
+  <!-- IZQUIERDA -->
+  <div class="col-span-7 xl:col-span-8 min-w-0">
+    <h1 class="mt-2 text-xl font-semibold">Categoria: Exportación</h1>
+    <div class="mt-3 pr-2 h-[calc(100vh-140px)] overflow-y-auto">
       <table class="w-full border-2 divide-y divide-gray-200">
         <thead class="bg-white border-b sticky top-0 z-10">
           <tr>
