@@ -14,19 +14,22 @@
 @endif
 
 
-<div class=" pb-8 pt-2">
-    
-    <div class="card">
-        <div class="flex w-full bg-gray-300" x-data="{openMenu:1}">
-                    
-                    @livewire('menu-aside',['temporada'=>$temporada->id])
-            <div>
-              <livewire:resumen-exportacion :temporada="$temporada" />
-            </div>
-        </div>
+<div class="pb-8 pt-2">
+  <div class="card overflow-visible">  <!-- evita cortar el sticky -->
+    <div class="flex w-full bg-gray-300 overflow-visible"> <!-- importante -->
+      
+      <div class="shrink-0">  <!-- menú lateral conserva su ancho -->
+        @livewire('menu-aside', ['temporada' => $temporada->id])
+      </div>
+
+      <!-- Aquí el resumen: que OCCUPE el resto -->
+      <div class="flex-1 min-w-0">   <!-- clave: flex-grow + min-w-0 para que el grid no se rompa -->
+        <livewire:resumen-exportacion :temporada="$temporada" />
+      </div>
 
     </div>
-
+  </div>
 </div>
+
 
 </x-app-layout>
