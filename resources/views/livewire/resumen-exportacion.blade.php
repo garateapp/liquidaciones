@@ -1,6 +1,6 @@
 <div>
   <h1 class="ml-10 mt-2">Categoria: Exportación</h1>
-<div>
+<div class="grid grid-cols-2">
   <div>
     <table class="divide-y divide-gray-200 border-2 ml-10 w-full max-w-5xl">
       <thead class="bg-white border-b">
