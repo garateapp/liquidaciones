@@ -105,6 +105,7 @@
     </div>
   </div>
 
+ 
   {{-- DERECHA: PANEL (sticky, ocupa alto) --}}
   <div class="md:col-span-5 xl:col-span-4">
     <div
@@ -117,7 +118,7 @@
       x-transition:leave-start="opacity-100 translate-x-0"
       x-transition:leave-end="opacity-0 translate-x-4"
       class="sticky top-4 h-[calc(100vh-32px)] overflow-y-auto bg-white border rounded-xl shadow p-4 space-y-3"
-    >
+      >
       <div class="flex items-start justify-between">
         <div>
           <h3 class="text-lg font-bold">{{ $detalle['name'] ?? 'Detalle del costo' }}</h3>
