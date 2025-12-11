@@ -46,7 +46,12 @@ class CostosTemporada extends Component
     public $edit_tarifa_kg_value = [];
     public $nuevo_porcentaje;
     public $costoporcentajefobs;
-    public $categoria_id, $costo_por_kg, $total_kgs, $monto_total;
+    // Ahora trabajamos con selección múltiple
+    public array $categoria_ids = [];
+
+    public $costo_por_kg;
+    public $total_kgs;
+    public $monto_total;
 
     public function updatedArchivo()
     {
@@ -216,26 +221,63 @@ class CostosTemporada extends Component
         $this->dispatch('fileImported');
     }
 
-    public function agregarCostoCategoria($costoid)
+    public function agregarCostoCategoria($costoId)
     {
         $this->validate([
-            'categoria_id' => 'required|exists:categorias,id',
-            'costo_por_kg' => 'required|numeric',
-            'total_kgs' => 'required|numeric',
-            'monto_total' => 'required|numeric',
-        ]);
-        //dd($this->costo_por_kg);
-        CostoCategoria::create([
-            'temporada_id' => $this->temporada->id ?? null,
-            'costo_id' => $costoid,
-            'categoria_id' => $this->categoria_id,
-            'costo_por_kg' => $this->costo_por_kg,
-            'total_kgs' => $this->total_kgs,
-            'monto_total' => $this->monto_total,
+            'categoria_ids'   => 'required|array|min:1',
+            'categoria_ids.*' => 'exists:categorias,id',
+            'costo_por_kg'    => 'required|numeric',
+            'total_kgs'       => 'required|numeric|min:0.0000001',
+            'monto_total'     => 'required|numeric',
         ]);
 
-        $this->reset(['categoria_id', 'costo_por_kg', 'total_kgs', 'monto_total']);
+        // Aseguramos que los kilos totales estén actualizados
+        $this->updatedCategoriaIds();
+        $this->updatedMontoTotal();
+
+        if (!$this->total_kgs || !$this->costo_por_kg) {
+            $this->addError('total_kgs', 'No hay kilos suficientes para calcular el costo.');
+            return;
+        }
+
+        // Siguiente número de grupo para este costo + temporada
+        $nextGrupo = (int) CostoCategoria::where('temporada_id', $this->temporada->id)
+            ->where('costo_id', $costoId)
+            ->max('grupo') + 1;
+
+        // Categorías seleccionadas
+        $categoriasSeleccionadas = $this->categorias
+            ->whereIn('id', $this->categoria_ids);
+
+        foreach ($categoriasSeleccionadas as $categoria) {
+            // Kilos de ESA categoría específica
+            $kgsCat = Proceso::where('temporada_id', $this->temporada->id)
+                ->where('c_categoria', $categoria->codigo)
+                ->sum('peso_neto');
+
+            if ($kgsCat <= 0) {
+                continue;
+            }
+
+            // Monto parcial para esa categoría
+            $montoParcial = $kgsCat * $this->costo_por_kg;
+
+            CostoCategoria::create([
+                'temporada_id' => $this->temporada->id ?? null,
+                'costo_id'     => $costoId,
+                'grupo'        => $nextGrupo,          // 🔹 clave del grupo
+                'categoria_id' => $categoria->id,
+                'costo_por_kg' => $this->costo_por_kg,
+                'total_kgs'    => $kgsCat,
+                'monto_total'  => $montoParcial,
+            ]);
+        }
+
+        // Limpiar el formulario
+        $this->reset(['categoria_ids', 'costo_por_kg', 'total_kgs', 'monto_total']);
     }
+
+
 
     public function getCategoriasProperty()
     {
@@ -331,27 +373,50 @@ class CostosTemporada extends Component
         $this->cargarPorcentajesFob();
     }
 
-    public function updatedCategoriaId()
+    public function updatedCategoriaIds()
     {
-        if ($this->categoria_id) {
-            $categoria = $this->categorias->firstWhere('id', $this->categoria_id);
-            //dd($categoria);
-            $this->total_kgs = Proceso::where('temporada_id', $this->temporada->id)
-                ->where('c_categoria', $categoria?->codigo)
-                ->sum('peso_neto');
-        } else {
+        // Si no hay categorías seleccionadas, reseteamos
+        if (empty($this->categoria_ids)) {
             $this->total_kgs = null;
+            $this->costo_por_kg = null;
+            return;
         }
+
+        // Obtenemos los códigos de categoría según los IDs seleccionados
+        $categoriasSeleccionadas = $this->categorias
+            ->whereIn('id', $this->categoria_ids);
+
+        $codigos = $categoriasSeleccionadas
+            ->pluck('codigo')
+            ->filter()
+            ->values()
+            ->all();
+
+        if (empty($codigos)) {
+            $this->total_kgs = null;
+            $this->costo_por_kg = null;
+            return;
+        }
+
+        // Sumamos el peso_neto de TODOS los procesos con esas categorías
+        $this->total_kgs = Proceso::where('temporada_id', $this->temporada->id)
+            ->whereIn('c_categoria', $codigos)
+            ->sum('peso_neto');
+
+        // Si ya hay monto_total, recalculamos costo por kg
+        $this->updatedMontoTotal();
     }
+
 
     public function updatedMontoTotal()
     {
         if ($this->total_kgs > 0 && $this->monto_total) {
-            $this->costo_por_kg = ($this->monto_total / $this->total_kgs);
+            $this->costo_por_kg = $this->monto_total / $this->total_kgs;
         } else {
             $this->costo_por_kg = null;
         }
     }
+
 
 
     public function storeTarifaCaja($costoId)

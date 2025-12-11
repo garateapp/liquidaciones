@@ -575,108 +575,154 @@
                         @break
 
                     @case('MTC')
-                            <div class="mt-4 mx-6" x-show="openTab === {{$costo->id}}">
-                                <h3 class="hidden text-lg font-bold text-gray-700 mb-4">📂 Costos por Categoría</h3>
+                        <div class="mt-4 mx-6" x-show="openTab === {{ $costo->id }}">
+                            <h3 class="hidden text-lg font-bold text-gray-700 mb-4">📂 Costos por Categoría</h3>
 
-                                {{-- Formulario para agregar --}}
-                                <div class="flex flex-wrap gap-4 mb-4 items-end">
-                                    <div>
-                                        <label class="text-sm font-medium text-gray-600">Categoría</label>
-                                        <select wire:model.live="categoria_id" class="border rounded px-3 py-1 text-sm w-40">
-                                            <option value="">Selecciona</option>
-                                            @foreach($this->categorias as $cat)
-                                                <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
-                                            @endforeach
-                                        </select>
+                            {{-- Formulario para agregar --}}
+                            <div class="flex flex-wrap gap-4 mb-4 items-start">
+
+                                {{-- Selección múltiple de categorías --}}
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">
+                                        Categorías <span class="text-xs text-gray-400">(puedes elegir varias)</span>
+                                    </label>
+
+                                    <div class="border rounded px-3 py-2 text-sm w-64 max-h-40 overflow-y-auto space-y-1">
+                                        @foreach($this->categorias as $cat)
+                                            <label class="flex items-center gap-2">
+                                                <input type="checkbox"
+                                                    value="{{ $cat->id }}"
+                                                    wire:model.live="categoria_ids"
+                                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                                <span>{{ $cat->nombre }}</span>
+                                            </label>
+                                        @endforeach
                                     </div>
 
-                                                                        
-                                   <div>
-                                        <label class="text-sm font-medium text-gray-600">Total Kgs</label>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        Total categorías seleccionadas:
+                                        {{ is_array($categoria_ids) ? count($categoria_ids) : 0 }}
+                                    </p>
 
-                                        @if ($total_kgs === null || $total_kgs === 0)
-                                            {{-- Mostrar mientras se calcula --}}
-                                            <input type="text"
-                                                value="Calculando..."
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-400 italic"
-                                                wire:loading
-                                                wire:target="categoria_id, monto_total"
-                                                readonly>
-
-                                            {{-- Mostramos campo vacío si no está cargando aún pero no hay valor --}}
-                                            <input type="text"
-                                                value=""
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
-                                                wire:loading.remove
-                                                wire:target="categoria_id, monto_total"
-                                                readonly>
-                                        @else
-                                            {{-- Mostrar valor real cuando ya fue calculado --}}
-                                            <input type="number"
-                                                step="0.0001"
-                                                wire:model="total_kgs"
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
-                                                readonly>
-                                        @endif
-                                    </div>
-
-
-                                    <div>
-                                        <label class="text-sm font-medium text-gray-600">Monto Total</label>
-                                        <input type="number" step="0.0001" wire:model.live="monto_total"
-                                            class="border rounded px-3 py-1 text-sm w-32">
-                                    </div>
-
-                                    <div>
-                                        <label class="text-sm font-medium text-gray-600">Costo por Kg</label>
-
-                                        @if ($costo_por_kg === null || $costo_por_kg === 0)
-                                            {{-- Mostrar mientras se calcula --}}
-                                            <input type="text"
-                                                value="Calculando..."
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-400 italic"
-                                                wire:loading
-                                                wire:target="monto_total, total_kgs"
-                                                readonly>
-
-                                            {{-- Campo vacío si terminó de cargar pero aún no hay valor --}}
-                                            <input type="text"
-                                                value=""
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
-                                                wire:loading.remove
-                                                wire:target="monto_total, total_kgs"
-                                                readonly>
-                                        @else
-                                            {{-- Mostrar valor calculado --}}
-                                            <input type="number"
-                                                step="0.000000000000001"
-                                                wire:model="costo_por_kg"
-                                                class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
-                                                readonly>
-                                        @endif
-                                    </div>
-
-
-                                    <div>
-                                        <button wire:click="agregarCostoCategoria({{$costo->id}})" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
-                                            Agregar
-                                        </button>
-                                    </div>
                                 </div>
 
-                                {{-- Tabla de registros --}}
-                                <table class="w-full border text-sm text-left">
-                                    <thead>
-                                        <tr class="bg-gray-100 text-gray-700">
-                                            <th class="px-3 py-2 border">Categoría</th>
-                                            <th class="px-3 py-2 border">Costo por Kg</th>
-                                            <th class="px-3 py-2 border">Total Kgs</th>
-                                            <th class="px-3 py-2 border">Monto Total</th>
-                                            <th class="px-3 py-2 border">Acciones</th>
+                                {{-- Total Kgs (suma de todas las categorías seleccionadas) --}}
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Total Kgs (selección)</label>
+
+                                    @if ($total_kgs === null || $total_kgs === 0)
+                                        {{-- Mostrar mientras se calcula --}}
+                                        <input type="text"
+                                            value="Calculando..."
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-400 italic"
+                                            wire:loading
+                                            wire:target="categoria_ids, monto_total"
+                                            readonly>
+
+                                        {{-- Campo vacío si no está cargando aún pero no hay valor --}}
+                                        <input type="text"
+                                            value=""
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
+                                            wire:loading.remove
+                                            wire:target="categoria_ids, monto_total"
+                                            readonly>
+                                    @else
+                                        {{-- Mostrar valor real cuando ya fue calculado --}}
+                                        <input type="number"
+                                            step="0.0001"
+                                            wire:model="total_kgs"
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
+                                            readonly>
+                                    @endif
+                                </div>
+
+                                {{-- Monto Total (para el conjunto de categorías) --}}
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Monto Total</label>
+                                    <input type="number"
+                                        step="0.0001"
+                                        wire:model.live="monto_total"
+                                        class="border rounded px-3 py-1 text-sm w-32">
+                                </div>
+
+                                {{-- Costo por Kg (monto_total / total_kgs) --}}
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Costo por Kg</label>
+
+                                    @if ($costo_por_kg === null || $costo_por_kg === 0)
+                                        {{-- Mostrar mientras se calcula --}}
+                                        <input type="text"
+                                            value="Calculando..."
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-400 italic"
+                                            wire:loading
+                                            wire:target="monto_total, total_kgs"
+                                            readonly>
+
+                                        {{-- Campo vacío si terminó de cargar pero aún no hay valor --}}
+                                        <input type="text"
+                                            value=""
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
+                                            wire:loading.remove
+                                            wire:target="monto_total, total_kgs"
+                                            readonly>
+                                    @else
+                                        {{-- Mostrar valor calculado --}}
+                                        <input type="number"
+                                            step="0.000000000000001"
+                                            wire:model="costo_por_kg"
+                                            class="border rounded px-3 py-1 text-sm w-32 bg-gray-100 text-gray-600"
+                                            readonly>
+                                    @endif
+                                </div>
+
+                                {{-- Botón agregar --}}
+                                <div class="pt-6">
+                                    <button
+                                        wire:click="agregarCostoCategoria({{ $costo->id }})"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+
+                            {{-- Tabla de registros --}}
+                            @php
+                                // Agrupamos por grupo (los null serán "sin grupo")
+                                $grupos = $costocategorias
+                                    ->where('costo_id', $costo->id)
+                                    ->groupBy('grupo');
+                            @endphp
+
+                            <table class="w-full border text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-700">
+                                        <th class="px-3 py-2 border">Categoría</th>
+                                        <th class="px-3 py-2 border">Costo por Kg</th>
+                                        <th class="px-3 py-2 border">Total Kgs</th>
+                                        <th class="px-3 py-2 border">Monto Total</th>
+                                        <th class="px-3 py-2 border">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($grupos as $grupo => $items)
+                                        @php
+                                            $totalGrupoKgs   = $items->sum('total_kgs');
+                                            $totalGrupoMonto = $items->sum('monto_total');
+                                            $costoKgGrupo    = optional($items->first())->costo_por_kg;
+                                        @endphp
+
+                                        {{-- Fila resumen del grupo --}}
+                                        <tr class="bg-gray-50 font-semibold">
+                                            <td class="px-3 py-2 border" colspan="5">
+                                                Grupo {{ $grupo ?? 'sin grupo' }} ·
+                                                Total Kgs: {{ number_format($totalGrupoKgs, 2) }} ·
+                                                Monto asignado: {{ number_format($totalGrupoMonto, 2) }} ·
+                                                Costo/Kg: {{ number_format($costoKgGrupo ?? 0, 8) }}
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($costocategorias->where('costo_id', $costo->id) as $cat)
+
+                                        {{-- Detalle por categoría dentro del grupo --}}
+                                        @foreach($items as $cat)
                                             <tr>
                                                 <td class="px-3 py-1 border">{{ $cat->categoria->nombre ?? 'Sin nombre' }}</td>
                                                 <td class="px-3 py-1 border">{{ number_format($cat->costo_por_kg, 15) }}</td>
@@ -690,9 +736,12 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                        </div>
+
                         @break
 
                     @case('MTE')
