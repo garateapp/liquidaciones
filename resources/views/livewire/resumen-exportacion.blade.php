@@ -271,8 +271,48 @@
                 </td>
               </tr>
 
-              {{-- Si más adelante quieres listar también costos MI+COM por menú, aquí va el foreach
-                   con $this->costosAgrupadosMiCom, igual que arriba pero en CLP. --}}
+              {{-- Costos agrupados MI + COM (CLP) --}}
+              @foreach($this->costosAgrupadosMiCom as $grupo)
+                <tr class="bg-gray-50 border-t">
+                  <td class="font-semibold text-gray-800 px-3 py-2">Costos</td>
+                  <td class="font-semibold text-gray-800 px-3 py-2">
+                    {{ $grupo['menu'] }}
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                @foreach($grupo['items'] as $costo)
+                  @php
+                    // OJO: aquí usamos los mismos helpers que arriba
+                    $totalCosto = $this->calcularTotalCosto($costo);
+                    $vuCosto    = $this->valorUnitarioParaMostrar($costo);
+                    $isPorCaja  = strtoupper($costo->metodo ?? '') === 'POR_CAJA';
+                  @endphp
+                  <tr
+                    class="hover:bg-blue-50 cursor-pointer transition-colors
+                          @if($selectedCostoId===$costo->id) ring-2 ring-blue-400 bg-blue-50 @endif"
+                    wire:click="mostrarDetalle({{ $costo->id }})"
+                  >
+                    <td class="bg-gray-50 px-3 py-2"></td>
+                    <td class="px-3 py-2 font-medium text-gray-800">
+                      {{ $costo->name }}
+                      @if($costo->metodo)
+                        <span class="text-xs text-gray-500 ml-1">
+                          ({{ strtoupper($costo->metodo) }})
+                        </span>
+                      @endif
+                    </td>
+                    <td class="px-3 py-2 text-right">
+                      $ {{ number_format($totalCosto, 0, ',', '.') }}
+                    </td>
+                    <td class="px-3 py-2 text-right">
+                      $ {{ number_format($vuCosto, 2, ',', '.') }}
+                      {{ $isPorCaja ? '/caja' : '/kg' }}
+                    </td>
+                  </tr>
+                @endforeach
+              @endforeach
 
               {{-- Totales finales MI + COM --}}
               <tr class="border-t-2 bg-gray-50">
@@ -303,6 +343,7 @@
                 </td>
               </tr>
             </tbody>
+
           </table>
         </div>
       </section>
