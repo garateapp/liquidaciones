@@ -19,11 +19,10 @@ class ResumenExportacion extends Component
 {
     public ?object $temporada = null;
     public array $filters = [
-    'exp' => true,
-    'mi'  => true,
-    'com' => true,
+        'exp' => true,
+        'mi'  => true,
+        'com' => true,
     ];
-
 
     // Colecciones que usa tu UI:
     public Collection $exportacions;        // TPT: [{id,costo_id,type,precio_usd}]
@@ -40,22 +39,27 @@ class ResumenExportacion extends Component
     /** @var \Illuminate\Support\Collection */
     public Collection $masastotal;
 
-    // Totales base
+    // Totales base EXPORTACIÓN (USD)
     public float $total_kilos = 0.0;
     public float $total_cajas = 0.0;
-    public float $ingresos_total = 0.0;
-    public float $vu_promedio = 0.0; // $/kg
+    public float $ingresos_total = 0.0;   // en USD
+    public float $vu_promedio = 0.0;      // USD/kg
 
-    // Mercado interno
+    // Mercado interno + comercial (CLP)
+    /** @var \Illuminate\Support\Collection */
     public Collection $masastotal_mi;
     public float $total_kilos_mi = 0.0;
     public float $total_cajas_mi = 0.0;
-    public float $ingresos_total_mi = 0.0;
-    public float $vu_promedio_mi = 0.0; // $/kg en CLP
-
+    public float $ingresos_total_mi = 0.0; // en CLP
+    public float $vu_promedio_mi = 0.0;    // CLP/kg
 
     /** @var \Illuminate\Support\Collection<Costo> */
     public Collection $costos;
+
+    // Subconjuntos de costos según flags exp/mi/com
+    public Collection $costos_export;  // exp = 1
+    public Collection $costos_mi_com;  // mi = 1 o com = 1
+
     // ===== Panel de detalle =====
     public ?int $selectedCostoId = null;
     public array $detalle = []; // aquí armamos toda la info para mostrar
@@ -115,26 +119,35 @@ class ResumenExportacion extends Component
                     $price = (float) ($row->precio_usd ?? 0);
 
                     $kg = match ($type) {
-                        'maritimo'  => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')->sum('peso_neto'),
-                        'aereo'     => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')->sum('peso_neto'),
-                        'terrestre' => (float)$this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')->sum('peso_neto'),
+                        'maritimo'  => (float)$this->masastotal
+                            ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')
+                            ->sum('peso_neto'),
+                        'aereo'     => (float)$this->masastotal
+                            ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')
+                            ->sum('peso_neto'),
+                        'terrestre' => (float)$this->masastotal
+                            ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')
+                            ->sum('peso_neto'),
                         default     => 0.0,
                     };
+
                     $sub = $kg * $price;
                     $total += $sub;
                     $rows[] = [
                         'col1' => $label,
                         'col2' => number_format($kg, 2, ',', '.').' kg',
-                        'col3' => '$ '.number_format($price, 4, ',', '.').' /kg',
-                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                        'col3' => 'US$ '.number_format($price, 4, ',', '.').' /kg',
+                        'col4' => 'US$ '.number_format($sub, 2, ',', '.'),
                     ];
                 }
 
                 $base['resumen'] = $rows;
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
-                    'Kilos totales' => number_format($this->total_kilos, 2, ',', '.').' kg',
-                    'VU equivalente' => $this->total_kilos>0 ? '$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg' : '$ 0',
+                    'Total costo'    => 'US$ '.number_format($total, 2, ',', '.'),
+                    'Kilos totales'  => number_format($this->total_kilos, 2, ',', '.').' kg',
+                    'VU equivalente' => $this->total_kilos>0
+                        ? 'US$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg'
+                        : 'US$ 0',
                 ];
                 break;
             }
@@ -154,27 +167,33 @@ class ResumenExportacion extends Component
                     $rows[] = [
                         'col1' => $color,
                         'col2' => number_format($kg, 2, ',', '.').' kg',
-                        'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /kg',
-                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                        'col3' => 'US$ '.number_format($tarifa, 4, ',', '.').' /kg',
+                        'col4' => 'US$ '.number_format($sub, 2, ',', '.'),
                     ];
                 }
 
                 $base['resumen'] = $rows;
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
-                    'Kilos totales' => number_format($this->total_kilos, 2, ',', '.').' kg',
-                    'VU equivalente' => $this->total_kilos>0 ? '$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg' : '$ 0',
+                    'Total costo'    => 'US$ '.number_format($total, 2, ',', '.'),
+                    'Kilos totales'  => number_format($this->total_kilos, 2, ',', '.').' kg',
+                    'VU equivalente' => $this->total_kilos>0
+                        ? 'US$ '.number_format($total/$this->total_kilos, 4, ',', '.').' /kg'
+                        : 'US$ 0',
                 ];
                 break;
             }
 
             case 'TPE': {
-                $filas = $this->costoembalajecodes->where('costo_id', $costo->id)->keyBy('c_embalaje');
+                $filas = $this->costoembalajecodes
+                    ->where('costo_id', $costo->id)
+                    ->keyBy('c_embalaje');
                 $rows = [];
                 $total = 0.0;
 
                 // agrupa cajas por código desde masastotal
-                $cajasPorCodigo = $this->masastotal->groupBy('c_embalaje')->map->sum('cantidad');
+                $cajasPorCodigo = $this->masastotal
+                    ->groupBy('c_embalaje')
+                    ->map->sum('cantidad');
 
                 foreach ($cajasPorCodigo as $codigo => $cajas) {
                     $t = $filas->get($codigo);
@@ -187,16 +206,18 @@ class ResumenExportacion extends Component
                     $rows[] = [
                         'col1' => (string)$codigo,
                         'col2' => (int)$cajas.' cajas',
-                        'col3' => '$ '.number_format($valor, 4, ',', '.').' /caja',
-                        'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                        'col3' => 'US$ '.number_format($valor, 4, ',', '.').' /caja',
+                        'col4' => 'US$ '.number_format($sub, 2, ',', '.'),
                     ];
                 }
 
                 $base['resumen'] = $rows;
                 $base['totales'] = [
-                    'Total costo'  => '$ '.number_format($total, 2, ',', '.'),
-                    'Cajas totales'=> number_format($this->total_cajas, 0, ',', '.'),
-                    'VU/caja prom.'=> $this->total_cajas>0 ? '$ '.number_format($total/$this->total_cajas, 4, ',', '.').' /caja' : '$ 0',
+                    'Total costo'   => 'US$ '.number_format($total, 2, ',', '.'),
+                    'Cajas totales' => number_format($this->total_cajas, 0, ',', '.'),
+                    'VU/caja prom.' => $this->total_cajas>0
+                        ? 'US$ '.number_format($total/$this->total_cajas, 4, ',', '.').' /caja'
+                        : 'US$ 0',
                 ];
                 break;
             }
@@ -209,11 +230,11 @@ class ResumenExportacion extends Component
                 $base['resumen'] = [[
                     'col1' => 'Tarifa única',
                     'col2' => number_format($this->total_cajas, 0, ',', '.').' cajas',
-                    'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /caja',
-                    'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                    'col3' => 'US$ '.number_format($tarifa, 4, ',', '.').' /caja',
+                    'col4' => 'US$ '.number_format($sub, 2, ',', '.'),
                 ]];
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                    'Total costo' => 'US$ '.number_format($sub, 2, ',', '.'),
                 ];
                 break;
             }
@@ -226,11 +247,11 @@ class ResumenExportacion extends Component
                 $base['resumen'] = [[
                     'col1' => 'Tarifa única',
                     'col2' => number_format($this->total_kilos, 2, ',', '.').' kg',
-                    'col3' => '$ '.number_format($tarifa, 4, ',', '.').' /kg',
-                    'col4' => '$ '.number_format($sub, 2, ',', '.'),
+                    'col3' => 'US$ '.number_format($tarifa, 4, ',', '.').' /kg',
+                    'col4' => 'US$ '.number_format($sub, 2, ',', '.'),
                 ]];
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                    'Total costo' => 'US$ '.number_format($sub, 2, ',', '.'),
                 ];
                 break;
             }
@@ -246,14 +267,14 @@ class ResumenExportacion extends Component
                     $rows[] = [
                         'col1' => $cat->categoria->nombre ?? ('Cat #'.$cat->categoria_id),
                         'col2' => number_format((float)$cat->total_kgs, 2, ',', '.').' kg',
-                        'col3' => '$ '.number_format((float)$cat->costo_por_kg, 6, ',', '.').' /kg',
-                        'col4' => '$ '.number_format($monto, 2, ',', '.'),
+                        'col3' => 'US$ '.number_format((float)$cat->costo_por_kg, 6, ',', '.').' /kg',
+                        'col4' => 'US$ '.number_format($monto, 2, ',', '.'),
                     ];
                 }
 
                 $base['resumen'] = $rows;
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                    'Total costo' => 'US$ '.number_format($total, 2, ',', '.'),
                 ];
                 break;
             }
@@ -268,25 +289,25 @@ class ResumenExportacion extends Component
                     'col1' => 'Porcentaje',
                     'col2' => number_format((float)$porc, 4, ',', '.').' %',
                     'col3' => 'Base',
-                    'col4' => '$ '.number_format((float)$baseMonto, 2, ',', '.'),
+                    'col4' => 'US$ '.number_format((float)$baseMonto, 2, ',', '.'),
                 ]];
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($sub, 2, ',', '.'),
+                    'Total costo' => 'US$ '.number_format($sub, 2, ',', '.'),
                 ];
                 break;
             }
 
             default: {
-                // Fallbacks genéricos
+                // Fallbacks genéricos (se asume USD por consistencia)
                 $total = $this->calcularTotalCosto($costo);
                 $base['resumen'] = [[
                     'col1' => 'Parámetros',
                     'col2' => '—',
                     'col3' => '—',
-                    'col4' => '$ '.number_format($total, 2, ',', '.'),
+                    'col4' => 'US$ '.number_format($total, 2, ',', '.'),
                 ]];
                 $base['totales'] = [
-                    'Total costo' => '$ '.number_format($total, 2, ',', '.'),
+                    'Total costo' => 'US$ '.number_format($total, 2, ',', '.'),
                 ];
             }
         }
@@ -297,8 +318,9 @@ class ResumenExportacion extends Component
 
     public function cerrarDetalle(): void
     {
-       $this->selectedCostoId = null;
-       $this->detalle = [];
+        $this->selectedCostoId = null;
+        $this->detalle = [];
+        $this->detalleOpen = false;
     }
 
     public function mount($temporada, $filters = [])
@@ -306,7 +328,7 @@ class ResumenExportacion extends Component
         $this->temporada = $temporada;
         $this->filters   = $filters;
 
-        // === 1) Traer la misma colección que ya usas ===
+        // === 1) Exportación (Greenex / 22) ===
         $this->masastotal = Balancemasa::select([
                 'n_variedad',
                 'n_categoria',
@@ -331,11 +353,11 @@ class ResumenExportacion extends Component
             ->whereIn('exportadora', ['Greenex SpA', '22'])
             ->get();
 
-        // === 2) Agregados base desde la colección ===
-        // Nota: usamos peso_neto para todos los cálculos principales.
+        // Totales base EXPORTACIÓN
         $this->total_kilos = (float) $this->masastotal->sum('peso_neto2');
         $this->total_cajas = (float) $this->masastotal->sum('cantidad');
-    // Precarga colecciones que tu Blade usa (ajusta relaciones según tu modelo):
+
+        // Tablas auxiliares (métodos TPT/TPCL/TPE/TPC/TPK/MTC/PSF)
         $this->exportacions       = $this->temporada->exportacions()->get();        // TPT
         $this->costotarifacolors  = $this->temporada->costotarifacolors()->get();   // TPCL
         $this->costoembalajecodes = $this->temporada->costoembalajecodes()->get();  // TPE
@@ -344,7 +366,7 @@ class ResumenExportacion extends Component
         $this->costocategorias    = $this->temporada->costocategorias()->get();     // MTC
         $this->costoporcentajefobs= $this->temporada->costoporcentajefobs()->get(); // PSF
 
-        // Ingresos = Σ(precio_unitario * peso_neto)
+        // Ingresos EXPORTACIÓN = Σ(precio_unitario * peso_neto2) (USD)
         $this->ingresos_total = (float) $this->masastotal->sum(function ($row) {
             $pu = (float) ($row['precio_unitario'] ?? 0);
             $kg = (float) ($row['peso_neto2'] ?? 0);
@@ -355,7 +377,7 @@ class ResumenExportacion extends Component
             ? $this->ingresos_total / $this->total_kilos
             : 0.0;
 
-        // === 3) Costos (mismo orden que definiste) ===
+        // === 2) Costos base (sin filtrar aún por exp/mi/com) ===
         $ordenMetodo = "'POR_KG','POR_CAJA','FIJO','PORCENTAJE_INGRESO'";
         $this->costos = Costo::paraEspecieTemporada($this->temporada)
             ->with(['superespecies', 'costomenu'])
@@ -364,10 +386,13 @@ class ResumenExportacion extends Component
             ->orderBy('name')
             ->get();
 
-            // === MERCADO INTERNO ===
-        // Aquí asumo que MI es "lo que no es exportación Greenex/22".
-        // Si en tu modelo MI se identifica de otra forma (ej: campo tipo = 'MI'),
-        // solo ajusta este whereNotIn por la condición correcta.
+        // Subconjuntos por flags
+        $this->costos_export = $this->costos->where('exp', 1);
+        $this->costos_mi_com = $this->costos->filter(function ($c) {
+            return ($c->mi == 1) || ($c->com == 1);
+        });
+
+        // === 3) MERCADO INTERNO + COMERCIAL (CLP) ===
         $this->masastotal_mi = Balancemasa::select([
                 'n_variedad',
                 'n_categoria',
@@ -389,14 +414,14 @@ class ResumenExportacion extends Component
             ])
             ->filter1($this->filters)
             ->where('temporada_id', $this->temporada->id)
-            ->whereNotIn('exportadora', ['Greenex SpA', '22']) // 👈 AJUSTA SI ES NECESARIO
+            ->whereNotIn('exportadora', ['Greenex SpA', '22']) // Ajusta si MI/COM se define distinto
             ->get();
 
-        // Totales base MI
+        // Totales base MI + COM
         $this->total_kilos_mi = (float) $this->masastotal_mi->sum('peso_neto2');
         $this->total_cajas_mi = (float) $this->masastotal_mi->sum('cantidad');
 
-        // Ingresos MI = Σ(precio_unitario * peso_neto2) en CLP
+        // Ingresos MI + COM = Σ(precio_unitario * peso_neto2) en CLP
         $this->ingresos_total_mi = (float) $this->masastotal_mi->sum(function ($row) {
             $pu = (float) ($row['precio_unitario'] ?? 0);
             $kg = (float) ($row['peso_neto2'] ?? 0);
@@ -407,8 +432,6 @@ class ResumenExportacion extends Component
         $this->vu_promedio_mi = $this->total_kilos_mi > 0
             ? $this->ingresos_total_mi / $this->total_kilos_mi
             : 0.0;
-
-
     }
 
     public function calcularTotalCosto(Costo $costo): float
@@ -417,7 +440,6 @@ class ResumenExportacion extends Component
 
         return match ($metodo) {
             // ======== TARIFAS ESPECÍFICAS ========
-
             'TPT' => $this->calcularTPT($costo),   // por transporte
             'TPCL'=> $this->calcularTPCL($costo),  // por color
             'TPE' => $this->calcularTPE($costo),   // por código de embalaje
@@ -425,23 +447,19 @@ class ResumenExportacion extends Component
             'TPK' => $this->calcularTPK($costo),   // tarifa única por kilo
 
             // ======== MONTO POR CATEGORÍA ========
-
             'MTC' => $this->calcularMTC($costo),
 
             // ======== PORCENTAJE SOBRE FOB ========
-
             'PSF' => $this->calcularPSF($costo),
 
-            // ======== RESERVADOS / PENDIENTES (completa cuando definas la tabla y UI) ========
-
-            'MTE'  => $this->calcularMTE($costo),   // TODO: define regla
-            'MTEB' => $this->calcularMTEB($costo),  // TODO: define regla
-            'MTEMP'=> $this->calcularMTEmp($costo), // TODO: define regla
-            'MTT'  => $this->calcularMTT($costo),   // TODO: define regla
-            'MPC'  => $this->calcularMPC($costo),   // TODO: si hay costo por productor
+            // ======== RESERVADOS / PENDIENTES ========
+            'MTE'  => $this->calcularMTE($costo),
+            'MTEB' => $this->calcularMTEB($costo),
+            'MTEMP'=> $this->calcularMTEmp($costo),
+            'MTT'  => $this->calcularMTT($costo),
+            'MPC'  => $this->calcularMPC($costo),
 
             // ======== FALLBACKS BASE ========
-
             'POR_KG'             => ((float)($costo->valor_unitario ?? 0)) * $this->total_kilos,
             'POR_CAJA'           => ((float)($costo->valor_unitario ?? 0)) * $this->total_cajas,
             'FIJO'               => (float)($costo->monto_fijo ?? 0),
@@ -451,9 +469,7 @@ class ResumenExportacion extends Component
         };
     }
 
-
     // === TPT: tarifa por transporte (USD por kg) ===
-    // Usa $exportacions (type: maritimo/aereo/terrestre, precio_usd)
     protected function calcularTPT(Costo $costo): float
     {
         $filas = $this->exportacions->where('costo_id', $costo->id);
@@ -461,15 +477,20 @@ class ResumenExportacion extends Component
 
         $total = 0.0;
 
-        // suma por tipo definido en tu tabla exportacions
         foreach ($filas as $row) {
             $type  = strtolower(trim($row->type ?? ''));
             $price = (float) ($row->precio_usd ?? 0);
 
             $kgTipo = match ($type) {
-                'maritimo'  => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')->sum('peso_neto'),
-                'aereo'     => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')->sum('peso_neto'),
-                'terrestre' => (float) $this->masastotal->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')->sum('peso_neto'),
+                'maritimo'  => (float) $this->masastotal
+                    ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='MARITIMO')
+                    ->sum('peso_neto'),
+                'aereo'     => (float) $this->masastotal
+                    ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='AEREO')
+                    ->sum('peso_neto'),
+                'terrestre' => (float) $this->masastotal
+                    ->filter(fn($r)=>strtoupper($r['tipo_transporte'])==='TERRESTRE')
+                    ->sum('peso_neto'),
                 default     => 0.0,
             };
 
@@ -479,36 +500,32 @@ class ResumenExportacion extends Component
     }
 
     // === TPCL: tarifa por color (USD por kg) ===
-    // Usa $costotarifacolors (color, tarifa_kg) y suma kg por color desde masastotal.
-    // Asumo que cada fila de Balancemasa está mapeable a un color (por n_variedad -> bi_color).
     protected function calcularTPCL(Costo $costo): float
     {
         $filas = $this->costotarifacolors->where('costo_id', $costo->id);
         if ($filas->isEmpty()) return 0.0;
 
-        // Mapa variedad->color (según tu dominio). Si ya tienes el color en $masastotal (columna `color`), usa eso.
-        // Aquí intento usar $masastotal->where('color', $color).
         $total = 0.0;
         foreach ($filas as $row) {
-            $color = (string) $row->color;
+            $color  = (string) $row->color;
             $tarifa = (float) $row->tarifa_kg;
 
             $kgColor = (float) $this->masastotal->where('color', $color)->sum('peso_neto');
-            $total += $kgColor * $tarifa;
+            $total  += $kgColor * $tarifa;
         }
         return $total;
     }
 
     // === TPE: tarifa por código de embalaje (USD por caja) ===
-    // Usa $costoembalajecodes (c_embalaje, costo_por_caja) y suma cajas por código.
     protected function calcularTPE(Costo $costo): float
     {
         $filas = $this->costoembalajecodes->where('costo_id', $costo->id);
         if ($filas->isEmpty()) return 0.0;
 
-        // indexar por c_embalaje
         $tarifas = $filas->keyBy('c_embalaje');
-        $cajasPorCodigo = $this->masastotal->groupBy('c_embalaje')->map->sum('cantidad');
+        $cajasPorCodigo = $this->masastotal
+            ->groupBy('c_embalaje')
+            ->map->sum('cantidad');
 
         $total = 0.0;
         foreach ($cajasPorCodigo as $codigo => $cajas) {
@@ -523,7 +540,7 @@ class ResumenExportacion extends Component
     // === TPC: tarifa única por caja ===
     protected function calcularTPC(Costo $costo): float
     {
-        $row = $this->costotarifacajas->firstWhere('costo_id', $costo->id);
+        $row    = $this->costotarifacajas->firstWhere('costo_id', $costo->id);
         $tarifa = $row ? (float)$row->tarifa_caja : (float)($costo->valor_unitario ?? 0);
         return $tarifa * $this->total_cajas;
     }
@@ -531,13 +548,12 @@ class ResumenExportacion extends Component
     // === TPK: tarifa única por kg ===
     protected function calcularTPK(Costo $costo): float
     {
-        $row = $this->costotarifakilos->firstWhere('costo_id', $costo->id);
+        $row    = $this->costotarifakilos->firstWhere('costo_id', $costo->id);
         $tarifa = $row ? (float)$row->tarifa_kg : (float)($costo->valor_unitario ?? 0);
         return $tarifa * $this->total_kilos;
     }
 
     // === MTC: monto total por categoría ===
-    // Usa $costocategorias y suma 'monto_total'. (Opcional: si no hay, usa costo_por_kg*total_kgs)
     protected function calcularMTC(Costo $costo): float
     {
         $filas = $this->costocategorias->where('costo_id', $costo->id);
@@ -546,12 +562,12 @@ class ResumenExportacion extends Component
         $totalPorMonto = (float) $filas->sum('monto_total');
         if ($totalPorMonto > 0) return $totalPorMonto;
 
-        // fallback si solo hay costo_por_kg y total_kgs
-        return (float) $filas->sum(fn($r) => (float)$r->costo_por_kg * (float)$r->total_kgs);
+        return (float) $filas->sum(
+            fn($r) => (float)$r->costo_por_kg * (float)$r->total_kgs
+        );
     }
 
     // === PSF: porcentaje sobre FOB ===
-    // Si tienes FOB total real => usa ese; si no => fallback a ingresos_total
     protected function calcularPSF(Costo $costo): float
     {
         $fila = $this->costoporcentajefobs->firstWhere('costo_id', $costo->id);
@@ -561,13 +577,12 @@ class ResumenExportacion extends Component
         return ($porc / 100) * $base;
     }
 
-    // ====== HOOKS PENDIENTES (completa cuando tengas UI/tabla) ======
-
+    // ====== HOOKS PENDIENTES ======
     protected function calcularMTE(Costo $costo): float  { return 0.0; }
     protected function calcularMTEB(Costo $costo): float { return 0.0; }
     protected function calcularMTEmp(Costo $costo): float { return 0.0; }
     protected function calcularMTT(Costo $costo): float   { return 0.0; }
-    protected function calcularMPC(Costo $costo): float   { return 0.0; } // si alguna condición de productor genera costo
+    protected function calcularMPC(Costo $costo): float   { return 0.0; }
 
     public function valorUnitarioParaMostrar(Costo $costo): float
     {
@@ -604,7 +619,9 @@ class ResumenExportacion extends Component
             // fallbacks
             'POR_KG'   => (float)($costo->valor_unitario ?? 0), // $/kg
             'POR_CAJA' => (float)($costo->valor_unitario ?? 0), // $/caja
-            'FIJO'     => $this->total_kilos > 0 ? ((float)($costo->monto_fijo ?? 0)) / $this->total_kilos : 0.0,
+            'FIJO'     => $this->total_kilos > 0
+                ? ((float)($costo->monto_fijo ?? 0)) / $this->total_kilos
+                : 0.0,
             'PORCENTAJE_INGRESO' => $this->total_kilos > 0
                 ? (((float)($costo->porcentaje ?? 0) / 100) * $this->ingresos_total) / $this->total_kilos
                 : 0.0,
@@ -613,11 +630,30 @@ class ResumenExportacion extends Component
         };
     }
 
+    // ===== Agrupaciones para la vista =====
 
-    public function getCostosAgrupadosProperty(): array
+    // Agrupación para Exportación (USD)
+    public function getCostosAgrupadosExpProperty(): array
     {
         $out = [];
-        foreach ($this->costos as $c) {
+        foreach ($this->costos_export as $c) {
+            $key = (string) ($c->costomenu_id ?? 'otros');
+            if (!isset($out[$key])) {
+                $out[$key] = [
+                    'menu'  => optional($c->costomenu)->name ?? 'Otros',
+                    'items' => collect(),
+                ];
+            }
+            $out[$key]['items']->push($c);
+        }
+        return $out;
+    }
+
+    // Agrupación para Mercado Interno + Comercial (CLP)
+    public function getCostosAgrupadosMiComProperty(): array
+    {
+        $out = [];
+        foreach ($this->costos_mi_com as $c) {
             $key = (string) ($c->costomenu_id ?? 'otros');
             if (!isset($out[$key])) {
                 $out[$key] = [
@@ -632,18 +668,38 @@ class ResumenExportacion extends Component
 
     public function render()
     {
-        $totalCostos = 0.0;
-        foreach ($this->costos as $c) {
-            $totalCostos += $this->calcularTotalCosto($c);
+        // Exportación (USD)
+        $totalCostosExp = 0.0;
+        foreach ($this->costos_export as $c) {
+            $totalCostosExp += $this->calcularTotalCosto($c);
         }
 
-        $resultado    = $this->ingresos_total - $totalCostos;
-        $vu_resultado = $this->total_kilos > 0 ? $resultado / $this->total_kilos : 0;
+        $resultadoExp    = $this->ingresos_total - $totalCostosExp;
+        $vu_resultadoExp = $this->total_kilos > 0
+            ? $resultadoExp / $this->total_kilos
+            : 0.0;
+
+        // Mercado Interno + Comercial (CLP)
+        $totalCostosMiCom = 0.0;
+        foreach ($this->costos_mi_com as $c) {
+            $totalCostosMiCom += $this->calcularTotalCosto($c);
+        }
+
+        $resultadoMiCom    = $this->ingresos_total_mi - $totalCostosMiCom;
+        $vu_resultadoMiCom = $this->total_kilos_mi > 0
+            ? $resultadoMiCom / $this->total_kilos_mi
+            : 0.0;
 
         return view('livewire.resumen-exportacion', [
-            'totalCostos'  => $totalCostos,
-            'resultado'    => $resultado,
-            'vu_resultado' => $vu_resultado,
+            // Exportación (mantengo nombres antiguos para no romper Blade actual)
+            'totalCostos'      => $totalCostosExp,
+            'resultado'        => $resultadoExp,
+            'vu_resultado'     => $vu_resultadoExp,
+
+            // Mercado Interno + Comercial
+            'totalCostos_mi'   => $totalCostosMiCom,
+            'resultado_mi'     => $resultadoMiCom,
+            'vu_resultado_mi'  => $vu_resultadoMiCom,
         ]);
     }
 }
