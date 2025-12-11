@@ -46,6 +46,14 @@ class ResumenExportacion extends Component
     public float $ingresos_total = 0.0;
     public float $vu_promedio = 0.0; // $/kg
 
+    // Mercado interno
+    public Collection $masastotal_mi;
+    public float $total_kilos_mi = 0.0;
+    public float $total_cajas_mi = 0.0;
+    public float $ingresos_total_mi = 0.0;
+    public float $vu_promedio_mi = 0.0; // $/kg en CLP
+
+
     /** @var \Illuminate\Support\Collection<Costo> */
     public Collection $costos;
     // ===== Panel de detalle =====
@@ -355,6 +363,50 @@ class ResumenExportacion extends Component
             ->orderByRaw("FIELD(metodo, $ordenMetodo)")
             ->orderBy('name')
             ->get();
+
+            // === MERCADO INTERNO ===
+        // Aquí asumo que MI es "lo que no es exportación Greenex/22".
+        // Si en tu modelo MI se identifica de otra forma (ej: campo tipo = 'MI'),
+        // solo ajusta este whereNotIn por la condición correcta.
+        $this->masastotal_mi = Balancemasa::select([
+                'n_variedad',
+                'n_categoria',
+                'cantidad',
+                'peso_neto',
+                'peso_neto2',
+                'factor',
+                'fob_id',
+                'tipo_transporte',
+                'c_embalaje',
+                'c_productor',
+                'r_productor',
+                'etd',
+                'eta',
+                'semana',
+                'precio_unitario',
+                'n_calibre',
+                'peso_std_embalaje',
+            ])
+            ->filter1($this->filters)
+            ->where('temporada_id', $this->temporada->id)
+            ->whereNotIn('exportadora', ['Greenex SpA', '22']) // 👈 AJUSTA SI ES NECESARIO
+            ->get();
+
+        // Totales base MI
+        $this->total_kilos_mi = (float) $this->masastotal_mi->sum('peso_neto2');
+        $this->total_cajas_mi = (float) $this->masastotal_mi->sum('cantidad');
+
+        // Ingresos MI = Σ(precio_unitario * peso_neto2) en CLP
+        $this->ingresos_total_mi = (float) $this->masastotal_mi->sum(function ($row) {
+            $pu = (float) ($row['precio_unitario'] ?? 0);
+            $kg = (float) ($row['peso_neto2'] ?? 0);
+            return $pu * $kg;
+        });
+
+        // Valor unitario promedio MI ($/kg en CLP)
+        $this->vu_promedio_mi = $this->total_kilos_mi > 0
+            ? $this->ingresos_total_mi / $this->total_kilos_mi
+            : 0.0;
 
 
     }

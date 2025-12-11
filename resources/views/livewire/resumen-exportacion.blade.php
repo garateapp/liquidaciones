@@ -174,4 +174,56 @@
     </div>
   </aside>
 </div>
+
+{{-- ===========================
+     RESUMEN MERCADO INTERNO
+   ============================ --}}
+<div class="mt-10 px-6">
+  <h1 class="text-xl font-semibold mb-3 ml-4">Categoría: Mercado Interno (CLP)</h1>
+
+  <div class="flex w-full items-start gap-6">
+    <section class="flex-1 min-w-[720px] max-w-[900px]">
+      <div class="h-[calc(60vh)] overflow-y-auto pr-4">
+        <table class="w-full border border-gray-200 divide-y divide-gray-200 shadow-sm">
+          <thead class="bg-gray-100 sticky top-0 z-10">
+            <tr>
+              <th class="w-40 px-3 py-2 text-left font-semibold text-sm text-gray-700 bg-gray-200"></th>
+              <th class="px-3 py-2 text-left font-semibold text-sm text-gray-700 bg-gray-200">Concepto</th>
+              <th class="px-3 py-2 text-right font-semibold text-sm text-gray-700 bg-gray-200">Totales (CLP)</th>
+              <th class="px-3 py-2 text-right font-semibold text-sm text-gray-700 bg-gray-200">Valor Unitario</th>
+            </tr>
+          </thead>
+
+          <tbody class="bg-white">
+            {{-- Totales base MI --}}
+            <tr>
+              <td class="bg-gray-100 font-semibold px-3 py-2"></td>
+              <td class="bg-gray-100 font-semibold px-3 py-2">Suma de Peso Neto (Mercado Interno)</td>
+              <td class="text-right px-3 py-2 font-semibold">
+                {{ number_format($total_kilos_mi, 0, ',', '.') }} kg
+              </td>
+              <td class="text-right px-3 py-2 font-semibold">—</td>
+            </tr>
+
+            <tr>
+              <td class="bg-gray-100 font-semibold px-3 py-2">Ingresos MI</td>
+              <td class="bg-gray-100 font-semibold px-3 py-2">
+                Σ(precio_unitario × peso_neto) (Mercado Interno)
+              </td>
+              <td class="text-right px-3 py-2 font-semibold">
+                $ {{ number_format($ingresos_total_mi, 0, ',', '.') }}
+              </td>
+              <td class="text-right px-3 py-2 font-semibold">
+                $ {{ number_format($vu_promedio_mi, 2, ',', '.') }} /kg
+              </td>
+            </tr>
+
+            {{-- Aquí más adelante podemos agregar costos específicos de MI si los defines --}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
 </div>
