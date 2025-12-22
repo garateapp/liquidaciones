@@ -55,8 +55,8 @@
                         </div>
 
                         <div class="mb-4">
-                            {!! Form::label('especie_id', 'Base de datos:') !!}
-                            {!! Form::select('especie_id', $opcionesTemporada, null , ['class'=>'form-input block w-full mt-1']) !!}
+                            {!! Form::label('database', 'Base de datos:') !!}
+                            {!! Form::select('database', $opcionesTemporada, null , ['class'=>'form-input block w-full mt-1']) !!}
                         </div>
     
                   

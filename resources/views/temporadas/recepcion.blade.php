@@ -14,14 +14,28 @@
         </div>
     @endif
 
-    <div class="pb-8 pt-2">
-        
-        <div class="card">
-            
-            @livewire('temporada-show', ['temporada' => $temporada,'vista'=>'Recepcion'], key($temporada->id))
-            
-        </div>
+    <section id="informacion">
+  <div class="flex w-full bg-gray-300 mt-2" x-data="{ openMenu: 1 }">
 
-    </div>
+          @livewire('menu-aside', ['temporada' => $temporada->id], key('menu-aside-'.$temporada->id))
+  
+      <div class="flex flex-col flex-1 w-full overflow-y-auto">
+          <main class="relative z-0 flex-1 pb-8 bg-white">
+
+              {{-- ✅ VISTA RECEPCIÓN (componente dedicado) --}}
+                 <div class="p-4 md:p-6">
+                      @livewire(
+                        'recepcion.recepcion-sync',
+                        ['temporadaId' => $temporada->id],
+                        key('recepcion-sync-'.$temporada->id)
+                      )
+                  </div>
+             
+              {{-- otras vistas acá --}}
+          </main>
+      </div>
+  </div>
+</section>
+
 
 </x-app-layout>
