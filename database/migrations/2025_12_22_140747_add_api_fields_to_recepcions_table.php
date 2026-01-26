@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('recepcions', function (Blueprint $table) {
-
+            /*
             // === Campos que devuelve tu API y no existen en local ===
             $table->string('n_empresa')->nullable()->after('c_empresa');
 
@@ -52,6 +52,7 @@ return new class extends Migration
                 'id_calibre',
                 'id_serie',
             ], 'recepcions_unique_sync_key');
+            */
         });
     }
 
