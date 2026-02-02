@@ -128,7 +128,7 @@ class ProcesoSync extends Component
 
             DB::table('procesos')
                 ->where('temporada_id', $this->temporadaId)
-                ->where('n_especie', $especie)
+                ->where('id_especie', $especie)
                 ->where('fecha_g_produccion', 'like', $day . '%')
                 ->delete();
 
