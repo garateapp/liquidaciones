@@ -5,6 +5,11 @@
       {{ session('info') }}
     </div>
   @endif
+@if(session('success'))
+  <div class="bg-emerald-100 border border-emerald-300 text-emerald-900 px-4 py-3 rounded">
+    {{ session('success') }}
+  </div>
+@endif
 
   @if($syncRunning)
     <div wire:poll.1s="tickSync" class="bg-white shadow rounded p-4 space-y-2">
@@ -36,12 +41,13 @@
       <ul class="space-y-1">
         @foreach($syncDebug as $d)
           <li>
-            {{ $d['start'] }} → {{ $d['end'] }} |
-            count: <b>{{ $d['count'] }}</b> |
+            {{ $d['start'] ?? '—' }} → {{ $d['end'] ?? '—' }} |
+            count: <b>{{ $d['count'] ?? 0 }}</b> |
             first_fecha: {{ $d['first_fecha'] ?? '—' }} |
             first_folio: {{ $d['first_folio'] ?? '—' }} |
             first_num: {{ $d['first_num'] ?? '—' }}
           </li>
+
         @endforeach
       </ul>
     </div>
