@@ -14,24 +14,24 @@
         </div>
     @endif
 
-     <section id="informacion">
-        <div class="flex w-full bg-gray-300 mt-2" x-data="{ openMenu: 1 }">
+        <section id="informacion">
+            <div class="flex w-full bg-gray-300 mt-2" x-data="{ openMenu: 1 }">
 
-                @livewire('menu-aside', ['temporada' => $temporada->id], key('menu-aside-'.$temporada->id))
-        
-            <div class="flex flex-col flex-1 w-full overflow-y-auto">
-                <main class="relative z-0 flex-1 pb-8 bg-white">
+                    @livewire('menu-aside', ['temporada' => $temporada->id], key('menu-aside-'.$temporada->id))
+            
+                <div class="flex flex-col flex-1 w-full overflow-y-auto">
+                    <main class="relative z-0 flex-1 pb-8 bg-white">
 
-                    {{-- ✅ VISTA RECEPCIÓN (componente dedicado) --}}
-                        <div class="p-4 md:p-6">
-                            <livewire:despacho.despacho-sync :temporada-id="$temporada->id" />
+                        {{-- ✅ VISTA RECEPCIÓN (componente dedicado) --}}
+                            <div class="p-4 md:p-6">
+                                <livewire:despacho.despacho-sync :temporada-id="$temporada->id" />
 
-                        </div>
-                    
-                    {{-- otras vistas acá --}}
-                </main>
+                            </div>
+                        
+                        {{-- otras vistas acá --}}
+                    </main>
+                </div>
             </div>
-        </div>
         </section>
 
 </x-app-layout>
